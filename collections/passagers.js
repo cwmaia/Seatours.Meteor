@@ -1,0 +1,1 @@
+Passagers = new Meteor.Collection('passagers');

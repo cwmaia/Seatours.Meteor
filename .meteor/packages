@@ -8,3 +8,8 @@ autopublish
 insecure
 preserve-inputs
 bootstrap
+router
+accounts-ui
+accounts-password
+accounts-twitter
+accounts-facebook
