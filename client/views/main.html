@@ -1,53 +1,64 @@
 <template name='teste'>
-    <div class="container-fluid" id="main-container">
-        <ul class="nav nav-list">
-            <li>
-                <a href="#" class="dropdown-toggle">
-                    <i class="icon-dashboard"></i>
-                    <span>Book</span>
-                    <b class="arrow icon-angle-down"></b>
-                </a>
+   <aside id='sidebar'>
+        <div class="container-fluid" id="main-container">
+            <ul class="nav nav-list">
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-dashboard"></i>
+                        <span>Book</span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
 
-                <ul class="submenu">
-                    <li>
-                        <a href="#">
-                            <i class="icon-double-angle-right"></i>
-                            Create Book
-                        </a>
-                    </li>
+                    <ul class="submenu">
+                        <li>
+                            <a href="#">
+                                <i class="icon-double-angle-right"></i>
+                                Create Book
+                            </a>
+                        </li>
 
-                    <li>
-                        <a href="#">
-                            <i class="icon-double-angle-right"></i>
-                            Remove Book
-                        </a>
-                    </li>
-                </ul>                       
-            </li> 
-            <li>
-                <a href="#" class="dropdown-toggle">
-                    <i class="icon-dashboard"></i>
-                    <span>Reports</span>
-                    <b class="arrow icon-angle-down"></b>
-                </a> 
+                        <li>
+                            <a href="#">
+                                <i class="icon-double-angle-right"></i>
+                                Remove Book
+                            </a>
+                        </li>
+                    </ul>                       
+                </li> 
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-dashboard"></i>
+                        <span>Reports</span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a> 
 
-                <ul class="submenu">
-                    <li>
-                        <a href="#">
-                            <i class="icon-double-angle-right"></i>
-                            A new Report
-                        </a>
-                    </li>
+                    <ul class="submenu">
+                        <li>
+                            <a href="#">
+                                <i class="icon-double-angle-right"></i>
+                                A new Report
+                            </a>
+                        </li>
 
-                    <li>
-                        <a href="#">
-                            <i class="icon-double-angle-right"></i>
-                            Another Report
-                        </a>
-                    </li>
-                </ul> 
-            </li>                  
-        </ul>                     
+                        <li>
+                            <a href="#">
+                                <i class="icon-double-angle-right"></i>
+                                Another Report
+                            </a>
+                        </li>
+                    </ul> 
+                </li>                  
+            </ul> 
+            <div id="sidebar-collapse">
+                <i class="icon-double-angle-left"></i>
+            </div>
+        </aside>   
+        <div id="main-content" class="clearfix">
+            <article class='clearfix'>
+                <div class="row-fluid">
+                    Seatours
+                </div><!--/row-->
+            </article>
+        </div>                  
     </div>
-     
 </template>
