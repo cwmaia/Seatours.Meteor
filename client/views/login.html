@@ -1,3 +1,35 @@
-<template name="login">
-  {{loginButtons}}
+<template name='login'>
+    <article>
+        <div id="div-form">
+            <div id="login-box" class="visible widget-box no-border">
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <h4 class="blue lighter bigger">
+                            Login
+                        </h4>
+                        <form id="login-form">
+                                <div>
+                                    <span class="block input-icon input-icon-right">
+                                        <input type="text" name="login" id="login" class="input-text" maxlength="100" size="25" placeholder="User">
+                                        <i class="icon-user"></i>
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <span class="block input-icon input-icon-right">
+                                        <input type="password" name="password" id="password" class="input-text" maxlength="100" size="25" placeholder="Password">
+                                        <i class="icon-lock"></i>
+                                    </span>
+                                </div>
+
+                                <button class='btn btn-info'>
+                                    <i class="icon-unlock"></i>
+                                    Sing in
+                                </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
 </template>
