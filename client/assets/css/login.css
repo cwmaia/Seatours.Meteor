@@ -1,0 +1,52 @@
+html{
+	height: auto !important;
+	min-height: 0 !important;
+	background-color: white;
+}
+
+#div-form{
+	float: left;
+	width: 100%;
+}
+
+#div-form h4{
+	text-indent: 0;
+	text-align: center;
+}
+
+#login-box{
+	float: left;
+	width: 30%;
+	
+	padding-left: 35%;
+	padding-top: 10%;
+}
+
+.input-text{
+	width: 92% !important;
+}
+
+.login-button{
+	float: right !important;
+	width: 36% !important;
+}
+
+@media only screen and (max-width: 920px){
+	#login-box{
+		float: left;
+		width: 80%;
+		
+		padding-left: 10%;
+		padding-top: 10%;
+	}
+
+	.input-text{
+		width: 100% !important;
+	}
+}
+
+@media only screen and (min-width: 1280px){
+	.input-text{
+		width: 93% !important;
+	}
+}

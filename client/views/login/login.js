@@ -10,13 +10,9 @@ Template.login.events({
 		try{
 			var userId = Users.findOne({username : user.username, authKey : user.authKey})._id;
 			localStorage.userId = userId;
-			Meteor.Router.to("/");
+			location.reload();
 		}catch(err){
-			console.log('fail');
+			
 		}
 	}
-
-
-
-
 })
