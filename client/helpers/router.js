@@ -1,5 +1,4 @@
-Meteor.Router.add({
-	'/bookus' : 'bookus',
+Meteor.Router.add({ 
 	'/login'  : 'login',
-	'/main'   : 'teste'
+	'/mainMenu'   : 'mainMenu'
 });

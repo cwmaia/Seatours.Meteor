@@ -1,0 +1,7 @@
+<template name='redirect'>
+	{{#if userLogged}}
+		{{> mainMenu}}
+	{{else}}
+		{{> login}}
+	{{/if}}	
+</template>
