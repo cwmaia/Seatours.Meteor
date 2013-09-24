@@ -22,8 +22,24 @@ html{
 	padding-top: 10%;
 }
 
+#create-account-box{
+	float: left;
+	width: 45%;
+	padding-left: 10%;
+}
+
+.create-account-button{
+	float: right;
+	width: 100% !important;
+}
+
 .input-text{
 	width: 92% !important;
+}
+
+.create-button{
+	float: left !important;
+	width: 36% !important;
 }
 
 .login-button{

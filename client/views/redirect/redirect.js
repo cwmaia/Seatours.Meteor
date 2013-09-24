@@ -1,7 +1,17 @@
 Template.redirect.helpers({
 	userLogged : function(){
-		if(localStorage.userId)
+		if(localStorage.userId){
 			return true;
-		return false;
+		}else{
+			return false
+		}
+	},
+
+	isCreate : function(){
+		if(sessionStorage.create){
+			return true;
+		}else{
+			return false;
+		}
 	}
 })

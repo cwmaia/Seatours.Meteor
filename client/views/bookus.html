@@ -2,36 +2,62 @@
 	<form>
 		<fieldset>
 			<legend>Book</legend>
-			<label>Destiny: </label>
-			<input type='text' id='destiny' name='destiny'>
-			<label>Date of Departure: </label>
-			<input type='date' id='dateOfDeparture' name='dateOfDeparture'></br>
-			<label>How many People: </label>
-			<input type='number' id='howManyPeople' name='howManyPeople'>
-			<label>How many Dependents: </label>
-			<input type='number' id='howManyDependents' name='howManyDependents'></br>
-			<label>How many Vehicles: </label>
-			<input type='number' id='howManyVehicles' name='howManyVehicles'></br>
+				<div class='span6'>
+					<label>Destiny: </label>
+					<input class='input-text' type='text' id='destiny' name='destiny'>
+				</div>
+				<div class='span6'>
+					<label>Date of Departure: </label>
+					<input class='input-text' type='date' id='dateOfDeparture' name='dateOfDeparture'>
+				</div>
+				<div class='span6'>
+					<label>How many People: </label>
+					<input class='input-text' type='number' id='howManyPeople' name='howManyPeople'>
+				</div>
+				<div class='span6'>
+					<label>How many Dependents: </label>
+					<input class='input-text' type='number' id='howManyDependents' name='howManyDependents'>
+				</div>
+				<div class='span6'>
+					<label>How many Vehicles: </label>
+					<input class='input-text' type='number' id='howManyVehicles' name='howManyVehicles'>
+				</div>
 		</fieldset>
 		<fieldset>
 			<legend>Passager</legend>
-			<label>First Name: </label>
-			<input type='text' id='firstName' name='firstName'></br>
-			<label>Last Name: </label>
-			<input type='text' id='lastName' name='lastName'></br>
-			<label>Birth Date: </label>
-			<input type='date' id='birthDate' name='birthDate'></br>
-			<label>Nationality: </label>
-
-			<label>Identification Document: </label>
-			<input type='text' id='identificationDocument' name='identificationDocument'></br>
-			<label>Phone Number: </label>
-			<input type='phone' id='phoneNumber' name='phoneNumber'></br>
-			<label>Email: </label>
-			<input type='email' id='email' name='email'></br>
-			<label>Confirmation Fee Chargeable: </label>
-			<input type='checkbox' id='isConfirmationFeeChargeable' name='isConfirmationFeeChargeable'>
+			<div class='span6'>
+				<label>First Name: </label>
+				<input class='input-text' type='text' id='firstName' name='firstName'>
+			</div>
+			<div class='span6'>
+				<label>Last Name: </label>
+				<input class='input-text' type='text' id='lastName' name='lastName'>
+			</div>
+			<div class='span6'>
+				<label>Birth Date: </label>
+				<input class='input-text' type='date' id='birthDate' name='birthDate'>
+			</div>
+			<div class='span6'>
+				<label>Nationality: </label>
+				<input class='input-text' type='text'>
+			</div>
+			<div class='span6'>
+				<label>Identification Document: </label>
+				<input class='input-text' type='text' id='identificationDocument' name='identificationDocument'>
+			</div>
+			<div class='span6'>
+				<label>Phone Number: </label>
+				<input class='input-text' type='text' id='phoneNumber' name='phoneNumber'>
+			</div>
+			<div class='span6'>
+				<label>Email: </label>
+				<input class='input-text' type='email' id='email' name='email'>
+			</div>
+			<div class='span6'>
+				<label>Confirmation Fee Chargeable: </label>
+				<input class='input-text' type='checkbox' id='isConfirmationFeeChargeable' name='isConfirmationFeeChargeable'>
+			</div>
 		</fieldset>
-
+		<button class='btn btn-success' style='float: right'>Book Now</button>
 	</form>
 </template>

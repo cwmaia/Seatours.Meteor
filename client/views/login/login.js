@@ -14,5 +14,12 @@ Template.login.events({
 		}catch(err){
 			
 		}
+	},
+
+	'click .create-button' : function(event){
+		event.preventDefault();
+		sessionStorage.create = true;
+		location.reload();
+
 	}
 })

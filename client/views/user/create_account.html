@@ -1,0 +1,105 @@
+<template name='createAccount'>
+   <article>
+        <div id="div-form">
+            <div class="visible widget-box no-border">
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <h4 class="blue lighter bigger">
+                            <a class="logo-account" href="#"><img src='/images/logo-en.png'></a><br/>
+                            Create Account
+                        </h4>
+                        <div id='create-account-box'>
+                        	<form method='post'>
+                        		<fieldset>
+                        			<legend>Please Select</legend>
+                        			<div class='span3'>
+                        				<div class="radio">
+											<label>
+												<input name="form-field-radio" id='travel_yal' type="radio" class="ace select-user" />
+												<span class="lbl">Travel Agency</span>
+											</label>
+										</div>
+									</div>
+										<div class="radio">
+											<label>
+												<input name="form-field-radio" id='travel_nei' type="radio" class="ace select-user" />
+												<span class="lbl">Normal People</span>
+											</label>
+										</div>
+                        		</fieldset>
+                        		<div id='people'>
+		                        	<fieldset>
+		                        		<legend>Personal Data</legend>
+											<div class='span3'>
+												<label>First Name: </label>
+												<input name='firstName' type='text' class='input-text' required>
+											</div>
+											<div class='span3'>
+												<label>Last Name: </label>
+												<input name='lastName' type='text' class='input-text' required>
+											</div>
+											<div class='span3'>
+												<label>Email: </label>
+												<input name='email' type='email' class='input-text' required>
+											</div>
+											<div class='span3'>
+												<label>Birth Date: </label>
+												<input name='birthDate' type="date" id="datepicker" />
+											</div>
+									</fieldset>
+									<fieldset>
+										<legend>User Data</legend>
+											<div class='span3'>
+												<label>Username: </label>
+												<input name='username' type='text' class='input-text' required>
+											</div>		
+											<div class='span3'>
+												<label>Password: </label>
+												<input name='authKey' type='password' class='input-text' required>
+											</div>
+									</fieldset>
+								</div>
+								<div id='travel'>
+		                        	<fieldset>
+		                        		<legend>Travel Agency Data</legend>
+											<div class='span3'>
+												<label>First Name: </label>
+												<input name='firstName' type='text' class='input-text' required>
+											</div>
+											<div class='span3'>
+												<label>Last Name: </label>
+												<input name='lastName' type='text' class='input-text' required>
+											</div>
+											<div class='span3'>
+												<label>Email: </label>
+												<input name='email' type='email' class='input-text' required>
+											</div>
+											<div class='span3'>
+												<label>Birth Date: </label>
+												<input name='birthDate' type="date" id="datepicker" />
+											</div>
+									</fieldset>
+									<fieldset>
+										<legend>User Data</legend>
+											<div class='span3'>
+												<label>Username: </label>
+												<input name='username' type='text' class='input-text' required>
+											</div>		
+											<div class='span3'>
+												<label>Password: </label>
+												<input name='authKey' type='password' class='input-text' required>
+											</div>
+									</fieldset>
+								</div>
+								<button type='submit' class='btn btn-success create-account-button'>
+	                        		<i class="icon-user"></i>
+	                        		Create
+	                    		</button>
+							</form>
+						</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+</template>
