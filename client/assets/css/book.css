@@ -1,0 +1,11 @@
+#book-box{
+	float: left;
+	width: 85%;
+	
+	padding-left: 5%;
+	padding-top: 10%;
+}
+
+.number-input{
+	width: 70px;
+}
