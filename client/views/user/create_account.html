@@ -5,106 +5,111 @@
                 <div class="widget-body">
                     <div class="widget-main">
                         <h4 class="blue lighter bigger">
-                            <a class="logo-account" href="#" title='Click here to back!'><img src='/images/logo-en.png'></a><br/>
+                            <a href="/" title='Click here to back!'><img src='/images/logo-en.png'></a><br/>
                             Create Account
                         </h4>
                         <div id='create-account-box'>
                         	<div class="tabbable">
-											<ul class="nav nav-tabs" id="myTab">
-												<li class="active">
-													<a data-toggle="tab" href="#home">
-														<i class="green icon-user bigger-110"></i>
-														Guests
-													</a>
-												</li>
+									<ul class="nav nav-tabs" id="myTab">
+										<li class="active">
+											<a data-toggle="tab" href="#home">
+												<i class="green icon-user bigger-110"></i>
+												Guests
+											</a>
+										</li>
 
-												<li>
-													<a data-toggle="tab" href="#profile">
-														Travel Agencies
-														<span class="blue icon-group bigger-110"></span>
-													</a>
-												</li>
-											</ul>
+										<li>
+											<a data-toggle="tab" href="#profile">
+												Travel Agencies
+												<span class="blue icon-group bigger-110"></span>
+											</a>
+										</li>
+									</ul>
 
-											<div class="tab-content">
-												<div id="home" class="tab-pane in active">
-													<form method='post' id='people_form'>
-							                        	<fieldset>
-							                        		<legend>Personal Information</legend>
-																<div class='span3'>
-																	<label>First Name: </label>
-																	<input name='firstName' type='text' class='input-text' required>
-																</div>
-																<div class='span3'>
-																	<label>Last Name: </label>
-																	<input name='lastName' type='text' class='input-text' required>
-																</div>
-																<div class='span3'>
-																	<label>Email: </label>
-																	<input name='email' type='email' class='input-text' required>
-																</div>
-																<div class='span3'>
-																	<label>Birth Date: </label>
-																	<input name='birthDate' type="date" id="datepicker" />
-																</div>
-														</fieldset>
-														<fieldset>
-														<legend>User Data</legend>
-															<div class='span3'>
-																<label>Username: </label>
-																<input name='username' type='text' class='input-text' required>
-															</div>		
-															<div class='span3'>
-																<label>Password: </label>
-																<input name='authKey' type='password' class='input-text' required>
-															</div>
-														</fieldset>
-														<button type='submit' class='btn btn-success create-account-button'>
-							                        		<i class="icon-user"></i>
-							                        		Create
-							                    		</button>
-													</form>
-												</div>
-
-												<div id="profile" class="tab-pane">
-													<form method='post' id='travel_form'>
-													<fieldset>
-						                        		<legend>Travel Agency Data</legend>
-															<div class='span3'>
-																<label>First Name: </label>
-																<input name='firstName' type='text' class='input-text' required>
-															</div>
-															<div class='span3'>
-																<label>Last Name: </label>
-																<input name='lastName' type='text' class='input-text' required>
-															</div>
-															<div class='span3'>
-																<label>Email: </label>
-																<input name='email' type='email' class='input-text' required>
-															</div>
-															<div class='span3'>
-																<label>Birth Date: </label>
-																<input name='birthDate' type="date" id="datepicker" />
-															</div>
+									<div class="tab-content">
+										<div id="home" class="tab-pane in active">
+											<fieldset>
+												<legend>Personal Data<span>&nbsp;&nbsp;</span><i class='icon-user'/></legend>
+												<form method='post' id='people_form'>
+													<div class='span3'>
+														<label>First Name: </label>
+														<input name='firstName' type='text' required>
+													</div>
+													<div class='span3'>
+														<label>Last Name: </label>
+														<input name='lastName' type='text' class='input-text' required>
+													</div>
+													<div class='span3'>
+														<label>Email: </label>
+														<input name='email' type='email' required>
+													</div>
+													<div class='span3'>
+														<label>Birth Date: </label>
+														<input name='birthDate' type="text" class='datepicker'>
+													</div>
 													</fieldset>
-													<legend>User Data</legend>
+													<fieldset>
+														<legend>Seatours User<span>&nbsp;&nbsp;</span><i class='icon-cog'/></legend>
 														<div class='span3'>
 															<label>Username: </label>
-															<input name='username' type='text' class='input-text' required>
+															<input name='username' type='text' required>
 														</div>		
 														<div class='span3'>
 															<label>Password: </label>
-															<input name='authKey' type='password' class='input-text' required>
+															<input name='authKey' type='password' required>
 														</div>
 													</fieldset>
+													
+
+													<button type='submit' class='btn btn-success create-account-button'>
+						                        		<i class="icon-user"></i>
+						                        		Create
+						                    		</button>
+												</form>
+											
+										</div>
+
+										<div id="profile" class="tab-pane">
+											<fieldset>
+												<legend>Travel Agency Data<span>&nbsp;&nbsp;</span><i class='icon-group'/></legend>
+												<form method='post' id='travel_form'>
+													<div class='span3'>
+														<label>First Name: </label>
+														<input name='firstName' type='text' class='input-text' required>
+													</div>
+													<div class='span3'>
+														<label>Last Name: </label>
+														<input name='lastName' type='text' class='input-text' required>
+													</div>
+													<div class='span3'>
+														<label>Email: </label>
+														<input name='email' type='email' class='input-text' required>
+													</div>
+													<div class='span3'>
+														<label>Birth Date: </label>
+														<input name='birthDate' type="text" class="datepicker" >
+													</div>
+												</fieldset>
+												<fieldset>
+													<legend>Seatours User<span>&nbsp;&nbsp;</span><i class='icon-cog'/></legend>
+													<div class='span3'>
+														<label>Username: </label>
+														<input name='username' type='text' class='input-text' required>
+													</div>		
+													<div class='span3'>
+														<label>Password: </label>
+														<input name='authKey' type='password' class='input-text' required>
+													</div>
+												</fielset>
 													<button type='submit' class='btn btn-info create-account-button'>
-							                        		<i class="icon-user"></i>
-							                        		Create
-							                    		</button>
-												</div>
-											</div>
+						                        		<i class="icon-user"></i>
+						                        		Create
+						                    		</button>
+						                    	</form>
 										</div>
 									</div>
+								</div>
+							</div>
                         	
 								</div>
 								<div>

@@ -6,14 +6,14 @@
 		        	 <div class='span6'>
 			            <label class="control-label" for="inputEmail">From</label>
 			            <div class="controls">
-			                *<input type="text" id="inputEmail" placeholder="From" required >
+			                <input type="text" id="inputEmail" placeholder="From" required >
 			            </div>
 			        </div>
 
 			         <div class='span6'>
 			            <label class="control-label" for="inputEmail">Departure</label>
 			            <div class="controls">
-			                *<input type="date" id="inputEmail" placeholder="From" required >
+			                <input class='datepicker' type='text' id="inputEmail" placeholder="From" required >
 			            </div>
 			        </div>
 
@@ -22,14 +22,14 @@
 		        	<div class='span6'>
 			            <label class="control-label" for="inputPassword">To</label>
 			            <div class="controls">
-			                *<input type="password" id="inputPassword" placeholder="To" required>
+			                <input type="password" id="inputPassword" placeholder="To" required>
 			            </div>
 		        	</div>
 
 		            <div class='span6'>
 			            <label class="control-label" for="inputEmail">Arrival</label>
 			            <div class="controls">
-			                *<input type="date" id="inputEmail" placeholder="From" required >
+			                <input class='datepicker' type='text' id="inputEmail" placeholder="From" required >
 			            </div>
 		        	</div>
 
@@ -37,8 +37,8 @@
 		    </section>
 
 		    <section class="step" data-step-title="People and Vehicles">
+		    	<div class='row'>
 		        <div class="control-group">
-		        	<label class="control-label" for="inputUsername">Prices</label>
 		            <label class="control-label" for="inputUsername">Adult</label>
 	                <div class="controls">
 		                <input type="number" id="inputUsername" placeholder="#" class='number-input' min='0' required>
@@ -58,29 +58,20 @@
 		            <label class="control-label" for="inputUsername">Child (12 - 15)</label>
 	                <div class="controls">
 		                <input type="number" id="inputUsername" placeholder="#" class='number-input' min='0' required>
-		            </div>
-		            <label class="control-label" for="inputUsername">Infant (0 - 11)</label>
-	                <div class="controls">
-		                <input type="number" id="inputUsername" placeholder="#" class='number-input' rmin='0' equired>
 		            </div>
 		        </div>
 
 		        <div class="control-group">
-		        	<div class='span3'>
 			            <label class="control-label" for="inputFirstname">Vehicles</label>
 			                <div class="controls">
 			                <input type="number" id="inputFirstname" placeholder="#" class="number-input" min='0' required>
 			            </div>
-		        	</div>
 		        </div>
-
+		    </div>
 		    </section>
 		    <section class="step" data-step-title="Passager">
-
 		    	<fieldset>
-		        	<legend>Your Personal Data<span>&nbsp;&nbsp;</span><i class='icon-user'/></legend>
-
-			        
+		        	<legend>Your Personal Data<span>&nbsp;&nbsp;</span><i class='icon-user'/></legend>  
 			        <div class="control-group">
 			            <label class="control-label" for="inputCity">Title: </label>
 			                <div class="controls">
@@ -111,7 +102,7 @@
 			        <div class="control-group">
 			            <label class="control-label" for="inputCity">Birth Date: </label>
 			                <div class="controls">
-			                <input type="date" id="inputCity" class="input-xlarge">
+			                <input type='text' id="inputCity" class="datepicker">
 			            </div>
 			        </div>
 
@@ -183,7 +174,37 @@
 
 		        </fieldset>
 		    </section>
-		    <section class="step" data-step-title="Payment">
+
+		    <section class="step" data-step-title="User Data">
+		        <div class="control-group">
+		            <label class="control-label" for="inputFirstname">Username</label>
+		                <div class="controls">
+		                <input type="text" id="inputFirstname" placeholder="Username" class="input-xlarge">
+		            </div>
+		        </div>
+		        <div class="control-group">
+		            <label class="control-label" for="inputCity">Password</label>
+		                <div class="controls">
+		                <input type="text" id="inputCity" placeholder="Password" class="input-xlarge">
+		            </div>
+		        </div>
+
+		        <div class="control-group">
+		            <label class="control-label" for="inputCity">Repeat Password</label>
+		                <div class="controls">
+		                <input type="text" id="inputCity" placeholder="Repeat Password" class="input-xlarge">
+		            </div>
+		        </div>
+
+		        <div class="control-group">
+	                <div class="controls">
+		                <input type="checkbox" id="inputCity">
+		            </div>
+		             <label class="control-label" for="inputCity">I'll Like to subscribe to promotions!!!</label>
+		        </div>
+		    </section>
+
+		    <section class="step" data-step-title="Resume">
 		        <div class="control-group">
 		            <label class="control-label" for="inputFirstname">Firstname</label>
 		                <div class="controls">
@@ -197,6 +218,7 @@
 		            </div>
 		        </div>
 		    </section>
+
 		</form>
 	</div>
 </template>

@@ -1,10 +1,3 @@
-$(function(){
-	$('.logo-account').click(function(){
-		sessionStorage.removeItem('create');
-		location.reload();
-	})
-})
-
 Template.createAccount.events({
 	'submit #people_form' : function(event){
 
@@ -14,13 +7,12 @@ Template.createAccount.events({
 			email : $(event.target).find('[name=email]').val(),
 			birthdate : $(event.target).find('[name=birthDate]').val(),
 			username : $(event.target).find('[name=username]').val(),
-			authKey : $(event.target).find('[name=authKey]').val()
+			authKey : $(event.target).find('[name=authKey]').val(),
+			authLvl : 'guest'
 		}
 
 		Users.insert(user);
-		
-		sessionStorage.removeItem('create');
-		location.reload();
+		Meteor.Router.to('/');
 	},
 
 	'submit #travel_form' : function(event){
@@ -30,7 +22,6 @@ Template.createAccount.events({
 		}
 
 		Agencies.insert(agency);
-		sessionStorage.removeItem('create');
-		location.reload();
+		Meteor.Router.to('/');
 	}
 })

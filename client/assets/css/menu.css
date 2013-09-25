@@ -1,0 +1,11 @@
+.header .logo-menu {
+  display: block;
+  width: 180px;
+  height: 105px;
+  position: absolute;
+  left: 0;
+  bottom: 0px;
+  border: none;
+  background-size: cover;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}

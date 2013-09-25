@@ -1,6 +1,8 @@
-Meteor.Router.add({ 
+Meteor.Router.add({
+	'/' : 'login',
 	'/login'  : 'login',
-	'/mainMenu'   : 'mainMenu',
+	'/guest' : 'userMenu',
+	'/adm'   : 'mainMenu',
 	'/createBook' : 'bookus',
 	'/createAccount' : 'createAccount',
 	'/book' : 'book'

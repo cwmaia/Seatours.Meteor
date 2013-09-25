@@ -8,18 +8,23 @@ Template.login.events({
 		}
 
 		try{
-			var userId = Users.findOne({username : user.username, authKey : user.authKey})._id;
-			localStorage.userId = userId;
-			location.reload();
+			var seatoursUser = Users.findOne({username : user.username, authKey : user.authKey});
+			localStorage.userId = seatoursUser._id;
+			if(seatoursUser.authLvl == 'admin'){
+				Meteor.Router.to('/adm');
+			}else{
+				Meteor.Router.to('/guest');
+			}
 		}catch(err){
-			
+			Alert(err);
 		}
 	},
 
 	'click .create-button' : function(event){
 		event.preventDefault();
-		sessionStorage.create = true;
-		location.reload();
+		Meteor.Router.to('/createAccount');
 
 	}
 })
+
+
