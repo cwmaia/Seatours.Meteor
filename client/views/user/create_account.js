@@ -25,3 +25,7 @@ Template.createAccount.events({
 		Meteor.Router.to('/');
 	}
 })
+
+Template.createAccount.rendered = function() {
+  $('.datepicker').datepicker();
+}

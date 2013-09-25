@@ -1,21 +1,4 @@
-jQuery(function() {
-	handle_side_menu();
-
-	enable_search_ahead();	
-
-	add_browser_detection(jQuery);
-	
-	general_things();
-
-	widget_boxes();
-
-	//bootstrap v 2.3.1 prevents this event which firefox's middle mouse button "new tab link" action, so we off it!
-	$(document).off('click.dropdown-menu');
-});
-
-
-
-function handle_side_menu() {
+handle_side_menu = function () {
 	$('#menu-toggler').on('click', function() {
 		$('#sidebar').toggleClass('display');
 		$(this).toggleClass('display');
@@ -58,7 +41,7 @@ function handle_side_menu() {
 }
 
 
-function enable_search_ahead() {
+enable_search_ahead = function () {
 	$('#nav-search-input').typeahead({
 		source: ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"],
 		updater:function (item) {
@@ -69,7 +52,7 @@ function enable_search_ahead() {
 }
 
 
-function general_things() {
+general_things = function() {
  $('.ace-nav [class*="icon-animated-"]').closest('a').on('click', function(){
 	var icon = $(this).find('[class*="icon-animated-"]').eq(0);
 	var $match = icon.attr('class').match(/icon\-animated\-([\d\w]+)/);
@@ -153,7 +136,7 @@ function general_things() {
 
 
 
-function widget_boxes() {
+widgets_boxes = function() {
 	$('.widget-toolbar > a[data-action]').each(function() {
 		var $this = $(this);
 		var $action = $this.data('action');
@@ -213,48 +196,3 @@ function widget_boxes() {
 }
 
 
-
-
-//code taken from http://code.jquery.com/jquery-1.8.3.js to provide simple browser detection for 1.9+ versions
-function add_browser_detection($) {
-	if(!$.browser) {
-		var matched, browser;
-
-		// Use of jQuery.browser is frowned upon.
-		// More details: http://api.jquery.com/jQuery.browser
-		// jQuery.uaMatch maintained for back-compat
-		$.uaMatch = function( ua ) {
-			ua = ua.toLowerCase();
-
-			var match = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
-				/(webkit)[ \/]([\w.]+)/.exec( ua ) ||
-				/(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
-				/(msie) ([\w.]+)/.exec( ua ) ||
-				ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
-				[];
-
-			return {
-				browser: match[ 1 ] || "",
-				version: match[ 2 ] || "0"
-			};
-		};
-
-		matched = $.uaMatch( navigator.userAgent );
-		browser = {};
-
-		if ( matched.browser ) {
-			browser[ matched.browser ] = true;
-			browser.version = matched.version;
-		}
-
-		// Chrome is Webkit, but Webkit is also Safari.
-		if ( browser.chrome ) {
-			browser.webkit = true;
-		} else if ( browser.webkit ) {
-			browser.safari = true;
-		}
-
-		$.browser = browser;
-
-	}
-}

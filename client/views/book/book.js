@@ -1,3 +1,4 @@
-$(function(){
-	$('#myWizard').easyWizard();
-})
+Template.book.rendered = function() {
+  $('#myWizard').easyWizard();
+  $('.datepicker').datepicker();
+}
