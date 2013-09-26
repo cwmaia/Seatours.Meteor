@@ -6,10 +6,10 @@ Template.userMenu.events({
 })
 
 Template.userMenu.rendered = function(){
+	checkauth();
 	handle_side_menu();
 	enable_search_ahead();	
 	general_things();
-	widget_boxes();
 	//bootstrap v 2.3.1 prevents this event which firefox's middle mouse button "new tab link" action, so we off it!
 	$(document).off('click.dropdown-menu');
 }

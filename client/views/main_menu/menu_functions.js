@@ -1,3 +1,22 @@
+checkauth = function(){
+	var authLvl = '';
+	
+	try{
+		if(localStorage.userId){
+			var authLvl = Users.findOne({_id: localStorage.userId}).authLvl;
+			if(authLvl == 'admin'){
+				Meteor.Router.to('/adm');
+			}else{
+				Meteor.Router.to('/guest');
+			}
+		}else{
+			Meteor.Router.to('/login');
+		}
+	}catch(err){
+		Alert(err);
+	}
+}
+
 handle_side_menu = function () {
 	$('#menu-toggler').on('click', function() {
 		$('#sidebar').toggleClass('display');
@@ -134,65 +153,5 @@ general_things = function() {
  
 }
 
-
-
-widgets_boxes = function() {
-	$('.widget-toolbar > a[data-action]').each(function() {
-		var $this = $(this);
-		var $action = $this.data('action');
-		var $box = $this.closest('.widget-box');
-		
-		if($action == 'collapse') {
-			var $body = $box.find('.widget-body');
-			var $icon = $this.find('[class*=icon-]').eq(0);
-			var $match = $icon.attr('class').match(/icon\-(.*)\-(up|down)/);
-			var $icon_down = 'icon-'+$match[1]+'-down';
-			var $icon_up = 'icon-'+$match[1]+'-up';
-			
-			
-			$body = $body.wrapInner('<div class="widget-body-inner"></div>').find(':first-child').eq(0);
-			$this.on('click', function(ev){
-				if($box.hasClass('collapsed')) {
-					if($icon) $icon.addClass($icon_up).removeClass($icon_down);
-					$box.removeClass('collapsed');
-					$body.slideDown(200);
-				}
-				else {
-					if($icon) $icon.addClass($icon_down).removeClass($icon_up);
-					$body.slideUp(300, function(){$box.addClass('collapsed')});
-				}
-				ev.preventDefault();
-			});
-			if($box.hasClass('collapsed') && $icon) $icon.addClass($icon_down).removeClass($icon_up);
-
-		}
-		else if($action == 'close') {
-			$this.on('click', function(ev){
-				$box.hide(300 , function(){$box.remove();});
-				ev.preventDefault();
-			});
-		}
-		else if($action == 'reload') {
-			$this.on('click', function(ev){
-				$this.blur();
-				//var $body = $box.find('.widget-body');
-				var $remove = false;
-				if(!$box.hasClass('position-relative')) {$remove = true; $box.addClass('position-relative');}
-				$box.append('<div class="widget-box-layer"><i class="icon-spinner icon-spin icon-2x white"></i></div>');
-				setTimeout(function(){
-					$box.find('> div:last-child').remove();
-					if($remove) $box.removeClass('position-relative');
-				}, parseInt(Math.random() * 1000 + 1000));
-				ev.preventDefault();
-			});
-		}
-		else if($action == 'settings') {
-			$this.on('click', function(ev){
-				ev.preventDefault();
-			});
-		}
-		
-	});
-}
 
 

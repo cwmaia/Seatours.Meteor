@@ -23,8 +23,11 @@ Template.login.events({
 	'click .create-button' : function(event){
 		event.preventDefault();
 		Meteor.Router.to('/createAccount');
-
 	}
 })
+
+Template.login.rendered = function(){
+	checkauth();
+}
 
 
