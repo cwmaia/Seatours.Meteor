@@ -7,3 +7,12 @@ Meteor.Router.add({
 	'/createAccount' : 'createAccount',
 	'/book' : 'book'
 });
+
+Meteor.Router.filters({
+	'clearErrors' : function(page){
+		clearErrors();
+		return page;
+	}
+})
+
+Meteor.Router.filter('clearErrors');

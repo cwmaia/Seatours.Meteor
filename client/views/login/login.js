@@ -16,7 +16,7 @@ Template.login.events({
 				Meteor.Router.to('/guest');
 			}
 		}catch(err){
-			Alert(err);
+			throwError("Username or Password is incorrect");
 		}
 	},
 

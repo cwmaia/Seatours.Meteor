@@ -13,8 +13,14 @@ checkauth = function(){
 			Meteor.Router.to('/login');
 		}
 	}catch(err){
-		Alert(err);
+		
 	}
+}
+
+appendImage = function(){
+	$('#id-logo').html("");
+	$('#id-logo').html("<img src='/images/logo-en.png'>");
+
 }
 
 handle_side_menu = function () {
