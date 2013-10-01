@@ -5,7 +5,6 @@ throwError = function(message) {
 }
 
 clearErrors = function() { 
-	console.log("here 2");
 	Errors.remove({seen: 't'});
 }
 
