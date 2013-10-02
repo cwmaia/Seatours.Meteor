@@ -1,6 +1,5 @@
 checkauth = function(){
-	var authLvl = '';
-	
+	var authLvl = '';	
 	try{
 		if(localStorage.userId){
 			var authLvl = Users.findOne({_id: localStorage.userId}).authLvl;
