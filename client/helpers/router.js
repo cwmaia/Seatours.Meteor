@@ -5,12 +5,14 @@ Meteor.Router.add({
 	'/adm'   : 'mainMenu',
 	'/createBook' : 'bookus',
 	'/createAccount' : 'createAccount',
-	'/book' : 'book'
+	'/book' : 'book',
+	'/bookReport' : 'bookReport'
 });
 
 Meteor.Router.filters({
 	'clearErrors' : function(page){
 		clearErrors();
+		clearSuccess();
 		return page;
 	}
 })

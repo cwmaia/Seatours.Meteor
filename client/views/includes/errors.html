@@ -3,11 +3,21 @@
 	{{#each errors}} 
 		{{> error}}
 	{{/each}}
+	{{#each successMessage}} 
+		{{> success}}
+	{{/each}}
 	</div> 
 </template>
 
 <template name="error">
 	<div class="alert alert-error">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		{{message}}
+	</div> 
+</template>
+
+<template name="success">
+	<div class="alert alert-success">
 		<button type="button" class="close" data-dismiss="alert">&times;</button>
 		{{message}}
 	</div> 

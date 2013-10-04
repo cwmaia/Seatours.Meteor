@@ -1,73 +1,78 @@
 <template name='book'>
+	{{#if showProductDialog}}
+    	{{> productDialog}}
+  	{{/if}}
 	<div id='book-box'>
-		<form id="myWizard" type="get" action="" class="form-horizontal">
+		<form id="myWizard" class="form-horizontal">
 		    <section class="step" data-step-title="Chose Destinations<span>&nbsp;&nbsp;</span><i class='icon-anchor'/>">
 		        <div class="control-group">
 		        	 <div class='span6'>
 			            <label class="control-label" for="inputEmail">From</label>
 			            <div class="controls">
-			                <select id='selected_product' name='product' required>
-								<option value=''>Please Select</option>
-									{{{getProductOptions}}}
-							</select>
+			                 <input type="text" id="destination" value="{{destination}}">
 			            </div>
 			        </div>
 
 			         <div class='span6'>
 			            <label class="control-label" for="inputEmail">Departure</label>
 			            <div class="controls">
-			                <input id='departureDate' class='datepicker' type='text' required >
+			                <input id='departureDate' name="departure" class='datepicker' type='text' required >
 			            </div>
-			        </div>
-
-			        <div class='span6'>
-		            	
-			        </div>
-
-			        <div class='span6'>
-	        			
 			        </div>     
 		        </div>
 		    </section>
 
 		    <section class="step" data-step-title="People and Vehicles<span>&nbsp;&nbsp;</span><i class='icon-group'/>">
 		        <div class="control-group">
-		            <label class="control-label" for="inputUsername">Adult</label>
-	                <div class="controls">
-		                <input type="number" id="inputUsername" placeholder="#" class='number-input' min='0' required>
-		            </div>
-		            <label class="control-label" for="inputUsername">Child (12 - 15)</label>
-	                <div class="controls">
-		                <input type="number" id="inputUsername" placeholder="#" class='number-input' min='0' required>
-		            </div>
-		            <label class="control-label" for="inputUsername">Infant (0 - 11)</label>
-	                <div class="controls">
-		                <input type="number" id="inputUsername" placeholder="#" class='number-input' rmin='0' equired>
-		            </div>
-		            <label class="control-label" for="inputUsername">Adult</label>
-	                <div class="controls">
-		                <input type="number" id="inputUsername" placeholder="#" class='number-input' min='0' required>
-		            </div>
-		            <label class="control-label" for="inputUsername">Child (12 - 15)</label>
-	                <div class="controls">
-		                <input type="number" id="inputUsername" placeholder="#" class='number-input' min='0' required>
-		            </div>
+		        	<div class='span12'>
+			            <label class="control-label">Adult - 4.080 ISK</label>
+		                <div class="controls">
+			                <input type="number" name="adultNumber" id="adultNumber" value="0" class='number-input calcTotal' min='0'>
+			            </div>
+			            <label class="control-label">Child (12 - 15) - 2.040 ISK</label>
+		                <div class="controls">
+			                <input type="number" name="childNumber" id="childNumber" value="0" class='number-input calcTotal' min='0'>
+			            </div>
+			            <label class="control-label">Infant (0 - 11) - 0 ISK</label>
+		                <div class="controls">
+			                <input type="number" name="infantNumber" value="0" class='number-input' min='0'>
+			            </div>
+			            <label class="control-label">Senior-Disable - 3.264 ISK</label>
+		                <div class="controls">
+			                <input type="number" name="seniorNumber" id="seniorNumber" value="0" class='number-input calcTotal' min='0'>
+			            </div>
+    		            <label class="control-label">School - 2.040 ISK</label>
+		                <div class="controls">
+			                <input type="number" name="schoolNumber" id="schoolNumber" value="0" class='number-input calcTotal' min='0'>
+			            </div>
+			            <label class="control-label">Guides & Drivers - 0 ISK</label>
+		                <div class="controls">
+			                <input type="number" name="guidesNumber" value="0" class='number-input' min='0'>
+			            </div>
+			            <br/>
+			            <label class="control-label"><b>Total</b></label>
+		                <div class="controls">
+			                <input type="text" name="totalISK" id="totalISK" readonly value="0 ISK">
+			            </div>
+			        </div>
 		        </div>
 
-	        	<legend>Something<span>&nbsp;&nbsp;</span><i class='icon-group'/></legend> 
-		        <div class="control-group">
-			            <label class="control-label" for="inputFirstname">Vehicles</label>
-			                <div class="controls">
-			                <input type="number" id="inputFirstname" placeholder="#" class="number-input" min='0' required>
-			            </div>
-		        </div>
+        		<div class='span12'>
+	        		<legend>Vehicles<span>&nbsp;&nbsp;</span><i class='icon-car'/></legend> 
+			        <div class="control-group">
+				            <label class="control-label">Vehicles</label>
+				                <div class="controls">
+				                <input type="number" name='vehiclesNumber' value="0" class="number-input" min='0'>
+				            </div>
+			        </div>
+		    	</div>
 		    </section>
 
 		    <section class="step" data-step-title="Passager<span>&nbsp;&nbsp;</span><i class='icon-user'/>">
 		        <div class="control-group">
-		            <label class="control-label" for="inputCity">Title: </label>
+		            <label class="control-label">Title: </label>
 		                <div class="controls">
-		                 <select>
+		                 <select name='title'>
 		                 	<option>Select</option>
 		                	<option>Mr</option>
 		                	<option>Mrs</option>
@@ -78,37 +83,37 @@
 		        </div>
 
 		        <div class="control-group">
-		            <label class="control-label" for="inputCity">First Name: </label>
+		            <label class="control-label">First Name: </label>
 		                <div class="controls">
-		                <input type="text" id="inputCity" placeholder="First Name" class="input-xlarge">
+		                <input type="text" name='firstName' placeholder="First Name" class="input-xlarge">
 		            </div>
 		        </div>
 
 		        <div class="control-group">
-		            <label class="control-label" for="inputCity">Surname: </label>
+		            <label class="control-label">Surname: </label>
 		                <div class="controls">
-		                <input type="text" id="inputCity" placeholder="Surname" class="input-xlarge">
+		                <input type="text"  name="surname" placeholder="Surname" class="input-xlarge">
 		            </div>
 		        </div>
 
 		        <div class="control-group">
-		            <label class="control-label" for="inputCity">Birth Date: </label>
+		            <label class="control-label">Birth Date: </label>
 		                <div class="controls">
-		                <input type='text' id="inputCity" class="datepicker">
+		                <input type='text'  name="birthDate" class="datepicker">
 		            </div>
 		        </div>
 
 		        <div class="control-group">
-		            <label class="control-label" for="inputCity">Email: </label>
+		            <label class="control-label">Email: </label>
 		                <div class="controls">
-		                <input type="email" id="inputCity" placeholder="Email" class="input-xlarge">
+		                <input type="email"  name="email" placeholder="Email" class="input-xlarge">
 		            </div>
 		        </div>
 
 		        <div class="control-group">
-		            <label class="control-label" for="inputCity">Telephone Country Code: </label>
+		            <label class="control-label">Telephone Country Code: </label>
 		                <div class="controls">
-		                <select>
+		                <select name="telephoneCode" >
 		                	<option>Select</option>
 		                	<option>Brazil (+55)</option>
 	                	</select>
@@ -116,9 +121,9 @@
 		        </div>
 
 			        <div class="control-group">
-			            <label class="control-label" for="inputCity">Telephone</label>
+			            <label class="control-label">Telephone</label>
 			                <div class="controls">
-			                <input type="text" id="inputCity" placeholder="Telephone" class="input-xlarge">
+			                <input type="text"  name="telephone" placeholder="Telephone" class="input-xlarge">
 			            </div>
 			        </div>
 
@@ -126,37 +131,37 @@
 		        	<legend>Your Address<span>&nbsp;&nbsp;</span><i class='icon-home'/></legend>
 
 		        	<div class="control-group">
-		            <label class="control-label" for="inputCity">Adress</label>
+		            <label class="control-label">Adress</label>
 		                <div class="controls">
-		                <input type="text" id="inputCity" placeholder="Address" class="input-xlarge">
+		                <input type="text"  name="adress" placeholder="Address" class="input-xlarge">
 		            </div>
 		        </div>
 
 		        <div class="control-group">
-		            <label class="control-label" for="inputCity">City</label>
+		            <label class="control-label">City</label>
 		                <div class="controls">
-		                <input type="text" id="inputCity" placeholder="City" class="input-xlarge">
+		                <input type="text"  name="city" placeholder="City" class="input-xlarge">
 		            </div>
 		        </div>
 
 		        <div class="control-group">
-		            <label class="control-label" for="inputCity">County / State</label>
+		            <label class="control-label">County / State</label>
 		                <div class="controls">
-		                <input type="text" id="inputCity" placeholder="County / State" class="input-xlarge">
+		                <input type="text"  name="county" placeholder="County / State" class="input-xlarge">
 		            </div>
 		        </div>
 
 		        <div class="control-group">
-		            <label class="control-label" for="inputCity">Postcode: </label>
+		            <label class="control-label">Postcode: </label>
 		                <div class="controls">
-		                <input type="text" id="inputCity" placeholder="Postcode" class="input-xlarge">
+		                <input type="text"  name="postcode" placeholder="Postcode" class="input-xlarge">
 		            </div>
 		        </div>
 
 		        <div class="control-group">
-		            <label class="control-label" for="inputCity">Country</label>
+		            <label class="control-label">Country</label>
 		                <div class="controls">
-		                <select>
+		                <select name="country" >
 		                	<option>Select</option>
 		                	<option>Brazil</option>
 	                	</select>
@@ -170,48 +175,20 @@
 		        <div class="control-group">
 		            <label class="control-label" for="inputFirstname">Username</label>
 		                <div class="controls">
-		                <input type="text" id="inputFirstname" placeholder="Username" class="input-xlarge">
+		                <input type="text" name='username' placeholder="Username" class="input-xlarge">
 		            </div>
 		        </div>
 		        <div class="control-group">
-		            <label class="control-label" for="inputCity">Password</label>
+		            <label class="control-label">Password</label>
 		                <div class="controls">
-		                <input type="text" id="inputCity" placeholder="Password" class="input-xlarge">
-		            </div>
-		        </div>
-
-		        <div class="control-group">
-		            <label class="control-label" for="inputCity">Repeat Password</label>
-		                <div class="controls">
-		                <input type="text" id="inputCity" placeholder="Repeat Password" class="input-xlarge">
-		            </div>
-		        </div>
-
-		        <div class="control-group">
-	                <div class="controls">
-		                <input type="checkbox" id="inputCity">
-		            </div>
-		             <label class="control-label" for="inputCity">I'll Like to subscribe to promotions!!!</label>
-		        </div>
-		    </section>
-
-		    <section class="step" data-step-title="Resume<span>&nbsp;&nbsp;</span><i class='icon-book'/>">
-		        <div class="control-group">
-		            <label class="control-label" for="inputFirstname">Firstname</label>
-		                <div class="controls">
-		                <input type="text" id="inputFirstname" placeholder="Firstname" class="input-xlarge">
-		            </div>
-		        </div>
-		        <div class="control-group">
-		            <label class="control-label" for="inputCity">City</label>
-		                <div class="controls">
-		                <input type="text" id="inputCity" placeholder="City" class="input-xlarge">
+		                <input type="password" name='authKey' placeholder="Password" class="input-xlarge">
 		            </div>
 		        </div>
 		    </section>
 		</form>
 	</div>
 </template>
+
 
 <template name='productDescription'>
 	<h3>{{name}}</h3>
@@ -223,4 +200,30 @@
 	<h3>Slots Available on this date</h3>
 	<hr/>
 	<p>3 Slots Available!</p>
+</template>
+
+<template name="productDialog">
+  <div class="mask"> </div>
+  <div class="modal">
+    <div class="modal-header">
+      <button type="button" class="close cancel">&times;</button>
+      <h3>Chose Destination</h3>
+    </div>
+
+    <div class="modal-body">
+        {{#each products}}
+    		{{> product}}	
+    	{{/each}}
+    </div>
+
+    <div class="modal-footer">
+      <a href="#" class="btn cancel">Cancel</a>
+    </div>
+  </div>
+</template>
+
+<template name="product">
+    <h4>
+    	<a href='#' class='destinationLink'>{{name}}</a>
+    </h4>	
 </template>

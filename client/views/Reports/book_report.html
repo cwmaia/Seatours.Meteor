@@ -1,0 +1,50 @@
+<template name='bookReport'>
+	<table class='table table-striped table-bordered trable-hover'>
+		<thead>
+			<tr>
+				<th>Destination</th>
+				<th>Departure</th>
+				<th># Adults</th>
+				<th># Chidren</th>
+				<th># Infants</th>
+				<th># Seniors</th>
+				<th># Schoolars</th>
+				<th># Vehicles</th>
+				<th>Total ISK</th>
+				<th>Name</th>
+				<th>Birth</th>
+				<th>Email</th>
+				<th>Telephone Code</th>
+				<th>Telephone</th>
+				<th>Adress</th>
+				<th>Paid</th>
+			</tr>
+		</thead>
+			<tbody>
+				{{#each books}}
+					{{> bookLine}}
+				{{/each}}
+			</tbody>
+	</table>	
+</template>
+
+<template name='bookLine'>
+	<tr>
+		<td>{{destination}}</td>
+		<td>{{departure}}</td>
+		<td>{{adultNumber}}</td>
+		<td>{{childNumber}}</td>
+		<td>{{infantNumber}}</td>
+		<td>{{seniorNumber}}</td>
+		<td>{{schoolNumber}}</td>
+		<td>{{vehiclesNumber}}</td>
+		<td>{{totalISK}}</td>
+		<td>{{title}}. {{firstName}} {{surname}}</td>
+		<td>{{birthDate}}</td>
+		<td>{{email}}</td>
+		<td>{{telephoneCode}}</td>
+		<td>{{telephone}}</td>
+		<td>{{adress}} - {{city}} - {{county}} - {{postcode}} - {{country}}</td>
+		<td>{{paid}}</td>
+	</tr>
+</template>
