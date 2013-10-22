@@ -8,6 +8,7 @@ Meteor.Router.add({
 	'/book' : 'book',
 	'/bookReport' : 'bookReport',
 	'/vehicles' : 'vehicles',
+	'/boats' : 'boats'
 });
 
 Meteor.Router.filters({
