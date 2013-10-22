@@ -6,7 +6,8 @@ Meteor.Router.add({
 	'/createBook' : 'bookus',
 	'/createAccount' : 'createAccount',
 	'/book' : 'book',
-	'/bookReport' : 'bookReport'
+	'/bookReport' : 'bookReport',
+	'/vehicles' : 'vehicles',
 });
 
 Meteor.Router.filters({

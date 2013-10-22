@@ -1,0 +1,1 @@
+VehiclesCategory = new Meteor.Collection('vehicles_category');

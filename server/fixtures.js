@@ -22,6 +22,86 @@ if(Products.find().count() == 0){
 	});
 }
 
+if(VehiclesCategory.find().count() == 0){
+	VehiclesCategory.insert({
+		"category" 	: "Normal car with cart",
+		"size"		: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+		"basePrice" : ''
+	});
+
+	VehiclesCategory.insert({
+		"category" 	: "Small car",
+		"size"		: [4.5],
+		"basePrice" : ''
+	});
+
+	VehiclesCategory.insert({
+		"category" 	: "Motorcycle",
+		"size"		: [2.5],
+		"basePrice" : ''
+	});
+
+	VehiclesCategory.insert({
+		"category" 	: "Lorry (price incl. VAT)",
+		"size"		: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
+		"basePrice" : ''
+	});
+
+	VehiclesCategory.insert({
+		"category" 	: "Normal car with trailler/caravan",
+		"size"		: [10, 11, 12, 13, 14, 15],
+		"basePrice" : ''
+	});
+
+	VehiclesCategory.insert({
+		"category" 	: "Van (price incl. VAT)",
+		"size"		: [5, 6, 7 ,8 , 9, 10, 11],
+		"basePrice" : ''
+	});
+
+	VehiclesCategory.insert({
+		"category" 	: "Cart (without car)",
+		"size"		: [2, 3, 4, 5, 6, 7 ,8 , 9],
+		"basePrice" : ''
+	});
+
+	VehiclesCategory.insert({
+		"category" 	: "Large Car / Motor-Home",
+		"size"		: [6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15],
+		"basePrice" : ''
+	});
+
+	VehiclesCategory.insert({
+		"category" 	: "Bus",
+		"size"		: [6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+		"basePrice" : ''
+	});
+
+	VehiclesCategory.insert({
+		"category" 	: "Large Car with cart",
+		"size"		: [11, 12, 13, 14, 15, 16],
+		"basePrice" : ''
+	});
+
+	VehiclesCategory.insert({
+		"category" 	: "Jeep",
+		"size"		: [4, 5, 6, 7],
+		"basePrice" : ''
+	});
+
+	VehiclesCategory.insert({
+		"category" 	: "Normal Car / Motor-Home",
+		"size"		: [5, 6, 7],
+		"basePrice" : ''
+	});
+
+	VehiclesCategory.insert({
+		"category" 	: "Large Car with trailler / caravan",
+		"size"		: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
+		"basePrice" : ''
+	});
+}
+
 //For Tests
 if(SeatoursUsers.find().count() == 0){
 	SeatoursUsers.insert({

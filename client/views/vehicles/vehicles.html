@@ -1,0 +1,33 @@
+<template name="vehicles">
+
+	<form>
+		<label>Brandname:</label>
+		<input type="text" name="brandname" id="brandname" placeholder="BRANDNAME">
+
+		<label>Model:</label>
+		<input type="text" name="model" id="model" placeholder="MODEL">
+
+		<label>Category:</label>
+		<select name="categories" id="categories">
+			<option value="">Select..</option>
+			{{#each categories}}
+    			{{> category}}	
+    		{{/each}}
+		</select>
+
+		<select name="size" id="size">
+			{{#each sizes}}
+    			{{> sizes}}	
+    		{{/each}}
+		</select>		
+	</form>
+
+</template>
+
+<template name="category">
+	<option value="{{category}}" id="{{_id}}">{{category}}</option>
+</template>
+
+<template name="sizes">
+	<option value="{{this}}">{{this}}m</option>
+</template>
