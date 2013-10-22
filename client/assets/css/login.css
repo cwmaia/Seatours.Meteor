@@ -7,6 +7,7 @@ html{
 #div-form{
 	float: left;
 	width: 100%;
+	text-align: center;
 }
 
 #div-form h4{
@@ -15,11 +16,8 @@ html{
 }
 
 #login-box{
-	float: left;
 	width: 30%;
-	
-	padding-left: 35%;
-	padding-top: 5%;
+	margin: 0 auto;
 }
 
 #create-account-box{
