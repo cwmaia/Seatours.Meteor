@@ -10,8 +10,10 @@ Template.login.events({
 		try{
 			var seatoursUser = SeatoursUsers.findOne({username : user.username, authKey : user.authKey});
 			localStorage.userId = seatoursUser._id;
+
 			if(seatoursUser.authLvl == 'admin'){
-				Meteor.Router.to('/adm');
+				Session.set('showOverview', true);
+				Session.set('userId', seatoursUser._id);
 			}else{
 				Meteor.Router.to('/guest');
 			}
@@ -25,9 +27,3 @@ Template.login.events({
 		Meteor.Router.to('/createAccount');
 	}
 })
-
-Template.login.rendered = function(){
-	checkauth();
-}
-
-
