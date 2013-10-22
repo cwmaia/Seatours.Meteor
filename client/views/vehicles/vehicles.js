@@ -15,4 +15,3 @@ Template.vehicles.events({
 	},
 
 });
-

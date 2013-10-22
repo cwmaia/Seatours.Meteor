@@ -1,11 +1,18 @@
 Template.mainMenu.events({
 	'click .logout' : function(){
 		localStorage.removeItem('userId');
+		Session.set('userId', null);
 		Meteor.Router.to('/');
 	}
 })
 
 Template.mainMenu.rendered = function(){
+	if(Session.get('showOverview')){
+		Session.set('showOverview', false);
+		Meteor.Router.to('/overview');
+	}
+
+
 	checkauth();
 	appendImage();
 	handle_side_menu();
@@ -16,3 +23,9 @@ Template.mainMenu.rendered = function(){
 }
 
 
+Template.mainMenu.events({
+	'click ul.nav li' : function(event){
+		$('li.active').toggleClass('active');
+		event.target.parentNode.className += "active";
+	}
+});

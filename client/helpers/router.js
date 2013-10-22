@@ -1,6 +1,6 @@
 Meteor.Router.add({
-	'/' : 'login',
 	'/login'  : 'login',
+	'/overview' : 'overview',
 	'/guest' : 'userMenu',
 	'/adm'   : 'mainMenu',
 	'/createBook' : 'bookus',
