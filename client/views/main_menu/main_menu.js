@@ -12,6 +12,8 @@ Template.mainMenu.rendered = function(){
 		Meteor.Router.to('/overview');
 	}
 
+	$("#" + location.pathname.replace('/', '')).addClass('active');
+
 
 	checkauth();
 	appendImage();
@@ -24,8 +26,5 @@ Template.mainMenu.rendered = function(){
 
 
 Template.mainMenu.events({
-	'click ul.nav li' : function(event){
-		$('li.active').toggleClass('active');
-		event.target.parentNode.className += "active";
-	}
+	
 });
