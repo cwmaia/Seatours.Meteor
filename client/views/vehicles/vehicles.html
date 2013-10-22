@@ -1,4 +1,9 @@
 <template name="vehicles">
+	<div class="page-header">
+		<h1>
+			Vehicles
+		</h1>
+	</div><!-- /.page-header -->
 
 	<form>
 		<label>Brandname:</label>
@@ -14,14 +19,14 @@
     			{{> category}}	
     		{{/each}}
 		</select>
-
+		<label>Size: </label> 
 		<select name="size" id="size">
 			{{#each sizes}}
     			{{> sizes}}	
     		{{/each}}
-		</select>		
+		</select>
+		<input type="submit" value="Save Vehicle" class="btn btn-success">		
 	</form>
-
 </template>
 
 <template name="category">

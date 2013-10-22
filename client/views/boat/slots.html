@@ -1,0 +1,34 @@
+<template name="boats">
+	<form>
+		<label>Boat Name: </label>
+		<input type ="text" name="name" id="boat-name">
+		
+		<label>Slots: </label>
+		<input type="text" placeholder="width">
+		<input type="text" placeholder="heigth">
+		<button class='btn btn-success'>Add Slot</button>
+
+		<label>List of Slots: </label>
+		<table>
+			<thead>
+				<th>Number</th>
+				<th>Heigth</th>
+				<th>Width</th>
+				<th>Split</th>
+			</thead>
+			<tbody>
+				{{#each slots}}
+					{{> createdSlot}}
+				{{/each}}	
+			</tbody>
+		</table>
+		<input type="submit" class="btn btn-info" value="Save Boat">
+	</form>
+</template>
+
+<template name="createdSlot">
+	<td>{{_id}}</td>
+	<td>{{heigth}}</td>
+	<td>{{width}}</td>
+	<td>{{split}}</td>
+</template>
