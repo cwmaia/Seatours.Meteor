@@ -1,11 +1,3 @@
-checkauth = function(){
-
-			console.log(SeatoursUsers.findOne());
-
-
-	
-}
-
 appendImage = function(){
 	$('#id-logo').html("");
 	$('#id-logo').html("<img src='/images/logo-en.png'>");
