@@ -8,7 +8,7 @@ Template.login.events({
 		}
 
 		try{
-			var seatoursUser = Users.findOne({username : user.username, authKey : user.authKey});
+			var seatoursUser = SeatoursUsers.findOne({username : user.username, authKey : user.authKey});
 			localStorage.userId = seatoursUser._id;
 			if(seatoursUser.authLvl == 'admin'){
 				Meteor.Router.to('/adm');

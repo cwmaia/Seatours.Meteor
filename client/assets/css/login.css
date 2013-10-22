@@ -44,7 +44,7 @@ html{
 
 .login-button{
 	float: right !important;
-	width: 36% !important;
+	width: 100% !important;
 }
 
 @media only screen and (max-width: 920px){

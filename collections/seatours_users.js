@@ -1,1 +1,1 @@
-Users = new Meteor.Collection('seatours_users');
+SeatoursUsers = new Meteor.Collection('seatours_users');

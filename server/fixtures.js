@@ -23,20 +23,20 @@ if(Products.find().count() == 0){
 }
 
 //For Tests
-if(Users.find().count() == 0){
-	Users.insert({
+if(SeatoursUsers.find().count() == 0){
+	SeatoursUsers.insert({
 		"username" : "cwmaia",
 		"authKey" : "1234",
 		"authLvl" : "admin"
 	});
 
-	Users.insert({
+	SeatoursUsers.insert({
 		"username" : "gudrun",
 		"authKey" : "1234",
 		"authLvl" : "admin"
 	});
 
-	Users.insert({
+	SeatoursUsers.insert({
 		"username" : "test",
 		"authKey" : "1234",
 		"authLvl" : "guest"

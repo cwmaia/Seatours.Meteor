@@ -635,6 +635,11 @@ a.img-round:hover {
   -o-backface-visibility: hidden;
   backface-visibility: hidden;
 }
+
+.logo-seatours {
+  float: left;
+
+}
 .header .logo {
   display: block;
   width: 180px;

@@ -3,7 +3,7 @@ Meteor.publish('products', function() {
 });
 
 Meteor.publish('users', function() { 
-	return Users.find();
+	return SeatoursUsers.find();
 });
 
 Meteor.publish('books', function() { 

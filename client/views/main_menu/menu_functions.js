@@ -1,19 +1,9 @@
 checkauth = function(){
-	var authLvl = '';	
-	try{
-		if(localStorage.userId){
-			var authLvl = Users.findOne({_id: localStorage.userId}).authLvl;
-			if(authLvl == 'admin'){
-				Meteor.Router.to('/adm');
-			}else{
-				Meteor.Router.to('/guest');
-			}
-		}else{
-			Meteor.Router.to('/login');
-		}
-	}catch(err){
-		
-	}
+
+			console.log(SeatoursUsers.findOne());
+
+
+	
 }
 
 appendImage = function(){
