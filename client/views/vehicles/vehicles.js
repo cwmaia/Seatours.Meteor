@@ -9,9 +9,27 @@ Template.vehicles.sizes = function() {
 }
 
 Template.vehicles.events({
-	'change #categories' : function(event, element){
+	'change #categories' : function(event){
 		var id = event.target.selectedOptions[0].id;
 		Session.set('categoryId', id);
 	},
 
+	'submit form' : function(event) {
+		event.preventDefault();
+		var form = event.target,
+		
+		v = {
+			'brandname'	: $('#brandname').val(),
+			'model'		: $('#model').val(),
+			'category'	: {
+				'category'	: $('#categories').val(),
+				'size'		: $('#size').val()
+			}
+		};
+
+		Vehicles.insert(v);
+		throwSuccess("Vehicle Created");
+
+		form.reset();
+	}
 });
