@@ -53,79 +53,79 @@ if(VehiclesCategory.find().count() == 0){
 	VehiclesCategory.insert({
 		"category" 	: "Normal car with cart",
 		"size"		: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-		"basePrice" : ''
+		"basePrice" : 7815
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Small car",
 		"size"		: [4.5],
-		"basePrice" : ''
+		"basePrice" : 4080
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Motorcycle",
 		"size"		: [2.5],
-		"basePrice" : ''
+		"basePrice" : 2442
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Lorry (price incl. VAT)",
 		"size"		: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
-		"basePrice" : ''
+		"basePrice" : 41074
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Normal car with trailler/caravan",
 		"size"		: [10, 11, 12, 13, 14, 15],
-		"basePrice" : ''
+		"basePrice" : 100030
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Van (price incl. VAT)",
 		"size"		: [5, 6, 7 ,8 , 9, 10, 11],
-		"basePrice" : ''
+		"basePrice" : 17712
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Cart (without car)",
 		"size"		: [2, 3, 4, 5, 6, 7 ,8 , 9],
-		"basePrice" : ''
+		"basePrice" : 3735
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Large Car / Motor-Home",
 		"size"		: [6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15],
-		"basePrice" : ''
+		"basePrice" : 7575
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Bus",
 		"size"		: [6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-		"basePrice" : ''
+		"basePrice" : 13080
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Large Car with cart",
 		"size"		: [11, 12, 13, 14, 15, 16],
-		"basePrice" : ''
+		"basePrice" : 11310
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Jeep",
 		"size"		: [4, 5, 6, 7],
-		"basePrice" : ''
+		"basePrice" : 4080
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Normal Car / Motor-Home",
 		"size"		: [5, 6, 7],
-		"basePrice" : ''
+		"basePrice" : 4080
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Large Car with trailler / caravan",
 		"size"		: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
-		"basePrice" : ''
+		"basePrice" : 13525
 	});
 }
 

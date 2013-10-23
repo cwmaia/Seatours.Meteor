@@ -15,7 +15,8 @@ Meteor.Router.add({
 	'/vehicles' 	: 'vehicles',
 	'/boats' 		: 'boats',
 	'/trips' 		: 'trips',
-	'/trips/:_id'	: 'editTrips'
+	'/trips/:_id'	: 'editTrips',
+	'/bookOperator' : 'bookOperator'
 });
 
 Meteor.Router.filters({
@@ -28,7 +29,9 @@ Meteor.Router.filters({
 	'checkAuth'	: function(page) {
 		if(location.href != '' && Session.get('userId') == null)
 			Meteor.Router.to("/login");
+		return page;
 	}
 })
 
 Meteor.Router.filter('clearErrors');
+Meteor.Router.filter('checkAuth');
