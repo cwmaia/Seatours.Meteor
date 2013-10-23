@@ -1,0 +1,22 @@
+<template name="trips">
+	<ul id="trips">
+		{{#each trips}}
+			{{> trip}}	
+		{{/each}}
+	</ul>
+</template>
+
+<template name="trip">
+	<li id="{{_id}}">
+		<img src="/images/{{name}}.jpg">
+
+		<h3>{{name}}</h3>
+	</li>
+</template>
+
+
+
+
+<template name="editTrip">
+	
+</template>

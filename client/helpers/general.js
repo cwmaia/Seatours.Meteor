@@ -1,6 +1,7 @@
 $(function(){
-	$('.btn-action').click(function(){
+	$('.btn').click(function(){
 		clearErrors();
+		clearSuccess();
 	})
 	
 })

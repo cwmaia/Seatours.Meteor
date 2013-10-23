@@ -2,7 +2,7 @@ Template.mainMenu.events({
 	'click .logout' : function(){
 		localStorage.removeItem('userId');
 		Session.set('userId', null);
-		Meteor.Router.to('/');
+		// Meteor.Router.to('/');
 	}
 })
 
