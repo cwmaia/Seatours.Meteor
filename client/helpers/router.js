@@ -5,7 +5,7 @@ Meteor.Router.add({
 	'/adm'   : 'mainMenu',
 	'/createBook' : 'bookus',
 	'/createAccount' : 'createAccount',
-	'/book' : 'book',
+	'/bookOperator' : 'bookOperator',
 	'/bookReport' : 'bookReport',
 	'/vehicles' : 'vehicles',
 	'/boats' : 'boats'

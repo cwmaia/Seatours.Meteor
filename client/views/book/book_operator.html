@@ -1,0 +1,65 @@
+<template name='bookOperator'>
+	<div class="page-header">
+		<h1>
+			Passager
+		</h1>
+	</div><!-- /.page-header -->
+
+    <div class="control-group">
+    	{{#each passagerCategories}}
+    		{{> passagerCategory}}
+    	{{/each}}
+    </div>
+
+    <div class="control-group">
+		{{> bookingVehicles}}
+		<table>
+			<thead>
+				<th>Brandname</th>
+				<th>Model</th>
+				<th>Category</th>
+				<th>Size</th>
+				<th>Price</th>
+			</thead>
+			<tbody>
+				{{#each}}
+					{{> vehiclesAdd}}
+				{{/each}}
+			</tbody>
+		</table>
+    </div>
+
+    <label><b>Total</b></label>
+    <div class="controls">
+        <input type="text" name="totalISK" id="totalISK" readonly value="0 ISK">
+    </div>
+</template>
+
+<template name="passagerCategory">
+	<label>{{passagerCategory}} - {{passagerCategoryPrice}} ISK</label>
+	<input type="number" min="0">
+</template>
+
+<template name="bookingVehicles">
+	<label>Vehicle</label>
+	<input list="listvehicle">
+	<datalist id="listvehicle">
+		{{#each vehicles}}
+			{{> listVehicles}}
+		{{/each}}
+	</datalist>		
+</template>
+
+<template name="listVehicles">
+	<option value="{{brandname}} - {{model}}"/>
+</template>
+
+<template name="vehiclesAdd">
+	<tr>
+		<td>{{brandname}}</td>
+		<td>{{model}}</td>
+		<td>{{category.category}}</td>
+		<td>{{category.size}}</td>
+		<td>{{basePrice}}</td>
+	</tr>
+</template>
