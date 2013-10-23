@@ -6,7 +6,7 @@ Template.userMenu.events({
 })
 
 Template.userMenu.rendered = function(){
-	//checkauth();
+
 	appendImage();
 	handle_side_menu();
 	enable_search_ahead();	

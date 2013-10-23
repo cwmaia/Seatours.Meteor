@@ -7,24 +7,32 @@
 
 	<form>
 		<label>Brandname:</label>
-		<input type="text" name="brandname" id="brandname" placeholder="BRANDNAME">
+		<input type="text" name="brandname" id="brandname" placeholder="Brandname">
 
 		<label>Model:</label>
-		<input type="text" name="model" id="model" placeholder="MODEL">
+		<input type="text" name="model" id="model" placeholder="Model">
 
-		<label>Category:</label>
-		<select name="categories" id="categories">
-			<option value="">Select..</option>
-			{{#each categories}}
-    			{{> category}}	
-    		{{/each}}
-		</select>
-		<label>Size: </label> 
-		<select name="size" id="size">
-			{{#each sizes}}
-    			{{> sizes}}	
-    		{{/each}}
-		</select>
+		<div class="line-2">
+			<div>
+				<label>Category:</label>
+				<select name="categories" id="categories">
+					<option value="">Select..</option>
+					{{#each categories}}
+		    			{{> category}}	
+		    		{{/each}}
+				</select>
+			</div>
+
+			<div>
+				<label>Size: </label> 
+				<select name="size" id="size">
+					{{#each sizes}}
+		    			{{> sizes}}	
+		    		{{/each}}
+				</select>
+			</div>
+		</div>
+
 		<input type="submit" value="Save Vehicle" class="btn btn-success">		
 	</form>
 </template>
