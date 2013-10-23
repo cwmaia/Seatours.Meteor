@@ -13,3 +13,7 @@ Meteor.publish('books', function() {
 Meteor.publish('vehicles_category', function() { 
 	return VehiclesCategory.find();
 });
+
+Meteor.publish('boats', function() {
+	return Boats.find();
+});

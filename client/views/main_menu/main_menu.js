@@ -15,7 +15,7 @@ Template.mainMenu.rendered = function(){
 	$("#" + location.pathname.replace('/', '')).addClass('active');
 
 
-	checkauth();
+	//checkauth();
 	appendImage();
 	handle_side_menu();
 	enable_search_ahead();	
