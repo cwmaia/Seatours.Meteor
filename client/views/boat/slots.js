@@ -1,5 +1,5 @@
 slots = [];
-
+cont = 0;
 Template.boats.helpers({
 	slots : function(){
 		return Session.get("Slots");
@@ -17,7 +17,8 @@ Template.boats.events({
 		}else{
 			
 			var createdSlot = {
-				"number" : slots.length + 1,
+				"number" : ++cont,
+				"slot_name" : $("#slotName").val(),
 				"height" : $("#height-slot").val(), 
 				"width" : $("#width-slot").val(),
 				"split" : $("#split").is(":checked") ? "Yes" : "No"
@@ -43,4 +44,16 @@ Template.boats.events({
 
 	}
 
+})
+
+Template.createdSlot.events({
+	"click .remove_slot" : function(){
+		for (var i = slots.length - 1; i >= 0; i--) {
+			if(slots[i].number == this.number){
+				slots.splice(i, 1);
+			}
+		}
+
+		Session.set("Slots", slots);
+	}
 })
