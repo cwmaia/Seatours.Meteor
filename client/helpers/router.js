@@ -15,7 +15,12 @@ Meteor.Router.add({
 	'/vehicles' 	: 'vehicles',
 	'/boats' 		: 'boats',
 	'/trips' 		: 'trips',
-	'/trips/:_id'	: 'editTrips'
+	'/trips/:_id'	: {
+		to 	: 'editTrip',
+		and : function(id) {
+			Session.set('tripId', id);
+		}
+	}
 });
 
 Meteor.Router.filters({

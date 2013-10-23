@@ -1,13 +1,23 @@
 Template.trips.helpers({
 	trips : function(){
-		console.log(Products.find());
 		return Products.find();
 	}
 });
 
 Template.trips.events({
 	'click li' :function(event) {
-		console.log(event.currentTarget.id);
-		// Meteor.Router.to("/" + event.currentTarget.id);
+		Meteor.Router.to("/trips/" + event.currentTarget.id);
+	}
+});
+
+
+/* 
+	Edit Trip
+*/
+
+Template.editTrip.helpers({
+	trip : function(){
+		console.log(Products.findOne(Session.get('tripId')))
+		return Products.findOne(Session.get('tripId'));
 	}
 });
