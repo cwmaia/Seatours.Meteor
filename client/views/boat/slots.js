@@ -1,5 +1,16 @@
+
+////////////////////////////////////////////////////
+//Variables
 slots = [];
 cont = 0;
+
+////////////////////////////////////////////////////
+//Template Boats
+
+Template.boats.redered = function(){
+
+}
+
 Template.boats.helpers({
 	slots : function(){
 		return Session.get("Slots");
@@ -45,6 +56,10 @@ Template.boats.events({
 	}
 
 })
+
+
+////////////////////////////////////////////////////
+//Template Created Slot
 
 Template.createdSlot.events({
 	"click .remove_slot" : function(){
