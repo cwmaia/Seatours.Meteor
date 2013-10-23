@@ -5,15 +5,17 @@ Meteor.Router.add({
 		
 		return page;
 	},
-	'/overview' : 'overview',
-	'/guest' : 'userMenu',
-	'/adm'   : 'mainMenu',
-	'/createBook' : 'bookus',
-	'/createAccount' : 'createAccount',
-	'/book' : 'book',
-	'/bookReport' : 'bookReport',
-	'/vehicles' : 'vehicles',
-	'/boats' : 'boats'
+	'/overview' 	: 'overview',
+	'/guest' 		: 'userMenu',
+	'/adm'   		: 'mainMenu',
+	'/createBook' 	: 'bookus',
+	'/createAccount': 'createAccount',
+	'/book' 		: 'book',
+	'/bookReport' 	: 'bookReport',
+	'/vehicles' 	: 'vehicles',
+	'/boats' 		: 'boats',
+	'/trips' 		: 'trips',
+	'/trips/:_id'	: 'editTrips'
 });
 
 Meteor.Router.filters({

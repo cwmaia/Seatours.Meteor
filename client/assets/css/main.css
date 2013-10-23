@@ -1,0 +1,77 @@
+
+ul{
+	list-style: none !important;
+	margin: 0;
+	padding: 0;
+}
+
+form{
+	float: left;
+	width: 100%;
+}
+
+form input[type=text],
+form label{
+	display: block;
+}
+
+select{
+	width: auto !important;
+}
+
+input[type=submit]{
+	display: block;
+}
+
+.line-2{
+	float: left;
+	width: 100%;
+}
+
+	.line-2 > div{
+		float: left;
+	}
+
+	.line-2 > div:first-child{
+		margin-right: 1%;
+	}
+
+/*
+	Trips
+*/
+#trips ul{
+	float: left;
+	width: 100%;
+}
+
+	#trips li{
+		width: 45%;
+		min-height: 160px;
+
+		padding: 1.5%;
+		padding-bottom: 0.7%;
+		cursor: pointer;
+
+		-webkit-transition: box-shadow 0.3s; /* Chrome */
+		-moz-transition: box-shadow 0.3s; /* Firefox 4 */
+		-ms-transition: box-shadow 0.3s; /* IE */
+		-o-transition: box-shadow 0.3s; /* Opera */
+		transition: box-shadow 0.3s;
+	}
+
+	#trips li:hover{
+		box-shadow: 0 0 12px 3px #D0D1D1; /* #d14836 #668BE6;*/
+	}
+
+	#trips li,
+	#trips li > *{
+		float: left;
+	}
+
+	#trips img{
+		width: 40%;
+	}
+
+	#trips h3{
+		padding: 9% 0 0 7%;
+	}
