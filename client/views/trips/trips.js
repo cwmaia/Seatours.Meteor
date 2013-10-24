@@ -1,3 +1,13 @@
+Template.editTrip.rendered = function() {
+	console.log('tosco');
+
+	// $('.bootstrap-timepicker').timepicker({
+	// 	minuteStep: 1,
+	// 	showSeconds: true,
+	// 	showMeridian: false
+	// });
+}
+
 Template.trips.helpers({
 	trips : function(){
 		return Products.find();
@@ -17,7 +27,12 @@ Template.trips.events({
 
 Template.editTrip.helpers({
 	trip : function(){
-		console.log(Products.findOne(Session.get('tripId')))
 		return Products.findOne(Session.get('tripId'));
+	}
+});
+
+Template.editTrip.events({
+	'click .remove' :function(event) {
+		console.log(trip);
 	}
 });

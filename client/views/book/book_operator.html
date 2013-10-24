@@ -13,6 +13,7 @@
 
     <div class="control-group">
 		{{> bookingVehicles}}
+		<button class="btn btn-small btn-info addVehicle">Add Vehicle</button>
 		<table>
 			<thead>
 				<th>Brandname</th>
@@ -22,7 +23,7 @@
 				<th>Price</th>
 			</thead>
 			<tbody>
-				{{#each}}
+				{{#each vehicles}}
 					{{> vehiclesAdd}}
 				{{/each}}
 			</tbody>
@@ -42,16 +43,16 @@
 
 <template name="bookingVehicles">
 	<label>Vehicle</label>
-	<input list="listvehicle">
-	<datalist id="listvehicle">
+	<select id="listvehicle">
+		<option>Select...</option>
 		{{#each vehicles}}
 			{{> listVehicles}}
 		{{/each}}
-	</datalist>		
+	</select>		
 </template>
 
 <template name="listVehicles">
-	<option value="{{brandname}} - {{model}}"/>
+	<option id="{{_id}}">{{brandname}} - {{model}}</option>
 </template>
 
 <template name="vehiclesAdd">
