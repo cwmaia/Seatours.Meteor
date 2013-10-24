@@ -3,38 +3,39 @@ if(Products.find().count() == 0){
 		"name" 			: "Baldy Ferry",
 		"description" 	: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tempus neque vitae leo accumsan, ac rutrum urna bibendum. Integer vitae purus ac diam mattis vehicula. Duis tincidunt ultricies felis. In nec congue ligula, ut fermentum nulla. Aliquam elit quam, ultricies ac orci non, consectetur malesuada augue. Sed feugiat nisi ac accumsan vestibulum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam elementum nisi vel turpis dictum, quis accumsan augue porta.",
 		"trips"			: [{
-			"from" 	: "Natal",
-			"to"	: "Noronha",
-			"hour"  : "13:00"
+			"from" 	: "Stykkishólmur",
+			"to"	: "Brjánslækur",
+			"hour"  : "15:00"
 		},
 		{
-			"from" 	: "Noronha",
+			"from" 	: "Brjánslækur",
 			"to"	: "Natal",
 			"hour"  : "18:00"		
 		}],
 		"prices" 	: [
-			{"name" : "adult",
-				"value" : 4080
+			{
+				"price" : "adult",
+				"unit" : 4080
 			},
 			{
-				"name" : "child",
-				"value": 2040
+				"price" : "child",
+				"unit": 2040
 			},
 			{
-				"name"  : "infant",
-				"value"	: 0
+				"price"  : "infant",
+				"unit"	: 0
 			},
 			{
-				"name"  : "senior",
-				"value" : 3264
+				"price"  : "senior",
+				"unit" : 3264
 			},
 			{
-				"name"  : "school",
-				"value" : 2040
+				"price"  : "school",
+				"unit" : 2040
 			},
 			{
-				"name" : "guides",
-				"value": 0
+				"price" : "guides",
+				"unit": 0
 			}
 		],
 		"activated" 	: true
@@ -54,28 +55,29 @@ if(Products.find().count() == 0){
 			"hour"  : "20:00"
 		}],
 		"prices" 	: [
-			{"name" : "adult",
-				"value" : 4080
+			{
+				"price" : "adult",
+				"unit" : 4080
 			},
 			{
-				"name" : "child",
-				"value": 2040
+				"price" : "child",
+				"unit": 2040
 			},
 			{
-				"name"  : "infant",
-				"value"	: 0
+				"price"  : "infant",
+				"unit"	: 0
 			},
 			{
-				"name"  : "senior",
-				"value" : 3264
+				"price"  : "senior",
+				"unit" : 3264
 			},
 			{
-				"name"  : "school",
-				"value" : 2040
+				"price"  : "school",
+				"unit" : 2040
 			},
 			{
-				"name" : "guides",
-				"value": 0
+				"price" : "guides",
+				"unit": 0
 			}
 		],
 		"activated" 	: true
@@ -96,28 +98,29 @@ if(Products.find().count() == 0){
 			"hour"  : "19:00"
 		}],
 		"prices" 	: [
-			{"name" : "adult",
-				"value" : 4080
+			{
+				"price" : "adult",
+				"unit" : 4080
 			},
 			{
-				"name" : "child",
-				"value": 2040
+				"price" : "child",
+				"unit": 2040
 			},
 			{
-				"name"  : "infant",
-				"value"	: 0
+				"price"  : "infant",
+				"unit"	: 0
 			},
 			{
-				"name"  : "senior",
-				"value" : 3264
+				"price"  : "senior",
+				"unit" : 3264
 			},
 			{
-				"name"  : "school",
-				"value" : 2040
+				"price"  : "school",
+				"unit" : 2040
 			},
 			{
-				"name" : "guides",
-				"value": 0
+				"price" : "guides",
+				"unit": 0
 			}
 		],
 		"activated" 	: true

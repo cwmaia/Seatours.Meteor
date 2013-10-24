@@ -1,3 +1,7 @@
+table{
+	margin-top: 1%;
+}
+
 ul{
 	list-style: none !important;
 	margin: 0;
@@ -76,4 +80,8 @@ input[type=email]{
 
 	#trips h3{
 		padding: 9% 0 0 7%;
+	}
+
+	#tablePrice td{
+		text-transform: capitalize;
 	}
