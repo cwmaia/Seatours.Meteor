@@ -12,6 +12,21 @@
 		<label>Model:</label>
 		<input type="text" name="model" id="model" placeholder="Model">
 
+		{{> categoryVehicle}}
+
+		<input type="submit" value="Save Vehicle" class="btn btn-small btn-success">		
+	</form>
+</template>
+
+<template name="category">
+	<option value="{{category}}" id="{{_id}}">{{category}}</option>
+</template>
+
+<template name="sizes">
+	<option value="{{this}}">{{this}}m</option>
+</template>
+
+<template name="categoryVehicle">
 		<div class="line-2">
 			<div>
 				<label>Category:</label>
@@ -24,23 +39,13 @@
 			</div>
 
 			<div>
-				<label>Size: </label> 
+				<label>Size: </label>
 				<select name="size" id="size">
+					<option value=""></option>
 					{{#each sizes}}
 		    			{{> sizes}}	
 		    		{{/each}}
 				</select>
 			</div>
 		</div>
-
-		<input type="submit" value="Save Vehicle" class="btn btn-small btn-success">		
-	</form>
-</template>
-
-<template name="category">
-	<option value="{{category}}" id="{{_id}}">{{category}}</option>
-</template>
-
-<template name="sizes">
-	<option value="{{this}}">{{this}}m</option>
 </template>

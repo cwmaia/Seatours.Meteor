@@ -15,7 +15,7 @@ Meteor.Router.add({
 	'/vehicles' 	: 'vehicles',
 	'/boats' 		: 'boats',
 	'/trips' 		: 'trips',
-	'/bookOperator' : 'bookOperator'
+	'/bookOperator' : 'bookOperator',
 	'/trips/:_id'	: {
 		to 	: 'editTrip',
 		and : function(id) {
