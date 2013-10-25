@@ -23,6 +23,9 @@ Template.createBook.productName = function(){
 Template.createBook.helpers({
 	"prices" : function(){
 		return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).prices : [] ;
+	},
+	'destination' : function(){
+		return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).trips : [] ;
 	}
 })
 

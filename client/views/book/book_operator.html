@@ -22,6 +22,12 @@
 			Booking - {{productName}}
 		</h1>
 	</div><!-- /.page-header -->
+	<label>Destination</label>
+		<select>
+			{{#each destination}}
+				{{> destination}}
+			{{/each}}
+		</select>
 	<div class="line-2">
     	<div class="control-group">
     		{{#each prices}}
@@ -177,6 +183,10 @@
 
 <template name="categoryBook">
 	<option value="{{category}}" id="{{_id}}">{{category}}</option>
+</template>
+
+<template name="destination">
+	<option>{{from}} - {{to}} - {{hour}}</option>
 </template>
 
 <template name="sizesBook">
