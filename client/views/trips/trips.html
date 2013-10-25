@@ -18,14 +18,32 @@
 		</h1>
 	</div>
 
+	<form id="productForm" novalidate>
 
-	<label>Product name:</label>
-	<input type="text" name="name" id="name" value="{{product.name}}" placeholder="Name">
+		<label>Product name:</label>
+		<input type="text" name="name" id="name" value="{{product.name}}" placeholder="Name" required>
+
+		<label>Boat:</label>
+		<select name="boat" id="boat" required>
+			<option value="">Select..</option>
+
+			{{#each boats}}
+				<option value="{{_id}}" {{#if _id product._id}} selected="true" {{/if}}>{{name}}</option>
+			{{/each}}
+		</select>
+
+		<input type='submit' id="saveProduct" class='btn btn-success btn-small' value="Save">
+
+	</form>
+
 
 	<fieldset id="tripField">
-		<legend>Trips<span>&nbsp;&nbsp;</span><i class='icon-anchor'/></legend>
+		<legend>Trips
+			<span>&nbsp;&nbsp;</span>
+			<i class='icon-anchor'/>
+		</legend>
 
-		<form id="tripForm">
+		<form id="tripForm" novalidate>
 			<div class="line-2">
 				<div>
 					<label>From:</label>
@@ -38,8 +56,15 @@
 				</div>
 				
 				<div>
-					<label>Hour:</label>
-					<input type="text" name="hour" id="hour" placeholder="Hour" required>
+					<div class="input-append bootstrap-timepicker">
+						<label>Hour:</label>
+						<input type="text" name="hour" id="hour" class="input-small" />
+						<span class="add-on">
+							<i class="icon-time"></i>
+						</span>
+					</div>
+					<!-- <label>Hour:</label>
+					<input type="time" name="hour" id="hour" placeholder="Hour" required> -->
 				</div>
 			</div>
 		
@@ -70,13 +95,12 @@
 				{{/each}}	
 			</tbody>
 		</table>
-
 	</fieldset>
 
 	<fieldset id="priceField">
 		<legend>Prices<span>&nbsp;&nbsp;</span><i class='icon-money'/></legend>
 
-		<form id="priceForm">
+		<form id="priceForm" novalidate>
 			<div class="line-2">
 					<div>
 						<label>Price:</label>
@@ -108,8 +132,6 @@
 			</tbody>
 		</table>
 	</fieldset>
-
-	<input type='submit' class='btn btn-success btn-small' value="Save">
 
 </template>
 
