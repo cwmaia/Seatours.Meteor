@@ -16,6 +16,12 @@ Meteor.Router.add({
 	'/boats' 		: 'boats',
 	'/trips' 		: 'trips',
 	'/bookOperator' : 'bookOperator',
+	'/bookOperator/:_id' : {
+		to : 'createBook',
+		and: function(id){
+			Session.set('productId', id);
+		}
+	},
 	'/trips/:_id'	: {
 		to 	: 'editTrip',
 		and : function(id) {

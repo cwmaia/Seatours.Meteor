@@ -1,5 +1,10 @@
 <template name="trips">
-	<ul id="trips">
+	<div class="page-header">
+		<h1>
+			Edit Products/Trips & Prices
+		</h1>
+	</div><!-- /.page-header -->
+	<ul class="listing" id="trips">
 		{{#each trips}}
 			<li id="{{_id}}">
 				<img src="/images/{{name}}.jpg">

@@ -1,0 +1,1 @@
+LoggedUsers = new Meteor.Collection("logged_users");

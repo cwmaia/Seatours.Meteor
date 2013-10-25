@@ -1,4 +1,59 @@
-total = 0;
+///////////////////////////////////////////
+//Template Book Operator
+Template.bookOperator.rendered = function() {
+	$('.calendar').datepicker({
+		onSelect: function() {
+			var date = $(this).datepicker('getDate');
+		
+			Session.set('bookingDate', date);
+			Meteor.Router.to("/bookOperator/" + $(this).parents('li')[0].id);
+		}
+	});
+}
+
+Template.bookOperator.helpers({
+	'product' : function(){
+		return Products.find();
+	}
+})
+
+Template.bookOperator.events({
+	'click li' :function(event) {
+		
+	}
+})
+
+
+///////////////////////////////////////////
+//Template Create Book
+Template.createBook.productName = function(){
+	console.log(Session.get('bookingDate'));
+	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).name : "" ;
+}
+
+Template.createBook.helpers({
+	"prices" : function(){
+		return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).prices : [] ;
+	}
+})
+
+Template.productPrices.events({
+	"change input" : function(event){
+		var totalParcial = event.currentTarget.value * this.unit;
+		$('#'+this.price).val(totalParcial);
+
+		var total = 0;
+		$('.calcTotal').filter(function(){
+			if($(this).val() != "")
+			total += parseInt($(this).val());
+		})
+
+		$('#totalISK').val(total);
+	}
+})
+
+///////////////////////////////////////////
+//Template Booking Vehicles
 
 Template.bookingVehicles.helpers({
 	"vehicles" : function(){
@@ -6,20 +61,10 @@ Template.bookingVehicles.helpers({
 	}
 })
 
-Template.bookOperator.helpers({
-	"prices" : function(){
-		return Products.findOne({_id: Session.get("productId")}).prices;
-	}
-})
 
 Template.bookingVehicles.rendered = function(){
 	$("#listvehicles").chosen();
 }
-
-Template.bookOperator.total = function(){
-	return Session.get("totalCar");
-}
-
 
 Template.bookingVehicles.events({
 	'change #listvehicle' : function(event){
@@ -32,7 +77,10 @@ Template.bookingVehicles.events({
 		$("#size option:first").text(category.size+"m").val(category.size).attr("selected", true);
 		$("#categories").attr("disabled", true);
 		$("#size").attr("disabled", true);
-		Session.set("totalCar", category.basePrice);
+	},
+
+	'change #categories' : function(){
+		
 	}
 })
 
