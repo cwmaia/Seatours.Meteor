@@ -2,7 +2,7 @@ Errors = new Meteor.Collection(null);
 Success = new Meteor.Collection(null);
 
 throwError = function(message) { 
-	Errors.insert({message: message, seen: 'f'})
+	showMessage('error', message);
 }
 
 clearErrors = function() { 
@@ -10,14 +10,20 @@ clearErrors = function() {
 }
 
 throwSuccess = function(message) {
-	if(!Success.findOne())
-		Success.insert({message: message, seen: 'f'})
-	else
-		Success.update({_id: Success.findOne()._id, message: message, seen: 'f'})
+	showMessage('success', message);
 }
 
 clearSuccess = function() { 
 	Success.remove({seen: 't'});
 }
 
-
+function showMessage (type, message) {
+	$.gritter.add({
+		// (string | mandatory) the heading of the notification
+		title: type.substring(0, 1).toUpperCase() + type.substring(1, type.length),
+		// (string | mandatory) the text inside the notification
+		text: message,
+		class_name: 'gritter-' + type,
+		time: '1500'
+	});
+}

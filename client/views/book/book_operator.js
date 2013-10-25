@@ -1,5 +1,15 @@
 ///////////////////////////////////////////
 //Template Book Operator
+Template.bookOperator.rendered = function() {
+	$('.calendar').datepicker({
+		onSelect: function() {
+			var date = $(this).datepicker('getDate');
+		
+			Session.set('bookingDate', date);
+			Meteor.Router.to("/bookOperator/" + $(this).parents('li')[0].id);
+		}
+	});
+}
 
 Template.bookOperator.helpers({
 	'product' : function(){
@@ -9,7 +19,7 @@ Template.bookOperator.helpers({
 
 Template.bookOperator.events({
 	'click li' :function(event) {
-		Meteor.Router.to("/bookOperator/" + event.currentTarget.id);
+		
 	}
 })
 
@@ -17,6 +27,7 @@ Template.bookOperator.events({
 ///////////////////////////////////////////
 //Template Create Book
 Template.createBook.productName = function(){
+	console.log(Session.get('bookingDate'));
 	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).name : "" ;
 }
 

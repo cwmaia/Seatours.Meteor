@@ -13,10 +13,10 @@ form{
 	width: 100%;
 }
 
-form input[type=text],
+/*form input[type=text],
 form label{
 	display: block;
-}
+}*/
 
 select{
 	width: auto !important;
@@ -30,6 +30,9 @@ label{
 	text-transform: capitalize;
 }
 
+.error{
+	color: #e9322d;
+}
 /*input[type=text],
 input[type=number],
 input[type=email]{
@@ -46,15 +49,13 @@ input[type=email]{
 		margin-right: 1%;
 	}
 
-/*
-	Trips
-*/
-#trips ul{
+
+.listing ul{
 	float: left;
 	width: 100%;
 }
 
-	#trips li{
+	.listing li{
 		width: 45%;
 		min-height: 160px;
 
@@ -69,16 +70,16 @@ input[type=email]{
 		transition: box-shadow 0.3s;
 	}
 
-	#trips li:hover{
+	.listing li:hover{
 		box-shadow: 0 0 12px 3px #D0D1D1; /* #d14836 #668BE6;*/
 	}
 
-	#trips li,
-	#trips li > *{
+	.listing li,
+	.listing li > *{
 		float: left;
 	}
 
-	#trips img{
+	.listing img{
 		width: 40%;
 	}
 
@@ -89,3 +90,20 @@ input[type=email]{
 	#tablePrice td{
 		text-transform: capitalize;
 	}
+
+/*
+
+*/
+
+#bookings h3{
+	float: none;
+}
+
+#bookings img,
+.calendarWrap{
+	float: left;
+}
+
+.calendarWrap{
+	margin-left: 2%;
+}
