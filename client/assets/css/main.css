@@ -1,3 +1,6 @@
+table{
+	margin-top: 1%;
+}
 
 ul{
 	list-style: none !important;
@@ -23,6 +26,12 @@ input[type=submit]{
 	display: block;
 }
 
+/*input[type=text],
+input[type=number],
+input[type=email]{
+	padding: 0.6%;
+}*/
+
 .line-2{
 	float: left;
 	width: 100%;
@@ -30,9 +39,6 @@ input[type=submit]{
 
 	.line-2 > div{
 		float: left;
-	}
-
-	.line-2 > div:first-child{
 		margin-right: 1%;
 	}
 
@@ -74,4 +80,8 @@ input[type=submit]{
 
 	#trips h3{
 		padding: 9% 0 0 7%;
+	}
+
+	#tablePrice td{
+		text-transform: capitalize;
 	}

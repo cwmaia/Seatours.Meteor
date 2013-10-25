@@ -3,6 +3,10 @@ Template.mainMenu.events({
 		localStorage.removeItem('userId');
 		Session.set('userId', null);
 		// Meteor.Router.to('/');
+	},
+
+	'click .nav li' : function(event) {
+		Session.set('itemMenuId', event.currentTarget.id);
 	}
 })
 
@@ -12,7 +16,8 @@ Template.mainMenu.rendered = function(){
 		Meteor.Router.to('/overview');
 	}
 
-	$("#" + location.pathname.replace('/', '')).addClass('active');
+	if(Session.get('itemMenuId'))
+		document.getElementById(Session.get('itemMenuId')).className += ' active';
 
 	appendImage();
 	handle_side_menu();
