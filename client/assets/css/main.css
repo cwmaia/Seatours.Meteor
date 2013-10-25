@@ -26,6 +26,10 @@ input[type=submit]{
 	display: block;
 }
 
+label{
+	text-transform: capitalize;
+}
+
 /*input[type=text],
 input[type=number],
 input[type=email]{

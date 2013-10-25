@@ -1,25 +1,44 @@
-<template name='bookOperator'>
+<template name="bookOperator">
 	<div class="page-header">
 		<h1>
-			Booking - {{product}}
+			Create Book
 		</h1>
 	</div><!-- /.page-header -->
+	<ul id="trips">
+		{{#each product}}
+			<li id="{{_id}}">
+				<img src="/images/{{name}}.jpg">
 
-    <div class="control-group">
-    	{{#each prices}}
-    		{{> productPrices}}
-    	{{/each}}
-    </div>
+				<h3>{{name}}</h3>
+			</li>	
+		{{/each}}
+	</ul>
+</template>
 
-    <div class="control-group">
-		{{> bookingVehicles}}
-		{{> categoryVehicle}}
-		
+
+<template name='createBook'>
+	<div class="page-header">
+		<h1>
+			Booking - {{productName}}
+		</h1>
+	</div><!-- /.page-header -->
+	<div class="line-2">
+    	<div class="control-group">
+    		{{#each prices}}
+    			{{> productPrices}}
+    		{{/each}}
+    	</div>
+	
+	    <div class="control-group">
+			{{> bookingVehicles}}
+			{{> categoryVehicle}}
+			
+	    </div>
     </div>
 
     <label><b>Total</b></label>
     <div class="controls">
-        <input type="text" name="totalISK" id="totalISK" readonly value="{{total}} ISK">
+        <input type="text" name="totalISK" id="totalISK" readonly>
     </div>
 
     <div class="control-group">
@@ -30,6 +49,7 @@
 <template name="productPrices">
 	<label>{{price}} - {{unit}} ISK</label>
 	<input type="number" min="0">
+	<input type="text" id="{{price}}" class='calcTotal' readonly>
 </template>
 
 <template name="bookingVehicles">
