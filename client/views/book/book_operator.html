@@ -6,8 +6,8 @@
 	</div><!-- /.page-header -->
 
     <div class="control-group">
-    	{{#each passagerCategories}}
-    		{{> passagerCategory}}
+    	{{#each prices}}
+    		{{> productPrices}}
     	{{/each}}
     </div>
 
@@ -27,8 +27,8 @@
     </div>
 </template>
 
-<template name="passagerCategory">
-	<label>{{passagerCategory}} - {{passagerCategoryPrice}} ISK</label>
+<template name="productPrices">
+	<label>{{price}} - {{unit}} ISK</label>
 	<input type="number" min="0">
 </template>
 
@@ -147,4 +147,6 @@
 	            </div>
 	        </div>
         </fieldset>
+        <hr/>
+        <button class="btn btn-small btn-info">Save Book</button>
 </template>

@@ -6,6 +6,12 @@ Template.bookingVehicles.helpers({
 	}
 })
 
+Template.bookOperator.helpers({
+	"prices" : function(){
+		return Products.findOne({_id: Session.get("productId")}).prices;
+	}
+})
+
 Template.bookingVehicles.rendered = function(){
 	$("#listvehicles").chosen();
 }
