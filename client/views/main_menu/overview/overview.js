@@ -1,3 +1,7 @@
+Template.overview.bookQtd = function() {
+	return Books.find().count();
+}
+
 Template.overview.rendered = function(){
 	$('.easy-pie-chart.percentage').each(function(){
 					var $box = $(this).closest('.infobox');

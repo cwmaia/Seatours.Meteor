@@ -40,13 +40,121 @@ Template.createBook.helpers({
 	}
 })
 
+///////////////////////////////////////////
+//Template Product Prices
 Template.productPrices.events({
 	"change input" : function(event){
 		var totalParcial = event.currentTarget.value * this.unit;
 
 		$('#'+this.price).val(totalParcial).text(totalParcial);
+		var totalPrice = event.currentTarget.value;
+		var totalParcial = totalPrice * this.unit;
+		$('#'+this.price).val(totalParcial);
+		$('#'+this.unit).val(this.price+"|"+this.unit+"|"+totalPrice+"|"+totalParcial);
 
 		calcTotal();
+	}
+})
+
+///////////////////////////////////////////
+//Template General Passager
+Template.generalPassagerInfo.rendered = function(){
+
+	jQuery.validator.setDefaults({
+		errorElement: 'span',
+		errorClass: 'help-inline error',
+		focusInvalid: false,
+		
+		invalidHandler: function (event, validator) { //display error alert on form submit   
+			$('.alert-error', $('.login-form')).show();
+		},
+
+		highlight: function (e) {
+			$(e).closest('.control-group').removeClass('info').addClass('error');
+		},
+
+		success: function (e) {
+			$(e).closest('.control-group').removeClass('error').addClass('info');
+			$(e).remove();
+		},
+
+		errorPlacement: function (error, element) {
+			if(element.is(':checkbox') || element.is(':radio')) {
+				var controls = element.closest('.controls');
+				if(controls.find(':checkbox,:radio').length > 1) controls.append(error);
+				else error.insertAfter(element.nextAll('.lbl').eq(0));
+			} 
+			else if(element.is('.chzn-select')) {
+				error.insertAfter(element.nextAll('[class*="chzn-container"]').eq(0));
+			}
+			else error.insertAfter(element);
+		},
+
+		submitHandler: function (form) {
+		},
+		invalidHandler: function (form) {
+		}
+	});
+
+	$('form').bind('submit', function() {
+		$(this).valid();
+	});
+}
+
+
+
+Template.generalPassagerInfo.events({
+	'submit form' : function(event){
+		event.preventDefault();
+		var form = event.currentTarget;
+		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
+			throwError('Please Inform the size of vehicle');
+		}else{
+			if(form.checkValidity()){
+				var book = {
+				"destination" : $("#destination").val(),
+				"clientName" : $('#title').val() + " " + $('#firstName').val() + " " + $("#surname").val(),
+				"birthDate" : $('#birthDate').val(),
+				'email' : $('#email').val(),
+				"telephoneCode" : $('#telephoneCode').val(),
+				"telephone" : $("#telephone").val(),
+				"adress" : $("#adress").val(),
+				"city" : $("#city").val(),
+				"state" : $('#state').val(),
+				"postcode" : $("#postcode").val(),
+				"country" : $("#country").val(),
+				"totalISK" : $("#totalISK").val()
+			}
+		
+			book.vehicle = {
+				"vehicleModel" : $("#listvehicles").val() ? $("#listvehicles").val() : null,
+				"category" : $("#categories").val() ? $("#categories").val() : null,
+				"size" : $("#size").val() ? $("#size").val() : null
+			}
+			
+
+			var prices = [];
+
+			$('.unitPrice').filter(function(){
+				var split = $(this).val().split("|");
+				if(split[2]){
+					var price = {
+					"prices" : split[0],
+					"perUnit" : split[1],
+					"persons" : split[2],
+					"sum" : split[3]
+				}
+				prices.push(price);
+				}
+			})
+
+			book.prices = prices;
+			book.paid = false;
+
+			Books.insert(book);
+			throwSuccess("Book added");
+			}
+		}
 	}
 })
 
@@ -127,27 +235,34 @@ Template.categoryVehicleBook.events({
 		var id = event.target.selectedOptions[0].id;
 		var category = VehiclesCategory.findOne({_id: id});
 		$("#baseVehicle").val(category.basePrice);
+		$("#totalVehicle").val(0);
+		calcTotal();
 		Session.set('categoryId', id);
 	},
 
 	'change #size' : function(event){
 		var base = parseInt($("#baseVehicle").val());
 		var value = event.target.selectedOptions[0].value;
-		if(value > 10){
+
+		if(value == ""){
+			$("#totalVehicle").val(0);
+			return;
+		}else if(value > 10){
 			var mult = value - 10;
 			base += mult * 1625;
 		}
+
 		$("#totalVehicle").text(base);
 		calcTotal();
 	}
 })
 
 calcTotal = function(){
-		var total = 0;
-		$('.calcTotal').filter(function(){
-			if($(this).text() != "")
-			total += parseInt($(this).text());
-		})
+	var total = 0;
+	$('.calcTotal').filter(function(){
+		if($(this).text() != "")
+		total += parseInt($(this).text());
+	})
 
-		$('#totalISK').text(total);
+	$('#totalISK').text(total);
 }
