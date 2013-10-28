@@ -27,7 +27,6 @@ Template.bookOperator.events({
 ///////////////////////////////////////////
 //Template Create Book
 Template.createBook.productName = function(){
-	console.log(Session.get('bookingDate'));
 	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).name : "" ;
 }
 
