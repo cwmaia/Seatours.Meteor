@@ -27,7 +27,7 @@
 		</h1>
 	</div><!-- /.page-header -->
 	<label>Destination</label>
-		<select>
+		<select id="destination">
 			{{#each destination}}
 				{{> destination}}
 			{{/each}}
@@ -63,6 +63,7 @@
 	<label>{{price}} - {{unit}} ISK</label>
 	<input type="number" min="0">
 	<input type="text" id="{{price}}" class='calcTotal' readonly>
+	<input type='hidden' id='{{unit}}' class='unitPrice'>
 </template>
 
 <template name="bookingVehicles">
@@ -85,7 +86,7 @@
         <div class="control-group">
             <label class="control-label">Title: </label>
                 <div class="controls">
-                 <select name='title'>
+                 <select name='title' id='title'>
                  	<option>Select</option>
                 	<option>Mr</option>
                 	<option>Mrs</option>
@@ -98,35 +99,35 @@
         <div class="control-group">
             <label class="control-label">First Name: </label>
                 <div class="controls">
-                <input type="text" name='firstName' placeholder="First Name" class="input-xlarge">
+                <input type="text" name='firstName' id='firstName' placeholder="First Name" class="input-xlarge">
             </div>
         </div>
 
         <div class="control-group">
             <label class="control-label">Surname: </label>
                 <div class="controls">
-                <input type="text"  name="surname" placeholder="Surname" class="input-xlarge">
+                <input type="text"  name="surname" id='surname' placeholder="Surname" class="input-xlarge">
             </div>
         </div>
 
         <div class="control-group">
             <label class="control-label">Birth Date: </label>
                 <div class="controls">
-                <input type='text'  name="birthDate" class="datepicker">
+                <input type='text'  id='birthDate' name="birthDate" class="datepicker">
             </div>
         </div>
 
         <div class="control-group">
             <label class="control-label">Email: </label>
                 <div class="controls">
-                <input type="email"  name="email" placeholder="Email" class="input-xlarge">
+                <input type="email"  id="email" name="email" placeholder="Email" class="input-xlarge">
             </div>
         </div>
 
         <div class="control-group">
             <label class="control-label">Telephone Country Code: </label>
                 <div class="controls">
-                <select name="telephoneCode" >
+                <select id="telephoneCode" name="telephoneCode" >
                 	<option>Select</option>
                 	<option>Brazil (+55)</option>
             	</select>
@@ -136,7 +137,7 @@
 	        <div class="control-group">
 	            <label class="control-label">Telephone</label>
 	                <div class="controls">
-	                <input type="text"  name="telephone" placeholder="Telephone" class="input-xlarge">
+	                <input type="text"  id='telephone' name="telephone" placeholder="Telephone" class="input-xlarge">
 	            </div>
 	        </div>
     </fieldset>
@@ -145,35 +146,35 @@
         	<div class="control-group">
             	<label class="control-label">Adress</label>
                 <div class="controls">
-                	<input type="text"  name="adress" placeholder="Address" class="input-xlarge">
+                	<input type="text"  id='adress'name="adress" placeholder="Address" class="input-xlarge">
             	</div>
         	</div>
 
 	        <div class="control-group">
 	            <label class="control-label">City</label>
 	                <div class="controls">
-	                <input type="text"  name="city" placeholder="City" class="input-xlarge">
+	                <input type="text"  id='city'name="city" placeholder="City" class="input-xlarge">
 	            </div>
 	        </div>
 
 	        <div class="control-group">
 	            <label class="control-label">County / State</label>
 	                <div class="controls">
-	                <input type="text"  name="county" placeholder="County / State" class="input-xlarge">
+	                <input type="text"  id='state'name="county" placeholder="County / State" class="input-xlarge">
 	            </div>
 	        </div>
 
 	        <div class="control-group">
 	            <label class="control-label">Postcode: </label>
 	                <div class="controls">
-	                <input type="text"  name="postcode" placeholder="Postcode" class="input-xlarge">
+	                <input type="text" id='postcode' name="postcode" placeholder="Postcode" class="input-xlarge">
 	            </div>
 	        </div>
 
 	        <div class="control-group">
 	            <label class="control-label">Country</label>
 	                <div class="controls">
-	                <select name="country" >
+	                <select id="country" name="country" >
 	                	<option>Select</option>
 	                	<option>Brazil</option>
 	            	</select>
@@ -181,7 +182,7 @@
 	        </div>
         </fieldset>
         <hr/>
-        <button class="btn btn-small btn-info">Save Book</button>
+        <button class="btn btn-small btn-info saveBook">Save Book</button>
 </template>
 
 

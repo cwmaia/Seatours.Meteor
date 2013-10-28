@@ -27,7 +27,6 @@ Template.bookOperator.events({
 ///////////////////////////////////////////
 //Template Create Book
 Template.createBook.productName = function(){
-	console.log(Session.get('bookingDate'));
 	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).name : "" ;
 }
 
@@ -42,9 +41,62 @@ Template.createBook.helpers({
 
 Template.productPrices.events({
 	"change input" : function(event){
-		var totalParcial = event.currentTarget.value * this.unit;
+		var totalPrice = event.currentTarget.value;
+		var totalParcial = totalPrice * this.unit;
 		$('#'+this.price).val(totalParcial);
+		$('#'+this.unit).val(this.price+"|"+this.unit+"|"+totalPrice+"|"+totalParcial);
 		calcTotal();
+	}
+})
+
+Template.generalPassagerInfo.events({
+	'click .saveBook' : function(event){
+		event.preventDefault();
+		if($("#categories").val() != "" && $("#size").val() == ""){
+			throwError('Please Inform the size of vehicle');
+		}else{
+			var book = {
+				"destination" : $("#destination").val(),
+				"clientName" : $('#title').val() + " " + $('#firstName').val() + " " + $("#surname").val(),
+				"birthDate" : $('#birthDate').val(),
+				'email' : $('#email').val(),
+				"telephoneCode" : $('#telephoneCode').val(),
+				"adress" : $("#adress").val(),
+				"city" : $("#city").val(),
+				"state" : $('#state').val(),
+				"postcode" : $("#postcode").val(),
+				"country" : $("#country").val()
+			}
+		
+			book.vehicle = {
+				"vehicleModel" : $("#listvehicles").val() ? $("#listvehicles").val() : null,
+				"category" : $("#categories").val() ? $("#categories").val() : null,
+				"size" : $("#size").val() ? $("#size").val() : null
+			}
+			
+
+			var prices = [];
+
+			$('.unitPrice').filter(function(){
+				var split = $(this).val().split("|");
+				if(split[2]){
+					var price = {
+					"prices" : split[0],
+					"perUnit" : split[1],
+					"persons" : split[2],
+					"sum" : split[3]
+				}
+				prices.push(price);
+				}
+			})
+
+			book.prices = prices;
+			book.paid = false;
+
+			Books.insert(book);
+			throwSuccess("Book added");
+			Meteor.Router.to('/');
+		}
 	}
 })
 
@@ -115,16 +167,23 @@ Template.categoryVehicleBook.events({
 		var id = event.target.selectedOptions[0].id;
 		var category = VehiclesCategory.findOne({_id: id});
 		$("#baseVehicle").val(category.basePrice);
+		$("#totalVehicle").val(0);
+		calcTotal();
 		Session.set('categoryId', id);
 	},
 
 	'change #size' : function(event){
 		var base = parseInt($("#baseVehicle").val());
 		var value = event.target.selectedOptions[0].value;
-		if(value > 10){
+
+		if(value == ""){
+			$("#totalVehicle").val(0);
+			return;
+		}else if(value > 10){
 			var mult = value - 10;
 			base += mult * 1625;
 		}
+
 		$("#totalVehicle").val(base);
 		calcTotal();
 	}
