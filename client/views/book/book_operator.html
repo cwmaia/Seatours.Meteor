@@ -56,6 +56,8 @@
 </template>
 
 <template name="productPrices">
+	<input type='hidden' id='{{unit}}' class='unitPrice'>
+	
 	<div>
 		<label>{{price}} ({{unit}} ISK)</label>
 		<input type="number" class="size1-4" min="0">
@@ -81,103 +83,97 @@
 </template>
 
 <template name="generalPassagerInfo">
-	<fieldset>
-		<legend>Personal Info<span>&nbsp;&nbsp;</span><i class='icon-user'/></legend>
-        
-        <div class="control-group">
-            <label class="control-label">Title: </label>
-                <div class="controls">
-                 <select name='title'>
-                 	<option>Select</option>
-                	<option>Mr</option>
-                	<option>Mrs</option>
-                	<option>Miss</option>
-                	<option>Ms</option>
-            	</select>
-            </div>
-        </div>
+	<form novalidate>
+		<fieldset>
+			<legend>Personal Info<span>&nbsp;&nbsp;</span><i class='icon-user'/></legend>
+	        
+	        <div class="line-3">
+                <div>
+	            	<label class="control-label">Title: </label>
+	                 <select name='title' id='title' required>
+	                 	<option value=''>Select...</option>
+	                	<option>Mr</option>
+	                	<option>Mrs</option>
+	                	<option>Miss</option>
+	                	<option>Ms</option>
+	            	</select>
+	            </div>
+	            
+	            <div>
+	            	<label class="control-label">First Name: </label>
+	                <input type="text" name='firstName' id='firstName' placeholder="First Name" class="input-xlarge" required>
+	            </div>
 
-        <div class="line">
-            <div>
-            	<label class="control-label">First Name: </label>
-                <input type="text" name='firstName' placeholder="First Name" class="input-xlarge">
-            </div>
-
-	        <div>
-	            <label class="control-label">Surname: </label>
-	            <input type="text"  name="surname" placeholder="Surname" class="input-xlarge">
+		        <div>
+		            <label class="control-label">Surname: </label>
+		            <input type="text"  name="surname" id='surname' placeholder="Surname" class="input-xlarge" required>
+		        </div>
 	        </div>
-        </div>
 
-        <div class="line-4 input-append">
-        	<div>
-	            <label class="control-label">Birth Date: </label>
-	            <input type='text' id="birthDate" name="birthDate" class="datepicker size1-2">
-	            <span class="add-on">
-					<i class="icon-calendar"></i>
-				</span>
-			</div>
-        </div>
-
-        <div class="line">
-            <label>Email: </label>
-            <input type="email"  name="email" placeholder="Email" class="input-xlarge">
-        </div>
-
-        <div class="line-3">
-            <div class="control-group input-append">
-	            <label class="control-label">Telephone</label>
-                <input type="text" class="size1-2" id="telephone" name="telephone" placeholder="Telephone">
-                <span class="add-on">
-					<i class="icon-phone"></i>
-				</span>
+	        <div class="line-3 input-append">
+	        	<div>
+		            <label class="control-label">Birth Date: </label>
+		            <input type='text' id="birthDate" name="birthDate" class="datepicker size1-3" placeholder="Birth Date" required>
+		            
+		            <span class="add-on">
+						<i class="icon-calendar"></i>
+					</span>
+				</div>
+		        
+		        <div class="line">
+		            <label>Email: </label>
+		            <input type="email" id="email" name="email" placeholder="Email" class="input-xlarge" required>
+		        </div>
+	            
+	            <div class="control-group input-append">
+		            <label class="control-label">Telephone</label>
+	                <input type="text" class="size1-3" id="telephone" name="telephone" placeholder="Telephone" required>
+	                <span class="add-on">
+						<i class="icon-phone"></i>
+					</span>
+		        </div>
 	        </div>
-        </div>
 
-    </fieldset>
+	    </fieldset>
 
-    <fieldset>
-    	<legend>Your Address<span>&nbsp;&nbsp;</span><i class='icon-home'/></legend>
-        	<div class="control-group">
-            	<label class="control-label">Adress</label>
+    	<fieldset>
+    		<legend>Your Address<span>&nbsp;&nbsp;</span><i class='icon-home'/></legend>
+        	
+        	<div class="line-3">
                 <div class="controls">
-                	<input type="text"  name="adress" placeholder="Address" class="input-xlarge">
+            		<label class="control-label">Adress</label>
+                	<input type="text"  id='adress'name="adress" placeholder="Address" class="input-xlarge" required>
             	</div>
+		        
+		        <div>
+		            <label>Postcode: </label>
+	                <input type="text" id='postcode' name="postcode" placeholder="Postcode" class="input-xlarge" required>
+		        </div>
+                
+                <div>
+	            	<label class="control-label">City</label>
+	                <input type="text"  id='city'name="city" placeholder="City" class="input-xlarge" required>
+	            </div>
         	</div>
 
-	        <div class="control-group">
-	            <label class="control-label">City</label>
-	                <div class="controls">
-	                <input type="text"  name="city" placeholder="City" class="input-xlarge">
+	        <div class="line-3">
+                <div>
+	            	<label class="control-label">County / State</label>
+	                <input type="text"  id='state'name="county" placeholder="County / State" class="input-xlarge" required>
 	            </div>
-	        </div>
 
-	        <div class="control-group">
-	            <label class="control-label">County / State</label>
-	                <div class="controls">
-	                <input type="text"  name="county" placeholder="County / State" class="input-xlarge">
-	            </div>
-	        </div>
-
-	        <div class="control-group">
-	            <label class="control-label">Postcode: </label>
-	                <div class="controls">
-	                <input type="text"  name="postcode" placeholder="Postcode" class="input-xlarge">
-	            </div>
-	        </div>
-
-	        <div class="control-group">
-	            <label class="control-label">Country</label>
-	                <div class="controls">
-	                <select name="country" >
-	                	<option>Select</option>
+	            <div>
+	            	<label>Country</label>
+	                <select id="country" name="country" required>
+	                	<option value=''>Select...</option>
 	                	<option>Brazil</option>
 	            	</select>
 	            </div>
 	        </div>
-        </fieldset>
-        <hr/>
-        <button class="btn btn-small btn-info">Save Book</button>
+    	</fieldset>
+
+        <input type='submit' class="btn btn-small btn-success" value='Save Book'/>
+    </form>
 </template>
 
 
@@ -217,5 +213,4 @@
 	</div>
 
 	<em type="text" id="totalVehicle" class='calcTotal price'>0</em>
-
 </template>
