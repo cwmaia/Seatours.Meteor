@@ -5,12 +5,12 @@
 		</h1>
 	</div><!-- /.page-header -->
 
-	<form>
+	<form novalidate>
 		<label>Brandname:</label>
-		<input type="text" name="brandname" id="brandname" placeholder="Brandname">
+		<input type="text" name="brandname" id="brandname" placeholder="Brandname" required>
 
 		<label>Model:</label>
-		<input type="text" name="model" id="model" placeholder="Model">
+		<input type="text" name="model" id="model" placeholder="Model" required>
 
 		{{> categoryVehicle}}
 
