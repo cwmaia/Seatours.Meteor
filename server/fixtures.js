@@ -9,7 +9,7 @@ if(Products.find().count() == 0){
 		},
 		{
 			"from" 	: "Brjánslækur",
-			"to"	: "Natal",
+			"to"	: "Stykkishólmur",
 			"hour"  : "18:00"		
 		}],
 		"prices" 	: [

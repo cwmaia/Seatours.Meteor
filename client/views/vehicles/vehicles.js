@@ -24,7 +24,11 @@ Template.vehicles.events({
 		v = {
 			'brandname'	: $('#brandname').val(),
 			'model'		: $('#model').val(),
-			'category'	: category
+			'category'  : {
+		         'category'  : $('#categories').val(),
+		         'size'    : $('#size').val(),
+		         'basePrice' : category.basePrice
+		     }
 		};
 
 		Vehicles.insert(v);

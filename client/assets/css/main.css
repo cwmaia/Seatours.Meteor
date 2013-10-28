@@ -30,25 +30,65 @@ label{
 	text-transform: capitalize;
 }
 
-.error{
-	color: #e9322d;
-}
 /*input[type=text],
 input[type=number],
 input[type=email]{
 	padding: 0.6%;
 }*/
 
-.line-2{
+em{
+	font-size: 120%;
+}
+
+.size1-4{
+	width: 19%;
+}
+
+.size1-3{
+	width: 30%;
+}
+
+.size1-2{
+	width: 48%;
+}
+
+.error{
+	color: #e9322d;
+}
+
+.line,
+.line-2,
+.line-3,
+.line-4{
 	float: left;
 	width: 100%;
 }
 
-	.line-2 > div{
+	.line > div,
+	.line-2 > div,
+	.line-3 > div,
+	.line-4 > div{
 		float: left;
 		margin-right: 1%;
 	}
+	
+		.line-2 > div:last-child,
+		.line-3 > div:last-child,
+		.line-4 > div:last-child{
+			margin-right: 0%;
+		}
 
+	.line-2 > div{
+		width: 50%;
+	}
+
+	.line-3 > div{
+		width: 30%;
+	}
+
+	.line-4 > div{
+		width: 17%;
+	}
 
 .listing ul{
 	float: left;
@@ -92,7 +132,7 @@ input[type=email]{
 	}
 
 /*
-
+	Booking page
 */
 
 #bookings h3{
@@ -106,4 +146,29 @@ input[type=email]{
 
 .calendarWrap{
 	margin-left: 2%;
+}
+
+.price{
+	font-weight: bold;
+}
+
+.calcTotal{
+	margin-left: 2%;
+}
+
+#totalVehicle{
+	float: left;
+	margin-top: 2.8%;
+	margin-left: 0;
+}
+
+#totalISK:after,
+.calcTotal:after{
+	content: ' ISK';
+}
+
+#totalISK{
+	color: #87b87f;
+	font-weight: bold;
+	font-size: 140%;
 }
