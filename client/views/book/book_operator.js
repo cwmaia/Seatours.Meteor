@@ -102,7 +102,7 @@ Template.generalPassagerInfo.events({
 	'submit form' : function(event){
 		event.preventDefault();
 		var form = event.currentTarget;
-		if($("#categories").val() != "" && $("#size").val() == ""){
+		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			throwError('Please Inform the size of vehicle');
 		}else{
 			if(form.checkValidity()){
@@ -112,12 +112,13 @@ Template.generalPassagerInfo.events({
 				"birthDate" : $('#birthDate').val(),
 				'email' : $('#email').val(),
 				"telephoneCode" : $('#telephoneCode').val(),
+				"telephone" : $("#telephone").val(),
 				"adress" : $("#adress").val(),
 				"city" : $("#city").val(),
 				"state" : $('#state').val(),
 				"postcode" : $("#postcode").val(),
 				"country" : $("#country").val(),
-				"totalISK" : $("#totalISK").text()
+				"totalISK" : $("#totalISK").val()
 			}
 		
 			book.vehicle = {
