@@ -13,7 +13,7 @@ Template.boats.events({
 
 ////////////////////////////////////////////////////
 //Variables
-_boat = {},
+_boat = {};
 cont = 0;
 
 ////////////////////////////////////////////////////
@@ -22,7 +22,7 @@ Template.editBoat.boat = function() {
 	_boat = Session.get('_boat') ? Session.get('_boat') : Boats.findOne(Session.get('boatId'));
 
 	if(!_boat) {
-		_boat = {slots: []}
+		_boat = {slots: []};
 	}
 
 	return _boat;
@@ -63,20 +63,17 @@ Template.editBoat.events({
 
 	"submit #boatForm" : function(event){
 		event.preventDefault();
-		var boat = {
-			"name" : $("#boat-name").val(),
-			"slots" : Session.get("Slots")
-		}
+		_boat.name = event.currentTarget.name.value;
 
-		Session.set("Slots", null);
+		Session.set("_boat", null);
 		
 		if(!_boat._id)
-			Boats.insert(boat);
+			Boats.insert(_boat);
 		else
-			Boats.update(_boat._id, boat);
+			Boats.update(_boat._id, _boat);
 
-		Meteor.Router.to('/boats')
 		throwSuccess("Boat Saved");
+		Meteor.Router.to('/boats')
 	}
 	
 });
