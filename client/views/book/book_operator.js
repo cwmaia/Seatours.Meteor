@@ -5,7 +5,6 @@ Template.bookOperator.rendered = function() {
 		minDate: 0,
 		onSelect: function() {
 			var date = $(this).datepicker('getDate');
-		
 			Session.set('bookingDate', date);
 			Meteor.Router.to("/bookOperator/" + $(this).parents('li')[0].id);
 		}
@@ -37,6 +36,23 @@ Template.createBook.helpers({
 	},
 	'destination' : function(){
 		return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).trips : [] ;
+	},
+	'slots' : function(){
+		var boatId = Products.findOne({_id: Session.get('productId')}).boatId;
+		return Boats.findOne({_id: boatId}).slots;
+	}
+})
+
+Template.createBook.rendered = function(){
+	$("#statusDialog").hide();
+}
+
+Template.createBook.events({
+	'click #boatStatus' : function(){
+		$("#statusDialog").show();
+	},
+	'click .cancel, click .close' : function(){
+		$("#statusDialog").hide();
 	}
 })
 
@@ -59,7 +75,6 @@ Template.productPrices.events({
 ///////////////////////////////////////////
 //Template General Passager
 Template.generalPassagerInfo.rendered = function(){
-
 	jQuery.validator.setDefaults({
 		errorElement: 'span',
 		errorClass: 'help-inline error',
@@ -108,53 +123,54 @@ Template.generalPassagerInfo.events({
 		event.preventDefault();
 
 		var form = event.currentTarget;
+
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			throwError('Please Inform the size of vehicle');
 		}else{
 			if(form.checkValidity()){
 				var book = {
-					"destination" : $("#destination").val(),
-					"clientName" : $('#title').val() + " " + $('#firstName').val() + " " + $("#surname").val(),
-					"birthDate" : $('#birthDate').val(),
-					'email' : $('#email').val(),
-					"telephoneCode" : $('#telephoneCode').val(),
-					"telephone" : $("#telephone").val(),
-					"adress" : $("#adress").val(),
-					"city" : $("#city").val(),
-					"state" : $('#state').val(),
-					"postcode" : $("#postcode").val(),
-					"country" : $("#country").val(),
-					"totalISK" : $("#totalISK").text()
-				}
+				"destination" : $("#destination").val(),
+				"clientName" : $('#title').val() + " " + $('#firstName').val() + " " + $("#surname").val(),
+				"birthDate" : $('#birthDate').val(),
+				'email' : $('#email').val(),
+				"telephoneCode" : $('#telephoneCode').val(),
+				"telephone" : $("#telephone").val(),
+				"adress" : $("#adress").val(),
+				"city" : $("#city").val(),
+				"state" : $('#state').val(),
+				"postcode" : $("#postcode").val(),
+				"country" : $("#country").val(),
+				"totalISK" : $("#totalISK").text(),
+				'dateOfBooking' : Session.get('bookingDate')
+			}
+		
+			book.vehicle = {
+				"vehicleModel" : $("#listvehicles").val() ? $("#listvehicles").val() : null,
+				"category" : $("#categories").val() ? $("#categories").val() : null,
+				"size" : $("#size").val() ? $("#size").val() : null
+			}
+		
+			var prices = [];
 
-				
-				book.vehicle = {
-					"vehicleModel" : $("#listvehicles").val() ? $("#listvehicles").val() : null,
-					"category" : $("#categories").val() ? $("#categories").val() : null,
-					"size" : $("#size").val() ? $("#size").val() : null
-				}
-			
-				var prices = [];
-
-				$('.unitPrice').filter(function(){
-					var split = $(this).val().split("|");
-					if(split[2]){
-						var price = {
-						"prices" : split[0],
-						"perUnit" : split[1],
-						"persons" : split[2],
-						"sum" : split[3]
-						}
-						
-						prices.push(price);
+			$('.unitPrice').filter(function(){
+				var split = $(this).val().split("|");
+				if(split[2]){
+					var price = {
+					"prices" : split[0],
+					"perUnit" : split[1],
+					"persons" : split[2],
+					"sum" : split[3]
 					}
-				});
+					
+					prices.push(price);
+				}
+			});
 
-				book.prices = prices;
-				book.paid = false;
+			book.prices = prices;
+			book.paid = false;
 
-				Books.insert(book);
-				throwSuccess("Book added");
+			Books.insert(book);
+			throwSuccess("Book added");
 			}
 		}
 	}

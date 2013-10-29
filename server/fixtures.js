@@ -1,3 +1,60 @@
+if(Boats.find().count() == 0){
+	Boats.insert({
+	"_id" : "1",
+	"name" : "Baldur Ferry",
+	'slots' : [
+		{
+			"number" : 1,
+			"slot_name" : "Small Car Slot",
+			"width" : 3,
+			"height" : 5,
+			"splt" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 2,
+			"slot_name" : "Large Car Slot",
+			"width" : 3,
+			"height" : 7,
+			"splt" : false,
+			"alocated" : false	
+		},
+		{
+			"number" : 3,
+			"slot_name" : "Trailer Slot",
+			"width" : 6,
+			"height" : 15,
+			"splt" : true,
+			"alocated" : false	
+		},
+		{
+			"number" : 4,
+			"slot_name" : "Trailer Slot",
+			"width" : 6,
+			"height" : 15,
+			"splt" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 5,
+			"slot_name" : "Small Car Slot",
+			"width" : 3,
+			"height" : 5,
+			"splt" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 6,
+			"slot_name" : "Large Car Slot",
+			"width" : 3,
+			"height" : 7,
+			"splt" : false,
+			"alocated" : false	
+		}
+	]
+	})
+}
+
 if(Products.find().count() == 0){
 	Products.insert({
 		"name" 			: "Baldur Ferry",
@@ -38,7 +95,8 @@ if(Products.find().count() == 0){
 				"unit": 0
 			}
 		],
-		"activated" 	: true
+		"activated" 	: true,
+		"boatId" : '1'
 	});
 
 	Products.insert({
@@ -207,23 +265,10 @@ if(VehiclesCategory.find().count() == 0){
 	});
 }
 
-//For Tests
-if(SeatoursUsers.find().count() == 0){
-	SeatoursUsers.insert({
-		"username" : "cwmaia",
-		"authKey" : "1234",
-		"authLvl" : "admin"
-	});
-
-	SeatoursUsers.insert({
-		"username" : "gudrun",
-		"authKey" : "1234",
-		"authLvl" : "admin"
-	});
-
-	SeatoursUsers.insert({
-		"username" : "test",
-		"authKey" : "1234",
-		"authLvl" : "guest"
+if(Meteor.users.find().count() == 0){
+	Accounts.createUser({
+	  'username'  : 'gudrun',
+	  'email'     : 'gudrun@me.com',
+	  'password'  : '1234' //encrypted automatically 
 	});
 }

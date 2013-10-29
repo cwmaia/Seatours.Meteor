@@ -7,9 +7,10 @@ Meteor.subscribe('vehicles');
 
 Template.redirect.helpers({
   userLogged : function(){
-    if(Session.get('userId'))
-      return true;
-
+  	if(Meteor.user()){
+      	return true;
+  	}
+  
     return false;
   }
 })

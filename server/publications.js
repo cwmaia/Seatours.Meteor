@@ -2,10 +2,6 @@ Meteor.publish('products', function() {
 	return Products.find();
 });
 
-Meteor.publish('users', function() { 
-	return SeatoursUsers.find();
-});
-
 Meteor.publish('books', function() { 
 	return Books.find();
 });
@@ -22,6 +18,6 @@ Meteor.publish('vehicles', function() {
 	return Vehicles.find();
 });
 
-Meteor.publish('logged_users', function() {
+Meteor.publish('loggedUsers', function() {
 	return LoggedUsers.find();
 });

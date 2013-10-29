@@ -4,26 +4,17 @@ Template.login.events({
 		
 		var user = {
 			username : $(event.target).find('[name=username]').val(),
-			authKey : $(event.target).find('[name=password]').val()
+			password : $(event.target).find('[name=password]').val()
 		}
 
-		try{
-			var seatoursUser = SeatoursUsers.findOne({username : user.username, authKey : user.authKey});
-			localStorage.userId = seatoursUser._id;
-
-			if(seatoursUser.authLvl == 'admin'){
-				Session.set('showOverview', true);
-				Session.set('userId', seatoursUser._id);
-			}else{
-				Meteor.Router.to('/guest');
-			}
-		}catch(err){
-			throwError("Username or Password is incorrect");
-		}
-	},
-
-	'click .create-button' : function(event){
-		event.preventDefault();
-		Meteor.Router.to('/createAccount');
+		Meteor.loginWithPassword(user.username, user.password, function(err){
+        if (err){
+        	console.log(err);
+          throwError("User not Found!")
+      	}else{
+          Session.set('showOverview', true);
+          console.log('aqui');
+      }
+      });
 	}
 })
