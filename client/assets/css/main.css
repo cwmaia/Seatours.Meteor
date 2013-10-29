@@ -100,17 +100,19 @@ em{
 		min-height: 160px;
 
 		padding: 1.5%;
+		margin-right: 1%;
 		padding-bottom: 0.7%;
 		cursor: pointer;
 
-		-webkit-transition: box-shadow 0.3s; /* Chrome */
-		-moz-transition: box-shadow 0.3s; /* Firefox 4 */
-		-ms-transition: box-shadow 0.3s; /* IE */
-		-o-transition: box-shadow 0.3s; /* Opera */
-		transition: box-shadow 0.3s;
+		-webkit-transition: box-shadow 0.3s, background-color 0.3s, border-radius 0.3s; /* Chrome */
+		-moz-transition: box-shadow 0.3s, background-color 0.3s, border-radius 0.3s; /* Firefox 4 */
+		-ms-transition: box-shadow 0.3s, background-color 0.3s, border-radius 0.3s; /* IE */
+		-o-transition: box-shadow 0.3s, background-color 0.3s, border-radius 0.3s; /* Opera */
+		transition: box-shadow 0.3s, background-color 0.3s, border-radius 0.3s;
 	}
 
 	.listing li:hover{
+		border-radius: 5px;
 		box-shadow: 0 0 12px 3px #D0D1D1; /* #d14836 #668BE6;*/
 	}
 
@@ -120,10 +122,11 @@ em{
 	}
 
 	.listing img{
-		width: 40%;
+		width: 202px;
+		height: 148px;
 	}
 
-	#trips h3{
+	.listing h3{
 		padding: 9% 0 0 7%;
 	}
 
@@ -132,10 +135,31 @@ em{
 	}
 
 /*
+	Trip page
+*/
+
+#trips li:hover{
+	background-color: #3679c5; /*#2679b5;*/
+}
+
+	#trips li:hover h3{
+		color: whiteSmoke;
+	}
+
+	#trips li h3{
+		-webkit-transition: color 0.3s;
+		-moz-transition: color 0.3s;
+		-ms-transition: color 0.3s;
+		-o-transition: color 0.3s;
+		transition: color 0.3s;
+	}
+
+/*
 	Booking page
 */
 
-#bookings h3{
+#bookings li h3{
+	padding-top: 0;
 	float: none;
 }
 

@@ -14,6 +14,12 @@ Meteor.Router.add({
 	'/bookReport' 	: 'bookReport',
 	'/vehicles' 	: 'vehicles',
 	'/boats' 		: 'boats',
+	'/boats/:_id' 	: {
+		to : 'editBoat',
+		and: function(id) {
+			Session.set('boatId', id);
+		}
+	},
 	'/trips' 		: 'trips',
 	'/bookOperator' : 'bookOperator',
 	'/bookOperator/:_id' : {

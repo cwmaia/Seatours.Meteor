@@ -4,7 +4,14 @@
 			Edit Products/Trips & Prices
 		</h1>
 	</div><!-- /.page-header -->
+	
 	<ul class="listing" id="trips">
+		<li id="new">
+			<img src="/images/trip.png">
+
+			<h3>Add Trip</h3>
+		</li>
+		
 		{{#each trips}}
 			<li id="{{_id}}">
 				<img src="/images/{{name}}.jpg">
@@ -23,8 +30,7 @@
 		</h1>
 	</div>
 
-	<form id="productForm" novalidate>
-
+	<form id="productForm" name="productForm" novalidate>
 		<div class="line-3">
 			<div>
 				<label>Product name:</label>
@@ -42,11 +48,7 @@
 				</select>
 			</div>
 		</div>
-
-		<input type='submit' id="saveProduct" class='btn btn-success btn-small' value="Save">
-
 	</form>
-
 
 	<fieldset id="tripField">
 		<legend>Trips
@@ -69,13 +71,11 @@
 				<div>
 					<div class="input-append bootstrap-timepicker">
 						<label>Hour:</label>
-						<input type="text" name="hour" id="hour" class="input-small" />
+						<input type="text" name="hour" id="hour" class="input-small" required/>
 						<span class="add-on">
 							<i class="icon-time"></i>
 						</span>
 					</div>
-					<!-- <label>Hour:</label>
-					<input type="time" name="hour" id="hour" placeholder="Hour" required> -->
 				</div>
 			</div>
 		
@@ -144,6 +144,9 @@
 		</table>
 	</fieldset>
 
+	<button id="saveProduct" class='btn btn-success btn-small' form="productForm">
+		Save Trip
+	</button>
 </template>
 
 <template name="price">

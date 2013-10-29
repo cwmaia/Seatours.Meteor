@@ -20,7 +20,14 @@ Template.trips.events({
 Template.editTrip.helpers({
 	product : function(){
 		_product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
-		console.log(_product);
+
+		if(!_product){
+			_product = {
+				trips : [],
+				prices: []
+			};
+		}
+		
 		return _product;
 	}
 });
@@ -43,8 +50,8 @@ Template.editTrip.events({
 			_product.boatId = form.boat.selectedOptions[0].value;
 			
 			saveProduct();
-			
-			throwSuccess(_product.name + ' changed with success');
+			Meteor.Router.to('/trips')
+			throwSuccess(_product.name + ' changed');
 		}
 	},
 
@@ -56,12 +63,11 @@ Template.editTrip.events({
 			var trip = {
 				from 	: form.from.value,
 				to		: form.to.value,
-				hour 	: form.hour.value
+				hour 	: $('#hour')[0].value
 			};
 
 			_product.trips.push(trip);
-
-			saveProduct();
+			Session.set('_product', _product);
 
 			form.reset();
 
@@ -80,8 +86,7 @@ Template.editTrip.events({
 			};
 
 			_product.prices.push(price);
-
-			saveProduct();
+			Session.set('_product', _product);
 
 			form.reset();
 
@@ -94,8 +99,7 @@ Template.editTrip.events({
 
 		var index = $(event.currentTarget).parents('tr').index();
 		_product.trips.splice(index, 1);
-
-		saveProduct();
+		Session.set('_product', _product);
 	},
 
 	'click .removePrice' :function(event) {
@@ -103,15 +107,17 @@ Template.editTrip.events({
 
 		var index = $(event.currentTarget).parents('tr').index();
 		_product.prices.splice(index, 1);
-
-		saveProduct();
+		Session.set('_product', _product);
 	}
 });
 
 function saveProduct() {
 	Session.set('_product', _product);
 
-	Products.update(_product._id, _product);
+	if(!_product._id)
+		Products.insert(_product);
+	else
+		Products.update(_product._id, _product);
 }
 
 Template.editTrip.rendered = function(argument) {
@@ -123,7 +129,7 @@ Template.editTrip.rendered = function(argument) {
 	jQuery.validator.setDefaults({
 		errorElement: 'span',
 		errorClass: 'help-inline error',
-		focusInvalid: false,
+		focusInvalid: true,
 		rules: {
 			email: {
 				required: true,
