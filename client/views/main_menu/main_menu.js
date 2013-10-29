@@ -1,7 +1,6 @@
 Template.mainMenu.events({
 	'click .logout' : function(){
-		localStorage.removeItem('userId');
-		Session.set('userId', null);
+		Meteor.logout();
 		// Meteor.Router.to('/');
 	},
 

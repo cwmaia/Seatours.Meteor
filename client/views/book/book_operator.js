@@ -5,7 +5,6 @@ Template.bookOperator.rendered = function() {
 		minDate: 0,
 		onSelect: function() {
 			var date = $(this).datepicker('getDate');
-		
 			Session.set('bookingDate', date);
 			Meteor.Router.to("/bookOperator/" + $(this).parents('li')[0].id);
 		}
@@ -37,6 +36,23 @@ Template.createBook.helpers({
 	},
 	'destination' : function(){
 		return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).trips : [] ;
+	},
+	'slots' : function(){
+		var boatId = Products.findOne({_id: Session.get('productId')}).boatId;
+		return Boats.findOne({_id: boatId}).slots;
+	}
+})
+
+Template.createBook.rendered = function(){
+	$("#statusDialog").hide();
+}
+
+Template.createBook.events({
+	'click #boatStatus' : function(){
+		$("#statusDialog").show();
+	},
+	'click .cancel, click .close' : function(){
+		$("#statusDialog").hide();
 	}
 })
 
@@ -59,7 +75,6 @@ Template.productPrices.events({
 ///////////////////////////////////////////
 //Template General Passager
 Template.generalPassagerInfo.rendered = function(){
-
 	jQuery.validator.setDefaults({
 		errorElement: 'span',
 		errorClass: 'help-inline error',
@@ -107,6 +122,7 @@ Template.generalPassagerInfo.events({
 	'submit form' : function(event){
 		event.preventDefault();
 		var form = event.currentTarget;
+
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			throwError('Please Inform the size of vehicle');
 		}else{
@@ -123,13 +139,18 @@ Template.generalPassagerInfo.events({
 				"state" : $('#state').val(),
 				"postcode" : $("#postcode").val(),
 				"country" : $("#country").val(),
-				"totalISK" : $("#totalISK").val()
+				"totalISK" : $("#totalISK").val(),
+				'dateOfBooking' : Session.get('bookingDate')
 			}
 		
 			book.vehicle = {
 				"vehicleModel" : $("#listvehicles").val() ? $("#listvehicles").val() : null,
 				"category" : $("#categories").val() ? $("#categories").val() : null,
 				"size" : $("#size").val() ? $("#size").val() : null
+			}
+
+			if($("#listvehicles").val() || $("#categories").val()){
+				
 			}
 			
 
@@ -204,8 +225,6 @@ Template.bookingVehicles.events({
 				totalVehiclePrice += mult * 1625;
 			}
 
-			console.log(totalVehiclePrice);
-			console.log($("#totalVehicle"));
 			$("#totalVehicle").text(totalVehiclePrice);
 			calcTotal();
 		}else{

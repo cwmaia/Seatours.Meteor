@@ -1,1 +1,0 @@
-SeatoursUsers = new Meteor.Collection('seatours_users');

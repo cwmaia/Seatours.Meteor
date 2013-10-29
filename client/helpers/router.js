@@ -1,8 +1,8 @@
 Meteor.Router.add({
 	'/login'  : function(page) {
-		if(Session.get('userId'))
+		if(Meteor.user()){
 			Meteor.Router.to("/overview");
-		
+		}	
 		return page;
 	},
 	'/overview' 	: 'overview',
@@ -38,7 +38,7 @@ Meteor.Router.filters({
 	},
 
 	'checkAuth'	: function(page) {
-		if(location.href != '' && Session.get('userId') == null)
+		if(location.href != '' && Meteor.user() == null)
 			Meteor.Router.to("/login");
 		return page;
 	}
