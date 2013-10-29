@@ -25,17 +25,23 @@
 
 	<form id="productForm" novalidate>
 
-		<label>Product name:</label>
-		<input type="text" name="name" id="name" value="{{product.name}}" placeholder="Name" required>
+		<div class="line-3">
+			<div>
+				<label>Product name:</label>
+				<input type="text" name="name" id="name" value="{{product.name}}" placeholder="Name" required>
+			</div>
 
-		<label>Boat:</label>
-		<select name="boat" id="boat" required>
-			<option value="">Select..</option>
+			<div>
+				<label>Boat:</label>
+				<select name="boat" id="boat" required>
+					<option value="">Select..</option>
 
-			{{#each boats}}
-				<option value="{{_id}}" {{#if _id product._id}} selected="true" {{/if}}>{{name}}</option>
-			{{/each}}
-		</select>
+					{{#each boats}}
+						<option value="{{_id}}" {{#if _id product._id}} selected="true" {{/if}}>{{name}}</option>
+					{{/each}}
+				</select>
+			</div>
+		</div>
 
 		<input type='submit' id="saveProduct" class='btn btn-success btn-small' value="Save">
 
@@ -49,7 +55,7 @@
 		</legend>
 
 		<form id="tripForm" novalidate>
-			<div class="line-2">
+			<div class="line-3">
 				<div>
 					<label>From:</label>
 					<input type="text" name="from" id="from" placeholder="From" required>
@@ -106,7 +112,7 @@
 		<legend>Prices<span>&nbsp;&nbsp;</span><i class='icon-money'/></legend>
 
 		<form id="priceForm" novalidate>
-			<div class="line-2">
+			<div class="line-3">
 					<div>
 						<label>Price:</label>
 						<input type="text" name="price" id="price" placeholder="Price" required>

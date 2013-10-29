@@ -6,11 +6,17 @@
 	</div><!-- /.page-header -->
 
 	<form novalidate>
-		<label>Brandname:</label>
-		<input type="text" name="brandname" id="brandname" placeholder="Brandname" required>
-
-		<label>Model:</label>
-		<input type="text" name="model" id="model" placeholder="Model" required>
+		<div class="line-3">
+			<div>
+				<label>Brandname:</label>
+				<input type="text" name="brandname" id="brandname" placeholder="Brandname" required>
+			</div>
+			
+			<div>
+				<label>Model:</label>
+				<input type="text" name="model" id="model" placeholder="Model" required>
+			</div>
+		</div>
 
 		{{> categoryVehicle}}
 
@@ -27,25 +33,25 @@
 </template>
 
 <template name="categoryVehicle">
-		<div class="line-2">
-			<div>
-				<label>Category:</label>
-				<select name="categories" id="categories">
-					<option value="">Select..</option>
-					{{#each categories}}
-		    			{{> category}}	
-		    		{{/each}}
-				</select>
-			</div>
-
-			<div>
-				<label>Size: </label>
-				<select name="size" id="size">
-					<option value=""></option>
-					{{#each sizes}}
-		    			{{> sizes}}	
-		    		{{/each}}
-				</select>
-			</div>
+	<div class="line-3">
+		<div>
+			<label>Category:</label>
+			<select name="categories" id="categories">
+				<option value="">Select..</option>
+				{{#each categories}}
+	    			{{> category}}	
+	    		{{/each}}
+			</select>
 		</div>
+
+		<div>
+			<label>Size: </label>
+			<select name="size" id="size">
+				<option value=""></option>
+				{{#each sizes}}
+	    			{{> sizes}}	
+	    		{{/each}}
+			</select>
+		</div>
+	</div>
 </template>

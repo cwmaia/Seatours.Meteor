@@ -121,6 +121,7 @@ Template.generalPassagerInfo.rendered = function(){
 Template.generalPassagerInfo.events({
 	'submit form' : function(event){
 		event.preventDefault();
+
 		var form = event.currentTarget;
 
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
@@ -139,7 +140,7 @@ Template.generalPassagerInfo.events({
 				"state" : $('#state').val(),
 				"postcode" : $("#postcode").val(),
 				"country" : $("#country").val(),
-				"totalISK" : $("#totalISK").val(),
+				"totalISK" : $("#totalISK").text(),
 				'dateOfBooking' : Session.get('bookingDate')
 			}
 		
@@ -148,12 +149,7 @@ Template.generalPassagerInfo.events({
 				"category" : $("#categories").val() ? $("#categories").val() : null,
 				"size" : $("#size").val() ? $("#size").val() : null
 			}
-
-			if($("#listvehicles").val() || $("#categories").val()){
-				
-			}
-			
-
+		
 			var prices = [];
 
 			$('.unitPrice').filter(function(){
@@ -164,10 +160,11 @@ Template.generalPassagerInfo.events({
 					"perUnit" : split[1],
 					"persons" : split[2],
 					"sum" : split[3]
+					}
+					
+					prices.push(price);
 				}
-				prices.push(price);
-				}
-			})
+			});
 
 			book.prices = prices;
 			book.paid = false;
