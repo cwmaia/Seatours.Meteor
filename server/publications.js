@@ -21,3 +21,7 @@ Meteor.publish('vehicles', function() {
 Meteor.publish('loggedUsers', function() {
 	return LoggedUsers.find();
 });
+
+Meteor.publish('customers', function(){
+	return Customers.find();
+})

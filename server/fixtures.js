@@ -272,3 +272,33 @@ if(Meteor.users.find().count() == 0){
 	  'password'  : '1234' //encrypted automatically 
 	});
 }
+
+if(Customers.find().count() == 0){
+	Customers.insert({
+		"title" : "Mr",
+		"fullName" :  "Carlos Maia",
+		"birthDate" : "10/10/1990",
+		'email' : "carlos@me.com",
+		"telephoneCode" : "+55",
+		"telephone" : "(11) 1111-1111",
+		"adress" : "Adress",
+		"city" : "City Name",
+		"state" : "Any State here",
+		"postcode" : "59000000",
+		"country" : "Brazil"
+	});
+
+	Customers.insert({
+		"title" : "Mr",
+		"fullName" :  "Roberto Hallais",
+		"birthDate" : "10/10/1992",
+		'email' : "roberto@me.com",
+		"telephoneCode" : "+55",
+		"telephone" : "(84) 4004-0001",
+		"adress" : "New Adress",
+		"city" : "Yes it changed",
+		"state" : "Another State",
+		"postcode" : "99551",
+		"country" : "Brazil"
+	});
+}

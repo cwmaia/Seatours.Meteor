@@ -1,3 +1,5 @@
+var SaveCustomer = true;
+
 ///////////////////////////////////////////
 //Template Book Operator
 Template.bookOperator.rendered = function() {
@@ -44,7 +46,9 @@ Template.createBook.helpers({
 })
 
 Template.createBook.rendered = function(){
+	SaveCustomer = true;
 	$("#statusDialog").hide();
+	loadTypeahead();
 }
 
 Template.createBook.events({
@@ -72,53 +76,25 @@ Template.productPrices.events({
 	}
 })
 
-///////////////////////////////////////////
-//Template General Passager
-Template.generalPassagerInfo.rendered = function(){
-	jQuery.validator.setDefaults({
-		errorElement: 'span',
-		errorClass: 'help-inline error',
-		focusInvalid: false,
-		
-		invalidHandler: function (event, validator) { //display error alert on form submit   
-			$('.alert-error', $('.login-form')).show();
-		},
-
-		highlight: function (e) {
-			$(e).closest('.control-group').removeClass('info').addClass('error');
-		},
-
-		success: function (e) {
-			$(e).closest('.control-group').removeClass('error').addClass('info');
-			$(e).remove();
-		},
-
-		errorPlacement: function (error, element) {
-			if(element.is(':checkbox') || element.is(':radio')) {
-				var controls = element.closest('.controls');
-				if(controls.find(':checkbox,:radio').length > 1) controls.append(error);
-				else error.insertAfter(element.nextAll('.lbl').eq(0));
-			} 
-			else if(element.is('.chzn-select')) {
-				error.insertAfter(element.nextAll('[class*="chzn-container"]').eq(0));
-			}
-			else error.insertAfter(element);
-		},
-
-		submitHandler: function (form) {
-		},
-		invalidHandler: function (form) {
-		}
-	});
-
-	$('form').bind('submit', function() {
-		$(this).valid();
-	});
-}
-
-
 
 Template.generalPassagerInfo.events({
+	'keyup #fullName' : function(event){
+		if(event.keyCode != 13)
+		{
+			$('#title').val('')
+	    	$('#birthDate').val('');
+	    	$('#email').val('');
+	    	$('#telephoneCode').val('');
+	    	$('#telephone').val('');
+	    	$('#adress').val('');
+	    	$('#city').val('');
+	    	$('#state').val('');
+	    	$('#postcode').val('');
+	    	$('#country').val('');
+			SaveCustomer = true;
+		}
+	},
+		
 	'submit form' : function(event){
 		event.preventDefault();
 
@@ -128,49 +104,61 @@ Template.generalPassagerInfo.events({
 			throwError('Please Inform the size of vehicle');
 		}else{
 			if(form.checkValidity()){
-				var book = {
-				"destination" : $("#destination").val(),
-				"clientName" : $('#title').val() + " " + $('#firstName').val() + " " + $("#surname").val(),
-				"birthDate" : $('#birthDate').val(),
-				'email' : $('#email').val(),
-				"telephoneCode" : $('#telephoneCode').val(),
-				"telephone" : $("#telephone").val(),
-				"adress" : $("#adress").val(),
-				"city" : $("#city").val(),
-				"state" : $('#state').val(),
-				"postcode" : $("#postcode").val(),
-				"country" : $("#country").val(),
-				"totalISK" : $("#totalISK").text(),
-				'dateOfBooking' : Session.get('bookingDate')
-			}
-		
-			book.vehicle = {
-				"vehicleModel" : $("#listvehicles").val() ? $("#listvehicles").val() : null,
-				"category" : $("#categories").val() ? $("#categories").val() : null,
-				"size" : $("#size").val() ? $("#size").val() : null
-			}
-		
-			var prices = [];
 
-			$('.unitPrice').filter(function(){
-				var split = $(this).val().split("|");
-				if(split[2]){
-					var price = {
-					"prices" : split[0],
-					"perUnit" : split[1],
-					"persons" : split[2],
-					"sum" : split[3]
-					}
-					
-					prices.push(price);
+				var customer = {
+					"title" : $('#title').val(),
+					"fullName" :  $('#fullName').val(),
+					"birthDate" : $('#birthDate').val(),
+					'email' : $('#email').val(),
+					"telephoneCode" : $('#telephoneCode').val(),
+					"telephone" : $("#telephone").val(),
+					"adress" : $("#adress").val(),
+					"city" : $("#city").val(),
+					"state" : $('#state').val(),
+					"postcode" : $("#postcode").val(),
+					"country" : $("#country").val()
+	 			}
+
+	 			if(SaveCustomer)
+	 				Customers.insert(customer);
+
+	 			var book = {
+					"destination" : $("#destination").val(),			
+					"totalISK" : $("#totalISK").text(),
+					'dateOfBooking' : Session.get('bookingDate'),
+					'customer' : customer
 				}
-			});
+		
+				book.vehicle = {
+					"vehicleModel" : $("#listvehicles").val() ? $("#listvehicles").val() : null,
+					"category" : $("#categories").val() ? $("#categories").val() : null,
+					"size" : $("#size").val() ? $("#size").val() : null
+				}
+			
+				var prices = [];
 
-			book.prices = prices;
-			book.paid = false;
+				$('.unitPrice').filter(function(){
+					var split = $(this).val().split("|");
+					if(split[2]){
+						var price = {
+						"prices" : split[0],
+						"perUnit" : split[1],
+						"persons" : split[2],
+						"sum" : split[3]
+						}
+						
+						prices.push(price);
+					}
+				});
 
-			Books.insert(book);
-			throwSuccess("Book added");
+				book.prices = prices;
+				book.paid = false;
+
+				Books.insert(book);
+				throwSuccess("Book added");
+
+				//TODO refresh Itens
+				location.reload();
 			}
 		}
 	}
@@ -250,10 +238,17 @@ Template.categoryVehicleBook.events({
 	'change #categories' : function(event){
 		var id = event.target.selectedOptions[0].id;
 		var category = VehiclesCategory.findOne({_id: id});
-		$("#baseVehicle").val(category.basePrice);
-		$("#totalVehicle").val(0);
+		if(category){
+			$("#baseVehicle").val(category.basePrice);
+			$("#totalVehicle").val(0);
+			Session.set('categoryId', id);
+		}else{
+			$("#baseVehicle").val(0);
+			$("#totalVehicle").val(0);
+			Session.set('categoryId', null);
+		}
+			
 		calcTotal();
-		Session.set('categoryId', id);
 	},
 
 	'change #size' : function(event){
@@ -281,4 +276,40 @@ calcTotal = function(){
 	})
 
 	$('#totalISK').text(total);
+}
+
+loadTypeahead = function(){
+	$('#fullName').typeahead('destroy');
+	var items = [],
+	finalItems,
+	tags = Customers.find({}, {fields: {fullName: 1}});
+	tags.forEach(function(tag){
+    	var datum = {
+    		'value' : tag.fullName,
+    		'id' : tag._id
+    	}
+    	items.push(datum);
+	});
+
+	finalItems = _.uniq(items);
+
+	$('#fullName').typeahead({
+		name : 'fullName',
+		local : finalItems
+	}).bind('typeahead:selected', function (obj, datum) {
+    	var customer = Customers.findOne({_id: datum.id});
+
+    	$('#title').val(customer.title)
+    	$('#fullName').val(customer.fullName);
+    	$('#birthDate').val(customer.birthDate);
+    	$('#email').val(customer.email);
+    	$('#telephoneCode').val(customer.telephoneCode);
+    	$('#telephone').val(customer.telephone);
+    	$('#adress').val(customer.adress);
+    	$('#city').val(customer.city);
+    	$('#state').val(customer.state);
+    	$('#postcode').val(customer.postcode);
+    	$('#country').val(customer.country);
+    	SaveCustomer = false;
+	});
 }

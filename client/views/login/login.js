@@ -13,7 +13,6 @@ Template.login.events({
           throwError("User not Found!")
       	}else{
           Session.set('showOverview', true);
-          console.log('aqui');
       }
       });
 	}
