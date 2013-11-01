@@ -29,7 +29,7 @@
 		</h1>
 	</div><!-- /.page-header -->
 
-	<label class="required">Destination</label>
+	<label class="required">Destination: </label>
 	<select id="destination">
 		{{#each destination}}
 			{{> destination}}
@@ -170,7 +170,7 @@
 		        </div>
 	            
 	            <div class="input-append">
-		            <label class="required">Telephone</label>
+		            <label class="required">Telephone: </label>
 	                <input type="text" class="size1-3" id="telephone" name="telephone" placeholder="Telephone" required>
 	                <span class="add-on">
 						<i class="icon-phone"></i>
@@ -184,7 +184,7 @@
         	
         	<div class="line-3">
                 <div class="controls">
-            		<label class="required">Adress</label>
+            		<label class="required">Adress: </label>
                 	<input type="text"  id='adress'name="adress" placeholder="Address" class="input-xlarge" required>
             	</div>
 		        
@@ -194,19 +194,19 @@
 		        </div>
                 
                 <div>
-	            	<label class="required">City</label>
+	            	<label class="required">City: </label>
 	                <input type="text"  id='city'name="city" placeholder="City" class="input-xlarge" required>
 	            </div>
         	</div>
 
 	        <div class="line-3">
                 <div>
-	            	<label class="required">County / State</label>
+	            	<label class="required">County / State: </label>
 	                <input type="text"  id='state'name="county" placeholder="County / State" class="input-xlarge" required>
 	            </div>
 
 	            <div>
-	            	<label class="required">Country</label>
+	            	<label class="required">Country: </label>
 	                <select id="country" name="country" required>
 	                	<option value=''>Select...</option>
 	                	<option>Brazil</option>
@@ -236,7 +236,7 @@
 	<input type="hidden" id="baseVehicle"/>
 
 	<div>
-		<label>Category:</label>
+		<label class="required">Category:</label>
 		<select name="categories" id="categories">
 			<option value="">Select..</option>
 			{{#each categories}}
@@ -246,7 +246,7 @@
 	</div>
 
 	<div>
-		<label>Size: </label>
+		<label class="required">Size: </label>
 		<select name="size" id="size">
 			<option value=""></option>
 			{{#each sizes}}

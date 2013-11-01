@@ -293,11 +293,9 @@ Template.generalPassagerInfo.events({
 					$('#email').val(),
 		            'jarbas.byakuya@gmail.com',
 		            'Your Voucher at Seatous!',
-		            'https://seatours.meteor.meteor.com/voucher/'+result);
+		            '<h3>Tosco</h3>');
 				Meteor.Router.to('/voucher/'+result);
 			}
-			else
-				throwError();
 		}
 	}
 })
@@ -317,7 +315,10 @@ Template.bookingVehicles.rendered = function(){
 }
 
 Template.generalPassagerInfo.rendered = function() {
-	$('.datepicker').datepicker();
+	$('.datepicker').datepicker({
+		changeMonth: true,
+      	changeYear: true
+	});
 
 	$('#telephone').mask('(99) 9999-9999');
 	$('#birthDate').mask('99/99/9999');

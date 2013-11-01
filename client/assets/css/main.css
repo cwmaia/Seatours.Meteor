@@ -208,8 +208,10 @@ input[type=email]{
 */
 
 #bookings li h3{
-	padding-top: 0;
 	float: none;
+	
+	margin: 0;
+	padding: 0;
 }
 
 #bookings img,
@@ -254,6 +256,20 @@ input[type=email]{
 .popover.top{
 	margin-left: 2.5%;
 }
+
+.ui-datepicker-header,
+.ui-datepicker-calendar td a{
+	background: #3679c5 !important;
+	color: whiteSmoke !important;
+}
+
+	.ui-datepicker-calendar td:hover a{
+		background: #1659b5 !important;
+	}
+
+	.ui-datepicker-calendar td .ui-state-highlight{
+		border: 2px solid #333;
+	}
 
 .twitter-typeahead{
 width:100%;
