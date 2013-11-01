@@ -4,15 +4,15 @@
 	{{#with book}}
 		<label><b>Booking ID:</b> {{_id}}</label>
 		<label><b>Booking Date:</b> {{dateOfBooking}}</label>
-		<label><b>Booking Status:</b> Completed</label>
+		<label><b>Booking Status:</b> Waiting Payment</label>
 		<h4>Customer Details</h4>
 		<label><b>Full Name:</b> {{customer.fullName}}</label>
 		<label><b>Full Adress:</b> {{customer.adress}}</label>
 		<label><b>Contact Number:</b> {{customer.telephone}}</label>
-		<label><b>Email Adress:</b> {{customer.email}}</label>
+		<span><b>Email Adress:</b> {{customer.email}}</span>
 		<hr/>
 		<h4>Booking Items</h4>
-		<table class="table table-striped table-bordered trable-hover">
+		<table>
 			<thead>
 				<th><b>Items</b></th>
 				<th><b>Cost</b></th>

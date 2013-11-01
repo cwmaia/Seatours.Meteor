@@ -32,6 +32,10 @@ Template.createBook.productName = function(){
 	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).name : "" ;
 }
 
+Template.createBook.dateOfBooking = function(){
+	return Session.get('bookingDate');
+}
+
 Template.createBook.helpers({
 	"prices" : function(){
 		return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).prices : [] ;
@@ -156,15 +160,14 @@ Template.generalPassagerInfo.events({
 				book.paid = false;
 
 				var result = Books.insert(book);
-				console.log(result);
 
 				throwSuccess("Book added");
 
 				Meteor.call('sendEmail',
+					$('#email').val(),
 		            'jarbas.byakuya@gmail.com',
-		            customer.email,
-		            'Hello from Meteor!',
-		            'http://localhost:3000/voucher/'+result);
+		            'Your Voucher at Seatous!',
+		            'https://seatours.meteor.meteor.com/voucher/'+result);
 				Meteor.Router.to('/voucher/'+result);
 			};
 		}
