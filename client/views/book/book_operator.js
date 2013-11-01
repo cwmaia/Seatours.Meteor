@@ -293,11 +293,9 @@ Template.generalPassagerInfo.events({
 					$('#email').val(),
 		            'jarbas.byakuya@gmail.com',
 		            'Your Voucher at Seatous!',
-		            'https://seatours.meteor.meteor.com/voucher/'+result);
+		            '<h3>Tosco</h3>');
 				Meteor.Router.to('/voucher/'+result);
 			}
-			else
-				throwError();
 		}
 	}
 })
