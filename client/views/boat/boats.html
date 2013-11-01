@@ -36,6 +36,10 @@
 				<label>Boat Name: </label>
 				<input type ="text" id="name" name="name" value="{{boat.name}}" placeholder="Boat Name">
 			</div>
+			<div>
+				<label>Maximum Capacity: </label>
+				<input type ="number" min="0" id="maxCapacity" name="maxCapacity" value="{{boat.maxCapacity}}" placeholder="Max capacity">
+			</div>
 		</div>
 	</form>
 
@@ -85,7 +89,7 @@
 						<td>{{slot_name}}</td>
 						<td>{{height}}</td>
 						<td>{{width}}</td>
-						<td>{{split}}</td>
+						<td>{{#if split}} Yes {{else}} No {{/if}}</td>
 						<td>
 							<a class='remove_slot'>remove</a>
 						</td>

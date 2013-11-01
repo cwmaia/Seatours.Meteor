@@ -6,13 +6,14 @@ if(Boats.find().count() == 0){
 	Boats.insert({
 	"_id" : "1",
 	"name" : "Baldur Ferry",
+	"maxCapacity" : 50,
 	'slots' : [
 		{
 			"number" : 1,
 			"slot_name" : "Small Car Slot",
 			"width" : 3,
 			"height" : 5,
-			"splt" : false,
+			"split" : false,
 			"alocated" : false
 		},
 		{
@@ -20,7 +21,7 @@ if(Boats.find().count() == 0){
 			"slot_name" : "Large Car Slot",
 			"width" : 3,
 			"height" : 7,
-			"splt" : false,
+			"split" : false,
 			"alocated" : false	
 		},
 		{
@@ -28,7 +29,7 @@ if(Boats.find().count() == 0){
 			"slot_name" : "Trailer Slot",
 			"width" : 6,
 			"height" : 15,
-			"splt" : true,
+			"split" : true,
 			"alocated" : false	
 		},
 		{
@@ -36,7 +37,7 @@ if(Boats.find().count() == 0){
 			"slot_name" : "Trailer Slot",
 			"width" : 6,
 			"height" : 15,
-			"splt" : false,
+			"split" : false,
 			"alocated" : false
 		},
 		{
@@ -44,7 +45,7 @@ if(Boats.find().count() == 0){
 			"slot_name" : "Small Car Slot",
 			"width" : 3,
 			"height" : 5,
-			"splt" : false,
+			"split" : false,
 			"alocated" : false
 		},
 		{
@@ -52,7 +53,7 @@ if(Boats.find().count() == 0){
 			"slot_name" : "Large Car Slot",
 			"width" : 3,
 			"height" : 7,
-			"splt" : false,
+			"split" : false,
 			"alocated" : false	
 		}
 	]
@@ -142,8 +143,8 @@ if(Products.find().count() == 0){
 				"unit": 0
 			}
 		],
-		"activated" 	: true
-
+		"activated" 	: true,
+		"boatId" : '1'
 	});
 
 	Products.insert({
@@ -185,7 +186,8 @@ if(Products.find().count() == 0){
 				"unit": 0
 			}
 		],
-		"activated" 	: true
+		"activated" 	: true,
+		"boatId" : '1'
 	});
 }
 

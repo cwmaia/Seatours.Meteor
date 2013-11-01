@@ -46,6 +46,9 @@ Template.bookDetail.helpers({
 
 	date: function() {
 		return Session.get('bookingDate').toLocaleDateString();
+	},
+	bookings : function(){
+		return Books.find({dateOfBooking: Session.get('bookingDate')});
 	}
 });
 
@@ -56,7 +59,7 @@ Template.createBook.productName = function(){
 }
 
 Template.createBook.dateOfBooking = function(){
-	return Session.get('bookingDate');
+	return Session.get('bookingDate').toLocaleDateString();
 }
 
 Template.createBook.helpers({
@@ -251,7 +254,8 @@ Template.generalPassagerInfo.events({
 					"destination" : $("#destination").val(),			
 					"totalISK" : $("#totalISK").text(),
 					'dateOfBooking' : Session.get('bookingDate'),
-					'customer' : customer
+					'customer' : customer,
+					'bookStatus' : 'Created'
 				}
 		
 				book.vehicle = {
