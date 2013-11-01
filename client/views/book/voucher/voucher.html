@@ -1,0 +1,42 @@
+<template name='voucher'>
+	<h3>Voucher</h3>
+	<hr/>
+	{{#with book}}
+		<label><b>Booking ID:</b> {{_id}}</label>
+		<label><b>Booking Date:</b> {{dateOfBooking}}</label>
+		<label><b>Booking Status:</b> Completed</label>
+		<h4>Customer Details</h4>
+		<label><b>Full Name:</b> {{customer.fullName}}</label>
+		<label><b>Full Adress:</b> {{customer.adress}}</label>
+		<label><b>Contact Number:</b> {{customer.telephone}}</label>
+		<label><b>Email Adress:</b> {{customer.email}}</label>
+		<hr/>
+		<h4>Booking Items</h4>
+		<table class="table table-striped table-bordered trable-hover">
+			<thead>
+				<th><b>Items</b></th>
+				<th><b>Cost</b></th>
+			</thead>
+			<tbody>
+				{{#each prices}}
+					<tr>
+						<td><label>{{persons}}# - {{prices}}</label></td>
+						<td><label>{{persons}} X {{perUnit}} = {{sum}}</label></td>
+					</tr>
+				{{/each}}
+				{{#if vehicle}}
+					<tr>
+						<td><label>{{vehicle.category}} - {{vehicle.size}}m</label></td>
+						<td><label>{{vehicle.totalCost}}</label></td>
+					</tr>
+				{{/if}}
+			</tbody>
+			<tfoot>
+				<tr>
+					<td><label>sum</label></td>
+					<td><label>{{totalISK}}</label></td>
+				</tr>
+			</tfoot>
+		</table>
+	{{/with}}		
+</template>

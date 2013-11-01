@@ -132,7 +132,8 @@ Template.generalPassagerInfo.events({
 				book.vehicle = {
 					"vehicleModel" : $("#listvehicles").val() ? $("#listvehicles").val() : null,
 					"category" : $("#categories").val() ? $("#categories").val() : null,
-					"size" : $("#size").val() ? $("#size").val() : null
+					"size" : $("#size").val() ? $("#size").val() : null,
+					"totalCost" : $("#totalVehicle").text() ? $("#totalVehicle").text() : null
 				}
 			
 				var prices = [];
@@ -154,12 +155,18 @@ Template.generalPassagerInfo.events({
 				book.prices = prices;
 				book.paid = false;
 
-				Books.insert(book);
+				var result = Books.insert(book);
+				console.log(result);
+
 				throwSuccess("Book added");
 
-				//TODO refresh Itens
-				location.reload();
-			}
+				Meteor.call('sendEmail',
+		            'jarbas.byakuya@gmail.com',
+		            customer.email,
+		            'Hello from Meteor!',
+		            'http://localhost:3000/voucher/'+result);
+				Meteor.Router.to('/voucher/'+result);
+			};
 		}
 	}
 })

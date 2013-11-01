@@ -33,6 +33,12 @@ Meteor.Router.add({
 		and : function(id) {
 			Session.set('tripId', id);
 		}
+	},
+	'/voucher/:_id' : {
+		to : 'voucher',
+		and : function(id){
+			Session.set('bookId', id);
+		}
 	}
 });
 

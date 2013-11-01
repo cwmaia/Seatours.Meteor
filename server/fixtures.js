@@ -1,3 +1,7 @@
+Meteor.startup(function () {
+  process.env.MAIL_URL = 'smtp://postmaster%40seatours.com:2-j--rmow2s5@smtp.mailgun.org:587';
+});
+
 if(Boats.find().count() == 0){
 	Boats.insert({
 	"_id" : "1",
