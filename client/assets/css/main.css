@@ -13,10 +13,9 @@ form{
 	width: 100%;
 }
 
-/*form input[type=text],
-form label{
-	display: block;
-}*/
+label{
+	font-weight: bold;
+}
 
 select{
 	width: auto !important;
@@ -30,6 +29,9 @@ label{
 	text-transform: capitalize;
 }
 
+label.required:after{
+	content: '*';
+}
 /*input[type=text],
 input[type=number],
 input[type=email]{
@@ -79,7 +81,7 @@ em{
 		}
 
 	.line-2 > div{
-		width: 50%;
+		width: 48%;
 	}
 
 	.line-3 > div{
@@ -153,6 +155,22 @@ em{
 		-o-transition: color 0.3s;
 		transition: color 0.3s;
 	}
+
+/*
+	Booking Detail
+*/
+
+.divTable h4{
+	float: right;
+
+	margin-top: 4%;
+
+	font-style: italic;
+}
+
+.divTable h3{
+	float: left;
+}
 
 /*
 	Booking page
