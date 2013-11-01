@@ -27,6 +27,29 @@ Template.bookOperator.events({
 
 
 ///////////////////////////////////////////
+//Template Book Detail
+Template.bookDetail.events({
+	'click #newBooking' :function(event) {
+		Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');		
+	}
+});
+
+Template.bookDetail.helpers({
+	boat: function() {
+		var boatId = Products.findOne({_id: Session.get('productId')}).boatId;
+		return Boats.findOne({_id: boatId});
+	},
+
+	product: function() {
+		return Products.findOne(Session.get('productId'));
+	},
+
+	date: function() {
+		return Session.get('bookingDate').toLocaleDateString();
+	}
+});
+
+///////////////////////////////////////////
 //Template Create Book
 Template.createBook.productName = function(){
 	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).name : "" ;
@@ -166,7 +189,9 @@ Template.generalPassagerInfo.events({
 		            'Hello from Meteor!',
 		            'http://localhost:3000/voucher/'+result);
 				Meteor.Router.to('/voucher/'+result);
-			};
+			}
+			else
+				throwError();
 		}
 	}
 })

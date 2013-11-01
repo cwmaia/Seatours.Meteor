@@ -19,7 +19,6 @@
 	</ul>
 </template>
 
-
 <template name='createBook'>
 	{{#if showStatusDialog}}
     	{{> statusDialog}}
@@ -30,7 +29,7 @@
 		</h1>
 	</div><!-- /.page-header -->
 
-	<label>Destination</label>
+	<label class="required">Destination</label>
 	<select>
 		{{#each destination}}
 			{{> destination}}
@@ -138,7 +137,7 @@
 	        
 	        <div class="line-3">
                 <div>
-	            	<label class="control-label">Title: </label>
+	            	<label class="control-label required">Title: </label>
 	                 <select name='title' id='title' required>
 	                 	<option value=''>Select...</option>
 	                	<option>Mr</option>
@@ -149,15 +148,15 @@
 	            </div>
 	            
 	            <div>
-	            	<label class="control-label">Full Name: </label>
-	                <input type="text" name='firstName' id='fullName' class="input-xlarge" placeholder="Full Name"required>
+	            	<label class="control-label required">Full Name: </label>
+	                <input type="text" name='firstName' id='fullName' class="tooltip-error" data-trigger="focus" placeholder="Full Name"required>
 	            </div>
 
 		    </div>
 	        
 	        <div class="line-3 input-append">
 	        	<div>
-		            <label class="control-label">Birth Date: </label>
+		            <label class="control-label required">Birth Date: </label>
 		            <input type='text' id="birthDate" name="birthDate" class="datepicker" placeholder="Birth Date" required>
 		            
 		            <span class="add-on">
@@ -166,12 +165,12 @@
 				</div>
 		        
 		        <div>
-		            <label>Email: </label>
+		            <label class="required">Email: </label>
 		            <input type="email" id="email" name="email" placeholder="Email" class="input-xlarge" required>
 		        </div>
 	            
 	            <div class="input-append">
-		            <label class="control-label">Telephone</label>
+		            <label class="required">Telephone</label>
 	                <input type="text" class="size1-3" id="telephone" name="telephone" placeholder="Telephone" required>
 	                <span class="add-on">
 						<i class="icon-phone"></i>
@@ -185,29 +184,29 @@
         	
         	<div class="line-3">
                 <div class="controls">
-            		<label class="control-label">Adress</label>
+            		<label class="required">Adress</label>
                 	<input type="text"  id='adress'name="adress" placeholder="Address" class="input-xlarge" required>
             	</div>
 		        
 		        <div>
-		            <label>Postcode: </label>
+		            <label class="required">Postcode: </label>
 	                <input type="text" id='postcode' name="postcode" placeholder="Postcode" class="input-xlarge" required>
 		        </div>
                 
                 <div>
-	            	<label class="control-label">City</label>
+	            	<label class="required">City</label>
 	                <input type="text"  id='city'name="city" placeholder="City" class="input-xlarge" required>
 	            </div>
         	</div>
 
 	        <div class="line-3">
                 <div>
-	            	<label class="control-label">County / State</label>
+	            	<label class="required">County / State</label>
 	                <input type="text"  id='state'name="county" placeholder="County / State" class="input-xlarge" required>
 	            </div>
 
 	            <div>
-	            	<label>Country</label>
+	            	<label class="required">Country</label>
 	                <select id="country" name="country" required>
 	                	<option value=''>Select...</option>
 	                	<option>Brazil</option>
@@ -257,4 +256,91 @@
 	</div>
 
 	<em type="text" id="totalVehicle" class='calcTotal price'>0</em>
+</template>
+
+<template name="bookDetail">
+	<div class="page-header">
+		<h1>
+			Details {{product.name}} - {{date}}
+		</h1>
+	</div>
+
+	<h3>
+		<!-- <a href="{{newPath}}" name="newBooking" id="newBooking">New Booking</a> -->
+		<button name="newBooking" id="newBooking" class="btn btn-info">
+			New Booking
+		</button>
+	</h3>
+	
+	<div class="line-2">
+		<div class="divTable">
+			<div>
+				<h3>Passengers</h3>
+
+				{{#if bookings.length}}
+					<h4 class="length">Total: {{bookings.length}}</h4>
+				{{/if}}
+			</div>
+
+			<table class='table table-striped table-bordered trable-hover' id="passengers">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Custumer</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				{{#if bookings.length}}
+					{{#each bookings}}
+						<tr>
+							<td id="{{_id}}">
+								<a hre="#">{{_id}}</a>
+								<p>{{clientName}}</p>
+								<a href="#" id="cancel">Cancel</a>
+							</td>
+						</tr>
+					{{/each}}
+				{{else}}
+					<td id="">
+						<a hre="#">434324</a>
+					</td>
+					<td>
+						<p>Jarvis</p>
+					</td>
+					<td>
+						<a href="#" id="cancel">Cancel</a>
+					</td>
+				{{/if}}
+			</table>
+		</div>
+		
+		{{#if boat.slots}}
+			<div class="divTable">
+				<div>
+					<h3>Boat slots</h3>
+
+					<h4 class="length">Total: {{boat.slots.length}}</h4>
+				</div>
+
+				<table class='table table-striped table-bordered trable-hover'>
+		    		<thead>
+		    			<th>Slot Name</th>
+		    			<th>Height</th>
+		    			<th>Width</th>
+		    			<th>Alocated</th>
+		    		</thead>
+		    		<tbody>
+		    			{{#each boat.slots}}
+		    				<tr>
+								<td>{{slot_name}}</td>
+								<td>{{height}}</td>
+								<td>{{width}}</td>
+								<td>{{alocated}}</td>
+							</tr>	
+		    			{{/each}}
+		    		</tbody>
+		    	</table>
+			</div>
+		{{/if}}
+	</div>
 </template>

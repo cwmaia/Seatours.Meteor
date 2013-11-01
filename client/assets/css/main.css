@@ -1,3 +1,7 @@
+html{
+
+}
+
 table{
 	margin-top: 1%;
 }
@@ -8,15 +12,27 @@ ul{
 	padding: 0;
 }
 
+em{
+	font-size: 120%;
+}
+
 form{
 	float: left;
 	width: 100%;
 }
 
-/*form input[type=text],
-form label{
-	display: block;
-}*/
+label{
+	font-family: arial, helvetica, sans-serif;
+	text-transform: capitalize;
+}
+
+label.required{
+	font-weight: bold;
+}
+
+label.required:after{
+	content: '*';
+}
 
 select{
 	width: auto !important;
@@ -25,20 +41,15 @@ select{
 input[type=submit]{
 	display: block;
 }
-
-label{
-	text-transform: capitalize;
-}
-
 /*input[type=text],
 input[type=number],
 input[type=email]{
 	padding: 0.6%;
 }*/
 
-em{
-	font-size: 120%;
-}
+/*
+	Classes
+*/
 
 .size1-4{
 	width: 19%;
@@ -50,10 +61,6 @@ em{
 
 .size1-2{
 	width: 48%;
-}
-
-.error{
-	color: #e9322d;
 }
 
 .line,
@@ -79,7 +86,7 @@ em{
 		}
 
 	.line-2 > div{
-		width: 50%;
+		width: 48%;
 	}
 
 	.line-3 > div{
@@ -130,10 +137,24 @@ em{
 		padding: 9% 0 0 7%;
 	}
 
-	#tablePrice td{
-		text-transform: capitalize;
+.error{
+	color: #e9322d;
+}
+
+	input.error,
+	select.error{
+		border-color: #e9322d;
 	}
 
+	.error + .popover{
+		color: whiteSmoke;
+		border-color: #d15b47;
+		background-color: #d15b47;
+	}
+
+	.error + .popover .arrow:after{
+		border-top-color: #d15b47 !important;
+	}
 /*
 	Trip page
 */
@@ -153,6 +174,25 @@ em{
 		-o-transition: color 0.3s;
 		transition: color 0.3s;
 	}
+
+/*
+	Booking Detail
+*/
+	#tablePrice td{
+		text-transform: capitalize;
+	}
+
+.divTable h4{
+	float: right;
+
+	margin-top: 4%;
+
+	font-style: italic;
+}
+
+.divTable h3{
+	float: left;
+}
 
 /*
 	Booking page
@@ -197,6 +237,14 @@ em{
 	font-size: 140%;
 }
 
+
+/*
+	Override
+*/
+
+.popover.top{
+	margin-left: 2.5%;
+}
 
 .twitter-typeahead{
 width:100%;

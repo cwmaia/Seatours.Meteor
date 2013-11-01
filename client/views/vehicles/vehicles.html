@@ -36,7 +36,7 @@
 	<div class="line-3">
 		<div>
 			<label>Category:</label>
-			<select name="categories" id="categories">
+			<select name="categories" id="categories" required>
 				<option value="">Select..</option>
 				{{#each categories}}
 	    			{{> category}}	
@@ -46,7 +46,7 @@
 
 		<div>
 			<label>Size: </label>
-			<select name="size" id="size">
+			<select name="size" id="size" required>
 				<option value=""></option>
 				{{#each sizes}}
 	    			{{> sizes}}	

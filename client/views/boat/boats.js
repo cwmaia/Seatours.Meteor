@@ -63,17 +63,22 @@ Template.editBoat.events({
 
 	"submit #boatForm" : function(event){
 		event.preventDefault();
-		_boat.name = event.currentTarget.name.value;
+		var form = event.currentTarget;
 
-		Session.set("_boat", null);
-		
-		if(!_boat._id)
-			Boats.insert(_boat);
-		else
-			Boats.update(_boat._id, _boat);
+		if(form.checkValidity()){
+			
+			_boat.name = form.name.value;
 
-		throwSuccess("Boat Saved");
-		Meteor.Router.to('/boats')
+			Session.set("_boat", null);
+			
+			if(!_boat._id)
+				Boats.insert(_boat);
+			else
+				Boats.update(_boat._id, _boat);
+
+			throwSuccess("Boat Saved");
+			Meteor.Router.to('/boats')
+		}
 	}
 	
 });
