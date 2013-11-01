@@ -46,6 +46,10 @@ Template.bookDetail.helpers({
 
 	date: function() {
 		return Session.get('bookingDate').toLocaleDateString();
+	},
+
+	bookings : function(){
+		return Books.find({dateOfBooking: Session.get('bookingDate')});
 	}
 });
 
@@ -53,6 +57,10 @@ Template.bookDetail.helpers({
 //Template Create Book
 Template.createBook.productName = function(){
 	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).name : "" ;
+}
+
+Template.createBook.dateOfBooking = function(){
+	return Session.get('bookingDate').toLocaleDateString();
 }
 
 Template.createBook.helpers({
@@ -85,6 +93,104 @@ Template.createBook.events({
 
 ///////////////////////////////////////////
 //Template Product Prices
+Template.productPrices.rendered = function(argument) {
+	jQuery.validator.setDefaults({
+		errorElement: 'span',
+		errorClass: 'help-inline error',
+		focusInvalid: true,
+		rules: {
+			email: {
+				required: true,
+				email:true
+			},
+			password: {
+				required: true,
+				minlength: 5
+			},
+			password2: {
+				required: true,
+				minlength: 5,
+				equalTo: "#password"
+			},
+			name: {
+				required: true
+			},
+			phone: {
+				required: true,
+				phone: 'required'
+			},
+			url: {
+				required: true,
+				url: true
+			},
+			from: {
+				required: true
+			},
+			to: {
+				required: true
+			},
+			hour: {
+				required: true
+			},
+			subscription: {
+				required: true
+			},
+			gender: 'required',
+			agree: 'required'
+		},
+
+		messages: {
+			email: {
+				required: "Please provide a valid email.",
+				email: "Please provide a valid email."
+			},
+			password: {
+				required: "Please specify a password.",
+				minlength: "Please specify a secure password."
+			},
+			subscription: "Please choose at least one option",
+			gender: "Please choose gender",
+			agree: "Please accept our policy"
+		},
+
+		invalidHandler: function (event, validator) { //display error alert on form submit   
+			$('.alert-error', $('.login-form')).show();
+		},
+
+		highlight: function (e) {
+			$(e).closest('.control-group').removeClass('info').addClass('error');
+		},
+
+		success: function (e) {
+			$(e).closest('.control-group').removeClass('error').addClass('info');
+			$(e).remove();
+		},
+
+		errorPlacement: function (error, element) {
+			// if(element.is(':checkbox') || element.is(':radio')) {
+			// 	var controls = element.closest('.controls');
+			// 	if(controls.find(':checkbox,:radio').length > 1) controls.append(error);
+			// 	else error.insertAfter(element.nextAll('.lbl').eq(0));
+			// } 
+			// else if(element.is('.chzn-select')) {
+			// 	error.insertAfter(element.nextAll('[class*="chzn-container"]').eq(0));
+			// }
+			// else error.insertAfter(element);
+			console.log(element);
+			element.tooltip({title: 'return'})
+		},
+
+		submitHandler: function (form) {
+		},
+		invalidHandler: function (form) {
+		}
+	});
+
+	$('form').bind('submit', function() {
+		$(this).valid();
+	});
+}
+
 Template.productPrices.events({
 	"change input" : function(event){
 		var totalParcial = event.currentTarget.value * this.unit;
@@ -149,7 +255,8 @@ Template.generalPassagerInfo.events({
 					"destination" : $("#destination").val(),			
 					"totalISK" : $("#totalISK").text(),
 					'dateOfBooking' : Session.get('bookingDate'),
-					'customer' : customer
+					'customer' : customer,
+					'bookStatus' : 'Created'
 				}
 		
 				book.vehicle = {
@@ -179,15 +286,14 @@ Template.generalPassagerInfo.events({
 				book.paid = false;
 
 				var result = Books.insert(book);
-				console.log(result);
 
 				throwSuccess("Book added");
 
 				Meteor.call('sendEmail',
+					$('#email').val(),
 		            'jarbas.byakuya@gmail.com',
-		            customer.email,
-		            'Hello from Meteor!',
-		            'http://localhost:3000/voucher/'+result);
+		            'Your Voucher at Seatous!',
+		            'https://seatours.meteor.meteor.com/voucher/'+result);
 				Meteor.Router.to('/voucher/'+result);
 			}
 			else
