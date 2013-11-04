@@ -24,13 +24,13 @@ Template.bookReport.events({
 			throwError('Dates are Needed!');
 			return;
 		}
-		
+
 		var dateFrom = new Date(from);
 		var dateTo = new Date(to);
 	
 
 		if(product){
-			listOfBooks = Books.find({productId: product, dateOfBooking: {$gte: dateFrom, $lt: dateTo}}).fetch();
+			listOfBooks = Books.find({"product._id": product, dateOfBooking: {$gte: dateFrom, $lt: dateTo}}).fetch();
 		}else{
 			listOfBooks = Books.find({dateOfBooking: {$gte: dateFrom, $lt: dateTo}}).fetch();
 		}

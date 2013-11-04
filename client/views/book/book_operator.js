@@ -1,5 +1,5 @@
 var SaveCustomer = true;
-
+var Product = {};
 ///////////////////////////////////////////
 //Template Book Operator
 Template.bookOperator.rendered = function() {
@@ -49,7 +49,8 @@ Template.bookDetail.helpers({
 	},
 
 	product: function() {
-		return Products.findOne(Session.get('productId'));
+		Product = Products.findOne(Session.get('productId'));
+		return Product;
 	},
 
 	date: function() {
@@ -269,7 +270,7 @@ Template.generalPassagerInfo.events({
 					'dateOfBooking' : Session.get('bookingDate'),
 					'customer' : customer,
 					'bookStatus' : 'Created',
-					'productId' : Session.get('productId')
+					'product' : Product
 				}
 		
 				book.vehicle = {

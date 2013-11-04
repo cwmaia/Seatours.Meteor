@@ -25,11 +25,32 @@
 				<input type='text' id='to' class='calendar'>
 			</div>
 		</div>
+		<div class='line-3'>
+			<div>
+				<label>Book Status: </label>
+				<select id='bookStatus'>
+					<option value=''>Select...</option>
+					<option value='Created'>Created</option>
+					<option value='Completed'>Completed</option>
+					<option value='Canceled'>Canceled</option>
+					<option value='No Show'>No Show</option>
+				</select>
+			</div>
+			<div>
+				<label>Payment Status: </label>
+				<select id='paymentStatus'>
+					<option value=''>Select...</option>
+					<option value='paid'>Payment Owed</option>
+					<option value='noPaid'>Payment Made</option>
+				</select>
+			</div>
+		</div>
 		<button class='btn btn-info btn-small filter'>Filter</button>
 	</fieldset>
 	<table class='table table-striped table-bordered trable-hover'>
 		<thead>
 			<tr>
+				<th>Id</th>
 				<th>Destination</th>
 				<th>Date of Booking</th>
 				<th>Total ISK</th>
@@ -51,7 +72,8 @@
 
 <template name='bookLine'>
 	<tr>
-		<td>{{destination}}</td>
+		<td><a href='/voucher/{{_id}}'>{{_id}}</a></td>
+		<td>{{product.name}}: {{destination}}</td>
 		<td>{{dateOfBooking}}</td>
 		<td>{{totalISK}}</td>
 		<td>{{customer.fullName}}</td>
