@@ -301,11 +301,23 @@ Template.generalPassagerInfo.events({
 
 				throwSuccess("Book added");
 
-				Meteor.call('sendEmail',
+				var fragment = Meteor.render(function(){
+					return Template['voucher']();
+				});
+				var html = "";
+				for (var i = 0; i < fragment.childNodes.length; i++) {
+					var a = fragment.childNodes[i].outerHTML === undefined;
+					if(!a){
+						html += fragment.childNodes[i].outerHTML + '<br/>';
+					}
+				};
+
+				Meteor.call('sendEmailHTML',
 					$('#email').val(),
-		            'jarbas.byakuya@gmail.com',
-		            'Your Voucher at Seatous!',
-		            '<h3>Tosco</h3>');
+					'noreply@seatours.com',
+					'Your Voucher at Seatours!',
+					'<html><head></head><body>Thanks for Booking with us, here is your <b>voucher: </b>'+html+'<hr/>Regards! Seatours Team!<body></html>');
+
 				Meteor.Router.to('/voucher/'+result);
 			}
 		}
