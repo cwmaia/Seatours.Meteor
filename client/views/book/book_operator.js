@@ -57,7 +57,7 @@ Template.bookDetail.helpers({
 	},
 
 	bookings : function(){
-		return Books.find({dateOfBooking: Session.get('bookingDate')});
+		return Books.find({dateOfBooking: Session.get('bookingDate'), productId: Session.get('productId')});
 	},
 
 	isBookCreated : function(status) {
@@ -268,7 +268,8 @@ Template.generalPassagerInfo.events({
 					"totalISK" : $("#totalISK").text(),
 					'dateOfBooking' : Session.get('bookingDate'),
 					'customer' : customer,
-					'bookStatus' : 'Created'
+					'bookStatus' : 'Created',
+					'productId' : Session.get('productId')
 				}
 		
 				book.vehicle = {

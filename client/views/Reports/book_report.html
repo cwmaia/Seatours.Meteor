@@ -4,31 +4,29 @@
 			Reports
 		</h1>
 	</div><!-- /.page-header -->
-	<form>
-		<fieldset>
-			<legend>Filter</legend>
-			<div class='line-3'>
-				<div>
-					<label>Select Product: </label>
-					<select>
-						<option name='product' value="">Select...</option>
-						{{#each products}}
-							<option value='{{_id}}'>{{name}}</option>
-						{{/each}}
-					</select>
-				</div>
-				<div>
-					<label>From Date: <label>
-					<input type='text' name='from' class='calendar'>
-				</div>
-				<div>
-					<label>To Date: <label>
-					<input type='text' name='to' class='calendar'>
-				</div>
+	<fieldset>
+		<legend>Filter</legend>
+		<div class='line-3'>
+			<div>
+				<label>Select Product: </label>
+				<select id='product'>
+					<option value="">Select...</option>
+					{{#each products}}
+						<option value='{{_id}}'>{{name}}</option>
+					{{/each}}
+				</select>
 			</div>
-			<input type='submit' value='Filter' class='btn btn-info btn-small'>
-		</fieldset>
-	</form>
+			<div>
+				<label>From Date: <label>
+				<input type='text' id='from' class='calendar'>
+			</div>
+			<div>
+				<label>To Date: <label>
+				<input type='text' id='to' class='calendar'>
+			</div>
+		</div>
+		<button class='btn btn-info btn-small filter'>Filter</button>
+	</fieldset>
 	<table class='table table-striped table-bordered trable-hover'>
 		<thead>
 			<tr>
