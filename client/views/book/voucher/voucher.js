@@ -13,3 +13,8 @@ Template.voucher.hasVehicles = function(){
 	}
 }
 
+Template.voucher.helpers({
+	'click .print' : function() {
+		
+	}
+})

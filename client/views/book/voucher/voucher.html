@@ -1,42 +1,108 @@
 <template name='voucher'>
-	<h3>Voucher</h3>
-	<hr/>
+	<div class="page-header">
+		<h1>Voucher</h1>
+	</div>
+
 	{{#with book}}
-		<label><b>Booking ID:</b> {{_id}}</label>
-		<label><b>Booking Date:</b> {{dateOfBooking}}</label>
-		<label><b>Booking Status:</b> Waiting Payment</label>
-		<h4>Customer Details</h4>
-		<label><b>Full Name:</b> {{customer.fullName}}</label>
-		<label><b>Full Adress:</b> {{customer.adress}}</label>
-		<label><b>Contact Number:</b> {{customer.telephone}}</label>
-		<span><b>Email Adress:</b> {{customer.email}}</span>
-		<hr/>
-		<h4>Booking Items</h4>
-		<table>
-			<thead>
-				<th><b>Items</b></th>
-				<th><b>Cost</b></th>
-			</thead>
-			<tbody>
-				{{#each prices}}
-					<tr>
-						<td><label>{{persons}}# - {{prices}}</label></td>
-						<td><label>{{persons}} X {{perUnit}} = {{sum}}</label></td>
-					</tr>
-				{{/each}}
-				{{#if hasVehicles}}
-					<tr>
-						<td><label>{{vehicle.category}} - {{vehicle.size}}m</label></td>
-						<td><label>{{vehicle.totalCost}}</label></td>
-					</tr>
-				{{/if}}
-			</tbody>
-			<tfoot>
-				<tr>
-					<td><label>sum</label></td>
-					<td><label>{{totalISK}}</label></td>
-				</tr>
-			</tfoot>
-		</table>
-	{{/with}}		
+		<div id="voucher">
+			<div class="line-3">
+				<section>
+					<h3>Booking ID:</h3>
+					<p>{{_id}}</p>
+				</section>
+
+				<section>
+					<h3>Booking Date:</h3>
+					<p>{{dateOfBooking}}</p>
+				</section>
+
+				<section>
+					<h3>Booking Status:</h3>
+					<p>Waiting Payment</p>
+				</section>
+			</div>
+
+			<h2>Customer Details</h2>
+			<hr>
+
+			<div class="line-3">
+				<section>
+					<h3>Full Name:</h3> 
+					<p>{{customer.fullName}}</p>
+				</section>
+
+				<section>
+					<h3>Full Adress:</h3> 
+					<p>{{customer.adress}}</p>
+				</section>
+
+				<section>
+					<h3>Contact Number:</h3> 
+					<p>{{customer.telephone}}</p>
+				</section>
+
+				<section>
+					<h3>Email Adress:</h3> 
+					<p>{{customer.email}}</p>
+				</section>
+			</div>
+
+			<h2>Booking Items</h2>
+			<hr/>
+
+			<div class="line-3" id="bookingItems">
+				<div>
+					<h3>Items:</h3>
+					{{#each prices}}
+						<p>
+							{{prices}} - {{persons}} x {{perUnit}} = {{sum}} ISK
+						</p>
+					{{/each}}
+
+					{{#if hasVehicles}}
+						<p>
+							{{vehicle.category}} - {{vehicle.size}}m = {{vehicle.totalCost}} ISK
+						</p>
+					{{/if}}
+				</div>
+
+				<div>
+					<h3>Total:</h3>
+					<p>{{totalISK}} ISK</p>
+				</div>
+			</div>
+
+		</div>
+	{{/with}}	
+
+	<button class="btn btn-success" class="print" onclick="window.print()">
+		Print
+	</button>	
 </template>
+			<!-- <table>
+				<thead>
+					<th><b>Items</b></th>
+					<th><b>Cost</b></th>
+				</thead>
+				
+				<tbody>
+					{{#each prices}}
+						<tr>
+							<td><label>{{persons}}# - {{prices}}</label></td>
+							<td><label>{{persons}} X {{perUnit}} = {{sum}}</label></td>
+						</tr>
+					{{/each}}
+					{{#if hasVehicles}}
+						<tr>
+							<td><label>{{vehicle.category}} - {{vehicle.size}}m</label></td>
+							<td><label>{{vehicle.totalCost}}</label></td>
+						</tr>
+					{{/if}}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td><label>sum</label></td>
+						<td><label>{{totalISK}}</label></td>
+					</tr>
+				</tfoot>
+			</table> -->

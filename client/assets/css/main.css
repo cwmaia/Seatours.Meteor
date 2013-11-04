@@ -2,6 +2,11 @@ html{
 	font-family: arial, helvetica, sans-serif !important;	
 }
 
+h1, h2, h3, h4, h5, h6{
+	margin: 0;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
 table{
 	margin-top: 1%;
 }
@@ -43,6 +48,7 @@ input[type=submit]{
 }
 
 label{
+	font-weight: bold;
 	text-transform: capitalize;
 }
 
@@ -100,29 +106,29 @@ select{
 	margin-bottom: 2%;
 }
 
-	.line > div,
-	.line-2 > div,
-	.line-3 > div,
-	.line-4 > div{
+	.line > *,
+	.line-2 > *,
+	.line-3 > *,
+	.line-4 > *{
 		float: left;
 		margin-right: 1%;
 	}
 	
-		.line-2 > div:last-child,
-		.line-3 > div:last-child,
-		.line-4 > div:last-child{
+		.line-2 > *:last-child,
+		.line-3 > *:last-child,
+		.line-4 > *:last-child{
 			margin-right: 0%;
 		}
 
-	.line-2 > div{
+	.line-2 > *{
 		width: 48%;
 	}
 
-	.line-3 > div{
+	.line-3 > *{
 		width: 30%;
 	}
 
-	.line-4 > div{
+	.line-4 > *{
 		width: 17%;
 	}
 
@@ -184,6 +190,8 @@ select{
 	.error + .popover .arrow:after{
 		border-top-color: #d15b47 !important;
 	}
+
+
 /*
 	Trip page
 */
@@ -222,6 +230,7 @@ select{
 .divTable h3{
 	float: left;
 }
+
 
 /*
 	Booking page
@@ -268,6 +277,27 @@ select{
 	font-size: 140%;
 }
 
+
+/*
+	Voucher
+*/
+
+#voucher h3{
+	margin-bottom: 1%;
+	font-style: italic;
+	font-weight: lighter;
+	text-shadow: 2px 1px 1px white;
+}
+
+#voucher p{
+	font-size: 130%;
+	font-weight: lighter;
+	color: #555;
+}
+
+#bookingItems p{
+	text-transform: capitalize;
+}
 
 /*
 	Override
@@ -343,4 +373,38 @@ width:100%;
 
 .tt-suggestion p {
   margin: 0;
+}
+
+@media print {
+	h1{
+		text-align: center;
+		font-size: 200% !important;
+	}
+
+	header{
+		height: 0 !important;
+		visibility: hidden;
+	}
+
+	img{
+		visibility: visible !important;
+	}
+
+	#id-logo{
+		left: 120%;
+		top: 60%;
+
+		visibility: visible !important;
+	}
+
+	input,
+	button,
+	#sidebar,
+	#btn-scroll-up{
+		display: none !important;
+	}
+
+	#main-content{
+		margin: 0;
+	}
 }
