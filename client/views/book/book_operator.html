@@ -29,12 +29,14 @@
 		</h1>
 	</div><!-- /.page-header -->
 
-	<label class="required">Destination: </label>
-	<select id="destination">
-		{{#each destination}}
-			{{> destination}}
-		{{/each}}
-	</select>
+	<div class="line">
+		<label class="required">Destination: </label>
+		<select id="destination">
+			{{#each destination}}
+				{{> destination}}
+			{{/each}}
+		</select>
+	</div>
 
 	<div class="line-3">
 		{{#each prices}}
@@ -300,7 +302,15 @@
 						<td>{{customer.fullName}}</td>
 						<td>{{bookStatus}}</td>
 						<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
-						<td><a href="#">Cancel</a></td>
+						<td>
+							<a href="" class="changeStatusBooking">
+								{{#if isBookCreated bookStatus}}
+									Cancel
+								{{else}}
+									Active
+								{{/if}}
+							</a>
+						</td>
 					</tr>
 				{{/each}}
 				</tbody>

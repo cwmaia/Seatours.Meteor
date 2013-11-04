@@ -1,9 +1,34 @@
 <template name='bookReport'>
 	<div class="page-header">
 		<h1>
-			All Books - We'll Refine this to a global search over books created.
+			Reports
 		</h1>
 	</div><!-- /.page-header -->
+	<form>
+		<fieldset>
+			<legend>Filter</legend>
+			<div class='line-3'>
+				<div>
+					<label>Select Product: </label>
+					<select>
+						<option name='product' value="">Select...</option>
+						{{#each products}}
+							<option value='{{_id}}'>{{name}}</option>
+						{{/each}}
+					</select>
+				</div>
+				<div>
+					<label>From Date: <label>
+					<input type='text' name='from' class='calendar'>
+				</div>
+				<div>
+					<label>To Date: <label>
+					<input type='text' name='to' class='calendar'>
+				</div>
+			</div>
+			<input type='submit' value='Filter' class='btn btn-info btn-small'>
+		</fieldset>
+	</form>
 	<table class='table table-striped table-bordered trable-hover'>
 		<thead>
 			<tr>
