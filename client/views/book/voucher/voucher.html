@@ -50,24 +50,35 @@
 			<h2>Booking Items</h2>
 			<hr/>
 
-			<div class="line-4">
+			<div class="line-3" id="bookingItems">
 				<div>
-					<h3>Items</h3>
+					<h3>Items:</h3>
 					{{#each prices}}
 						<p>
-							{{persons}} X {{perUnit}} = {{sum}}
+							{{prices}} - {{persons}} x {{perUnit}} = {{sum}} ISK
 						</p>
 					{{/each}}
-					{{#if vehicle}}
+
+					{{#if hasVehicles}}
 						<p>
-							{{vehicle.category}} - {{vehicle.size}}m
-							{{vehicle.totalCost}}
+							{{vehicle.category}} - {{vehicle.size}}m = {{vehicle.totalCost}} ISK
 						</p>
 					{{/if}}
 				</div>
 
+				<div>
+					<h3>Total:</h3>
+					<p>{{totalISK}} ISK</p>
+				</div>
 			</div>
 
+		</div>
+	{{/with}}	
+
+	<button class="btn btn-success" class="print" onclick="window.print()">
+		Print
+	</button>	
+</template>
 			<!-- <table>
 				<thead>
 					<th><b>Items</b></th>
@@ -81,14 +92,13 @@
 							<td><label>{{persons}} X {{perUnit}} = {{sum}}</label></td>
 						</tr>
 					{{/each}}
-					{{#if vehicle}}
+					{{#if hasVehicles}}
 						<tr>
 							<td><label>{{vehicle.category}} - {{vehicle.size}}m</label></td>
 							<td><label>{{vehicle.totalCost}}</label></td>
 						</tr>
 					{{/if}}
 				</tbody>
-
 				<tfoot>
 					<tr>
 						<td><label>sum</label></td>
@@ -96,6 +106,3 @@
 					</tr>
 				</tfoot>
 			</table> -->
-		</div>
-	{{/with}}		
-</template>

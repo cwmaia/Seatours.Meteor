@@ -2,7 +2,7 @@ html{
 	font-family: arial, helvetica, sans-serif !important;	
 }
 
-h2, h3, h4, h5, h6{
+h1, h2, h3, h4, h5, h6{
 	margin: 0;
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
@@ -48,6 +48,7 @@ input[type=submit]{
 }
 
 label{
+	font-weight: bold;
 	text-transform: capitalize;
 }
 
@@ -294,6 +295,10 @@ select{
 	color: #555;
 }
 
+#bookingItems p{
+	text-transform: capitalize;
+}
+
 /*
 	Override
 */
@@ -368,4 +373,38 @@ width:100%;
 
 .tt-suggestion p {
   margin: 0;
+}
+
+@media print {
+	h1{
+		text-align: center;
+		font-size: 200% !important;
+	}
+
+	header{
+		height: 0 !important;
+		visibility: hidden;
+	}
+
+	img{
+		visibility: visible !important;
+	}
+
+	#id-logo{
+		left: 120%;
+		top: 60%;
+
+		visibility: visible !important;
+	}
+
+	input,
+	button,
+	#sidebar,
+	#btn-scroll-up{
+		display: none !important;
+	}
+
+	#main-content{
+		margin: 0;
+	}
 }
