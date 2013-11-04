@@ -1,5 +1,5 @@
 html{
-
+	font-family: arial, helvetica, sans-serif !important;	
 }
 
 table{
@@ -22,7 +22,6 @@ form{
 }
 
 label{
-<<<<<<< HEAD
 	font-family: arial, helvetica, sans-serif;
 	text-transform: capitalize;
 }
@@ -50,11 +49,31 @@ label{
 label.required:after{
 	content: '*';
 }
-/*input[type=text],
+
+input[type=text],
 input[type=number],
-input[type=email]{
-	padding: 0.6%;
-}*/
+input[type=email],
+input[type=password],
+textarea{
+	/*padding: 2%;*/
+	
+}
+
+input[type=text],
+input[type=number],
+input[type=email],
+input[type=password],
+textarea,
+select{
+
+	/*border-radius: 5px !important;*/
+
+	-webkit-transition: border-color 0.4s;
+	-moz-transition: border-color 0.4s;
+	-ms-transition: border-color 0.4s;
+	-o-transition: border-color 0.4s;
+	transition: border-color 0.4s;
+}
 
 /*
 	Classes
@@ -78,6 +97,7 @@ input[type=email]{
 .line-4{
 	float: left;
 	width: 100%;
+	margin-bottom: 2%;
 }
 
 	.line > div,

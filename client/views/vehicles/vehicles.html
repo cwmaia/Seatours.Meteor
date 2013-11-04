@@ -8,12 +8,12 @@
 	<form novalidate>
 		<div class="line-3">
 			<div>
-				<label>Brandname:</label>
+				<label class="required">Brandname: </label>
 				<input type="text" name="brandname" id="brandname" placeholder="Brandname" required>
 			</div>
 			
 			<div>
-				<label>Model:</label>
+				<label class="required">Model: </label>
 				<input type="text" name="model" id="model" placeholder="Model" required>
 			</div>
 		</div>
@@ -35,7 +35,7 @@
 <template name="categoryVehicle">
 	<div class="line-3">
 		<div>
-			<label>Category:</label>
+			<label class="required">Category: </label>
 			<select name="categories" id="categories" required>
 				<option value="">Select..</option>
 				{{#each categories}}
@@ -45,7 +45,7 @@
 		</div>
 
 		<div>
-			<label>Size: </label>
+			<label class="required">Size: </label>
 			<select name="size" id="size" required>
 				<option value=""></option>
 				{{#each sizes}}

@@ -25,7 +25,11 @@
 <template name="editBoat">
 	<div class="page-header">
 		<h1>
-			Edit {{boat.name}}
+			{{#if boat.name}}
+				Edit {{boat.name}} 
+			{{else}} 
+				New Boat 
+			{{/if}}
 		</h1>
 	</div>
 
@@ -33,11 +37,11 @@
 
 		<div class="line-3">
 			<div>
-				<label>Boat Name: </label>
+				<label class="required">Boat Name: </label>
 				<input type ="text" id="name" name="name" value="{{boat.name}}" placeholder="Boat Name" required>
 			</div>
 			<div>
-				<label>Maximum Capacity: </label>
+				<label class="required">Maximum Capacity: </label>
 				<input type ="number" min="0" id="maxCapacity" name="maxCapacity" value="{{boat.maxCapacity}}" placeholder="Max capacity" required>
 			</div>
 		</div>
@@ -52,17 +56,17 @@
 		<form id="slotForm" name="slotForm" novalidate>
 			<div class="line-3">
 				<div>
-					<label>Slot Name: </label>
+					<label class="required">Slot Name: </label>
 					<input type="text" placeholder="Slot Name" id='slotName' required>
 				</div>
 
 				<div>
-					<label>Slot Width: </label>
+					<label class="required">Slot Width: </label>
 					<input type="text" placeholder="Width" name="width" id='width-slot' required>
 				</div>
 
 				<div>
-					<label>Slot Height: </label>
+					<label class="required">Slot Height: </label>
 					<input type="text" placeholder="Height" name="height" id='height-slot' required>
 				</div>
 			</div>
