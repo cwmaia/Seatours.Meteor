@@ -51,7 +51,7 @@ Template.editTrip.events({
 			
 			saveProduct();
 			Meteor.Router.to('/trips')
-			throwSuccess(_product.name + ' changed');
+			throwSuccess(_product.name + ' saved');
 		}
 	},
 

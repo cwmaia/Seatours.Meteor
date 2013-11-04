@@ -31,6 +31,14 @@ Template.bookOperator.events({
 Template.bookDetail.events({
 	'click #newBooking' :function(event) {
 		Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');		
+	},
+
+	'click .changeStatusBooking' : function(event) {
+		var id = $(event.currentTarget).closest('tr').attr('id'),
+		book = Books.findOne(id);
+
+		book.bookStatus == 'Canceled' ? book.bookStatus = 'Created' : book.bookStatus = 'Canceled';
+		Books.update(id, book);
 	}
 });
 
@@ -50,6 +58,10 @@ Template.bookDetail.helpers({
 
 	bookings : function(){
 		return Books.find({dateOfBooking: Session.get('bookingDate')});
+	},
+
+	isBookCreated : function(status) {
+		return status == 'Created';
 	}
 });
 

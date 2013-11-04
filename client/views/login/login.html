@@ -1,35 +1,34 @@
 <template name='login'>
-    <article>
-        <div id="div-form">
-            <div id="login-box" class="visible widget-box no-border">
-                <div class="widget-body">
-                    <div class="widget-main">
-                        <h4 class="blue lighter bigger">
-                            <a class="logo" href="/"><img src='/images/locked.png'></a></br>
-                        </h4>
-                        <form id="login-form">
-                                <div>
-                                    <span class="block input-icon input-icon-right">
-                                        <input type="text" name="username" id="login" class="input-text" maxlength="100" size="25" placeholder="Username">
-                                        <i class="icon-user"></i>
-                                    </span>
-                                </div>
+    <div id="div-form">
+        <div id="login-box" class="visible widget-box no-border">
+            <div class="widget-body">
+                <div class="widget-main">
+                    <h4 class="blue lighter bigger">
+                        <a class="logo" href="/"><img src='/images/locked.png'></a></br>
+                    </h4>
+                   
+                    <form id="login-form" novalidate>
+                        <div>
+                            <span class="block input-icon input-icon-right">
+                                <input type="text" name="username" id="login" class="input-text" maxlength="100" size="25" placeholder="Username" required>
+                                <i class="icon-user"></i>
+                            </span>
+                        </div>
 
-                                <div>
-                                    <span class="block input-icon input-icon-right">
-                                        <input type="password" name="password" id="password" class="input-text" maxlength="100" size="25" placeholder="Password">
-                                        <i class="icon-lock"></i>
-                                    </span>
-                                </div>
+                        <div>
+                            <span class="block input-icon input-icon-right">
+                                <input type="password" name="password" id="password" class="input-text" maxlength="100" size="25" placeholder="Password" required>
+                                <i class="icon-lock"></i>
+                            </span>
+                        </div>
 
-                                <button class='btn btn-info btn-action login-button'>
-                                    <i class="icon-unlock"></i>
-                                    Sing in
-                                </button>
-                        </form>
-                    </div>
+                        <button class='btn btn-info btn-action login-button' form='login-form'>
+                            <i class="icon-unlock"></i>
+                            Sing in
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-    </article>
+    </div>
 </template>

@@ -32,8 +32,7 @@ Template.redirect.rendered = function(){
 				email:true
 			},
 			password: {
-				required: true,
-				minlength: 5
+				required: true
 			},
 			password2: {
 				required: true,
