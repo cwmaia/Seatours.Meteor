@@ -1,11 +1,15 @@
-Template.voucher.rendered = function(){
-	var sended = Books.findOne({_id: Session.get('bookId')}).voucherSended;
-	if(!sended){
-		
-	}
-}
+var Book = {};
 
 Template.voucher.book = function(){
-	return Books.findOne({_id: Session.get('bookId')});
+	Book = Books.findOne({_id: Session.get('bookId')});
+	return Book;
+}
+
+Template.voucher.hasVehicles = function(){
+	if(Book.vehicle.category != ''){
+		return true;
+	}else{
+		return false;
+	}
 }
 

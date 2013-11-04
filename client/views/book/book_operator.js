@@ -260,10 +260,10 @@ Template.generalPassagerInfo.events({
 				}
 		
 				book.vehicle = {
-					"vehicleModel" : $("#listvehicles").val() ? $("#listvehicles").val() : null,
-					"category" : $("#categories").val() ? $("#categories").val() : null,
-					"size" : $("#size").val() ? $("#size").val() : null,
-					"totalCost" : $("#totalVehicle").text() ? $("#totalVehicle").text() : null
+					"vehicleModel" : $("#listvehicles").val(),
+					"category" : $("#categories").val(),
+					"size" : $("#size").val(),
+					"totalCost" : $("#totalVehicle").text()
 				}
 			
 				var prices = [];
