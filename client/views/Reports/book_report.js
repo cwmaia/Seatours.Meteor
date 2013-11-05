@@ -19,6 +19,8 @@ Template.bookReport.events({
 		var product = $('#product').val(); 
 		var from = $('#from').val();
 		var to = $('#to').val();
+		var bookStatus = $('#bookStatus').val();
+		var paymentStatus = $('#paymentStatus').val();
 
 		if(!from || !to){
 			throwError('Dates are Needed!');
@@ -27,13 +29,19 @@ Template.bookReport.events({
 
 		var dateFrom = new Date(from);
 		var dateTo = new Date(to);
-	
+		
+		var query = {dateOfBooking: {$gte: dateFrom, $lt: dateTo}};
 
-		if(product){
-			listOfBooks = Books.find({"product._id": product, dateOfBooking: {$gte: dateFrom, $lt: dateTo}}).fetch();
-		}else{
-			listOfBooks = Books.find({dateOfBooking: {$gte: dateFrom, $lt: dateTo}}).fetch();
-		}
+		if(product) 
+			query['product._id'] = product;
+
+		if(paymentStatus)
+			query['paid'] = (paymentStatus === '0') ? false : true;
+
+		if(bookStatus)
+			query['bookStatus'] = bookStatus;
+
+		listOfBooks = Books.find(query).fetch();
 
 		Session.set('Books', listOfBooks);
 	}
