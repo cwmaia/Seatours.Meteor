@@ -303,13 +303,13 @@
 						<td>{{bookStatus}}</td>
 						<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
 						<td>
-							<a href="" class="changeStatusBooking">
-								{{#if isBookCreated bookStatus}}
+							{{#if isBookCreated bookStatus}}
+								<a href="" class="changeStatusBooking">
 									Cancel
-								{{else}}
-									Active
-								{{/if}}
-							</a>
+								</a>
+							{{else}}
+								<p>-</p>
+							{{/if}}
 						</td>
 					</tr>
 				{{/each}}
