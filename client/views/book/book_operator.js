@@ -58,7 +58,7 @@ Template.bookDetail.helpers({
 	},
 
 	bookings : function(){
-		return Books.find({dateOfBooking: Session.get('bookingDate'), productId: Session.get('productId')});
+		return Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId')});
 	},
 
 	isBookCreated : function(status) {
