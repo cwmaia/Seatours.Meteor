@@ -29,6 +29,7 @@ Template.bookOperator.events({
 //Template Book Detail
 Template.bookDetail.rendered = function() {
 	$('#passengers').dataTable();
+	$('#boatSlots').dataTable();
 }
 
 //Global Vars
@@ -36,7 +37,7 @@ var MaxCapacity = 0;
 
 Template.bookDetail.events({
 	'click #newBooking' :function(event) {
-		var bookingsCreated = Books.find({bookStatus: 'Created'}).fetch();
+		var bookingsCreated = Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId'), bookStatus: 'Created'});
 		if(bookingsCreated.length >= MaxCapacity)
 			throwError('Maximum capacity of passengers reached!');	
 		else
@@ -78,11 +79,14 @@ Template.bookDetail.helpers({
 	},
 
 	bookings : function(){
-		return Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId'), bookStatus: 'Created'});
+		return Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId')});
 	},
 
 	isBookCreated : function(status) {
 		return status == 'Created';
+	},
+	bookingsCreated : function(){
+		return Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId'), bookStatus : "Created"});
 	}
 });
 

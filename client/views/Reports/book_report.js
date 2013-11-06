@@ -9,6 +9,7 @@ Template.bookReport.helpers({
 
 Template.bookReport.rendered = function(){
 	$('.calendar').datepicker();
+	$('#filterResult').dataTable();
 }
 
 Template.bookReport.events({
