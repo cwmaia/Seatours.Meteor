@@ -61,8 +61,8 @@ input[type=number],
 input[type=email],
 input[type=password],
 textarea{
+	width: 80%;
 	/*padding: 2%;*/
-	
 }
 
 input[type=text],
@@ -86,15 +86,15 @@ select{
 */
 
 .size1-4{
-	width: 19%;
+	width: 19% !important;
 }
 
 .size1-3{
-	width: 30%;
+	width: 30% !important;
 }
 
 .size1-2{
-	width: 48%;
+	width: 48% !important;
 }
 
 .line,
@@ -364,12 +364,16 @@ select{
 }
 
 .twitter-typeahead{
-width:100%;
+	width:100%;
+}
+
+.twitter-typeahead input[type=text]{
+	width: 80%;
 }
 
 .twitter-typeahead .tt-query,
 .twitter-typeahead .tt-hint {
-  margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 .tt-dropdown-menu {

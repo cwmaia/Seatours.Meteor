@@ -119,12 +119,7 @@
 <template name="bookingVehicles">
 	<div>
 		<label>Vehicle</label>
-		<select id="listVehicles">
-			<option>Select...</option>
-			{{#each vehicles}}
-				<option id="{{_id}}">{{brandname}} - {{model}}</option>
-			{{/each}}
-		</select>
+		<input type="text" name="vehicle" id="vehicle">
 	</div>
 </template>
 
@@ -155,7 +150,7 @@
 	        <div class="line-3 input-append">
 	        	<div>
 		            <label class="control-label required">Birth Date: </label>
-		            <input type='text' id="birthDate" name="birthDate" class="datepicker" placeholder="Birth Date" required>
+		            <input type='text' id="birthDate" name="birthDate" class="datepicker size1-3" placeholder="Birth Date" required>
 		            
 		            <span class="add-on">
 						<i class="icon-calendar"></i>
@@ -164,7 +159,7 @@
 		        
 		        <div>
 		            <label class="required">Email: </label>
-		            <input type="email" id="email" name="email" placeholder="Email" class="input-xlarge" required>
+		            <input type="email" id="email" name="email" placeholder="Email" required>
 		        </div>
 	            
 	            <div class="input-append">
@@ -183,31 +178,34 @@
         	<div class="line-3">
                 <div class="controls">
             		<label class="required">Adress: </label>
-                	<input type="text"  id='adress'name="adress" placeholder="Address" class="input-xlarge" required>
+                	<input type="text"  id='adress'name="adress" placeholder="Address" required>
             	</div>
 		        
 		        <div>
 		            <label class="required">Postcode: </label>
-	                <input type="text" id='postcode' name="postcode" placeholder="Postcode" class="input-xlarge" required>
+	                <input type="text" id='postcode' name="postcode" placeholder="Postcode" required>
 		        </div>
                 
                 <div>
 	            	<label class="required">City: </label>
-	                <input type="text"  id='city'name="city" placeholder="City" class="input-xlarge" required>
+	                <input type="text"  id='city'name="city" placeholder="City" required>
 	            </div>
         	</div>
 
 	        <div class="line-3">
                 <div>
 	            	<label class="required">County / State: </label>
-	                <input type="text"  id='state'name="county" placeholder="County / State" class="input-xlarge" required>
+	                <input type="text"  id='state'name="county" placeholder="County / State" required>
 	            </div>
 
 	            <div>
 	            	<label class="required">Country: </label>
-	                <select id="country" name="country" required>
-	                	<option value=''>Select...</option>
-	                	<option>Brazil</option>
+	            	<select id="country" name="country" required>
+	            		{{#each countries}}
+	            			<option value="{{name}}">{{name}}</option>
+	            		{{/each}}
+	            		<option value="">Select..</option>
+	            		<option value="Brazil">Brazil</option>
 	            	</select>
 	            </div>
 	        </div>
@@ -216,7 +214,6 @@
         <input type='submit' class="btn btn-small btn-success" value='Save Book'/>
     </form>
 </template>
-
 
 <template name="categoryBook">
 	<option value="{{category}}" id="{{_id}}">{{category}}</option>

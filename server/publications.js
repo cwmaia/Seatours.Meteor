@@ -24,7 +24,8 @@ Meteor.publish('loggedUsers', function() {
 
 Meteor.publish('customers', function(){
 	return Customers.find();
-})
+});
+
 
 // In your server code: define a method that the client can call
 Meteor.methods({
@@ -58,4 +59,3 @@ Meteor.methods({
     });
   }
 });
-
