@@ -6,7 +6,7 @@ if(Boats.find().count() == 0){
 	Boats.insert({
 	"_id" : "1",
 	"name" : "Baldur Ferry",
-	"maxCapacity" : 1,
+	"maxCapacity" : 10,
 	'slots' : [
 		{
 			"number" : 1,

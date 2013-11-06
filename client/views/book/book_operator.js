@@ -4,7 +4,6 @@ var Product = {};
 //Template Book Operator
 Template.bookOperator.rendered = function() {
 	$('.calendar').datepicker({
-		minDate: 0,
 		onSelect: function() {
 			var date = $(this).datepicker('getDate');
 			Session.set('bookingDate', date);
@@ -28,6 +27,9 @@ Template.bookOperator.events({
 
 ///////////////////////////////////////////
 //Template Book Detail
+Template.bookDetail.rendered = function() {
+	$('#passengers').dataTable();
+}
 
 //Global Vars
 var MaxCapacity = 0;
@@ -76,7 +78,7 @@ Template.bookDetail.helpers({
 	},
 
 	bookings : function(){
-		return Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId')});
+		return Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId'), bookStatus: 'Created'});
 	},
 
 	isBookCreated : function(status) {
@@ -254,7 +256,13 @@ Template.bookingVehicles.helpers({
 
 
 Template.bookingVehicles.rendered = function(){
-	$("#listvehicles").chosen();
+	$('#listVehicles').typeahead({
+		name : 'name',
+		local : Vehicles.find().fetch()
+	}).bind('typeahead:selected', function (obj, datum) {
+		console.log(obj);
+		console.log(datum);
+	});
 }
 
 Template.generalPassagerInfo.rendered = function() {

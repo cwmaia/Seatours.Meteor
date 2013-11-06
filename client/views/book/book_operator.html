@@ -119,17 +119,13 @@
 <template name="bookingVehicles">
 	<div>
 		<label>Vehicle</label>
-		<select id="listvehicle">
+		<select id="listVehicles">
 			<option>Select...</option>
 			{{#each vehicles}}
-				{{> listVehicles}}
+				<option id="{{_id}}">{{brandname}} - {{model}}</option>
 			{{/each}}
 		</select>
 	</div>
-</template>
-
-<template name="listVehicles">
-	<option id="{{_id}}">{{brandname}} - {{model}}</option>
 </template>
 
 <template name="generalPassagerInfo">
@@ -288,10 +284,10 @@
 					<tr>
 						<th>ID</th>
 						<th>Trip</th>
-						<th>Customer</th>
+						<th class="sorting_disabled">Customer</th>
 						<th>Book Status</th>
 						<th>Payment Status</th>
-						<th>Action</th>
+						<th class="sorting_disabled">Action</th>
 					</tr>
 				</thead>
 				<tbody>	
