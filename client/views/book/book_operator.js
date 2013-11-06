@@ -227,7 +227,7 @@ Template.generalPassagerInfo.events({
 				for (var i = 0; i < fragment.childNodes.length; i++) {
 					var a = fragment.childNodes[i].outerHTML === undefined;
 					if(!a){
-						html += fragment.childNodes[i].outerHTML + '<br/>';
+						html += fragment.childNodes[i].outerHTML;
 					}
 				};
 
