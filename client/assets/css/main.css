@@ -253,7 +253,7 @@ select{
 }
 
 .calendarWrap{
-	visibility: hidden;
+	/*visibility: hidden;*/
 	margin-left: 2%;
 }
 

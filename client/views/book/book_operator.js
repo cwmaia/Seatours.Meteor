@@ -28,6 +28,10 @@ Template.bookOperator.events({
 
 ///////////////////////////////////////////
 //Template Book Detail
+Template.bookDetail.rendered = function() {
+	$('#passengers').dataTable();
+}
+
 Template.bookDetail.events({
 	'click #newBooking' :function(event) {
 		Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');		
