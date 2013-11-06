@@ -28,9 +28,17 @@ Template.bookOperator.events({
 
 ///////////////////////////////////////////
 //Template Book Detail
+
+//Global Vars
+var MaxCapacity = 0;
+
 Template.bookDetail.events({
 	'click #newBooking' :function(event) {
-		Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');		
+		var bookingsCreated = Books.find({bookStatus: 'Created'}).fetch();
+		if(bookingsCreated.length >= MaxCapacity)
+			throwError('Maximum capacity of passengers reached!');	
+		else
+			Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');
 	},
 
 	// 'click .changeStatusBooking' : function(event) {
@@ -53,7 +61,9 @@ Template.bookDetail.events({
 Template.bookDetail.helpers({
 	boat: function() {
 		var boatId = Products.findOne({_id: Session.get('productId')}).boatId;
-		return Boats.findOne({_id: boatId});
+		var boat = Boats.findOne({_id: boatId});
+		MaxCapacity = boat.maxCapacity;
+		return boat;
 	},
 
 	product: function() {
@@ -125,7 +135,6 @@ Template.productPrices.events({
 		calcTotal();
 	}
 })
-
 
 Template.generalPassagerInfo.events({
 	'keyup #fullName' : function(event){
