@@ -1,10 +1,7 @@
-html{
-	font-family: arial, helvetica, sans-serif !important;	
-}
-
+body,
 h1, h2, h3, h4, h5, h6{
 	margin: 0;
-	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	font-family: 'Cabin', Arial, tahoma, sans-serif !important;
 }
 
 table{
@@ -71,7 +68,6 @@ input[type=email],
 input[type=password],
 textarea,
 select{
-
 	/*border-radius: 5px !important;*/
 
 	-webkit-transition: border-color 0.4s;
@@ -219,17 +215,24 @@ select{
 		text-transform: capitalize;
 	}
 
-.divTable h4{
-	float: right;
-
-	margin-top: 4%;
-
-	font-style: italic;
-}
-
-.divTable h3{
+.divTable,
+.divTable > div{
 	float: left;
+	width: 100%;
+
+	margin-bottom: 2%;
 }
+
+	.divTable h4{
+		float: right;
+
+		margin-top: 1%;
+		font-style: italic;
+	}
+
+	.divTable h3{
+		float: left;
+	}
 
 
 /*

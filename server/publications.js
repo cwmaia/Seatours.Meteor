@@ -26,6 +26,9 @@ Meteor.publish('customers', function(){
 	return Customers.find();
 });
 
+Meteor.publish('countries', function() {
+  return Countries.find();
+});
 
 // In your server code: define a method that the client can call
 Meteor.methods({
