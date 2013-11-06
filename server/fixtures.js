@@ -551,6 +551,10 @@ if(Meteor.users.find().count() == 0){
 	});
 }
 
+if(Vehicles.find().count() == 0){
+	
+}
+
 if(Customers.find().count() == 0){
 	Customers.insert({
 		"title" : "Mr",

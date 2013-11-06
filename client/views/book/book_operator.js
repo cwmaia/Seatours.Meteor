@@ -29,6 +29,7 @@ Template.bookOperator.events({
 //Template Book Detail
 Template.bookDetail.rendered = function() {
 	$('#passengers').dataTable();
+	$('#boatSlots').dataTable();
 }
 
 //Global Vars
@@ -36,7 +37,7 @@ var MaxCapacity = 0;
 
 Template.bookDetail.events({
 	'click #newBooking' :function(event) {
-		var bookingsCreated = Books.find({bookStatus: 'Created'}).fetch();
+		var bookingsCreated = Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId'), bookStatus: 'Created'});
 		if(bookingsCreated.length >= MaxCapacity)
 			throwError('Maximum capacity of passengers reached!');	
 		else
@@ -78,11 +79,14 @@ Template.bookDetail.helpers({
 	},
 
 	bookings : function(){
-		return Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId'), bookStatus: 'Created'});
+		return Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId')});
 	},
 
 	isBookCreated : function(status) {
 		return status == 'Created';
+	},
+	bookingsCreated : function(){
+		return Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId'), bookStatus : "Created"});
 	}
 });
 
@@ -230,7 +234,7 @@ Template.generalPassagerInfo.events({
 				for (var i = 0; i < fragment.childNodes.length; i++) {
 					var a = fragment.childNodes[i].outerHTML === undefined;
 					if(!a){
-						html += fragment.childNodes[i].outerHTML + '<br/>';
+						html += fragment.childNodes[i].outerHTML;
 					}
 				};
 
@@ -263,6 +267,18 @@ Template.generalPassagerInfo.rendered = function() {
 
 	$('#telephone').mask('(99) 9999-9999');
 	$('#birthDate').mask('99/99/9999');
+
+	$('#country').typeahead({
+		name : 'name',
+		local: [{
+			id 		: 1,
+			value	: 'Brazil'
+		},
+		{
+			id 		: 2,
+			value 	: 'Icelandic'
+		}]
+	});
 }
 
 Template.bookingVehicles.rendered = function(){

@@ -267,12 +267,12 @@
 		</button>
 	</h3>
 	
-	<div class="line-2">
+	<div>
 		<div class="divTable">
 			<div>
 				<h3>Passengers</h3>
 
-				<h4 class="length">Total: {{bookings.count}}/{{boat.maxCapacity}}</h4>
+				<h4 class="length">Total: {{bookingsCreated.count}}/{{boat.maxCapacity}}</h4>
 		
 			</div>
 
@@ -309,8 +309,9 @@
 				</tbody>
 			</table>
 		</div>
-		
+		</div>
 		{{#if boat.slots}}
+		<div>
 			<div class="divTable">
 				<div>
 					<h3>Boat slots</h3>
@@ -318,7 +319,7 @@
 					<h4 class="length">Total: {{boat.slots.length}}</h4>
 				</div>
 
-				<table class='table table-striped table-bordered trable-hover'>
+				<table class='table table-striped table-bordered trable-hover' id='boatSlots'>
 		    		<thead>
 		    			<th>Slot Number</th>
 		    			<th>Slot Name</th>
