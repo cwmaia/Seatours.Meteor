@@ -6,6 +6,7 @@ Template.voucher.book = function(){
 }
 
 Template.voucher.hasVehicles = function(){
+	console.log(Book);
 	if(Book.vehicle.category != ''){
 		return true;
 	}else{
