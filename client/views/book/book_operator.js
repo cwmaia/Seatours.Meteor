@@ -4,7 +4,6 @@ var Product = {};
 //Template Book Operator
 Template.bookOperator.rendered = function() {
 	$('.calendar').datepicker({
-		minDate: 0,
 		onSelect: function() {
 			var date = $(this).datepicker('getDate');
 			Session.set('bookingDate', date);
@@ -32,9 +31,16 @@ Template.bookDetail.rendered = function() {
 	$('#passengers').dataTable();
 }
 
+//Global Vars
+var MaxCapacity = 0;
+
 Template.bookDetail.events({
 	'click #newBooking' :function(event) {
-		Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');		
+		var bookingsCreated = Books.find({bookStatus: 'Created'}).fetch();
+		if(bookingsCreated.length >= MaxCapacity)
+			throwError('Maximum capacity of passengers reached!');	
+		else
+			Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');
 	},
 
 	// 'click .changeStatusBooking' : function(event) {
@@ -57,7 +63,9 @@ Template.bookDetail.events({
 Template.bookDetail.helpers({
 	boat: function() {
 		var boatId = Products.findOne({_id: Session.get('productId')}).boatId;
-		return Boats.findOne({_id: boatId});
+		var boat = Boats.findOne({_id: boatId});
+		MaxCapacity = boat.maxCapacity;
+		return boat;
 	},
 
 	product: function() {
@@ -70,7 +78,7 @@ Template.bookDetail.helpers({
 	},
 
 	bookings : function(){
-		return Books.find({dateOfBooking: Session.get('bookingDate'), productId: Session.get('productId')});
+		return Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId'), bookStatus: 'Created'});
 	},
 
 	isBookCreated : function(status) {
@@ -129,7 +137,6 @@ Template.productPrices.events({
 		calcTotal();
 	}
 })
-
 
 Template.generalPassagerInfo.events({
 	'keyup #fullName' : function(event){
@@ -249,7 +256,13 @@ Template.bookingVehicles.helpers({
 
 
 Template.bookingVehicles.rendered = function(){
-	$("#listvehicles").chosen();
+	$('#listVehicles').typeahead({
+		name : 'name',
+		local : Vehicles.find().fetch()
+	}).bind('typeahead:selected', function (obj, datum) {
+		console.log(obj);
+		console.log(datum);
+	});
 }
 
 Template.generalPassagerInfo.rendered = function() {

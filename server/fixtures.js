@@ -6,55 +6,327 @@ if(Boats.find().count() == 0){
 	Boats.insert({
 	"_id" : "1",
 	"name" : "Baldur Ferry",
-	"maxCapacity" : 50,
+	"maxCapacity" : 10,
 	'slots' : [
 		{
 			"number" : 1,
 			"slot_name" : "Small Car Slot",
-			"width" : 3,
+			"width" : 5,
 			"height" : 5,
 			"split" : false,
 			"alocated" : false
 		},
 		{
 			"number" : 2,
-			"slot_name" : "Large Car Slot",
-			"width" : 3,
-			"height" : 7,
-			"split" : false,
-			"alocated" : false	
-		},
-		{
-			"number" : 3,
-			"slot_name" : "Trailer Slot",
-			"width" : 6,
-			"height" : 15,
-			"split" : true,
-			"alocated" : false	
-		},
-		{
-			"number" : 4,
-			"slot_name" : "Trailer Slot",
-			"width" : 6,
-			"height" : 15,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
 			"split" : false,
 			"alocated" : false
 		},
 		{
 			"number" : 5,
 			"slot_name" : "Small Car Slot",
-			"width" : 3,
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 4,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 5,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
 			"height" : 5,
 			"split" : false,
 			"alocated" : false
 		},
 		{
 			"number" : 6,
-			"slot_name" : "Large Car Slot",
-			"width" : 3,
-			"height" : 7,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
 			"split" : false,
-			"alocated" : false	
+			"alocated" : false
+		},
+		{
+			"number" : 7,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 8,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 9,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 10,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 11,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 12,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 13,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 14,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 15,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 16,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 17,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 18,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 19,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 20,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 21,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 22,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 23,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 24,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 25,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 26,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 27,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 28,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 29,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 30,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 31,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 32,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 33,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 34,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 34,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 36,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 37,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 38,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 39,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
+		},
+		{
+			"number" : 40,
+			"slot_name" : "Small Car Slot",
+			"width" : 5,
+			"height" : 5,
+			"split" : false,
+			"alocated" : false
 		}
 	]
 	})
