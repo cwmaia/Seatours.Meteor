@@ -223,6 +223,7 @@ Template.generalPassagerInfo.events({
 				book.paid = false;
 
 				var result = Books.insert(book);
+				console.log(book);
 
 				throwSuccess("Book added");
 
@@ -258,17 +259,6 @@ Template.bookingVehicles.helpers({
 	}
 })
 
-
-Template.bookingVehicles.rendered = function(){
-	$('#listVehicles').typeahead({
-		name : 'name',
-		local : Vehicles.find().fetch()
-	}).bind('typeahead:selected', function (obj, datum) {
-		console.log(obj);
-		console.log(datum);
-	});
-}
-
 Template.generalPassagerInfo.rendered = function() {
 	$('.datepicker').datepicker({
 		changeMonth: true,
@@ -277,12 +267,38 @@ Template.generalPassagerInfo.rendered = function() {
 
 	$('#telephone').mask('(99) 9999-9999');
 	$('#birthDate').mask('99/99/9999');
+
+	$('#country').typeahead({
+		name : 'name',
+		local: [{
+			id 		: 1,
+			value	: 'Brazil'
+		},
+		{
+			id 		: 2,
+			value 	: 'Icelandic'
+		}]
+	});
 }
 
-Template.bookingVehicles.events({
-	'change #listvehicle' : function(event){
-		var id = event.target.selectedOptions[0].id;
+Template.bookingVehicles.rendered = function(){
+	var vehicles = Vehicles.find().fetch(),
+	finalItems = [];
 
+	for (var i = vehicles.length - 1; i >= 0; i--) {
+		finalItems.push({
+			id 		: vehicles[i]._id,
+			value	: vehicles[i].model + ' - ' + vehicles[i].brandname
+		})
+	}
+
+	$('#vehicle').typeahead({
+		name : 'brandname',
+		local: finalItems
+	}).bind('typeahead:selected', function (obj, datum) {
+		var id = datum.id;
+		
+		console.log($("#size").val());
 		if(id != ""){
 			var category = Vehicles.findOne({_id: id}).category;
 
@@ -290,11 +306,12 @@ Template.bookingVehicles.events({
 				return $(this).text() == category.category;
 			}).attr('selected', true);
 
-			$("#size option:first").text(category.size+"m").attr("selected", true);
-			$("#size").val(category.size);
+			$("#size option:first").text(category.size+"m").val(category.size).attr("selected", true);
 			
 			$("#categories").attr("disabled", true);
 			$("#size").attr("disabled", true);
+
+			console.log($("#size").val());
 
 			$("#baseVehicle").val(category.basePrice);
 
@@ -307,6 +324,20 @@ Template.bookingVehicles.events({
 			$("#totalVehicle").text(totalVehiclePrice);
 			calcTotal();
 		}else{
+			$("#categories").removeAttr("disabled");
+			$("#size").removeAttr("disabled");
+			$("#categories option:first").attr("selected", true);
+			$("#size option:first").text("").attr("selected", true);
+			$("#size option:first").attr("selected", true);
+			$('#vehiclesField input[type=text]').val('');
+			calcTotal();
+		}
+	});
+}
+
+Template.bookingVehicles.events({
+	'keyup #vehicle' : function(event){
+		if(event.keyCode != 13){
 			$("#categories").removeAttr("disabled");
 			$("#size").removeAttr("disabled");
 			$("#categories option:first").attr("selected", true);
