@@ -30,6 +30,9 @@ Template.bookReport.events({
 
 		var dateFrom = new Date(from);
 		var dateTo = new Date(to);
+		with(dateTo){
+			setDate(getDate() + 1);
+		}
 		
 		var query = {dateOfBooking: {$gte: dateFrom, $lt: dateTo}};
 

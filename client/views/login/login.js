@@ -10,7 +10,7 @@ Template.login.events({
 		Meteor.loginWithPassword(user.username, user.password, function(err){
         if (err){
         	console.log(err);
-          throwError("User not Found!")
+          	throwError("User not Found!")
       	}else{
           Session.set('showOverview', true);
       }

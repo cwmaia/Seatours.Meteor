@@ -552,35 +552,112 @@ if(Meteor.users.find().count() == 0){
 }
 
 if(Vehicles.find().count() == 0){
-	
+	var fs = Npm.require('fs');
+	/*fs.readFile('../../../../../public/cars2.json', function(err, data){
+		if(err)
+			console.log(err);
+		 var obj = JSON.parse(data);
+		 console.log(obj);
+	})*/
 }
 
-if(Customers.find().count() == 0){
-	Customers.insert({
-		"title" : "Mr",
-		"fullName" :  "Carlos Maia",
-		"birthDate" : "10/10/1990",
-		'email' : "carlos@me.com",
-		"telephoneCode" : "+55",
-		"telephone" : "(11) 1111-1111",
-		"adress" : "Adress",
-		"city" : "City Name",
-		"state" : "Any State here",
-		"postcode" : "59000000",
-		"country" : "Brazil"
-	});
+if(Books.find().count() == 0){
+	//Add Books on past Month
+	var date = new Date();
+	var products = Products.find().fetch();
+	var vehicles = VehiclesCategory.find().fetch();
+	var prices = products[0].prices;
 
-	Customers.insert({
-		"title" : "Mr",
-		"fullName" :  "Roberto Hallais",
-		"birthDate" : "10/10/1992",
-		'email' : "roberto@me.com",
-		"telephoneCode" : "+55",
-		"telephone" : "(84) 4004-0001",
-		"adress" : "New Adress",
-		"city" : "Yes it changed",
-		"state" : "Another State",
-		"postcode" : "99551",
-		"country" : "Brazil"
-	});
+	for (var i = 0; i < 500; i++) {
+		var sum = 0;
+		with(date){
+			var randomday = parseInt((Math.random() * (20 - 1) + 1));
+			setDate(randomday);
+			var randomMonth = parseInt((Math.random() * (10 - 1) + 1));
+			setMonth(randomMonth);
+		}
+
+		var customer = {
+			"title" : 'Mr',
+			"fullName" :  'Customer Random ' + i,
+			"birthDate" : '31/01/1991',
+			'email' : 'customer_noreply@seatours.com',
+			"telephoneCode" : '+354',
+			"telephone" : '(44) 4444-4444',
+			"adress" : 'Random Adress ' + i,
+			"city" : "Random City " + i,
+			"state" : "Random State " + i,
+			"postcode" :  "Random Postcode " + i,
+			"country" : "Brazil"
+		}
+
+		Customers.insert(customer);
+
+		var randomProductIndex = parseInt((Math.random() * (2 - 0) + 0));
+		var randomVehicleIndex = parseInt((Math.random() * (12 - 0) + 0));
+		var zeroOrOne = parseInt((Math.random() * (1 - 0) + 0));
+
+
+		var book = {
+			"destination" : products[randomProductIndex].trips[zeroOrOne].from + ' - ' + products[randomProductIndex].trips[zeroOrOne].to + ' - ' + products[randomProductIndex].trips[zeroOrOne].hour,
+			'dateOfBooking' : date,
+			'customer' : customer,
+			'product' : products[randomProductIndex]
+		}
+
+		if(zeroOrOne){
+			book.vehicle = {
+				"vehicleModel" : "",
+				"category" : vehicles[randomVehicleIndex].category,
+				"size" : vehicles[randomVehicleIndex].size[0],
+				"totalCost" : function(){
+					var size = vehicles[randomVehicleIndex].size[0];
+					var base = vehicles[randomVehicleIndex].basePrice;
+					if(size > 10){
+						var mult = size - 10;
+						base += mult * 1625;
+					}
+					sum += base;
+					return base;
+				}
+			}
+		}else{
+			book.vehicle = {
+			"vehicleModel" : "",
+			"category" : "",
+			"size" : "",
+			"totalCost" : ""
+			}
+		}
+
+		var pricesRandom = [];
+		var randomLoopPrices = parseInt((Math.random() * (5 - 2) + 2));
+
+		for (var j = 0; j < randomLoopPrices; j++) {
+			var randomForPrices = parseInt((Math.random() * (5 - 0) + 0));
+			var price = {
+				"prices" : prices[randomForPrices].price,
+				"perUnit" : prices[randomForPrices].unit,
+				"persons" : randomForPrices,
+				"sum" : prices[randomForPrices].unit * randomForPrices
+				}
+
+			sum += prices[randomForPrices].unit * randomForPrices;
+			pricesRandom.push(price);	
+		};
+
+		book.prices = pricesRandom;
+		book.totalISK = sum;
+
+		if(zeroOrOne){
+			book.paid = true;
+			book.bookStatus = 'Created';
+		}else{
+			book.paid = false;
+			book.bookStatus = 'Canceled';
+		}
+
+		Books.insert(book);
+	};			
+				
 }
