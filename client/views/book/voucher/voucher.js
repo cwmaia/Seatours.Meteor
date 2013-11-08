@@ -5,6 +5,11 @@ Template.voucher.book = function(){
 	return Book;
 }
 
+Template.voucher.date = function(){
+	Book = Books.findOne({_id: Session.get('bookId')});
+	return Book.dateOfBooking.toDateString();
+}
+
 Template.voucher.customer = function(){
 	return Customers.findOne({_id: Book.customerId});
 }
