@@ -36,6 +36,7 @@ Meteor.publish('notes', function(){
 
 Meteor.publish('mails', function(){
   return Mails.find();
+});
 
 Meteor.publish('countries', function() {
   return Countries.find();
