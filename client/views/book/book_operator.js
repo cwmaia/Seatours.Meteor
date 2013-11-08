@@ -5,9 +5,19 @@ var Product = {};
 Template.bookOperator.rendered = function() {
 	$('.calendar').datepicker({
 		onSelect: function() {
-			var date = $(this).datepicker('getDate');
-			Session.set('bookingDate', date);
-			Meteor.Router.to("/bookOperator/" + $(this).parents('li')[0].id);
+			var productId = $(this).parents('li')[0].id,
+			select = $('#trip_' + productId);
+
+			if(select[0].checkValidity()){
+				var date = $(this).datepicker('getDate');
+				
+				Session.set('bookingDate', date);
+				Session.set('tripId', select.val());
+
+				Meteor.Router.to("/bookOperator/" + $(this).parents('li')[0].id);
+			}
+			else
+				showPopover(select, 'Choose the trip');
 		}
 	});
 }
@@ -15,12 +25,21 @@ Template.bookOperator.rendered = function() {
 Template.bookOperator.helpers({
 	'product' : function(){
 		return Products.find();
+	},
+
+	'getTripsByProduct' : function(productId) {
+		var trips = [],
+		product = Products.findOne(productId);
+
+		for (var i = product.trips.length - 1; i >= 0; i--)
+			trips.push(Trips.findOne(product.trips[i]));
+
+		return trips;
 	}
 })
 
 Template.bookOperator.events({
-	'click li' :function(event) {
-		
+	'submit form' :function(event) {
 	}
 })
 
@@ -248,6 +267,11 @@ Template.generalPassagerInfo.events({
 	}
 })
 
+Template.generalPassagerInfo.helpers({
+	countries : function() {
+		return Countries.find();
+	}
+})
 ///////////////////////////////////////////
 //Template Booking Vehicles
 
@@ -265,18 +289,6 @@ Template.generalPassagerInfo.rendered = function() {
 
 	$('#telephone').mask('(99) 9999-9999');
 	$('#birthDate').mask('99/99/9999');
-
-	$('#country').typeahead({
-		name : 'name',
-		local: [{
-			id 		: 1,
-			value	: 'Brazil'
-		},
-		{
-			id 		: 2,
-			value 	: 'Icelandic'
-		}]
-	});
 }
 
 Template.bookingVehicles.rendered = function(){
@@ -624,7 +636,3 @@ buildEmail = function(book, result, customer){
 
 	return html;
 }
-
-
-
-

@@ -14,6 +14,10 @@ Meteor.publish('boats', function() {
 	return Boats.find();
 });
 
+Meteor.publish('trips', function() {
+  return Trips.find();
+});
+
 Meteor.publish('vehicles', function() {
 	return Vehicles.find();
 });
@@ -32,6 +36,9 @@ Meteor.publish('notes', function(){
 
 Meteor.publish('mails', function(){
   return Mails.find();
+
+Meteor.publish('countries', function() {
+  return Countries.find();
 });
 
 // In your server code: define a method that the client can call

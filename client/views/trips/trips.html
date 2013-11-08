@@ -82,7 +82,6 @@
 			<input type="submit" id="addTrip" class='btn btn-info btn-small' value="Add Trip" />
 		</form>
 
-
 		<table class="table table-striped table-bordered trable-hover">
 			<thead>
 				<tr>
@@ -94,13 +93,13 @@
 			</thead>
 			
 			<tbody>
-				{{#each product.trips}}
+				{{#each trips}}
 					<tr>
 						<td>{{from}}</td>
 						<td>{{to}}</td>
 						<td>{{hour}}</td>
 						<td>
-							<a href="#" class="removeTrip" id="{{this._id}}">Remove</a>
+							<a href="#" class="removeTrip" id="{{_id}}">Remove</a>
 						</td>
 					</tr>
 				{{/each}}	

@@ -9,6 +9,13 @@
 			<li id="{{_id}}">
 				<h3>{{name}}</h3>
 				
+				<select id="trip_{{_id}}" required>
+					<option value="">Select..</option>
+					{{#each getTripsByProduct _id}}
+						<option value="{{_id}}">{{from}} - {{to}} - {{hour}}</option>
+					{{/each}}
+				</select>
+
 				<img src="/images/{{name}}.jpg">
 
 				<div class="calendarWrap">
@@ -204,6 +211,7 @@
 	            		{{#each countries}}
 	            			<option value="{{name}}">{{name}}</option>
 	            		{{/each}}
+	            		
 	            		<option value="">Select..</option>
 	            		<option value="Brazil">Brazil</option>
 	            	</select>
@@ -309,9 +317,8 @@
 				</tbody>
 			</table>
 		</div>
-		</div>
+
 		{{#if boat.slots}}
-		<div>
 			<div class="divTable">
 				<div>
 					<h3>Boat slots</h3>
