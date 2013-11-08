@@ -15,12 +15,6 @@
 			</li>
 
 			<li>
-				<a data-toggle="tab" href="#passagerInfo">
-					Passager Info
-				</a>
-			</li>
-
-			<li>
 				<a data-toggle="tab" href="#bookkingItens">
 					Booking Items
 				</a>
@@ -57,11 +51,7 @@
 			</div>
 
 			<div id="transacions" class="tab-pane in">
-				TODO
-			</div>
-
-			<div id="passagerInfo" class="tab-pane in">
-				TODO
+				{{> bookTransactionsResume}}
 			</div>
 
 			<div id="bookkingItens" class="tab-pane in">
@@ -69,7 +59,7 @@
 			</div>
 
 			<div id="bookingNote" class="tab-pane in">
-				TODO
+				{{> bookNotesResume}}
 			</div>
 
 			<div id="customer" class="tab-pane in">
@@ -77,7 +67,7 @@
 			</div>
 
 			<div id="emailing" class="tab-pane in">
-				TODO
+				{{> bookCustomerEmailResume}}
 			</div>
 
 			<div id="refund" class="tab-pane in">

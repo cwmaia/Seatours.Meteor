@@ -118,28 +118,30 @@ background-repeat: repeat-x;">
 			</thead>
 
 			<tbody>
+				{{#with customer}}
 				<tr>
 					<td style="padding: 8px;
 								line-height: 20px;
 								text-align: left;
 								vertical-align: top;
-								border-top: 1px solid #dddddd;">{{customer.fullName}}</td>				
+								border-top: 1px solid #dddddd;">{{fullName}}</td>				
 					<td style="padding: 8px;
 								line-height: 20px;
 								text-align: left;
 								vertical-align: top;
-								border-top: 1px solid #dddddd;">{{customer.adress}}</td>
+								border-top: 1px solid #dddddd;">{{adress}}</td>
 					<td style="padding: 8px;
 								line-height: 20px;
 								text-align: left;
 								vertical-align: top;
-								border-top: 1px solid #dddddd;">{{customer.telephone}}</td>
+								border-top: 1px solid #dddddd;">{{telephone}}</td>
 					<td style="padding: 8px;
 								line-height: 20px;
 								text-align: left;
 								vertical-align: top;
-								border-top: 1px solid #dddddd;">{{customer.email}}</td>
+								border-top: 1px solid #dddddd;">{{email}}</td>
 				</tr>
+				{{/with}}
 			</tbody>
 		</table>
 

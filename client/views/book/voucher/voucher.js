@@ -5,6 +5,10 @@ Template.voucher.book = function(){
 	return Book;
 }
 
+Template.voucher.customer = function(){
+	return Customers.findOne({_id: Book.customerId});
+}
+
 Template.voucher.hasVehicles = function(){
 	if(Book.vehicle.category != ''){
 		return true;

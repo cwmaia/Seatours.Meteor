@@ -568,12 +568,12 @@ if(Books.find().count() == 0){
 	var vehicles = VehiclesCategory.find().fetch();
 	var prices = products[0].prices;
 
-	for (var i = 0; i < 500; i++) {
+	for (var i = 0; i < 2000; i++) {
 		var sum = 0;
 		with(date){
 			var randomday = parseInt((Math.random() * (20 - 1) + 1));
 			setDate(randomday);
-			var randomMonth = parseInt((Math.random() * (10 - 1) + 1));
+			var randomMonth = parseInt((Math.random() * (10 - 0) + 0));
 			setMonth(randomMonth);
 		}
 
@@ -591,7 +591,8 @@ if(Books.find().count() == 0){
 			"country" : "Brazil"
 		}
 
-		Customers.insert(customer);
+		var result = Customers.insert(customer);
+		customer._id = result;
 
 		var randomProductIndex = parseInt((Math.random() * (2 - 0) + 0));
 		var randomVehicleIndex = parseInt((Math.random() * (12 - 0) + 0));
@@ -601,7 +602,7 @@ if(Books.find().count() == 0){
 		var book = {
 			"destination" : products[randomProductIndex].trips[zeroOrOne].from + ' - ' + products[randomProductIndex].trips[zeroOrOne].to + ' - ' + products[randomProductIndex].trips[zeroOrOne].hour,
 			'dateOfBooking' : date,
-			'customer' : customer,
+			'customerId' : result,
 			'product' : products[randomProductIndex]
 		}
 

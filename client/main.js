@@ -5,6 +5,8 @@ Meteor.subscribe('vehicles_category');
 Meteor.subscribe('boats');
 Meteor.subscribe('vehicles');
 Meteor.subscribe('customers');
+Meteor.subscribe('notes');
+Meteor.subscribe('mails');
 
 Template.redirect.helpers({
   userLogged : function(){

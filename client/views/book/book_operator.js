@@ -188,14 +188,18 @@ Template.generalPassagerInfo.events({
 					"country" : $("#country").val()
 	 			}
 
-	 			if(SaveCustomer)
-	 				Customers.insert(customer);
+	 			if(SaveCustomer){
+	 				console.log( 'save');
+	 				var resultId = Customers.insert(customer);
+	 				customer._id = resultId;
+	 				book.customerId = result;
+	 			}
+	 				
 
 	 			var book = {
 					"destination" : $("#destination").val(),			
 					"totalISK" : $("#totalISK").text(),
 					'dateOfBooking' : Session.get('bookingDate'),
-					'customer' : customer,
 					'bookStatus' : 'Created',
 					'product' : Product
 				}
@@ -230,7 +234,7 @@ Template.generalPassagerInfo.events({
 
 				throwSuccess("Book added");
 
-				var html = buildEmail(book, result);
+				var html = buildEmail(book, result, customer);
 
 				Meteor.call('sendEmailHTML',
 					$('#email').val(),
@@ -430,7 +434,7 @@ loadTypeahead = function(){
 	});
 }
 
-buildEmail = function(book, result){
+buildEmail = function(book, result, customer){
 	var prices = '';
 	for (var i = 0; i < book.prices.length; i++) {
 		prices += book.prices[i].prices + " - " + book.prices[i].persons + " X " + book.prices[i].perUnit + " = " +  book.prices[i].sum + " ISK <br/>";
@@ -548,22 +552,22 @@ buildEmail = function(book, result){
 	html += 'line-height: 20px;';
 	html += 'text-align: left;';
 	html += 'vertical-align: top;';
-	html += 'border-top: 1px solid #dddddd;">'+book.customer.fullName+'</td>';
+	html += 'border-top: 1px solid #dddddd;">'+customer.fullName+'</td>';
 	html += '<td style="padding: 8px;';
 	html += 'line-height: 20px;';
 	html += 'text-align: left;';
 	html += 'vertical-align: top;';
-	html += 'border-top: 1px solid #dddddd;">'+book.customer.adress+'</td>';
+	html += 'border-top: 1px solid #dddddd;">'+customer.adress+'</td>';
 	html += '<td style="padding: 8px;';
 	html += 'line-height: 20px;';
 	html += 'text-align: left;';
 	html += 'vertical-align: top;';
-	html += 'border-top: 1px solid #dddddd;">'+book.customer.telephone+'</td>';
+	html += 'border-top: 1px solid #dddddd;">'+customer.telephone+'</td>';
 	html += '<td style="padding: 8px;';
 	html += 'line-height: 20px;';
 	html += 'text-align: left;';
 	html += 'vertical-align: top;';
-	html += 'border-top: 1px solid #dddddd;">'+book.customer.email+'</td>';
+	html += 'border-top: 1px solid #dddddd;">'+customer.email+'</td>';
 	html += '</tr>';
 	html += '</tbody>';
 	html += '</table>';

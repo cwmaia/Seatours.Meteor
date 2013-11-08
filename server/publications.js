@@ -26,6 +26,14 @@ Meteor.publish('customers', function(){
 	return Customers.find();
 });
 
+Meteor.publish('notes', function(){
+  return Notes.find();
+});
+
+Meteor.publish('mails', function(){
+  return Mails.find();
+});
+
 // In your server code: define a method that the client can call
 Meteor.methods({
   sendEmail: function (to, from, subject, text) {
