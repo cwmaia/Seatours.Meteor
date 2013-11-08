@@ -5,9 +5,19 @@ var Product = {};
 Template.bookOperator.rendered = function() {
 	$('.calendar').datepicker({
 		onSelect: function() {
-			var date = $(this).datepicker('getDate');
-			Session.set('bookingDate', date);
-			Meteor.Router.to("/bookOperator/" + $(this).parents('li')[0].id);
+			var productId = $(this).parents('li')[0].id,
+			select = $('#trip_' + productId);
+
+			if(select[0].checkValidity()){
+				var date = $(this).datepicker('getDate');
+				
+				Session.set('bookingDate', date);
+				Session.set('tripId', select.val());
+
+				Meteor.Router.to("/bookOperator/" + $(this).parents('li')[0].id);
+			}
+			else
+				showPopover(select, 'Choose the trip');
 		}
 	});
 }
@@ -15,12 +25,21 @@ Template.bookOperator.rendered = function() {
 Template.bookOperator.helpers({
 	'product' : function(){
 		return Products.find();
+	},
+
+	'getTripsByProduct' : function(productId) {
+		var trips = [],
+		product = Products.findOne(productId);
+
+		for (var i = product.trips.length - 1; i >= 0; i--)
+			trips.push(Trips.findOne(product.trips[i]));
+
+		return trips;
 	}
 })
 
 Template.bookOperator.events({
-	'click li' :function(event) {
-		
+	'submit form' :function(event) {
 	}
 })
 
@@ -79,7 +98,11 @@ Template.bookDetail.helpers({
 	},
 
 	bookings : function(){
-		return Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId')});
+		var date = Session.get('bookingDate');
+		with(date){
+			setDate(getDate() + 1);
+		}
+		return Books.find({dateOfBooking: {$gte: Session.get('bookingDate'), $lt: date}, 'product._id': Session.get('productId')});
 	},
 
 	isBookCreated : function(status) {
@@ -223,20 +246,10 @@ Template.generalPassagerInfo.events({
 				book.paid = false;
 
 				var result = Books.insert(book);
-				console.log(book);
 
 				throwSuccess("Book added");
 
-				var fragment = Meteor.render(function(){
-					return Template['voucher']();
-				});
-				var html = "";
-				for (var i = 0; i < fragment.childNodes.length; i++) {
-					var a = fragment.childNodes[i].outerHTML === undefined;
-					if(!a){
-						html += fragment.childNodes[i].outerHTML;
-					}
-				};
+				var html = buildEmail(book, result);
 
 				Meteor.call('sendEmailHTML',
 					$('#email').val(),
@@ -290,8 +303,7 @@ Template.bookingVehicles.rendered = function(){
 		local: finalItems
 	}).bind('typeahead:selected', function (obj, datum) {
 		var id = datum.id;
-		
-		console.log($("#size").val());
+
 		if(id != ""){
 			var category = Vehicles.findOne({_id: id}).category;
 
@@ -303,8 +315,6 @@ Template.bookingVehicles.rendered = function(){
 			
 			$("#categories").attr("disabled", true);
 			$("#size").attr("disabled", true);
-
-			console.log($("#size").val());
 
 			$("#baseVehicle").val(category.basePrice);
 
@@ -430,4 +440,195 @@ loadTypeahead = function(){
     	$('#country').val(customer.country);
     	SaveCustomer = false;
 	});
+}
+
+buildEmail = function(book, result){
+	var prices = '';
+	for (var i = 0; i < book.prices.length; i++) {
+		prices += book.prices[i].prices + " - " + book.prices[i].persons + " X " + book.prices[i].perUnit + " = " +  book.prices[i].sum + " ISK <br/>";
+	};
+
+	var vehicle = '';
+	if(book.vehicle.category != ''){
+		vehicle = book.vehicle.category +" - "+ book.vehicle.size+ "m = " + book.vehicle.totalCost + " ISK";
+	}
+
+	var html = '';
+	html += '<div class="page-header">';
+	html += '<h1>Voucher</h1>';
+	html += '</div>';
+	html += '<div class="alert alert-warning" style="font-size: 14px;';
+	html += 'border-radius: 0;';
+	html += 'adding: 8px 35px 8px 14px;';
+	html += 'margin-bottom: 20px;';
+	html += 'text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);';
+	html += 'background-color: #fcf8e3;';
+	html += 'border: 1px solid #fbeed5;';
+	html += '-webkit-border-radius: 4px;';
+	html += '-moz-border-radius: 4px;';
+	html += 'border-radius: 4px;">';
+	html += '<b>ATTENTION, PLEASE NOTE:</b>';
+	html += 'You need to pick up your ticket from Seatours office (harbour front) at ';
+	html += 'least 30 minutes before departure.';
+	html += '</div>';
+	html += '<div id="voucher" class="line-3" style="float: left; width: 100%; margin: 2% 0;">';
+	html += '<section style="float: left; margin-right: 1%; width: 30%;">';
+	html += '<h3 style="margin-bottom: 1%; font-style: italic; font-weight: lighter; text-shadow: 2px 1px 1px white;">Address</h3>';
+	html += '<p style="font-size: 130%; margin: 0 0 10px;">Smidjustigur 3 - 340 Stykkisholmur</p>';
+	html += '</section>';
+	html += '</div>';
+	html += '<table class="table table-striped table-bordered trable-hover" style="border: 1px solid #dddddd;';
+	html += 'border-collapse: separate;';
+	html += 'border-left: 0;';
+	html += '-webkit-border-radius: 4px;';
+	html += '-moz-border-radius: 4px;';
+	html += 'border-radius: 4px;';
+	html += 'width: 100%;';
+	html += 'margin-bottom: 20px;';
+	html += 'max-width: 100%;';
+	html += 'background-color: transparent;';
+	html += 'border-collapse: collapse;';
+	html += 'border-spacing: 0;">';
+	html += '<thead>';
+	html += '<tr style="color: #707070;';
+	html += 'font-weight: normal;';
+	html += 'background: #F2F2F2;';
+	html += 'background-color: #f3f3f3;';
+	html += 'background-image: -moz-linear-gradient(top, #f8f8f8, #ececec);';
+	html += 'background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f8f8f8), to(#ececec));';
+	html += 'background-image: -webkit-linear-gradient(top, #f8f8f8, #ececec);';
+	html += 'background-image: -o-linear-gradient(top, #f8f8f8, #ececec);';
+	html += 'background-image: linear-gradient(to bottom, #f8f8f8, #ececec);';
+	html += 'background-repeat: repeat-x;">';
+	html += '<th>Booking ID</th>';
+	html += '<th>Booking Date</th>';
+	html += '<th>Booking Status</th>';
+	html += '</tr>';
+	html += '</thead>';
+	html += '<tbody>';
+	html += '<tr>';
+	html += '<td style="padding: 8px;';
+	html += 'line-height: 20px;';
+	html += 'text-align: left;';
+	html += 'vertical-align: top;';
+	html += 'border-top: 1px solid #dddddd;">'+result+'</td>';
+	html += '<td style="padding: 8px;';
+	html += 'line-height: 20px;';
+	html += 'text-align: left;';
+	html += 'vertical-align: top;';
+	html += 'border-top: 1px solid #dddddd;">'+book.dateOfBooking.toLocaleDateString()+'</td>';
+	html += '<td style="padding: 8px;';
+	html += 'line-height: 20px;';
+	html += 'text-align: left;';
+	html += 'vertical-align: top;';
+	html += 'border-top: 1px solid #dddddd;">Waiting Payment</td>';
+	html += '</tr>';
+	html += '</tbody>';
+	html += '</table>';
+	html += '<table class="table table-striped table-bordered trable-hover" style="border: 1px solid #dddddd;';
+	html += 'border-collapse: separate;';
+	html += 'border-left: 0;';
+	html += '-webkit-border-radius: 4px;';
+	html += '-moz-border-radius: 4px;';
+	html += 'border-radius: 4px;';
+	html += 'width: 100%;';
+	html += 'margin-bottom: 20px;';
+	html += 'max-width: 100%;';
+	html += 'background-color: transparent;';
+	html += 'border-collapse: collapse;';
+	html += 'border-spacing: 0;">';
+	html += '<thead>';
+	html += '<tr style="color: #707070;';
+	html += 'font-weight: normal;';
+	html += 'background: #F2F2F2;';
+	html += 'background-color: #f3f3f3;';
+	html += 'background-image: -moz-linear-gradient(top, #f8f8f8, #ececec);';
+	html += 'background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f8f8f8), to(#ececec));';
+	html += 'background-image: -webkit-linear-gradient(top, #f8f8f8, #ececec);';
+	html += 'background-image: -o-linear-gradient(top, #f8f8f8, #ececec);';
+	html += 'background-image: linear-gradient(to bottom, #f8f8f8, #ececec);';
+	html += 'background-repeat: repeat-x;">';
+	html += '<th>Full Name</th>';
+	html += '<th>Full Address</th>';
+	html += '<th>Contact Number</th>';
+	html += '<th>Email Address</th>';
+	html += '</tr>';
+	html += '</thead>';
+	html += '<tbody>';
+	html += '<tr>';
+	html += '<td style="padding: 8px;';
+	html += 'line-height: 20px;';
+	html += 'text-align: left;';
+	html += 'vertical-align: top;';
+	html += 'border-top: 1px solid #dddddd;">'+book.customer.fullName+'</td>';
+	html += '<td style="padding: 8px;';
+	html += 'line-height: 20px;';
+	html += 'text-align: left;';
+	html += 'vertical-align: top;';
+	html += 'border-top: 1px solid #dddddd;">'+book.customer.adress+'</td>';
+	html += '<td style="padding: 8px;';
+	html += 'line-height: 20px;';
+	html += 'text-align: left;';
+	html += 'vertical-align: top;';
+	html += 'border-top: 1px solid #dddddd;">'+book.customer.telephone+'</td>';
+	html += '<td style="padding: 8px;';
+	html += 'line-height: 20px;';
+	html += 'text-align: left;';
+	html += 'vertical-align: top;';
+	html += 'border-top: 1px solid #dddddd;">'+book.customer.email+'</td>';
+	html += '</tr>';
+	html += '</tbody>';
+	html += '</table>';
+	html += '<table class="table table-striped table-bordered trable-hover" style="border: 1px solid #dddddd;';
+	html += 'border-collapse: separate;';
+	html += 'border-left: 0;';
+	html += '-webkit-border-radius: 4px;';
+	html += '-moz-border-radius: 4px;';
+	html += 'border-radius: 4px;';
+	html += 'width: 100%;';
+	html += 'margin-bottom: 20px;';
+	html += 'max-width: 100%;';
+	html += 'background-color: transparent;';
+	html += 'border-collapse: collapse;';
+	html += 'border-spacing: 0;">';
+	html += '<thead>';
+	html += '<tr style="color: #707070;';
+	html += 'font-weight: normal;';
+	html += 'background: #F2F2F2;';
+	html += 'background-color: #f3f3f3;';
+	html += 'background-image: -moz-linear-gradient(top, #f8f8f8, #ececec);';
+	html += 'background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f8f8f8), to(#ececec));';
+	html += 'background-image: -webkit-linear-gradient(top, #f8f8f8, #ececec);';
+	html += 'background-image: -o-linear-gradient(top, #f8f8f8, #ececec);';
+	html += 'background-image: linear-gradient(to bottom, #f8f8f8, #ececec);';
+	html += 'background-repeat: repeat-x;">';
+	html += '<th>Items</th>';
+	html += '<th>Total</th>';
+	html += '</tr>';
+	html += '</thead>';
+	html += '<tbody>';
+	html += '<tr>';
+	html += '<td style="padding: 8px;';
+	html += 'line-height: 20px;';
+	html += 'text-align: left;';
+	html += 'vertical-align: top;';
+	html += '<td style="padding: 8px;';
+	html += 'line-height: 20px;';
+	html += 'text-align: left;';
+	html += 'vertical-align: top;';
+	html += 'border-top: 1px solid #dddddd;">'+prices+'<br/>'+vehicle+'</td>';
+	html += '<td style="padding: 8px;';
+	html += 'line-height: 20px;';
+	html += 'text-align: left;';
+	html += 'vertical-align: top;';
+	html += '<td style="padding: 8px;';
+	html += 'line-height: 20px;';
+	html += 'text-align: left;';
+	html += 'vertical-align: top;';
+	html += 'border-top: 1px solid #dddddd;">'+book.totalISK+' ISK</td>';
+	html += '</tr>';
+	html += '</tbody>';
+	html += '</table>';
+
+	return html;
 }

@@ -14,6 +14,10 @@ Meteor.publish('boats', function() {
 	return Boats.find();
 });
 
+Meteor.publish('trips', function() {
+  return Trips.find();
+});
+
 Meteor.publish('vehicles', function() {
 	return Vehicles.find();
 });

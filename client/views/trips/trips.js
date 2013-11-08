@@ -29,6 +29,16 @@ Template.editTrip.helpers({
 		}
 		
 		return _product;
+	},
+
+	trips : function() {
+		var trips = [];
+
+		for (var i = _product.trips.length - 1; i >= 0; i--) {
+			trips.push(Trips.findOne(_product.trips[i]));
+		}
+
+		return trips;
 	}
 });
 
@@ -64,10 +74,10 @@ Template.editTrip.events({
 				from 	: form.from.value,
 				to		: form.to.value,
 				hour 	: $('#hour')[0].value
-			};
+			}
 
-			_product.trips.push(trip);
-			Session.set('_product', _product);
+			_product.trips.push(Trips.insert(trip));
+			saveProduct();
 
 			form.reset();
 
@@ -97,9 +107,14 @@ Template.editTrip.events({
 	'click .removeTrip' :function(event) {
 		event.preventDefault();
 
-		var index = $(event.currentTarget).parents('tr').index();
-		_product.trips.splice(index, 1);
-		Session.set('_product', _product);
+		var id = event.currentTarget.id;
+
+		Trips.remove(id);
+		_product.trips.splice(_product.trips.indexOf(id), 1);
+		
+		saveProduct();
+
+		throwSuccess('Trip added');
 	},
 
 	'click .removePrice' :function(event) {

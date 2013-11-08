@@ -1,0 +1,90 @@
+<template name='bookDetailResume'>
+	<div class="tabbable">
+		<ul class="nav nav-tabs" id="myTab">
+			<li class="active">
+				<a data-toggle="tab" href="#main">
+					<i class="green icon-home bigger-110"></i>
+					Main
+				</a>
+			</li>
+
+			<li>
+				<a data-toggle="tab" href="#transacions">
+					Transactions
+				</a>
+			</li>
+
+			<li>
+				<a data-toggle="tab" href="#passagerInfo">
+					Passager Info
+				</a>
+			</li>
+
+			<li>
+				<a data-toggle="tab" href="#bookkingItens">
+					Booking Items
+				</a>
+			</li>
+
+			<li>
+				<a data-toggle="tab" href="#bookingNote">
+					Booking Note
+				</a>
+			</li>
+
+			<li>
+				<a data-toggle="tab" href="#customer">
+					Customer
+				</a>
+			</li>
+
+			<li>
+				<a data-toggle="tab" href="#emailing">
+					Emailing
+				</a>
+			</li>
+
+			<li>
+				<a data-toggle="tab" href="#refund">
+					Refund
+				</a>
+			</li>
+		</ul>
+
+		<div class="tab-content">
+			<div id="main" class="tab-pane in active">
+				{{> voucher}}
+			</div>
+
+			<div id="transacions" class="tab-pane in">
+				TODO
+			</div>
+
+			<div id="passagerInfo" class="tab-pane in">
+				TODO
+			</div>
+
+			<div id="bookkingItens" class="tab-pane in">
+				TODO
+			</div>
+
+			<div id="bookingNote" class="tab-pane in">
+				TODO
+			</div>
+
+			<div id="customer" class="tab-pane in">
+				{{> bookCustomerDetailResume}}
+			</div>
+
+			<div id="emailing" class="tab-pane in">
+				TODO
+			</div>
+
+			<div id="refund" class="tab-pane in">
+				TODO
+			</div>
+
+
+		</div>
+	</div>
+</template>

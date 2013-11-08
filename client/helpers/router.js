@@ -45,6 +45,12 @@ Meteor.Router.add({
 		and : function(id){
 			Session.set('bookId', id);
 		}
+	},
+	'/bookDetailResume/:_id' : {
+		to: 'bookDetailResume',
+		and : function(id){
+			Session.set('bookId', id);
+		}
 	}
 });
 
