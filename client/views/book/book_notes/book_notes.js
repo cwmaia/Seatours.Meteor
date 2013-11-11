@@ -62,6 +62,10 @@ Template.bookNotesResume.notes = function(){
 	return Notes.find({bookId : Session.get('bookId')});
 }
 
+Template.bookNotesResume.dateString = function(date){
+	return date.toDateString();
+}
+
 buildNoticeMail = function(note){
 	var html = '';
 	html += '<b>This Note was Created at:</b> '+ note.created;

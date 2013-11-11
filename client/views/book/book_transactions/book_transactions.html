@@ -10,6 +10,7 @@
 				<th>Status</th>
 				<th>Amount</th>
 				<th>Details</th>
+				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -22,6 +23,10 @@
 				<td>{{status}}</td>
 				<td>{{amount}}</td>
 				<td>{{detail}}</td>
+				<td>
+					<a class="btn btn-mini btn-info" title="Edit"><i class="icon-pencil bigger-120"></i></a>
+					<a class="btn btn-mini btn-success sendMailNote" title="Make Payment" rel='{{_id}}'><i class="icon-money bigger-120"></i></a>
+				</td>
 			</tr>
 			{{/each}}
 		</tbody>
