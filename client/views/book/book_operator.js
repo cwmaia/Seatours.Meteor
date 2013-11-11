@@ -38,17 +38,15 @@ Template.bookOperator.helpers({
 	}
 })
 
-Template.bookOperator.events({
-	'submit form' :function(event) {
-	}
-})
-
-
 ///////////////////////////////////////////
 //Template Book Detail
 Template.bookDetail.rendered = function() {
 	$('#passengers').dataTable();
 	$('#boatSlots').dataTable();
+}
+
+Template.bookDetail.fullname = function(id){
+	return Customers.findOne({_id: id}).fullName;
 }
 
 //Global Vars

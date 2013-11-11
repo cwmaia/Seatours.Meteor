@@ -12,6 +12,28 @@ Template.bookReport.rendered = function(){
 	$('#filterResult').dataTable();
 }
 
+Template.bookReport.fullname = function(id){
+	return Customers.findOne({_id: id}).fullName;
+}
+
+Template.bookReport.birth = function(id){
+	return Customers.findOne({_id: id}).birthDate;
+}
+
+Template.bookReport.email = function(id){
+	return Customers.findOne({_id: id}).email;
+}
+
+Template.bookReport.telephone = function(id){
+	return Customers.findOne({_id: id}).telephone;
+}
+
+Template.bookReport.adress = function(id){
+	var customer = Customers.findOne({_id: id});
+	var adress = customer.adress + ' - ' + customer.city + ' - ' + customer.state + ' - ' + customer.postcode + ' - ' + customer.country;
+	return adress;
+}
+
 Template.bookReport.events({
 	'click .filter' : function(event){
 

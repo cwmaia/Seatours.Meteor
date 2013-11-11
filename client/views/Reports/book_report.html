@@ -67,24 +67,20 @@
 			</thead>
 				<tbody>
 					{{#each books}}
-						{{> bookLine}}
+						<tr>
+							<td><a href='/bookDetailResume/{{_id}}'>{{_id}}</a></td>
+							<td>{{product.name}}: {{trip.from}} - {{trip.to}}</td>
+							<td>{{dateOfBooking}}</td>
+							<td>{{totalISK}}</td>
+							<td>{{fullname customerId}}</td>
+							<td>{{birth customerId}}</td>
+							<td>{{email customerId}}</td>
+							<td>{{telephone customerId}}</td>
+							<td>{{adress customerId}}</td>
+							<td>{{#if paid}} Yes {{else}} No {{/if}}</td>
+						</tr>
 					{{/each}}
 				</tbody>
 		</table>
 	</fielset>	
-</template>
-
-<template name='bookLine'>
-	<tr>
-		<td><a href='/bookDetailResume/{{_id}}'>{{_id}}</a></td>
-		<td>{{product.name}}: {{destination}}</td>
-		<td>{{dateOfBooking}}</td>
-		<td>{{totalISK}}</td>
-		<td>{{customer.fullName}}</td>
-		<td>{{customer.birthDate}}</td>
-		<td>{{customer.email}}</td>
-		<td>{{customer.telephone}}</td>
-		<td>{{customer.adress}} - {{customer.city}} - {{customer.state}} - {{customer.postcode}} - {{customer.country}}</td>
-		<td>{{#if paid}} Yes {{else}} No {{/if}}</td>
-	</tr>
 </template>
