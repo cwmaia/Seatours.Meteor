@@ -5,6 +5,7 @@
 			<tr>
 				<th>Book ID</th>
 				<th>Date</th>
+				<th>Vendor</th>
 				<th>Type</th>
 				<th>Status</th>
 				<th>Amount</th>
@@ -15,11 +16,12 @@
 			{{#each transactions}}
 			<tr>	
 				<td>{{bookId}}</td>
-				<td>{{date}}</td>
+				<td>{{dateString date}}</td>
+				<td>{{vendor}}</td>
 				<td>{{type}}</td>
 				<td>{{status}}</td>
 				<td>{{amount}}</td>
-				<td>{{details}}</td>
+				<td>{{detail}}</td>
 			</tr>
 			{{/each}}
 		</tbody>
@@ -36,25 +38,33 @@
 			    <div class="modal-body">
 
 			    	<label>Date: </label>
-			    	<input type='text' class='datepicker' id='date' required/>
+			    	<input type='text' class='datepicker' id='date'/>
+			    	<div class='line-2'>
+			    		<div>
+					    	<label>Vendor: </label>
+					    	<select id='vendor'>
+					    		<option val='Gudrun'>Gudrun</option>
+					    	</select>
+				    	</div>
 
-			    	<label>Vendor: </label>
-			    	<select id='vendor' required>
-			    		<option val='1'>Gudrun</option>
-			    	</select>
-
-			    	<label>Type: </label>
-			    	<select id='type' required>
-			    		<option>Cash</option>
-			    		<option>Refound Cash</option>
-			    		<option>Goodwill</option>
-			    	</select>
+				    	<div>
+					    	<label>Type: </label>
+					    	<select id='type'>
+					    		<option>Cash</option>
+					    		<option>Refound Cash</option>
+					    		<option>Goodwill</option>
+					    	</select>
+			    		</div>
+			    	</div>
 
 			    	<label>Amount: </label>
-			    	<input type='text' class='datepicker' id='amount' required/>
+			    	<input type='text' id='amount'/>
 
 			    	<label>Amount Descont: (%)</label>
-			    	<input type='number' class='datepicker' id='descount' value='0' min='0' max='100'/>
+			    	<input type='number' id='descount' value='0' min='0' max='100'/>
+
+			    	<label>Detail:</label>
+			    	<textarea rows='4' cols='10' id='detail'/>	
 			    </div>
 
 			    <div class="modal-footer">

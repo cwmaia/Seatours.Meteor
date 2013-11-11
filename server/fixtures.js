@@ -713,7 +713,8 @@ if(Books.find().count() == 0){
 			'date' : new Date(),
 			'status' : 'Waiting Payment',
 			'amount' : book.totalISK,
-			'detail' : ''
+			'detail' : '',
+			'vendor' : 'Gudrun'
 		}
 
 		if(zeroOrOne)
