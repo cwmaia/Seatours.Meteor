@@ -220,7 +220,7 @@ Template.generalPassagerInfo.events({
 					"totalISK" : $("#totalISK").text(),
 					'dateOfBooking' : Session.get('bookingDate'),
 					'bookStatus' : 'Created',
-					'product' : Product
+					'product' : Product,
 				}
 		
 				book.vehicle = {
@@ -250,6 +250,17 @@ Template.generalPassagerInfo.events({
 				book.paid = false;
 
 				var result = Books.insert(book);
+
+				var transaction = {
+					'bookId' : result,
+					'date' : new Date(),
+					'type' : '',
+					'status' : 'Waiting Payment',
+					'amount' : book.totalISK,
+					'detail' : ''
+				}
+
+				Transactions.insert(transaction);
 
 				throwSuccess("Book added");
 

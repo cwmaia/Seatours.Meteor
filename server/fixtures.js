@@ -678,7 +678,7 @@ if(Books.find().count() == 0){
 
 		var randomProductIndex = parseInt((Math.random() * (2 - 0) + 0));
 		var randomVehicleIndex = parseInt((Math.random() * (12 - 0) + 0));
-		var zeroOrOne = parseInt((Math.random() * (1 - 0) + 0));
+		var zeroOrOne = parseInt((Math.random() * (2 - 0) + 0));
 		var trip = Trips.findOne(products[randomProductIndex].trips[zeroOrOne]);
 
 		var book = {
@@ -689,21 +689,21 @@ if(Books.find().count() == 0){
 		}
 
 		if(zeroOrOne){
+			//calcs total cost of vehicle
+			var size = vehicles[randomVehicleIndex].size[0];
+			var base = vehicles[randomVehicleIndex].basePrice;
+			if(size > 10){
+				var mult = size - 10;
+				base += mult * 1625;
+			}
+			sum += base;
+
 			book.vehicle = {
 				"vehicleModel" : "",
 				"category" : vehicles[randomVehicleIndex].category,
 				"size" : vehicles[randomVehicleIndex].size[0],
-				"totalCost" : function(){
-					var size = vehicles[randomVehicleIndex].size[0];
-					var base = vehicles[randomVehicleIndex].basePrice;
-					if(size > 10){
-						var mult = size - 10;
-						base += mult * 1625;
-					}
-					sum += base;
-					return base;
+				"totalCost" : base
 				}
-			}
 		}else{
 			book.vehicle = {
 			"vehicleModel" : "",
@@ -740,6 +740,22 @@ if(Books.find().count() == 0){
 			book.bookStatus = 'Canceled';
 		}
 
-		Books.insert(book);
+		var resultBook = Books.insert(book);
+
+		var transaction = {
+			'bookId' : resultBook,
+			'date' : new Date(),
+			'status' : 'Waiting Payment',
+			'amount' : book.totalISK,
+			'detail' : ''
+		}
+
+		if(zeroOrOne)
+			transaction.type = 'Card';
+		else
+			transaction.type = 'Money';
+
+		Transactions.insert(transaction);
+
 	};			
 }

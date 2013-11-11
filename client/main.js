@@ -8,6 +8,7 @@ Meteor.subscribe('vehicles');
 Meteor.subscribe('customers');
 Meteor.subscribe('notes');
 Meteor.subscribe('mails');
+Meteor.subscribe('transactions');
 
 Template.redirect.helpers({
   userLogged : function(){

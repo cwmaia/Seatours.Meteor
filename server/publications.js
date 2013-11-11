@@ -42,6 +42,10 @@ Meteor.publish('countries', function() {
   return Countries.find();
 });
 
+Meteor.publish('transactions', function() {
+  return Transactions.find();
+});
+
 // In your server code: define a method that the client can call
 Meteor.methods({
   sendEmail: function (to, from, subject, text) {
