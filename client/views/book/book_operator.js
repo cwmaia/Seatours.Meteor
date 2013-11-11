@@ -27,6 +27,16 @@ Template.bookOperator.helpers({
 		return Products.find();
 	},
 
+	'isFull' : function(productId, date) {
+		date = new Date('10/09/2013');
+		var bookings = Books.find({dateOfBooking: {$gte: date, $lt: date + 1}, 'product._id': productId}),
+		boat = Boats.findOne({_id: Products.findOne(productId).boatId});
+
+		console.log('%s - %s', bookings.count(), boat.maxCapacity);
+
+		return bookings.count() == Products.findOne(productId).maxCapacity;
+	},
+
 	'getTripsByProduct' : function(productId) {
 		var trips = [],
 		product = Products.findOne(productId);

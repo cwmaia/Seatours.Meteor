@@ -4,6 +4,7 @@
 			Bookings
 		</h1>
 	</div><!-- /.page-header -->
+
 	<ul class="listing" id="bookings">
 		{{#each product}}
 			<li id="{{_id}}">
@@ -18,6 +19,7 @@
 
 				<img src="/images/{{name}}.jpg">
 
+				{{isFull _id}}
 				<div class="calendarWrap">
 					<div class="calendar" id="calendar_{{_id}}"></div>
 				</div>
