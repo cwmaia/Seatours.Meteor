@@ -4,6 +4,10 @@ h1, h2, h3, h4, h5, h6{
 	font-family: 'Cabin', Arial, tahoma, sans-serif !important;
 }
 
+header{
+	z-index: 0 !important;
+}
+
 table{
 	margin-top: 1%;
 }
@@ -162,8 +166,9 @@ select{
 	}
 
 	.listing img{
-		width: 245px;
-		height: 188px;
+		width: 48%;
+		/*width: 245px;
+		height: 188px;*/
 	}
 
 	.listing h3{
@@ -429,6 +434,21 @@ select{
 .tt-suggestion p {
   margin: 0;
 }
+
+
+
+/*
+	Media Query
+*/
+
+@media only screen and (min-width: 1300px) {
+	.listing img{
+		width: 40%;
+		/*width: 245px;
+		height: 188px;*/
+	}
+}
+
 
 /*
 	Media Print

@@ -332,44 +332,6 @@ if(Boats.find().count() == 0){
 	})
 }
 
-// if(Trips.find().count() == 0){
-// 	Trips.insert({
-// 		"from" 	: "Stykkishólmur",
-// 		"to"	: "Brjánslækur",
-// 		"hour"  : "15:00"
-// 	});
-
-// 	Trips.insert({
-// 		"from" 	: "Brjánslækur",
-// 		"to"	: "Stykkishólmur",
-// 		"hour"  : "18:00"		
-// 	});
-
-// 	Trips.insert({
-// 		"from" 	: "Caicó",
-// 		"to"	: "Bermudas",
-// 		"hour"  : "14:00"
-// 	});
-
-// 	Trips.insert({
-// 		"from" 	: "Bermudas",
-// 		"to"	: "Caicó",
-// 		"hour"  : "20:00"
-// 	});
-
-// 	Trips.insert({
-// 		"from" 	: "Pipa",
-// 		"to"	: "Haiti",
-// 		"hour"  : "15:00"
-// 	});
-
-// 	Trips.insert({
-// 		"from" 	: "Haiti",
-// 		"to"	: "Pipa",
-// 		"hour"  : "19:00"
-// 	});
-// }
-
 if(Products.find().count() == 0){
 	Products.insert({
 		"name" 			: "Baldur Ferry",
@@ -682,7 +644,11 @@ if(Books.find().count() == 0){
 		var trip = Trips.findOne(products[randomProductIndex].trips[zeroOrOne]);
 
 		var book = {
-			"destination" : trip.from + ' - ' +trip.to + ' - ' + trip.hour,
+			"trip" : {
+				'from' 	: trip.from,
+				'to' 	: trip.to,
+			 	'hour' 	: trip.hour
+			 },
 			'dateOfBooking' : date,
 			'customerId' : result,
 			'product' : products[randomProductIndex]

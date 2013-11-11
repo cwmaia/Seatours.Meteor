@@ -4,6 +4,7 @@
 			Bookings
 		</h1>
 	</div><!-- /.page-header -->
+
 	<ul class="listing" id="bookings">
 		{{#each product}}
 			<li id="{{_id}}">
@@ -18,6 +19,7 @@
 
 				<img src="/images/{{name}}.jpg">
 
+				{{isFull _id}}
 				<div class="calendarWrap">
 					<div class="calendar" id="calendar_{{_id}}"></div>
 				</div>
@@ -39,9 +41,7 @@
 	<div class="line">
 		<label class="required">Destination: </label>
 		<select id="destination">
-			{{#each destination}}
-				{{> destination}}
-			{{/each}}
+			<option>{{trip.from}} - {{trip.to}} - {{trip.hour}}</option>
 		</select>
 	</div>
 
@@ -227,10 +227,6 @@
 	<option value="{{category}}" id="{{_id}}">{{category}}</option>
 </template>
 
-<template name="destination">
-	<option>{{from}} - {{to}} - {{hour}}</option>
-</template>
-
 <template name="sizesBook">
 	<option value="{{this}}">{{this}}m</option>
 </template>
@@ -299,7 +295,7 @@
 				{{#each bookings}}
 					<tr id='{{_id}}'>
 						<td><a href="/bookDetailResume/{{_id}}">{{_id}}</a></td>
-						<td>{{destination}}</td>
+						<td>{{trip.from}} - {{trip.to}}</td>
 						<td>{{customerId}}</td>
 						<td>{{bookStatus}}</td>
 						<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
