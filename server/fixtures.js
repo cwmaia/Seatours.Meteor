@@ -617,7 +617,7 @@ if(Books.find().count() == 0){
 		with(date){
 			var randomday = parseInt((Math.random() * (20 - 1) + 1));
 			setDate(randomday);
-			var randomMonth = parseInt((Math.random() * (10 - 0) + 0));
+			var randomMonth = parseInt((Math.random() * (12 - 0) + 0));
 			setMonth(randomMonth);
 		}
 

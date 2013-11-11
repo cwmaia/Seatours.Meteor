@@ -1,5 +1,57 @@
+var stat = true;
+
 Template.overview.bookQtd = function() {
 	return Books.find().count();
+}
+
+Template.overview.percentageMonth = function(){
+	//Get all the books of past month
+	var firstDayPastMonth = new Date();
+	var firstDayCurrentMonth = new Date();
+	var firstDayNextMonth = new Date();
+	with(firstDayPastMonth){
+		setMonth(getMonth() -1);
+		setHours(0);
+		setMinutes(0);
+		setSeconds(0);
+		setDate(1);
+	}
+
+	with(firstDayCurrentMonth){
+		setDate(1);
+		setHours(0);
+		setMinutes(0);
+		setSeconds(0);
+	}
+
+	with(firstDayNextMonth){
+		setDate(1);
+		setMonth(getMonth() +1);
+		setHours(0);
+		setMinutes(0);
+		setSeconds(0);
+	}
+
+	var percentage = 0;
+
+	booksOfPastMonth = Books.find({dateOfBooking: {$gte: firstDayPastMonth, $lt: firstDayCurrentMonth}}).count();
+	booksOfCurrentMonth = Books.find({dateOfBooking: {$gte: firstDayCurrentMonth, $lt: firstDayNextMonth}}).count();
+	
+	percentage = (booksOfCurrentMonth * 100) / booksOfPastMonth;
+
+	if(booksOfCurrentMonth > booksOfPastMonth){
+		stat = true;
+		percentage = percentage - 100;
+	}else{
+		stat = false;
+	}
+	return parseInt(percentage);
+}
+
+Template.overview.stat = function(){
+	if(stat)
+		return 'stat-success';
+	return 'stat-important';
 }
 
 Template.overview.rendered = function(){
