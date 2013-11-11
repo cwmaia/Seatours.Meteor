@@ -98,16 +98,19 @@ Template.bookDetail.helpers({
 	},
 
 	bookings : function(){
-		var date = Session.get('bookingDate');
+		var date = Session.get('bookingDate'),
+		trip = Trips.findOne(Session.get('tripId'));
+
 		with(date){
 			setDate(getDate() + 1);
 		}
-		return Books.find({dateOfBooking: {$gte: Session.get('bookingDate'), $lt: date}, 'product._id': Session.get('productId')});
+		return Books.find({dateOfBooking: {$gte: Session.get('bookingDate'), $lt: date}, 'product._id': Session.get('productId'), 'trip.from': trip.from});
 	},
 
 	isBookCreated : function(status) {
 		return status == 'Created';
 	},
+
 	bookingsCreated : function(){
 		return Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId'), bookStatus : "Created"});
 	}
@@ -127,9 +130,11 @@ Template.createBook.helpers({
 	"prices" : function(){
 		return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).prices : [] ;
 	},
-	'destination' : function(){
-		return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).trips : [] ;
+
+	'trip' : function(){
+		return Trips.findOne(Session.get("tripId"));
 	},
+
 	'slots' : function(){
 		var boatId = Products.findOne({_id: Session.get('productId')}).boatId;
 		return Boats.findOne({_id: boatId}).slots;
@@ -210,8 +215,13 @@ Template.generalPassagerInfo.events({
 	 			if(SaveCustomer)
 	 				Customers.insert(customer);
 
-	 			var book = {
-					"destination" : $("#destination").val(),			
+	 			var trip = Trips.findOne(Session.get('tripId')),
+	 			book = {
+					"trip" : {
+						'from' 	: trip.from,
+						'to' 	: trip.to,
+						'hour' 	: trip.hour
+					},
 					"totalISK" : $("#totalISK").text(),
 					'dateOfBooking' : Session.get('bookingDate'),
 					'customer' : customer,
