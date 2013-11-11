@@ -1,5 +1,5 @@
 <template name='bookCustomerDetailResume'>
-	{{#with book}}
+	{{#with customer}}
 	<table class='table table-striped table-bordered trable-hover'>
 		<thead>
 			<tr>
@@ -14,13 +14,13 @@
 		</thead>
 		<tbody>
 			<tr>
-				<th>{{customer.fullName}}</th>
-				<th>{{customer.telephone}}</th>
-				<th>{{customer.email}}</th>
-				<th>{{customer.adress}}</th>
-				<th>{{customer.city}}</th>
-				<th>{{customer.state}}</th>
-				<th>{{customer.country}}</th>
+				<td>{{fullName}}</td>
+				<td>{{telephone}}</td>
+				<td>{{email}}</td>
+				<td>{{adress}}</td>
+				<td>{{city}}</td>
+				<td>{{state}}</td>
+				<td>{{country}}</td>
 			</tr>
 		</tbody>
 	</table>

@@ -30,6 +30,14 @@ Meteor.publish('customers', function(){
 	return Customers.find();
 });
 
+Meteor.publish('notes', function(){
+  return Notes.find();
+});
+
+Meteor.publish('mails', function(){
+  return Mails.find();
+});
+
 Meteor.publish('countries', function() {
   return Countries.find();
 });

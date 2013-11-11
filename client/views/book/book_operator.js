@@ -212,8 +212,13 @@ Template.generalPassagerInfo.events({
 					"country" : $("#country").val()
 	 			}
 
-	 			if(SaveCustomer)
-	 				Customers.insert(customer);
+	 			if(SaveCustomer){
+	 				console.log( 'save');
+	 				var resultId = Customers.insert(customer);
+	 				customer._id = resultId;
+	 				book.customerId = result;
+	 			}
+	 				
 
 	 			var trip = Trips.findOne(Session.get('tripId')),
 	 			book = {
@@ -224,7 +229,6 @@ Template.generalPassagerInfo.events({
 					},
 					"totalISK" : $("#totalISK").text(),
 					'dateOfBooking' : Session.get('bookingDate'),
-					'customer' : customer,
 					'bookStatus' : 'Created',
 					'product' : Product
 				}
@@ -259,7 +263,7 @@ Template.generalPassagerInfo.events({
 
 				throwSuccess("Book added");
 
-				var html = buildEmail(book, result);
+				var html = buildEmail(book, result, customer);
 
 				Meteor.call('sendEmailHTML',
 					$('#email').val(),
@@ -452,7 +456,7 @@ loadTypeahead = function(){
 	});
 }
 
-buildEmail = function(book, result){
+buildEmail = function(book, result, customer){
 	var prices = '';
 	for (var i = 0; i < book.prices.length; i++) {
 		prices += book.prices[i].prices + " - " + book.prices[i].persons + " X " + book.prices[i].perUnit + " = " +  book.prices[i].sum + " ISK <br/>";
@@ -486,6 +490,14 @@ buildEmail = function(book, result){
 	html += '<h3 style="margin-bottom: 1%; font-style: italic; font-weight: lighter; text-shadow: 2px 1px 1px white;">Address</h3>';
 	html += '<p style="font-size: 130%; margin: 0 0 10px;">Smidjustigur 3 - 340 Stykkisholmur</p>';
 	html += '</section>';
+	html += '<section style="float: left; margin-right: 1%; width: 30%;">';
+	html += '<h3 style="margin-bottom: 1%; font-style: italic; font-weight: lighter; text-shadow: 2px 1px 1px white;">Email</h3>';
+	html += '<p style="font-weight: lighter; margin: 0 0 10px;">seatours@seatours.is</p>';
+	html += '</section>';
+	html += '<section style="float: left; margin-right: 1%; width: 30%;">';
+	html += '<h3 style="margin-bottom: 1%; font-style: italic; font-weight: lighter; text-shadow: 2px 1px 1px white;">Phone:</h3>';
+	html += '<p style="color: #555; margin: 0 0 10px;">354 433 2254</p>';
+	html += '</section>';	
 	html += '</div>';
 	html += '<table class="table table-striped table-bordered trable-hover" style="border: 1px solid #dddddd;';
 	html += 'border-collapse: separate;';
@@ -570,25 +582,52 @@ buildEmail = function(book, result){
 	html += 'line-height: 20px;';
 	html += 'text-align: left;';
 	html += 'vertical-align: top;';
-	html += 'border-top: 1px solid #dddddd;">'+book.customer.fullName+'</td>';
+	html += 'border-top: 1px solid #dddddd;">'+customer.fullName+'</td>';
 	html += '<td style="padding: 8px;';
 	html += 'line-height: 20px;';
 	html += 'text-align: left;';
 	html += 'vertical-align: top;';
-	html += 'border-top: 1px solid #dddddd;">'+book.customer.adress+'</td>';
+	html += 'border-top: 1px solid #dddddd;">'+customer.adress+'</td>';
 	html += '<td style="padding: 8px;';
 	html += 'line-height: 20px;';
 	html += 'text-align: left;';
 	html += 'vertical-align: top;';
-	html += 'border-top: 1px solid #dddddd;">'+book.customer.telephone+'</td>';
+	html += 'border-top: 1px solid #dddddd;">'+customer.telephone+'</td>';
 	html += '<td style="padding: 8px;';
 	html += 'line-height: 20px;';
 	html += 'text-align: left;';
 	html += 'vertical-align: top;';
-	html += 'border-top: 1px solid #dddddd;">'+book.customer.email+'</td>';
+	html += 'border-top: 1px solid #dddddd;">'+customer.email+'</td>';
 	html += '</tr>';
 	html += '</tbody>';
 	html += '</table>';
+	html += '<div class="alert alert-warning" style="font-size: 14px;';
+	html += 'border-radius: 0; ';
+	html += 'adding: 8px 35px 8px 14px;';
+	html += 'margin-bottom: 20px;';
+	html += 'text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);';
+	html += 'background-color: #fcf8e3;';
+	html += 'border: 1px solid #fbeed5;';
+	html += '-webkit-border-radius: 4px;';
+	html += '-moz-border-radius: 4px;';
+	html += 'border-radius: 4px;">';
+	html += 'This Voucher is to accepted as payment fot the following service as';
+	html += 'per contratct/agreement';
+	html += '</div>';
+	html += '<div id="product" class="line-3" style="float: left; width: 100%; margin: 2% 0;">';
+	html += '<section style="float: left; margin-right: 1%; width: 30%;">';
+	html += '<h3 style="margin-bottom: 1%; font-style: italic; font-weight: lighter; text-shadow: 2px 1px 1px white;">Service</h3>';
+	html += '<p style="font-size: 130%; margin: 0 0 10px;">'+book.product.name+'</p>';
+	html += '</section>';
+	html += '<section style="float: left; margin-right: 1%; width: 30%;">';
+	html += '<h3 style="margin-bottom: 1%; font-style: italic; font-weight: lighter; text-shadow: 2px 1px 1px white;">Date</h3>';
+	html += '<p style="font-weight: lighter; margin: 0 0 10px;">'+book.dateOfBooking.toDateString()+'</p>';
+	html += '</section>';
+	html += '<section style="float: left; margin-right: 1%; width: 30%;">';
+	html += '<h3 style="margin-bottom: 1%; font-style: italic; font-weight: lighter; text-shadow: 2px 1px 1px white;">Departure Place:</h3>';
+	html += '<p style="color: #555; margin: 0 0 10px;">'+book.destination+'</p>';
+	html += '</section>';
+	html += '</div>';
 	html += '<table class="table table-striped table-bordered trable-hover" style="border: 1px solid #dddddd;';
 	html += 'border-collapse: separate;';
 	html += 'border-left: 0;';
