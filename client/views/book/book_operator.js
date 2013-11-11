@@ -174,6 +174,7 @@ Template.generalPassagerInfo.events({
 	'keyup #fullName' : function(event){
 		if(event.keyCode != 13)
 		{
+			$('#customerId').val('');
 			$('#title').val('')
 	    	$('#birthDate').val('');
 	    	$('#email').val('');
@@ -210,15 +211,7 @@ Template.generalPassagerInfo.events({
 					"state" : $('#state').val(),
 					"postcode" : $("#postcode").val(),
 					"country" : $("#country").val()
-	 			}
-
-	 			if(SaveCustomer){
-	 				console.log( 'save');
-	 				var resultId = Customers.insert(customer);
-	 				customer._id = resultId;
-	 				book.customerId = result;
-	 			}
-	 				
+	 			}	
 
 	 			var trip = Trips.findOne(Session.get('tripId')),
 	 			book = {
@@ -239,6 +232,14 @@ Template.generalPassagerInfo.events({
 					"size" : $("#size").val(),
 					"totalCost" : $("#totalVehicle").text()
 				}
+
+				if(SaveCustomer){
+	 				var resultId = Customers.insert(customer);
+	 				customer._id = resultId;
+	 				book.customerId = resultId;
+	 			}else{
+	 				book.customerId = $('#customerId').val();
+	 			}
 			
 				var prices = [];
 
@@ -282,7 +283,7 @@ Template.generalPassagerInfo.events({
 					'Your Voucher at Seatours!',
 					'<html><head></head><body>Thanks for Booking with us, here is your <b>voucher: </b>'+html+'<hr/>Regards! Seatours Team!<body></html>');
 
-				Meteor.Router.to('/voucher/'+result);
+				Meteor.Router.to('/bookDetailResume/'+result);
 			}
 		}
 	}
@@ -452,6 +453,7 @@ loadTypeahead = function(){
 	}).bind('typeahead:selected', function (obj, datum) {
     	var customer = Customers.findOne({_id: datum.id});
 
+    	$('#customerId').val(customer._id);
     	$('#title').val(customer.title)
     	$('#fullName').val(customer.fullName);
     	$('#birthDate').val(customer.birthDate);
