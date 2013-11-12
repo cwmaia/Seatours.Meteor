@@ -20,7 +20,7 @@
 
 							<div class="infobox-data">
 								<span class="infobox-data-number">{{bookQtd}}</span>
-								<div class="infobox-content">new Books</div>
+								<div class="infobox-content">Monthly Bookings</div>
 							</div>
 							<div class="stat {{stat}}">{{percentageMonth
 							}}%</div>
@@ -153,28 +153,28 @@
 
 								<ul class="dropdown-menu pull-right dropdown-125 dropdown-lighter dropdown-caret">
 									<li class="active">
-										<a href="#" class="blue">
+										<a href="#" id='thisWeek' class="blue">
 											<i class="icon-caret-right bigger-110">&nbsp;</i>
 											This Week
 										</a>
 									</li>
 
 									<li>
-										<a href="#">
+										<a href="#" id='lastWeek'>
 											<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
 											Last Week
 										</a>
 									</li>
 
 									<li>
-										<a href="#">
+										<a href="#" id='thisMonth'>
 											<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
 											This Month
 										</a>
 									</li>
 
 									<li>
-										<a href="#">
+										<a href="#" id='lastMonth'>
 											<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
 											Last Month
 										</a>
@@ -191,26 +191,26 @@
 								<div class="clearfix">
 									<div class="grid3">
 										<span class="grey">
-											<i class="icon-facebook-sign icon-2x blue"></i>
-											&nbsp; likes
+											<i class="icon-money icon-2x green"></i>
+											Paid
 										</span>
-										<h4 class="bigger pull-right">1,255</h4>
+										<h4 class="bigger pull-right" id='paid'></h4>
 									</div>
 
 									<div class="grid3">
 										<span class="grey">
-											<i class="icon-twitter-sign icon-2x purple"></i>
-											&nbsp; tweets
+											<i class="icon-money icon-2x blue"></i>
+											Not Paid
 										</span>
-										<h4 class="bigger pull-right">941</h4>
+										<h4 class="bigger pull-right" id='notPaid'></h4>
 									</div>
 
 									<div class="grid3">
 										<span class="grey">
-											<i class="icon-pinterest-sign icon-2x red"></i>
-											&nbsp; pins
+											<i class="icon-book icon-2x red"></i>
+											Total
 										</span>
-										<h4 class="bigger pull-right">1,050</h4>
+										<h4 class="bigger pull-right" id='totalBooks'></h4>
 									</div>
 								</div>
 							</div><!-- /widget-main -->
