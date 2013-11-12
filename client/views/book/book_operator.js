@@ -18,6 +18,10 @@ Template.bookOperator.rendered = function() {
 			}
 			else
 				showPopover(select, 'Choose the trip');
+		},
+		'onChangeMonthYear': function(year, month) {
+			$(this).attr('data-month', month);
+			setCalendarCapacity($(this));
 		}
 	});
 }
@@ -29,10 +33,11 @@ Template.bookOperator.helpers({
 
 	'isFull' : function(productId, date) {
 		date = new Date('10/09/2013');
-		var bookings = Books.find({dateOfBooking: {$gte: date, $lt: date + 1}, 'product._id': productId}),
+		var bookings = Books.find({dateOfBooking: {$gte: date, $lt: new Date('10/10/2013')}, 'product._id': productId}),
 		boat = Boats.findOne({_id: Products.findOne(productId).boatId});
 
 		console.log('%s - %s', bookings.count(), boat.maxCapacity);
+		console.log(bookings.fetch());
 
 		return bookings.count() == Products.findOne(productId).maxCapacity;
 	},
@@ -48,6 +53,34 @@ Template.bookOperator.helpers({
 	}
 })
 
+Template.bookOperator.events({
+	'change .trip': function(event) {
+		setCalendarCapacity($(event.currentTarget).closest('li').find('.calendar'))
+	}
+});
+
+function setCalendarCapacity (calendar) {
+	var date = new Date(),
+	days = $('.ui-datepicker-calendar:first a').length,
+	from = calendar.closest('li').find('select')[0].selectedOptions[0].getAttribute('data-from'),
+	product = Products.findOne($(calendar).closest('li')[0].id),
+	maxCapacity = Boats.findOne(product.boatId).maxCapacity,
+	bookings = [];
+
+	date.setMonth(calendar.attr('data-month') - 1);
+	console.log(date);
+
+	for (var j = 1; j <= days; j++) {
+		date.setDate(j + 1);
+		bookings = Books.find({dateOfBooking: {$gte: new Date(date.getFullYear(), date.getMonth(), j), $lt:date}, 'product._id': product._id, 'trip.from': from});
+
+		if(bookings.count() == maxCapacity)
+			console.log($(calendar).find('a:eq(' + date.getDate() + ')').addClass('isFull'));
+
+		if(bookings.count() > 0)
+			console.log('Day: %s, %s bookings - %s max capacity', j, bookings.count(), Boats.findOne(product.boatId).maxCapacity);
+	}
+}
 ///////////////////////////////////////////
 //Template Book Detail
 Template.bookDetail.rendered = function() {
@@ -313,8 +346,9 @@ Template.bookingVehicles.helpers({
 
 Template.generalPassagerInfo.rendered = function() {
 	$('.datepicker').datepicker({
-		changeMonth: true,
-      	changeYear: true
+		changeMonth : true,
+      	changeYear 	: true,
+      	yearRange 	: 'c-100:c-10'
 	});
 
 	$('#telephone').mask('(99) 9999-9999');

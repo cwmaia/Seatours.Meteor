@@ -81,6 +81,10 @@ select{
 	Classes
 */
 
+.ui-datepicker-calendar td a.isFull{
+	background-color: orange !important;
+}
+
 .size1-4{
 	width: 19% !important;
 }
