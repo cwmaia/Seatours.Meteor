@@ -34,12 +34,14 @@
 		</h1>
 	</div>
 
-	<h3>
-		<!-- <a href="{{newPath}}" name="newBooking" id="newBooking">New Booking</a> -->
-		<button name="newBooking" id="newBooking" class="btn btn-info">
-			New Booking
-		</button>
-	</h3>
+	{{#if isBookingNotFull bookingsCreated.count boat.maxCapacity}}
+		<h3>
+			<!-- <a href="{{newPath}}" name="newBooking" id="newBooking">New Booking</a> -->
+			<button name="newBooking" id="newBooking" class="btn btn-info">
+				New Booking
+			</button>
+		</h3>
+	{{/if}}
 	
 	<div>
 		<div class="divTable">

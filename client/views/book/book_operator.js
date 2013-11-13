@@ -38,17 +38,6 @@ Template.bookOperator.helpers({
 		return Products.find();
 	},
 
-	'isFull' : function(productId, date) {
-		date = new Date('10/09/2013');
-		var bookings = Books.find({dateOfBooking: {$gte: date, $lt: new Date('10/10/2013')}, 'product._id': productId}),
-		boat = Boats.findOne({_id: Products.findOne(productId).boatId});
-
-		console.log('%s - %s', bookings.count(), boat.maxCapacity);
-		console.log(bookings.fetch());
-
-		return bookings.count() == Products.findOne(productId).maxCapacity;
-	},
-
 	'getTripsByProduct' : function(productId) {
 		var trips = [],
 		product = Products.findOne(productId);
@@ -70,19 +59,22 @@ function setCalendarCapacity (calendar) {
 	var date = new Date(),
 	days = $('.ui-datepicker-calendar:first a').length,
 	from = calendar.closest('li').find('select')[0].selectedOptions[0].getAttribute('data-from'),
-	product = Products.findOne($(calendar).closest('li')[0].id),
+	product = Products.findOne(calendar.closest('li')[0].id),
 	maxCapacity = Boats.findOne(product.boatId).maxCapacity,
 	bookings = [];
 
 	date.setMonth(calendar.attr('data-month') - 1);
+	date.setHours(0, 0, 0);
+
 	$('.isFull').removeClass('isFull');
 
 	for (var j = 1; j <= days; j++) {
 		date.setDate(j + 1);
 		bookings = Books.find({dateOfBooking: {$gte: new Date(date.getFullYear(), date.getMonth(), j), $lt:date}, 'product._id': product._id, 'trip.from': from});
 
-		if(bookings.count() == maxCapacity)
+		if(bookings.count() >= maxCapacity)
 			$(calendar).find('tbody a:eq(' + (j - 1) + ')').addClass('isFull')
+		
 
 		// if(bookings.count() > 0)
 		// 	console.log('Day: %s, %s bookings - %s max capacity', j, bookings.count(), Boats.findOne(product.boatId).maxCapacity);
@@ -152,11 +144,20 @@ Template.bookDetail.helpers({
 		with(date){
 			setDate(getDate() + 1);
 		}
-		return Books.find({dateOfBooking: {$gte: Session.get('bookingDate'), $lt: date}, 'product._id': Session.get('productId'), 'trip.from': trip.from});
+
+		return Books.find({
+			dateOfBooking 	: {$gte: Session.get('bookingDate'), $lt: date},
+			'product._id' 	: Session.get('productId'),
+			'trip.from' 	: trip.from
+		});
 	},
 
 	isBookCreated : function(status) {
 		return status == 'Created';
+	},
+
+	isBookingNotFull: function(bookings, boat) {
+		return bookings < boat;
 	},
 
 	bookingsCreated : function(){
