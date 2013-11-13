@@ -20,8 +20,15 @@ Template.bookOperator.rendered = function() {
 				showPopover(select, 'Choose the trip');
 		},
 		'onChangeMonthYear': function(year, month) {
-			$(this).attr('data-month', month);
-			setCalendarCapacity($(this));
+			var calendar = this;
+
+			$(calendar).attr('data-month', month);
+
+			if($(calendar).closest('li').find('select').val().length > 5){
+				setTimeout(function() {
+					setCalendarCapacity($(calendar));
+				}, 10);
+			}
 		}
 	});
 }
@@ -68,14 +75,14 @@ function setCalendarCapacity (calendar) {
 	bookings = [];
 
 	date.setMonth(calendar.attr('data-month') - 1);
-	console.log(date);
+	$('.isFull').removeClass('isFull');
 
 	for (var j = 1; j <= days; j++) {
 		date.setDate(j + 1);
 		bookings = Books.find({dateOfBooking: {$gte: new Date(date.getFullYear(), date.getMonth(), j), $lt:date}, 'product._id': product._id, 'trip.from': from});
 
 		if(bookings.count() == maxCapacity)
-			console.log($(calendar).find('a:eq(' + date.getDate() + ')').addClass('isFull'));
+			$(calendar).find('tbody a:eq(' + (j - 1) + ')').addClass('isFull')
 
 		if(bookings.count() > 0)
 			console.log('Day: %s, %s bookings - %s max capacity', j, bookings.count(), Boats.findOne(product.boatId).maxCapacity);

@@ -68,6 +68,7 @@ Template.editBoat.events({
 		if(form.checkValidity()){
 			
 			_boat.name = form.name.value;
+			_boat.maxCapacity = form.maxCapacity.value;
 
 			Session.set("_boat", null);
 			
