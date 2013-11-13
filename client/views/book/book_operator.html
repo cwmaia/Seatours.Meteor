@@ -34,6 +34,7 @@
 		</h1>
 	</div>
 
+
 	<h3>
 		<!-- <a href="{{newPath}}" name="newBooking" id="newBooking">New Booking</a> -->
 		<button name="newBooking" id="newBooking" class="btn btn-info">
@@ -41,9 +42,16 @@
 		</button>
 	</h3>
 
-	<div>
+	<div class='line-2'>
 		<div>
-			{{> widgetSlots}} 
+			<form>
+			<legend>Boat Status<span>&nbsp;&nbsp;</span><i class='icon-anchor'/></legend>
+			<div class='line'>
+				{{#each boat.slots}}
+					<div id="my-widget{{number}}">{{number}}#</div>
+				{{/each}}
+			</div>
+			</form>
 		</div>
 		<div>
 
@@ -326,58 +334,4 @@
 	</div>
 
 	<em type="text" id="totalVehicle" class='calcTotal price'>0</em>
-</template>
-
-<template name='widgetSlots'>
-	<div>
-		<div class='line'>	
-			<div id="my-widget1">1#</div>
-			<div id="my-widget2">2#</div>
-			<div id="my-widget3">3#</div>
-			<div id="my-widget4">4#</div>
-			<div id="my-widget5">5#</div>
-			<div id="my-widget6">6#</div>
-			<div id="my-widget7">7#</div>
-			<div id="my-widget8">8#</div>
-			<div id="my-widget9">9#</div>
-			<div id="my-widget10">10#</div>
-		</div>
-		<div class='line'>
-			<div id="my-widget11">11#</div>
-			<div id="my-widget12">12#</div>
-			<div id="my-widget13">13#</div>
-			<div id="my-widget14">14#</div>
-			<div id="my-widget15">15#</div>
-			<div id="my-widget16">16#</div>
-			<div id="my-widget17">17#</div>
-			<div id="my-widget18">18#</div>
-			<div id="my-widget19">19#</div>
-			<div id="my-widget20">20#</div>
-		</div>
-		<div class='line'>
-			<div id="my-widget21">21#</div>
-			<div id="my-widget22">22#</div>
-			<div id="my-widget23">23#</div>
-			<div id="my-widget24">24#</div>
-			<div id="my-widget25">25#</div>
-			<div id="my-widget26">26#</div>
-			<div id="my-widget27">27#</div>
-			<div id="my-widget28">28#</div>
-			<div id="my-widget29">29#</div>
-			<div id="my-widget30">30#</div>	  	
-	  	</div>
-	  	<div class='line'>
-			<div id="my-widget31">31#</div>
-			<div id="my-widget32">32#</div>
-			<div id="my-widget33">33#</div>
-			<div id="my-widget34">34#</div>
-			<div id="my-widget35">35#</div>
-			<div id="my-widget36">36#</div>
-			<div id="my-widget37">37#</div>
-			<div id="my-widget38">38#</div>
-			<div id="my-widget39">39#</div>
-			<div id="my-widget40">40#</div>	  		
-	  	</div>
-	  <button id="black">Go black</button>
-	</div>
 </template>

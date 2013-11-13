@@ -14,7 +14,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 2,
@@ -22,15 +23,17 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
-			"number" : 5,
+			"number" : 3,
 			"slot_name" : "Small Car Slot",
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 4,
@@ -38,7 +41,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 5,
@@ -46,7 +50,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 6,
@@ -54,7 +59,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 7,
@@ -62,7 +68,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 8,
@@ -70,7 +77,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 9,
@@ -78,7 +86,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 10,
@@ -86,7 +95,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 11,
@@ -94,7 +104,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 12,
@@ -102,7 +113,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 13,
@@ -110,7 +122,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 14,
@@ -118,7 +131,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 15,
@@ -126,7 +140,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 16,
@@ -134,7 +149,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 17,
@@ -142,7 +158,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 18,
@@ -150,7 +167,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 19,
@@ -158,7 +176,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 20,
@@ -166,7 +185,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 21,
@@ -174,7 +194,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 22,
@@ -182,7 +203,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 23,
@@ -190,7 +212,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 24,
@@ -198,7 +221,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : true
 		},
 		{
 			"number" : 25,
@@ -206,7 +230,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : true
 		},
 		{
 			"number" : 26,
@@ -214,7 +239,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : true
 		},
 		{
 			"number" : 27,
@@ -222,7 +248,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : true
 		},
 		{
 			"number" : 28,
@@ -230,7 +257,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : true
 		},
 		{
 			"number" : 29,
@@ -238,7 +266,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 30,
@@ -254,7 +283,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 32,
@@ -262,7 +292,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 33,
@@ -270,7 +301,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : true,
+			"disabled" : false
 		},
 		{
 			"number" : 34,
@@ -278,15 +310,17 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : true,
+			"disabled" : false
 		},
 		{
-			"number" : 34,
+			"number" : 35,
 			"slot_name" : "Small Car Slot",
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 36,
@@ -294,7 +328,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : true,
+			"disabled" : false
 		},
 		{
 			"number" : 37,
@@ -302,7 +337,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 38,
@@ -310,7 +346,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 39,
@@ -318,7 +355,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		},
 		{
 			"number" : 40,
@@ -326,7 +364,8 @@ if(Boats.find().count() == 0){
 			"width" : 5,
 			"height" : 5,
 			"split" : false,
-			"alocated" : false
+			"alocated" : false,
+			"disabled" : false
 		}
 	]
 	})
@@ -611,6 +650,9 @@ if(Books.find().count() == 0){
 	var products = Products.find().fetch();
 	var vehicles = VehiclesCategory.find().fetch();
 	var prices = products[0].prices;
+	var nextDay = new Date();
+
+
 
 	for (var i = 0; i < 2000; i++) {
 		var sum = 0;
@@ -664,12 +706,49 @@ if(Books.find().count() == 0){
 			}
 			sum += base;
 
-			book.vehicle = {
+			vehicle = {
 				"vehicleModel" : "",
 				"category" : vehicles[randomVehicleIndex].category,
 				"size" : vehicles[randomVehicleIndex].size[0],
 				"totalCost" : base
 				}
+
+			//First see if can alocate slot
+			//Get All books from this trip
+			books = Books.find({
+				dateOfBooking 	: {$gte: date, $lt: nextDay},
+				'product._id' 	: products[randomProductIndex]._id,
+				'trip.from' 	: trip.from
+			});
+
+			var alocatedSlots = [];
+
+			for (var i = books.length - 1; i >= 0; i--) {
+				if(books[i].slot)
+					alocatedSlots.push(books[i].slot.number);
+			};
+
+			boat = Boats.findOne({_id: products[randomProductIndex].boatId})
+
+			var slot = {};
+			//Get if possible the first slot available
+			for (var i = 0; i < boat.slots.length; i++) {
+				for (var j = 0; j < alocatedSlots.length; j++) {
+					if(!boat.slots[i].disabled && 
+						boat.slots[i].number == alocatedSlots[j] &&
+						boat.slots[i].width <= vehicle.size)
+						slot = boat.slots[i];
+				};
+			};
+
+			if(slot){
+				book.slot = {
+					'number' : slot.number
+				}
+
+				book.vehicle = vehicle;	
+			}
+		
 		}else{
 			book.vehicle = {
 			"vehicleModel" : "",

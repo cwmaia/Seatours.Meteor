@@ -278,21 +278,21 @@ Template.overview.events({
 		var i = $(link).children().first();
 		var li = $(link).parent();
 		makeActive(link, i, li);
-		calcBooksLastMonth();
+		calcBooksThisWeek();
 	},
 	'click #thisMonth' : function(e){
 		var link = e.currentTarget;
 		var i = $(link).children().first();
 		var li = $(link).parent();
 		makeActive(link, i, li);
-		calcBooksLastMonth();
+		calcBooksThisMonth();
 	},
 	'click #lastWeek' : function(e){
 		var link = e.currentTarget;
 		var i = $(link).children().first();
 		var li = $(link).parent();
 		makeActive(link, i, li);
-		calcBooksLastMonth();
+		calcBooksLastWeek();
 	},
 	'click #lastMonth' : function(e){
 		var link = e.currentTarget;
