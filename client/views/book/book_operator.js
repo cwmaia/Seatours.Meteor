@@ -351,7 +351,7 @@ Template.generalPassagerInfo.rendered = function() {
       	yearRange 	: 'c-100:c-10'
 	});
 
-	$('#telephone').mask('(99) 9999-9999');
+	$('#telephone').mask('(999) 99999999');
 	$('#birthDate').mask('99/99/9999');
 }
 
@@ -508,6 +508,170 @@ loadTypeahead = function(){
     	$('#postcode').val(customer.postcode);
     	$('#country').val(customer.country);
     	SaveCustomer = false;
+	});
+}
+
+Template.widgetSlots.rendered = function(){
+	$.widget( "custom.colorize", {
+      // default options
+      options: {
+        red: 255,
+        green: 0,
+        blue: 0,
+ 
+        // callbacks
+        change: null,
+        random: null
+      },
+ 
+      // the constructor
+      _create: function() {
+        this.element
+          // add a class for theming
+          .addClass( "custom-colorize" )
+          // prevent double click to select text
+          .disableSelection();
+ 
+        this.changer = $( "<button>", {
+          text: "change",
+          "class": "btn btn-small btn-info"
+        })
+        //.appendTo( this.element )
+        //.button();
+ 
+        // bind click events on the changer button to the random method
+        this._on( this.changer, {
+          // _on won't call random when widget is disabled
+          click: "random"
+        });
+        this._refresh();
+      },
+ 
+      // called when created, and later when changing options
+      _refresh: function() {
+        this.element.css( "background-color", "rgb(" +
+          this.options.red +"," +
+          this.options.green + "," +
+          this.options.blue + ")"
+        );
+ 
+        // trigger a callback/event
+        this._trigger( "change" );
+      },
+ 
+      // a public method to change the color to a random value
+      // can be called directly via .colorize( "random" )
+      random: function( event ) {
+        var colors = {
+          red: Math.floor( Math.random() * 256 ),
+          green: Math.floor( Math.random() * 256 ),
+          blue: Math.floor( Math.random() * 256 )
+        };
+ 
+        // trigger an event, check if it's canceled
+        if ( this._trigger( "random", event, colors ) !== false ) {
+          this.option( colors );
+        }
+      },
+ 
+      // events bound via _on are removed automatically
+      // revert other modifications here
+      _destroy: function() {
+        // remove generated elements
+        this.changer.remove();
+ 
+        this.element
+          .removeClass( "custom-colorize" )
+          .enableSelection()
+          .css( "background-color", "transparent" );
+      },
+ 
+      // _setOptions is called with a hash of all options that are changing
+      // always refresh when changing options
+      _setOptions: function() {
+        // _super and _superApply handle keeping the right this-context
+        this._superApply( arguments );
+        this._refresh();
+      },
+ 
+      // _setOption is called for each individual option that is changing
+      _setOption: function( key, value ) {
+        // prevent invalid color values
+        if ( /red|green|blue/.test(key) && (value < 0 || value > 255) ) {
+          return;
+        }
+        this._super( key, value );
+      }
+    });
+ 
+    // initialize with default options
+    $( "#my-widget1" ).colorize();
+    $( "#my-widget2" ).colorize();
+    $( "#my-widget4" ).colorize();
+    $( "#my-widget5" ).colorize();
+    $( "#my-widget6" ).colorize();
+    $( "#my-widget7" ).colorize();
+    $( "#my-widget8" ).colorize();
+    $( "#my-widget9" ).colorize();
+    $( "#my-widget10" ).colorize();
+
+    $( "#my-widget11" ).colorize();
+    $( "#my-widget12" ).colorize();
+    $( "#my-widget13" ).colorize();
+    $( "#my-widget14" ).colorize();
+    $( "#my-widget15" ).colorize();
+    $( "#my-widget16" ).colorize();
+    $( "#my-widget17" ).colorize();
+    $( "#my-widget18" ).colorize();
+    $( "#my-widget19" ).colorize();
+    $( "#my-widget20" ).colorize();
+
+    $( "#my-widget21" ).colorize();
+    $( "#my-widget22" ).colorize();
+    $( "#my-widget23" ).colorize();
+    $( "#my-widget24" ).colorize();
+    $( "#my-widget25" ).colorize();
+    $( "#my-widget26" ).colorize();
+    $( "#my-widget27" ).colorize();
+    $( "#my-widget28" ).colorize();
+    $( "#my-widget29" ).colorize();
+    $( "#my-widget30" ).colorize();
+
+    $( "#my-widget31" ).colorize();
+    $( "#my-widget32" ).colorize();
+    $( "#my-widget33" ).colorize();
+    $( "#my-widget34" ).colorize();
+    $( "#my-widget35" ).colorize();
+    $( "#my-widget36" ).colorize();
+    $( "#my-widget37" ).colorize();
+    $( "#my-widget38" ).colorize();
+    $( "#my-widget39" ).colorize();
+    $( "#my-widget40" ).colorize();
+ 
+    // initialize with custom green value
+    // and a random callback to allow only colors with enough green
+    $( "#my-widget3" ).colorize( {
+      green: 128,
+      random: function( event, ui ) {
+        return ui.green > 128;
+      }
+    });
+ 
+    // click to toggle enabled/disabled
+    $( "#disable" ).click(function() {
+      // use the custom selector created for each widget to find all instances
+      // all instances are toggled together, so we can check the state from the first
+      if ( $( ":custom-colorize" ).colorize( "option", "disabled" ) ) {
+        $( ":custom-colorize" ).colorize( "enable" );
+      } else {
+        $( ":custom-colorize" ).colorize( "disable" );
+      }
+    });
+ 
+	$( ":custom-colorize" ).colorize( "option", {
+		red: 255,
+		green: 255,
+		blue: 255
 	});
 }
 
@@ -680,7 +844,7 @@ buildEmail = function(book, result, customer){
 	html += '</section>';
 	html += '<section style="float: left; margin-right: 1%; width: 30%;">';
 	html += '<h3 style="margin-bottom: 1%; font-style: italic; font-weight: lighter; text-shadow: 2px 1px 1px white;">Departure Place:</h3>';
-	html += '<p style="color: #555; margin: 0 0 10px;">'+book.destination+'</p>';
+	html += '<p style="color: #555; margin: 0 0 10px;">'+book.trip.from+' - '+book.trip.to+' - '+book.trip.hour+'</p>';
 	html += '</section>';
 	html += '</div>';
 	html += '<table class="table table-striped table-bordered trable-hover" style="border: 1px solid #dddddd;';

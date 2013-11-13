@@ -6,7 +6,7 @@ if(Boats.find().count() == 0){
 	Boats.insert({
 	"_id" : "1",
 	"name" : "Baldur Ferry",
-	"maxCapacity" : 10,
+	"maxCapacity" : 4,
 	'slots' : [
 		{
 			"number" : 1,
@@ -540,7 +540,7 @@ if(VehiclesCategory.find().count() == 0){
 	});
 
 	VehiclesCategory.insert({
-		"category" 	: "Normal Car / Motor-Home",
+		"category" 	: "Normal Car",
 		"size"		: [5, 6, 7],
 		"basePrice" : 4080
 	});

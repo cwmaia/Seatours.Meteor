@@ -1,5 +1,24 @@
 var stat = true;
 
+var makeActive = function(link, i, li){
+
+	$('#buttonFilter').html($(link).text() + '<i class="icon-angle-down icon-on-right bigger-110"></i>');
+
+	$('.chartFilter').filter(function(){
+		$(this).removeClass('blue');
+		$(this).parent().removeClass('active');
+	})
+
+	$('.chartIcon').filter(function(){
+		$(this).addClass('invisible');
+	})
+
+	$(li).addClass('active');
+	$(link).addClass('blue');
+	$(i).removeClass('invisible');
+	
+}
+
 var drawPieChart = function(placeholder, data, position) {
     $.plot(placeholder, data, {
 		series: {
@@ -236,14 +255,14 @@ Template.overview.percentageMonth = function(){
 	booksOfCurrentMonth = Books.find({dateOfBooking: {$gte: firstDayCurrentMonth, $lt: firstDayNextMonth}}).count();
 	
 	percentage = (booksOfCurrentMonth * 100) / booksOfPastMonth;
+	percentage = percentage - 100;
 
 	if(booksOfCurrentMonth > booksOfPastMonth){
 		stat = true;
-		percentage = percentage - 100;
 	}else{
 		stat = false;
 	}
-	return parseInt(percentage);
+	return Math.abs(parseInt(percentage));
 }
 
 Template.overview.stat = function(){
@@ -255,19 +274,31 @@ Template.overview.stat = function(){
 
 Template.overview.events({
 	'click #thisWeek' : function(e){
-		calcBooksThisWeek();
+		var link = e.currentTarget;
+		var i = $(link).children().first();
+		var li = $(link).parent();
+		makeActive(link, i, li);
+		calcBooksLastMonth();
 	},
 	'click #thisMonth' : function(e){
-		calcBooksThisMonth();
+		var link = e.currentTarget;
+		var i = $(link).children().first();
+		var li = $(link).parent();
+		makeActive(link, i, li);
+		calcBooksLastMonth();
 	},
 	'click #lastWeek' : function(e){
-		var a = e.currentTarget;
-		console.log(a);
-		var b = $(a).parent();
-		console.log(b);
-		calcBooksLastWeek();
+		var link = e.currentTarget;
+		var i = $(link).children().first();
+		var li = $(link).parent();
+		makeActive(link, i, li);
+		calcBooksLastMonth();
 	},
 	'click #lastMonth' : function(e){
+		var link = e.currentTarget;
+		var i = $(link).children().first();
+		var li = $(link).parent();
+		makeActive(link, i, li);
 		calcBooksLastMonth();
 	},
 })
