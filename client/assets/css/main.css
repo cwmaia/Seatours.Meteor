@@ -199,21 +199,30 @@ select{
 	Trip page
 */
 
-#trips li:hover{
+#tripsSection li:hover{
 	background-color: #3679c5; /*#2679b5;*/
 }
 
-	#trips li:hover h3{
+	#tripsSection li:hover h3{
 		color: whiteSmoke;
 	}
 
-	#trips li h3{
+	#tripsSection li h3{
 		-webkit-transition: color 0.3s;
 		-moz-transition: color 0.3s;
 		-ms-transition: color 0.3s;
 		-o-transition: color 0.3s;
 		transition: color 0.3s;
 	}
+
+	.new{
+		width: 36% !important;
+	}
+
+/*
+	Boat
+*/
+
 
 /*
 	Booking Detail
@@ -441,9 +450,9 @@ select{
 	Media Query
 */
 
-@media only screen and (min-width: 1300px) {
+@media only screen and (max-width: 1300px) {
 	.listing img{
-		width: 40%;
+		width: 35%;
 		/*width: 245px;
 		height: 188px;*/
 	}

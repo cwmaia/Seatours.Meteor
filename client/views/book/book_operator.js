@@ -84,8 +84,8 @@ function setCalendarCapacity (calendar) {
 		if(bookings.count() == maxCapacity)
 			$(calendar).find('tbody a:eq(' + (j - 1) + ')').addClass('isFull')
 
-		if(bookings.count() > 0)
-			console.log('Day: %s, %s bookings - %s max capacity', j, bookings.count(), Boats.findOne(product.boatId).maxCapacity);
+		// if(bookings.count() > 0)
+		// 	console.log('Day: %s, %s bookings - %s max capacity', j, bookings.count(), Boats.findOne(product.boatId).maxCapacity);
 	}
 }
 ///////////////////////////////////////////
