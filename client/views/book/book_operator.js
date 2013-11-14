@@ -22,7 +22,7 @@ Template.bookOperator.rendered = function() {
 		'onChangeMonthYear': function(year, month) {
 			var calendar = this;
 
-			$(calendar).attr('data-month', month);
+			$(calendar).attr('data-month', month).attr('data-year', year);
 
 			if($(calendar).closest('li').find('select').val().length > 5){
 				setTimeout(function() {
@@ -64,6 +64,7 @@ function setCalendarCapacity (calendar) {
 	bookings = [];
 
 	date.setMonth(calendar.attr('data-month') - 1);
+	date.setYear(calendar.attr('data-year'));
 	date.setHours(0, 0, 0);
 
 	$('.isFull').removeClass('isFull');
@@ -85,6 +86,139 @@ function setCalendarCapacity (calendar) {
 Template.bookDetail.rendered = function() {
 	$('#passengers').dataTable();
 	$('#boatSlots').dataTable();
+
+		$.widget( "custom.colorize", {
+      // default options
+      options: {
+        red: 255,
+        green: 0,
+        blue: 0,
+ 
+        // callbacks
+        change: null,
+        random: null
+      },
+ 
+      // the constructor
+      _create: function() {
+        this.element
+          // add a class for theming
+          .addClass( "custom-colorize" )
+          // prevent double click to select text
+          .disableSelection();
+ 
+        this.changer = $( "<button>", {
+          text: "change",
+          "class": "btn btn-small btn-info"
+        })
+        //.appendTo( this.element )
+        //.button();
+ 
+        // bind click events on the changer button to the random method
+        this._on( this.changer, {
+          // _on won't call random when widget is disabled
+          click: "random"
+        });
+        this._refresh();
+      },
+ 
+      // called when created, and later when changing options
+      _refresh: function() {
+        this.element.css( "background-color", "rgb(" +
+          this.options.red +"," +
+          this.options.green + "," +
+          this.options.blue + ")"
+        );
+ 
+        // trigger a callback/event
+        this._trigger( "change" );
+      },
+ 
+      // a public method to change the color to a random value
+      // can be called directly via .colorize( "random" )
+      random: function( event ) {
+        var colors = {
+          red: Math.floor( Math.random() * 256 ),
+          green: Math.floor( Math.random() * 256 ),
+          blue: Math.floor( Math.random() * 256 )
+        };
+ 
+        // trigger an event, check if it's canceled
+        if ( this._trigger( "random", event, colors ) !== false ) {
+          this.option( colors );
+        }
+      },
+ 
+      // events bound via _on are removed automatically
+      // revert other modifications here
+      _destroy: function() {
+        // remove generated elements
+        this.changer.remove();
+ 
+        this.element
+          .removeClass( "custom-colorize" )
+          .enableSelection()
+          .css( "background-color", "transparent" );
+      },
+ 
+      // _setOptions is called with a hash of all options that are changing
+      // always refresh when changing options
+      _setOptions: function() {
+        // _super and _superApply handle keeping the right this-context
+        this._superApply( arguments );
+        this._refresh();
+      },
+ 
+      // _setOption is called for each individual option that is changing
+      _setOption: function( key, value ) {
+        // prevent invalid color values
+        if ( /red|green|blue/.test(key) && (value < 0 || value > 255) ) {
+          return;
+        }
+        this._super( key, value );
+      }
+    });
+ 
+    // initialize with default options
+    var boatId = Products.findOne({_id: Session.get('productId')}).boatId;
+	var boat = Boats.findOne({_id: boatId});
+ 	for (var i = 0; i < boat.slots.length; i++) {
+ 		var sum = i + 1;
+ 		if(boat.slots[i].alocated){
+ 			$('#my-widget'+sum).colorize({
+				red: 255,
+				green: 165,
+				blue: 0
+			});
+ 		}else if(boat.slots[i].disabled){
+ 			 $('#my-widget'+sum).colorize({
+				red: 240,
+				green: 240,
+				blue: 240
+			});
+ 		}else{
+ 			console.log('aqui');
+ 			$('#my-widget'+sum).colorize({
+				red: 0,
+				green: 255,
+				blue: 127
+			});
+ 		}
+ 	};
+   
+ 
+    // click to toggle enabled/disabled
+    $( "#disable" ).click(function() {
+      // use the custom selector created for each widget to find all instances
+      // all instances are toggled together, so we can check the state from the first
+      if ( $( ":custom-colorize" ).colorize( "option", "disabled" ) ) {
+        $( ":custom-colorize" ).colorize( "enable" );
+      } else {
+        $( ":custom-colorize" ).colorize( "disable" );
+      }
+    });
+
+
 }
 
 Template.bookDetail.fullname = function(id){
@@ -359,7 +493,7 @@ Template.generalPassagerInfo.rendered = function() {
       	yearRange 	: 'c-100:c-10'
 	});
 
-	$('#telephone').mask('(99) 9999-9999');
+	$('#telephone').mask('(999) 99999999');
 	$('#birthDate').mask('99/99/9999');
 }
 
@@ -517,6 +651,26 @@ loadTypeahead = function(){
     	$('#country').val(customer.country);
     	SaveCustomer = false;
 	});
+}
+
+Template.bookDetail.isTen = function(data){
+	var zero = data % 10;
+	console.log(zero);
+	if(zero){
+		return false;
+	}else{
+		console.log('aqui');
+		return true;
+	}
+}
+
+Template.bookDetail.isOne = function(data){
+	var one = data % 10;
+	if(one === 1){
+		return true;
+	}else{
+		return false;
+	}
 }
 
 buildEmail = function(book, result, customer){
@@ -688,7 +842,7 @@ buildEmail = function(book, result, customer){
 	html += '</section>';
 	html += '<section style="float: left; margin-right: 1%; width: 30%;">';
 	html += '<h3 style="margin-bottom: 1%; font-style: italic; font-weight: lighter; text-shadow: 2px 1px 1px white;">Departure Place:</h3>';
-	html += '<p style="color: #555; margin: 0 0 10px;">'+book.destination+'</p>';
+	html += '<p style="color: #555; margin: 0 0 10px;">'+book.trip.from+' - '+book.trip.to+' - '+book.trip.hour+'</p>';
 	html += '</section>';
 	html += '</div>';
 	html += '<table class="table table-striped table-bordered trable-hover" style="border: 1px solid #dddddd;';

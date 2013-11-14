@@ -17,6 +17,21 @@ Template.trips.events({
 	Edit Trip
 */
 
+Template.editTrip.rendered = function() {
+	$('#hour').timepicker({
+		minuteStep: 1,
+		showMeridian: false
+	});
+}
+
+Template.editTrip.boats = function() {
+	return Boats.find();
+}
+
+Template.editTrip.equalBoatId = function(id) {
+	return _product.boatId == id;
+}
+
 Template.editTrip.helpers({
 	product : function(){
 		_product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
@@ -24,7 +39,8 @@ Template.editTrip.helpers({
 		if(!_product){
 			_product = {
 				trips : [],
-				prices: []
+				prices: [],
+				blockingDates: []
 			};
 		}
 		
@@ -41,14 +57,6 @@ Template.editTrip.helpers({
 		return trips;
 	}
 });
-
-Template.editTrip.boats = function() {
-	return Boats.find();
-}
-
-Template.editTrip.equalBoatId = function(id) {
-	return _product.boatId == id;
-}
 
 Template.editTrip.events({
 	'submit #productForm' : function(event) {
@@ -127,17 +135,11 @@ Template.editTrip.events({
 });
 
 function saveProduct() {
+	console.log(_product);
 	Session.set('_product', _product);
 
 	if(!_product._id)
 		Products.insert(_product);
 	else
 		Products.update(_product._id, _product);
-}
-
-Template.editTrip.rendered = function(argument) {
-	$('#hour').timepicker({
-		minuteStep: 1,
-		showMeridian: false
-	});
 }

@@ -42,6 +42,22 @@
 			</button>
 		</h3>
 	{{/if}}
+
+	<div class='line-2'>
+		<div>
+			<form>
+			<legend>Boat Status<span>&nbsp;&nbsp;</span><i class='icon-anchor'/></legend>
+			<div class='line'>
+				{{#each boat.slots}}
+					<div id="my-widget{{number}}">{{number}}#</div>
+				{{/each}}
+			</div>
+			</form>
+		</div>
+		<div>
+
+		</div>
+	</div>
 	
 	<div>
 		<div class="divTable">
@@ -85,35 +101,9 @@
 				</tbody>
 			</table>
 		</div>
-
-		{{#if boat.slots}}
-			<div class="divTable">
-				<div>
-					<h3>Boat slots</h3>
-
-					<h4 class="length">Total: {{boat.slots.length}}</h4>
-				</div>
-
-				<table class='table table-striped table-bordered trable-hover' id='boatSlots'>
-		    		<thead>
-		    			<th>Slot Number</th>
-		    			<th>Slot Name</th>
-		    			<th>Width</th>
-		    			<th>Alocated</th>
-		    		</thead>
-		    		<tbody>
-		    			{{#each boat.slots}}
-		    				<tr>
-		    					<td>{{number}}</td>
-								<td>{{slot_name}}</td>
-								<td>{{width}}</td>
-								<td>{{#if alocated}} Yes {{else}} No {{/if}}</td>
-							</tr>	
-		    			{{/each}}
-		    		</tbody>
-		    	</table>
-			</div>
-		{{/if}}
+		<div class="divTable">
+                             
+        </div>
 	</div>
 </template>
 

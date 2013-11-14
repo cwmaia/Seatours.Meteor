@@ -51,7 +51,8 @@ Meteor.Router.add({
 		and : function(id){
 			Session.set('bookId', id);
 		}
-	}
+	},
+	'/management' :'management'
 });
 
 Meteor.Router.filters({

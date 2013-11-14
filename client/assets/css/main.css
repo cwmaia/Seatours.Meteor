@@ -81,6 +81,21 @@ select{
 	Classes
 */
 
+.custom-colorize {
+	font-size: 15px;
+	position: relative;
+	width: 40px;
+	height: 40px;
+	border: 1px solid;
+}
+
+.custom-colorize-changer {
+	font-size: 10px;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+
 .ui-datepicker-calendar td a.isFull{
 	background-color: orange !important;
 }
@@ -216,7 +231,7 @@ select{
 	}
 
 	.new{
-		width: 36% !important;
+		width: 35% !important;
 	}
 
 /*
