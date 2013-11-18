@@ -2,370 +2,105 @@ Meteor.startup(function () {
   process.env.MAIL_URL = 'smtp://postmaster%40seatours.com:2-j--rmow2s5@smtp.mailgun.org:587';
 });
 
+var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
+
+var getTotalExtraSpaceSlot = function(from, to, product, trip, extraSlot){
+	extraSpace = 24;
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: from, $lt: to},
+		'product._id' 	: product._id,
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlot
+	}).fetch();
+
+	var spaceAlocated = 0;
+
+	for (var i = 0; i < books.length; i++) {
+		spaceAlocated += books[i].vehicle.size;
+	};
+
+	return extraSpace - spaceAlocated;
+}
+
+var alocateCarExtraSlots = function(from, to, product, trip, size){
+	var extraSpaceAvailableSlot1 = getTotalExtraSpaceSlot(thisDay, nextDay, product[randomProductIndex], trip, 'EXTRASLOT1');
+	var extraSpaceAvailableSlot2 = getTotalExtraSpaceSlot(thisDay, nextDay, product[randomProductIndex], trip, 'EXTRASLOT2');
+	if(size <= extraSpaceAvailableSlot1){
+		//Alocate vehicle on extra slot 1
+		return 'EXTRASLOT1';
+	}else if(size <= extraSpaceAvailableSlot2){
+		//Alocate vehicle on extra slot 2
+		return 'EXTRASLOT2';
+	}else{
+		//There is no space available for this car.. so sad =/
+		return false;
+	}
+}
+
+
+
+var getMaxCarsUpTo5 = function(boatId){
+	boat = Boats.findOne({_id: "1"});
+	getMax = 0;
+
+	for (var i = 0; i < boat.status.length; i++) {
+		if(boat.status[i].qtdCarsUpTo_5 > getMax){
+			getMax = boat.status[i].qtdCarsUpTo_5;
+		}
+	};
+
+	return getMax;
+}
+
+var getMaxCarsUpTo6 = function(boatId){
+	boat = Boats.findOne({_id: "1"});
+	getMax = 0;
+
+	for (var i = 0; i < boat.status.length; i++) {
+		if(boat.status[i].qtdCarsUpTo_6 > getMax){
+			getMax = boat.status[i].qtdCarsUpTo_6;
+		}
+	};
+
+	return getMax;
+}
+
 if(Boats.find().count() == 0){
 	Boats.insert({
 	"_id" : "1",
 	"name" : "Baldur Ferry",
-	"maxCapacity" : 4,
-	'slots' : [
+	"maxCapacity" : 300,
+	'status' : [
 		{
-			"number" : 1,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
+			"qtdCarsUpTo_5" : 24,
+			"qtdCarsUpTo_6" : 4,
+			"bigSlotOne" : 24,
+			"bigSlotTwo" : 24
 		},
 		{
-			"number" : 2,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
+			"qtdCarsUpTo_5" : 25,
+			"qtdCarsUpTo_6" : 4,
+			"bigSlotOne" : 24,
+			"bigSlotTwo" : 19
 		},
 		{
-			"number" : 3,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
+			"qtdCarsUpTo_5" : 27,
+			"qtdCarsUpTo_6" : 4,
+			"bigSlotOne" : 19,
+			"bigSlotTwo" : 19
 		},
 		{
-			"number" : 4,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
+			"qtdCarsUpTo_5" : 28,
+			"qtdCarsUpTo_6" : 4,
+			"bigSlotOne" : 19,
+			"bigSlotTwo" : 15
 		},
 		{
-			"number" : 5,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 6,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 7,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 8,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 9,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 10,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 11,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 12,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 13,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 14,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 15,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 16,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 17,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 18,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 19,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 20,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 21,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 22,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 23,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 24,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : true
-		},
-		{
-			"number" : 25,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : true
-		},
-		{
-			"number" : 26,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : true
-		},
-		{
-			"number" : 27,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : true
-		},
-		{
-			"number" : 28,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : true
-		},
-		{
-			"number" : 29,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 30,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false
-		},
-		{
-			"number" : 31,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 32,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 33,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : true,
-			"disabled" : false
-		},
-		{
-			"number" : 34,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : true,
-			"disabled" : false
-		},
-		{
-			"number" : 35,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 36,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : true,
-			"disabled" : false
-		},
-		{
-			"number" : 37,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 38,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 39,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 40,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
+			"qtdCarsUpTo_5" : 30,
+			"qtdCarsUpTo_6" : 4,
+			"bigSlotOne" : 15,
+			"bigSlotTwo" : 15
 		}
 	]
 	})
@@ -650,16 +385,32 @@ if(Books.find().count() == 0){
 	var products = Products.find().fetch();
 	var vehicles = VehiclesCategory.find().fetch();
 	var prices = products[0].prices;
+	var thisDay = new Date();
 	var nextDay = new Date();
+	var saveBook = true;
+	var max5mCars = getMaxCarsUpTo5("1");
+	var max6mCars = getMaxCarsUpTo6("1");
+
+	with(thisDay){
+		setHours(0);
+		setMinutes(0);
+		setSeconds(0);
+	}
+
+	with(nextDay){
+		setDate(getDate() +1);
+		setHours(0);
+		setMinutes(0);
+		setSeconds(0);
+	}
 
 
-
-	for (var i = 0; i < 2000; i++) {
+	for (var i = 0; i < 30000; i++) {
 		var sum = 0;
 		with(date){
-			var randomday = parseInt((Math.random() * (20 - 1) + 1));
+			var randomday = parseInt((Math.random() * (20 - 15) + 15));
 			setDate(randomday);
-			var randomMonth = parseInt((Math.random() * (12 - 0) + 0));
+			var randomMonth = parseInt((Math.random() * (12 - 11) + 11));
 			setMonth(randomMonth);
 		}
 
@@ -681,7 +432,7 @@ if(Books.find().count() == 0){
 		customer._id = result;
 
 		var randomProductIndex = parseInt((Math.random() * (2 - 0) + 0));
-		var randomVehicleIndex = parseInt((Math.random() * (12 - 0) + 0));
+		var randomVehicleIndex = parseInt((Math.random() * (2 - 0) + 0));
 		var zeroOrOne = parseInt((Math.random() * (2 - 0) + 0));
 		var trip = Trips.findOne(products[randomProductIndex].trips[zeroOrOne]);
 
@@ -698,7 +449,7 @@ if(Books.find().count() == 0){
 
 		if(zeroOrOne){
 			//calcs total cost of vehicle
-			var size = vehicles[randomVehicleIndex].size[0];
+			var size = 5;
 			var base = vehicles[randomVehicleIndex].basePrice;
 			if(size > 10){
 				var mult = size - 10;
@@ -711,44 +462,58 @@ if(Books.find().count() == 0){
 				"category" : vehicles[randomVehicleIndex].category,
 				"size" : vehicles[randomVehicleIndex].size[0],
 				"totalCost" : base
-				}
-
-			//First see if can alocate slot
-			//Get All books from this trip
-			books = Books.find({
-				dateOfBooking 	: {$gte: date, $lt: nextDay},
-				'product._id' 	: products[randomProductIndex]._id,
-				'trip.from' 	: trip.from
-			});
-
-			var alocatedSlots = [];
-
-			for (var i = books.length - 1; i >= 0; i--) {
-				if(books[i].slot)
-					alocatedSlots.push(books[i].slot.number);
-			};
-
-			boat = Boats.findOne({_id: products[randomProductIndex].boatId})
-
-			var slot = {};
-			//Get if possible the first slot available
-			for (var i = 0; i < boat.slots.length; i++) {
-				for (var j = 0; j < alocatedSlots.length; j++) {
-					if(!boat.slots[i].disabled && 
-						boat.slots[i].number == alocatedSlots[j] &&
-						boat.slots[i].width <= vehicle.size)
-						slot = boat.slots[i];
-				};
-			};
-
-			if(slot){
-				book.slot = {
-					'number' : slot.number
-				}
-
-				book.vehicle = vehicle;	
 			}
-		
+
+			//If vehicles has less or 5 meters
+			if(vehicle.size <= 5){
+				countVehicle5m = Books.find({
+					dateOfBooking 	: {$gte: thisDay, $lt: nextDay},
+					'product._id' 	: products[randomProductIndex]._id,
+					'trip.from' 	: trip.from,
+					'vehicle.size'  : {$gt: 0, $lte: 5}
+				}).count();
+
+				if(countVehicle5m != getMaxCarsUpTo5("1")){
+					vehicle.extraSlot = extraSlots[0];
+				}
+			}
+
+			//If car has between 5 and 6 meters, try alocated him on 6 		
+			if(vehicle.size > 5 && vehicle.size <= 6){
+				countVehicle6m = Books.find({
+					dateOfBooking 	: {$gte: thisDay, $lt: nextDay},
+					'product._id' 	: products[randomProductIndex]._id,
+					'trip.from' 	: trip.from,
+					'vehicle.size'  : {$gt: 5, $lte: 6}
+				}).count();
+
+				if(countVehicle6m != getMaxCarsUpTo6("1")){
+					vehicle.extraSlot = extraSlots[0];
+				}
+			}
+			
+
+			//If car can't alocated on normal slots
+			//try alocate it on extra slots
+			if(!vehicle.extraSlot){
+				//Return false if has no space for the vehicle, 
+				//EXTRASLOT1 if alocated on slot 1
+				//EXTRASLOT2 if alocated on slot 2
+				var alocated = alocateCarExtraSlots(thisDay, nextDay, products[randomProductIndex], trip, vehicle.size);
+				if(alocated){
+					vehicle.extraSlot = alocated;
+				}
+			}
+			
+			//If vehicle can't alocated even on extra slots
+			//the vehicle can't enter on boat 
+			//and the booking is not created
+			if(!vehicle.extraSlot){
+				saveBook = false;
+			}else{
+				book.vehicle = vehicle;
+			}
+
 		}else{
 			book.vehicle = {
 			"vehicleModel" : "",
@@ -785,23 +550,26 @@ if(Books.find().count() == 0){
 			book.bookStatus = 'Canceled';
 		}
 
-		var resultBook = Books.insert(book);
+		if(saveBook){
+			var resultBook = Books.insert(book);
+			var transaction = {
+				'bookId' : resultBook,
+				'date' : new Date(),
+				'status' : 'Waiting Payment',
+				'amount' : book.totalISK,
+				'detail' : '',
+				'vendor' : 'Gudrun'
+			}
 
-		var transaction = {
-			'bookId' : resultBook,
-			'date' : new Date(),
-			'status' : 'Waiting Payment',
-			'amount' : book.totalISK,
-			'detail' : '',
-			'vendor' : 'Gudrun'
+			if(zeroOrOne)
+				transaction.type = 'Card';
+			else
+				transaction.type = 'Money';
+
+			Transactions.insert(transaction);
 		}
-
-		if(zeroOrOne)
-			transaction.type = 'Card';
-		else
-			transaction.type = 'Money';
-
-		Transactions.insert(transaction);
+		
 
 	};			
 }
+

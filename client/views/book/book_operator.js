@@ -1,5 +1,57 @@
 var SaveCustomer = true;
 var Product = {};
+
+var calcMetersAvailable = function(){
+	var metersSlotOne = 24;
+	var metersSlotTwo = 24;
+
+	var date = Session.get('bookingDate'),
+	trip = Trips.findOne(Session.get('tripId'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: Session.get('bookingDate'), $lt: date},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from
+	}).fetch();
+
+	var count = 0;
+
+	for (var i = 0; i < books.length; i++) {
+		if(books[i].vehicle.category){
+			if(books[i].vehicle.size <= 5){
+				count++;
+			}
+		}
+	};
+
+	if(count == 25){
+		var metersSlotOne = 19;
+		var metersSlotTwo = 24;
+	}
+
+	if(count == 27){
+		var metersSlotOne = 19;
+		var metersSlotTwo = 19;
+	}
+
+	if(count == 28){
+		var metersSlotOne = 15;
+		var metersSlotTwo = 19;
+	}
+
+	if(count == 30){
+		var metersSlotOne = 15;
+		var metersSlotTwo = 15;
+	}
+
+	$('#slotOne').text(metersSlotOne + ' m');
+	$('#slotTwo').text(metersSlotTwo + ' m');
+}
+
 ///////////////////////////////////////////
 //Template Book Operator
 Template.bookOperator.rendered = function() {
@@ -85,143 +137,65 @@ function setCalendarCapacity (calendar) {
 Template.bookDetail.rendered = function() {
 	$('#passengers').dataTable();
 	$('#boatSlots').dataTable();
-
-		$.widget( "custom.colorize", {
-      // default options
-      options: {
-        red: 255,
-        green: 0,
-        blue: 0,
- 
-        // callbacks
-        change: null,
-        random: null
-      },
- 
-      // the constructor
-      _create: function() {
-        this.element
-          // add a class for theming
-          .addClass( "custom-colorize" )
-          // prevent double click to select text
-          .disableSelection();
- 
-        this.changer = $( "<button>", {
-          text: "change",
-          "class": "btn btn-small btn-info"
-        })
-        //.appendTo( this.element )
-        //.button();
- 
-        // bind click events on the changer button to the random method
-        this._on( this.changer, {
-          // _on won't call random when widget is disabled
-          click: "random"
-        });
-        this._refresh();
-      },
- 
-      // called when created, and later when changing options
-      _refresh: function() {
-        this.element.css( "background-color", "rgb(" +
-          this.options.red +"," +
-          this.options.green + "," +
-          this.options.blue + ")"
-        );
- 
-        // trigger a callback/event
-        this._trigger( "change" );
-      },
- 
-      // a public method to change the color to a random value
-      // can be called directly via .colorize( "random" )
-      random: function( event ) {
-        var colors = {
-          red: Math.floor( Math.random() * 256 ),
-          green: Math.floor( Math.random() * 256 ),
-          blue: Math.floor( Math.random() * 256 )
-        };
- 
-        // trigger an event, check if it's canceled
-        if ( this._trigger( "random", event, colors ) !== false ) {
-          this.option( colors );
-        }
-      },
- 
-      // events bound via _on are removed automatically
-      // revert other modifications here
-      _destroy: function() {
-        // remove generated elements
-        this.changer.remove();
- 
-        this.element
-          .removeClass( "custom-colorize" )
-          .enableSelection()
-          .css( "background-color", "transparent" );
-      },
- 
-      // _setOptions is called with a hash of all options that are changing
-      // always refresh when changing options
-      _setOptions: function() {
-        // _super and _superApply handle keeping the right this-context
-        this._superApply( arguments );
-        this._refresh();
-      },
- 
-      // _setOption is called for each individual option that is changing
-      _setOption: function( key, value ) {
-        // prevent invalid color values
-        if ( /red|green|blue/.test(key) && (value < 0 || value > 255) ) {
-          return;
-        }
-        this._super( key, value );
-      }
-    });
- 
-    // initialize with default options
-    var boatId = Products.findOne({_id: Session.get('productId')}).boatId;
-	var boat = Boats.findOne({_id: boatId});
- 	for (var i = 0; i < boat.slots.length; i++) {
- 		var sum = i + 1;
- 		if(boat.slots[i].alocated){
- 			$('#my-widget'+sum).colorize({
-				red: 255,
-				green: 165,
-				blue: 0
-			});
- 		}else if(boat.slots[i].disabled){
- 			 $('#my-widget'+sum).colorize({
-				red: 240,
-				green: 240,
-				blue: 240
-			});
- 		}else{
- 			console.log('aqui');
- 			$('#my-widget'+sum).colorize({
-				red: 0,
-				green: 255,
-				blue: 127
-			});
- 		}
- 	};
-   
- 
-    // click to toggle enabled/disabled
-    $( "#disable" ).click(function() {
-      // use the custom selector created for each widget to find all instances
-      // all instances are toggled together, so we can check the state from the first
-      if ( $( ":custom-colorize" ).colorize( "option", "disabled" ) ) {
-        $( ":custom-colorize" ).colorize( "enable" );
-      } else {
-        $( ":custom-colorize" ).colorize( "disable" );
-      }
-    });
-
-
+	calcMetersAvailable();
 }
 
 Template.bookDetail.fullname = function(id){
 	return Customers.findOne({_id: id}).fullName;
+}
+
+Template.bookDetail.qtdCarsUpTo5 = function(){
+		var date = Session.get('bookingDate'),
+		trip = Trips.findOne(Session.get('tripId'));
+
+		with(date){
+			setDate(getDate() + 1);
+		}
+
+		books = Books.find({
+			dateOfBooking 	: {$gte: Session.get('bookingDate'), $lt: date},
+			'product._id' 	: Session.get('productId'),
+			'trip.from' 	: trip.from
+		}).fetch();
+
+		var count = 0;
+
+		for (var i = 0; i < books.length; i++) {
+			if(books[i].vehicle.category){
+				if(books[i].vehicle.size <= 5){
+					count++;
+				}
+			}
+		};
+
+		return count;
+}
+
+Template.bookDetail.qtdCarsUpTo6 = function(){
+		var date = Session.get('bookingDate'),
+		trip = Trips.findOne(Session.get('tripId'));
+
+		with(date){
+			setDate(getDate() + 1);
+		}
+
+		books = Books.find({
+			dateOfBooking 	: {$gte: Session.get('bookingDate'), $lt: date},
+			'product._id' 	: Session.get('productId'),
+			'trip.from' 	: trip.from
+		}).fetch();
+
+		var count = 0;
+
+		for (var i = 0; i < books.length; i++) {
+			if(books[i].vehicle.category){
+				if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
+					count++;
+				}
+			}
+		};
+
+		return count;
 }
 
 //Global Vars

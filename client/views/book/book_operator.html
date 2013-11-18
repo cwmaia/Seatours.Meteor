@@ -46,10 +46,11 @@
 		<div>
 			<form>
 			<legend>Boat Status<span>&nbsp;&nbsp;</span><i class='icon-anchor'/></legend>
-			<div class='line'>
-				{{#each boat.slots}}
-					<div id="my-widget{{number}}">{{number}}#</div>
-				{{/each}}
+			<div>
+				<label>Cars Up to 5m :</label> {{qtdCarsUpTo5}} </br>
+				<label>Cars Up to 6m :</label> {{qtdCarsUpTo6}} </br>
+				<label>Current Meters Available on Big Slot One :</label><span id='slotOne'></span></br>
+				<label>Current Meters Available on Big Slot Two :</label><span id='slotTwo'></span></br>
 			</div>
 			</form>
 		</div>
