@@ -4,8 +4,205 @@ Meteor.startup(function () {
 
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
 
+var realocate = function(vehicleSize, resumeStatus, from, to, product, trip){
+
+	var spaceAvailableSlot1 = (resumeStatus.totalSpaceSlot1 - resumeStatus.spaceOnExtraSlot1);
+	var spaceAvailableSlot2 = (resumeStatus.totalSpaceSlot2 - resumeStatus.spaceOnExtraSlot2);
+
+	var carsToMove = [];
+	var booksToChange = [];
+	console.log("Vehicle Size: "+vehicleSize);
+	console.log("Resume Status 1: "+resumeStatus.totalSpaceSlot1);
+	console.log("Resume Status 2: "+resumeStatus.totalSpaceSlot2);
+	console.log("Space Available 1: "+spaceAvailableSlot1);
+	console.log("Space Available 2: "+spaceAvailableSlot2);
+
+	with(from){
+		setHours(0);
+		setMinutes(0);
+		setSeconds(0);
+	}
+
+	with(to){
+		setDate(getDate() + 1);
+		setHours(0);
+		setMinutes(0);
+		setSeconds(0);
+	}
+
+	//If vehicle can go on slot 1
+	if(vehicleSize <= resumeStatus.totalSpaceSlot1){
+		//Hey look it can goes on this slot
+		//but we have to realocate the vehicles inside of it
+		temporalSpaceAvailableSlot1 = spaceAvailableSlot1;
+		temporalSpaceAvailableSlot2 = spaceAvailableSlot2;
+
+		books = Books.find({
+			dateOfBooking 	: {$gte: from, $lt: to},
+			'product._id' 	: product._id,
+			'trip.from' 	: trip.from,
+			'vehicle.extraSlot' : extraSlots[1]
+		}).fetch();
+
+		//There is no car so add =]
+		if(books.length == 0){
+			return 'EXTRASLOT1';
+		}else{
+			for (var i = 0; i < books.length; i++) {
+			//can i move this car on other slot??
+				if(books[i].vehicle.size <= temporalSpaceAvailableSlot2){
+					carsToMove.push(books[i]);
+					temporalSpaceAvailableSlot2 += books[i].vehicle.size;
+				}
+			};
+
+			for (var j = 0; j < carsToMove.length; j++) {
+				console.log("Before: "+temporalSpaceAvailableSlot1);
+				temporalSpaceAvailableSlot1 += carsToMove[j].vehicle.size;
+				booksToChange.push(carsToMove[j]);
+				console.log("Size of Vehicle: "+carsToMove[j].vehicle.size);
+				console.log("temporalSpaceAvailableSlot1: "+temporalSpaceAvailableSlot1);
+				//The vehicle can go???
+				if(vehicleSize <= temporalSpaceAvailableSlot1){
+					//Yeaaaa!!
+					for (var k = 0; k < booksToChange.length; k++) {
+						book = booksToChange[k];
+						book.vehicle.extraSlot = 'EXTRASLOT2';
+						Books.update(book._id, book);
+					};
+					console.log('EXTRASLOT1');
+					return 'EXTRASLOT1';
+				} 
+			};
+		}
+	//If vehicle can go on slot 2	
+	}
+
+	if(vehicleSize <= resumeStatus.totalSpaceSlot2){
+		console.log('aqui - 2');
+		//Hey look it can goes on this slot
+		//but we have to realocate the vehicles inside of it
+		temporalSpaceAvailableSlot1 = spaceAvailableSlot1;
+		temporalSpaceAvailableSlot2 = spaceAvailableSlot2;
+
+		books = Books.find({
+			dateOfBooking 	: {$gte: from, $lt: to},
+			'product._id' 	: product._id,
+			'trip.from' 	: trip.from,
+			'vehicle.extraSlot' : extraSlots[2]
+		}).fetch();
+
+		//There is no car so add =]
+		if(books.length == 0){
+			return 'EXTRASLOT2';
+		}else{
+			for (var i = 0; i < books.length; i++) {
+			//can i move this car on other slot??
+				if(books[i].vehicle.size <= temporalSpaceAvailableSlot1){
+					carsToMove.push(books[i]);
+					temporalSpaceAvailableSlot1 += books[i].vehicle.size;
+				}
+			};
+
+			for (var j = 0; j < carsToMove.length; j++) {
+				temporalSpaceAvailableSlot2 += carsToMove[j].vehicle.size;
+				booksToChange.push(carsToMove[j]);
+				//The vehicle can go???
+				if(vehicleSize <= temporalSpaceAvailableSlot2){
+					//Yeaaaa!!
+
+					for (var k = 0; k < booksToChange.length; k++) {
+						book = booksToChange[k];
+						book.vehicle.extraSlot = 'EXTRASLOT1';
+						Books.update(book._id, book);
+					};
+					console.log('EXTRASLOT2');
+					return 'EXTRASLOT2';
+				} 
+			};
+		}	
+	}
+	//Sad but it can't go
+	console.log('false');
+	return false;
+}
+
+
+var calcSpaceOnExtraSlots = function(from, to, product, trip){
+	//calc space available on extra slot 1
+	var spaceOnExtraSlot1 = 0;
+	var spaceOnExtraSlot2 = 0;
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: from, $lt: to},
+		'product._id' 	: product._id,
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[1]
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		spaceOnExtraSlot1 += books[i].vehicle.size;
+	};
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: from, $lt: to},
+		'product._id' 	: product._id,
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[2]
+	}).fetch();
+
+	for (var j = 0; j < books.length; j++) {
+		spaceOnExtraSlot2 += books[j].vehicle.size;
+	};
+
+	countVehicle5m = Books.find({
+		dateOfBooking 	: {$gte: from, $lt: to},
+		'product._id' 	: product._id,
+		'trip.from' 	: trip.from,
+		'vehicle.size'  : {$gt: 0, $lte: 5},
+		'vehicle.extraSlot' : extraSlots[0]
+	}).count();
+
+	totalSpaceSlot1 = 24;
+	totalSpaceSlot2 = 24;
+
+	if(countVehicle5m == 25){
+		totalSpaceSlot2 = 19;
+	}
+
+	if(countVehicle5m > 25 && countVehicle5m <= 27){
+		totalSpaceSlot1 = 19;
+		totalSpaceSlot2 = 19;
+	}
+
+	if(countVehicle5m == 28){
+		totalSpaceSlot1 = 19;
+		totalSpaceSlot2 = 15;
+	}
+
+	if(countVehicle5m > 28 && countVehicle5m <= 30){
+		totalSpaceSlot1 = 15;
+		totalSpaceSlot2 = 15;
+	}
+
+
+
+	spaceOnSlots = {
+		totalSpaceSlot1 : totalSpaceSlot1, 
+		spaceOnExtraSlot1 : spaceOnExtraSlot1,
+		totalSpaceSlot2 : totalSpaceSlot2,
+		spaceOnExtraSlot2 : spaceOnExtraSlot2,
+		numberOf5MetersVehicles : countVehicle5m
+	}
+
+	return spaceOnSlots;
+
+
+}
+
 var getTotalExtraSpaceSlot = function(from, to, product, trip, extraSlot){
-	extraSpace = 24;
+
+	extraSpace = 15;
 
 	books = Books.find({
 		dateOfBooking 	: {$gte: from, $lt: to},
@@ -20,22 +217,14 @@ var getTotalExtraSpaceSlot = function(from, to, product, trip, extraSlot){
 		spaceAlocated += books[i].vehicle.size;
 	};
 
-	return extraSpace - spaceAlocated;
+	extraSpace = extraSpace - spaceAlocated;
+
+	return extraSpace;
 }
 
 var alocateCarExtraSlots = function(from, to, product, trip, size){
-	var extraSpaceAvailableSlot1 = getTotalExtraSpaceSlot(thisDay, nextDay, product[randomProductIndex], trip, 'EXTRASLOT1');
-	var extraSpaceAvailableSlot2 = getTotalExtraSpaceSlot(thisDay, nextDay, product[randomProductIndex], trip, 'EXTRASLOT2');
-	if(size <= extraSpaceAvailableSlot1){
-		//Alocate vehicle on extra slot 1
-		return 'EXTRASLOT1';
-	}else if(size <= extraSpaceAvailableSlot2){
-		//Alocate vehicle on extra slot 2
-		return 'EXTRASLOT2';
-	}else{
-		//There is no space available for this car.. so sad =/
-		return false;
-	}
+	var extraSlotsResume = calcSpaceOnExtraSlots(from, to, product, trip);
+	return realocate(size, extraSlotsResume, from, to, product, trip);
 }
 
 
@@ -405,12 +594,12 @@ if(Books.find().count() == 0){
 	}
 
 
-	for (var i = 0; i < 30000; i++) {
+	for (var i = 0; i < 100; i++) {
 		var sum = 0;
 		with(date){
-			var randomday = parseInt((Math.random() * (20 - 15) + 15));
+			var randomday = parseInt((Math.random() * (30 - 5) + 5));
 			setDate(randomday);
-			var randomMonth = parseInt((Math.random() * (12 - 11) + 11));
+			var randomMonth = parseInt((Math.random() * (12 - 10) + 10));
 			setMonth(randomMonth);
 		}
 
@@ -470,10 +659,11 @@ if(Books.find().count() == 0){
 					dateOfBooking 	: {$gte: thisDay, $lt: nextDay},
 					'product._id' 	: products[randomProductIndex]._id,
 					'trip.from' 	: trip.from,
-					'vehicle.size'  : {$gt: 0, $lte: 5}
+					'vehicle.size'  : {$gt: 0, $lte: 5},
+					'vehicle.extraSlot' : extraSlots[0]
 				}).count();
 
-				if(countVehicle5m != getMaxCarsUpTo5("1")){
+				if(countVehicle5m < max5mCars){
 					vehicle.extraSlot = extraSlots[0];
 				}
 			}
@@ -484,14 +674,14 @@ if(Books.find().count() == 0){
 					dateOfBooking 	: {$gte: thisDay, $lt: nextDay},
 					'product._id' 	: products[randomProductIndex]._id,
 					'trip.from' 	: trip.from,
-					'vehicle.size'  : {$gt: 5, $lte: 6}
+					'vehicle.size'  : {$gt: 5, $lte: 6},
+					'vehicle.extraSlot' : extraSlots[0]
 				}).count();
 
-				if(countVehicle6m != getMaxCarsUpTo6("1")){
+				if(countVehicle6m < max6mCars){
 					vehicle.extraSlot = extraSlots[0];
 				}
 			}
-			
 
 			//If car can't alocated on normal slots
 			//try alocate it on extra slots
@@ -551,15 +741,30 @@ if(Books.find().count() == 0){
 		}
 
 		if(saveBook){
-			var resultBook = Books.insert(book);
-			var transaction = {
+			var transaction = {};
+			if(book._id){
+				Books.update(book._id, book);
+				transaction = {
+					'bookId' : book._id,
+					'date' : new Date(),
+					'status' : 'Waiting Payment',
+					'amount' : book.totalISK,
+					'detail' : '',
+					'vendor' : 'Gudrun'
+				}
+
+			}else{
+				var resultBook = Books.insert(book);
+				transaction = {
 				'bookId' : resultBook,
 				'date' : new Date(),
 				'status' : 'Waiting Payment',
 				'amount' : book.totalISK,
 				'detail' : '',
 				'vendor' : 'Gudrun'
+				}
 			}
+			
 
 			if(zeroOrOne)
 				transaction.type = 'Card';

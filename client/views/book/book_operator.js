@@ -1,6 +1,8 @@
 var SaveCustomer = true;
 var Product = {};
 
+var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
+
 var calcMetersAvailable = function(){
 	var metersSlotOne = 24;
 	var metersSlotTwo = 24;
@@ -12,44 +14,34 @@ var calcMetersAvailable = function(){
 		setDate(getDate() + 1);
 	}
 
-	books = Books.find({
+	booksSlot1 = Books.find({
 		dateOfBooking 	: {$gte: Session.get('bookingDate'), $lt: date},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
 
-	var count = 0;
+	booksSlot2 = Books.find({
+		dateOfBooking 	: {$gte: Session.get('bookingDate'), $lt: date},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[2]
+	}).fetch();
 
-	for (var i = 0; i < books.length; i++) {
-		if(books[i].vehicle.category){
-			if(books[i].vehicle.size <= 5){
-				count++;
-			}
-		}
+	var spaceOnSlotOne = 0;
+	var spaceOnSlotTwo = 0;
+
+	for (var i = 0; i < booksSlot1.length; i++) {
+		spaceOnSlotOne += booksSlot1[i].vehicle.size;
 	};
 
-	if(count == 25){
-		var metersSlotOne = 19;
-		var metersSlotTwo = 24;
-	}
+	for (var i = 0; i < booksSlot2.length; i++) {
+		spaceOnSlotTwo = booksSlot2[i].vehicle.size;
+	};
 
-	if(count == 27){
-		var metersSlotOne = 19;
-		var metersSlotTwo = 19;
-	}
 
-	if(count == 28){
-		var metersSlotOne = 15;
-		var metersSlotTwo = 19;
-	}
-
-	if(count == 30){
-		var metersSlotOne = 15;
-		var metersSlotTwo = 15;
-	}
-
-	$('#slotOne').text(metersSlotOne + ' m');
-	$('#slotTwo').text(metersSlotTwo + ' m');
+	$('#slotOne').text((metersSlotOne - spaceOnSlotOne) + ' m');
+	$('#slotTwo').text((metersSlotTwo - spaceOnSlotTwo) + ' m');
 }
 
 ///////////////////////////////////////////
@@ -155,7 +147,8 @@ Template.bookDetail.qtdCarsUpTo5 = function(){
 		books = Books.find({
 			dateOfBooking 	: {$gte: Session.get('bookingDate'), $lt: date},
 			'product._id' 	: Session.get('productId'),
-			'trip.from' 	: trip.from
+			'trip.from' 	: trip.from,
+			'vehicle.extraSlot' : extraSlots[0]
 		}).fetch();
 
 		var count = 0;
@@ -182,7 +175,8 @@ Template.bookDetail.qtdCarsUpTo6 = function(){
 		books = Books.find({
 			dateOfBooking 	: {$gte: Session.get('bookingDate'), $lt: date},
 			'product._id' 	: Session.get('productId'),
-			'trip.from' 	: trip.from
+			'trip.from' 	: trip.from,
+			'vehicle.extraSlot' : extraSlots[0]
 		}).fetch();
 
 		var count = 0;
