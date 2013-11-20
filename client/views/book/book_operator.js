@@ -1,7 +1,99 @@
 var SaveCustomer = true;
+var ExtraSlot = '';
+var CanSaveTheBook = true;
 var Product = {};
 
+
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
+
+var getSelectedAndNextDay = function(){
+	var selectedDay = Session.get('bookingDate');
+	var nextDay = Session.get('bookingDate');
+
+	with(nextDay){
+		setDate(getDate() +1);	
+	}
+
+	var dates = {
+		selectedDay : selectedDay,
+		nextDay : nextDay
+	}
+
+	return dates;
+
+}
+
+var checkSpace = function(size, productId, trip){
+
+	var dates = getSelectedAndNextDay();
+	var count5m = 0;
+	var count6m = 0;
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[0]
+	}).fetch();
+
+	for (var i = books.length - 1; i >= 0; i--) {
+		if(books[i].vehicle.size <= 5){
+			count5m++;
+		}
+
+		if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
+			count6m++;
+		}
+	};
+	
+}
+
+var checkHaveToOpenDoor = function(size, productId, trip){	
+
+	var dates = getSelectedAndNextDay();
+	var count5m = 0;
+	var count6m = 0;
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[0]
+	}).fetch();
+
+	for (var i = books.length - 1; i >= 0; i--) {
+		if(books[i].vehicle.size <= 5){
+			count5m++;
+		}
+
+		if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
+			count6m++;
+		}
+	};
+
+	if(size <= 5){
+		if(count5m < 21){
+			return false;
+		}
+
+		if(count5m > 21){
+			return false;
+		}
+	}
+
+	if(size > 5 && size <= 6){
+		if(count6m < 2){
+			return false;
+		}
+
+		if(count6m > 2){
+			return false;
+		}
+	}
+
+	return true;
+}
+
 
 var calcMetersAvailable = function(){
 	var metersSlotOne = 24;
@@ -137,59 +229,46 @@ Template.bookDetail.fullname = function(id){
 }
 
 Template.bookDetail.qtdCarsUpTo5 = function(){
-		var date = Session.get('bookingDate'),
-		trip = Trips.findOne(Session.get('tripId'));
+	var dates = getSelectedAndNextDay();
+	var trip = Trips.findOne(Session.get('tripId'));
+	
+	var count = 0;
 
-		with(date){
-			setDate(getDate() + 1);
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[0]
+	}).fetch();
+
+	for (var i = books.length - 1; i >= 0; i--) {
+		if(books[i].vehicle.size <= 5){
+			count++;
 		}
+	};
 
-		books = Books.find({
-			dateOfBooking 	: {$gte: Session.get('bookingDate'), $lt: date},
-			'product._id' 	: Session.get('productId'),
-			'trip.from' 	: trip.from,
-			'vehicle.extraSlot' : extraSlots[0]
-		}).fetch();
-
-		var count = 0;
-
-		for (var i = 0; i < books.length; i++) {
-			if(books[i].vehicle.category){
-				if(books[i].vehicle.size <= 5){
-					count++;
-				}
-			}
-		};
-
-		return count;
+	return count;
 }
 
 Template.bookDetail.qtdCarsUpTo6 = function(){
-		var date = Session.get('bookingDate'),
-		trip = Trips.findOne(Session.get('tripId'));
+	var dates = getSelectedAndNextDay();
+	var trip = Trips.findOne(Session.get('tripId'));
+	var count = 0;
 
-		with(date){
-			setDate(getDate() + 1);
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[0]
+	}).fetch();
+
+	for (var i = books.length - 1; i >= 0; i--) {
+		if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
+			count++;
 		}
-
-		books = Books.find({
-			dateOfBooking 	: {$gte: Session.get('bookingDate'), $lt: date},
-			'product._id' 	: Session.get('productId'),
-			'trip.from' 	: trip.from,
-			'vehicle.extraSlot' : extraSlots[0]
-		}).fetch();
-
-		var count = 0;
-
-		for (var i = 0; i < books.length; i++) {
-			if(books[i].vehicle.category){
-				if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
-					count++;
-				}
-			}
-		};
-
-		return count;
+	};
+	
+	return count;
 }
 
 //Global Vars
@@ -342,6 +421,8 @@ Template.generalPassagerInfo.events({
 
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			throwError('Please Inform the size of vehicle');
+		}else if(!CanSaveTheBook){
+			throwError("The Vehicle informed can't go on the boat");
 		}else{
 			if(form.checkValidity()){
 
@@ -367,7 +448,7 @@ Template.generalPassagerInfo.events({
 						'hour' 	: trip.hour
 					},
 					"totalISK" : $("#totalISK").text(),
-					'dateOfBooking' : Session.get('bookingDate'),
+					'dateOfBooking' : new Date(),
 					'bookStatus' : 'Created',
 					'product' : Product,
 				}
@@ -377,6 +458,12 @@ Template.generalPassagerInfo.events({
 					"category" : $("#categories").val(),
 					"size" : $("#size").val(),
 					"totalCost" : $("#totalVehicle").text()
+				}
+
+				if(ExtraSlot){
+					book.vehicle.extraSlot = ExtraSlot;
+				}else{
+					book.vehicle.extraSlot = extraSlots[0];
 				}
 
 				if(SaveCustomer){
@@ -555,14 +642,35 @@ Template.categoryVehicleBook.events({
 	'change #size' : function(event){
 		var base = parseInt($("#baseVehicle").val());
 		var value = event.target.selectedOptions[0].value;
+		var trip = Trips.findOne(Session.get('tripId'));
 
 		if(value == ""){
 			$("#totalVehicle").val(0);
 			return;
-		}else if(value > 10){
-			var mult = value - 10;
-			base += mult * 1625;
 		}
+
+		if(value <= 6){
+			showAlert = checkHaveToOpenDoor(value, Session.get('productId'), trip);
+			if(showAlert){
+				var result = confirm("Hey You have to open the door to put this car on the boat\n Open the Door?");
+				if(result){
+					ExtraSlot = extraSlots[0];
+					CanSaveTheBook = true;
+				}else{
+					result = confirm("Hey You not open the door\n, wishes to put on extra slot?");
+					if(result){
+
+					}else{
+						alert("This car can't be on the boat, this booking can't be created!");
+						CanSaveTheBook = false;
+					}
+				}
+			}else if(checkSpace(value, Session.get('productId'), trip)){
+
+			}
+		}
+		
+		
 
 		$("#totalVehicle").text(base);
 		calcTotal();
@@ -614,26 +722,6 @@ loadTypeahead = function(){
     	$('#country').val(customer.country);
     	SaveCustomer = false;
 	});
-}
-
-Template.bookDetail.isTen = function(data){
-	var zero = data % 10;
-	console.log(zero);
-	if(zero){
-		return false;
-	}else{
-		console.log('aqui');
-		return true;
-	}
-}
-
-Template.bookDetail.isOne = function(data){
-	var one = data % 10;
-	if(one === 1){
-		return true;
-	}else{
-		return false;
-	}
 }
 
 buildEmail = function(book, result, customer){

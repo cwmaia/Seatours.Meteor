@@ -594,7 +594,7 @@ if(Books.find().count() == 0){
 	}
 
 
-	for (var i = 0; i < 100; i++) {
+	for (var i = 0; i < 5000; i++) {
 		var sum = 0;
 		with(date){
 			var randomday = parseInt((Math.random() * (30 - 5) + 5));
@@ -678,7 +678,7 @@ if(Books.find().count() == 0){
 					'vehicle.extraSlot' : extraSlots[0]
 				}).count();
 
-				if(countVehicle6m < max6mCars){
+				if(countVehicle6m < 2){
 					vehicle.extraSlot = extraSlots[0];
 				}
 			}
@@ -689,10 +689,10 @@ if(Books.find().count() == 0){
 				//Return false if has no space for the vehicle, 
 				//EXTRASLOT1 if alocated on slot 1
 				//EXTRASLOT2 if alocated on slot 2
-				var alocated = alocateCarExtraSlots(thisDay, nextDay, products[randomProductIndex], trip, vehicle.size);
-				if(alocated){
-					vehicle.extraSlot = alocated;
-				}
+				//var alocated = alocateCarExtraSlots(thisDay, nextDay, products[randomProductIndex], trip, vehicle.size);
+				//if(alocated){
+					//vehicle.extraSlot = alocated;
+				//}
 			}
 			
 			//If vehicle can't alocated even on extra slots
