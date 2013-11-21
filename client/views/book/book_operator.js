@@ -6,6 +6,58 @@ var Product = {};
 
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
 
+var realocate = function(size, booksSlot1, booksSlot2, sumSpacesSlot1, sumSpacesSlot2, extraSpace1, extraSpace2){
+
+
+	temporalFreeSpace1 = extraSpace1 - sumSpacesSlot1;
+	temporalFreeSpace2 = extraSpace2 - sumSpacesSlot2;
+
+
+	//It can goes on slot 1?
+	if(size <= extraSpace1){
+		//Tries to move cars to slot 2
+		var CarsToMove = [];
+		for (var i = 0; i < booksSlot1.length; i++) {
+			if(booksSlot1[i].vehicle.size <= temporalFreeSpace2){
+				CarsToMove.push(booksSlot1[i]);
+				temporalFreeSpace2 -= booksSlot1[i].vehicle.size;
+				temporalFreeSpace1 += booksSlot1[i].vehicle.size;
+				if(size <= temporalFreeSpace1){
+					for (var j = 0; j < CarsToMove.length; j++) {
+						CarsToMove[i].vehicle.extraSlots = extraSlots[2];
+						Books.update(CarsToMove[i]._id, CarsToMove[i]);
+					};
+
+					return extraSlots[1];
+				}
+			}
+		};
+	//It can goes on slot 2?
+	}else if(size <= extraSpace2){
+		var CarsToMove = [];
+		for (var i = 0; i < booksSlot2.length; i++) {
+			if(booksSlot2[i].vehicle.size <= temporalFreeSpace1){
+				CarsToMove.push(booksSlot1[i]);
+				temporalFreeSpace1 -= booksSlot1[i].vehicle.size;
+				temporalFreeSpace2 += booksSlot1[i].vehicle.size;
+				if(size <= temporalFreeSpace2){
+					for (var j = 0; j < CarsToMove.length; j++) {
+						CarsToMove[i].vehicle.extraSlots = extraSlots[1];
+						Books.update(CarsToMove[i]._id, CarsToMove[i]);
+					};
+
+					return extraSlots[2];
+				}
+			}
+		};
+	//So sad can't go
+	}else{
+		return false;
+	}
+	
+
+}
+
 var getSelectedAndNextDay = function(){
 	var selectedDay = Session.get('bookingDate');
 	var nextDay = Session.get('bookingDate');
@@ -20,13 +72,10 @@ var getSelectedAndNextDay = function(){
 	}
 
 	return dates;
-
 }
 
-var checkSpace = function(size, productId, trip){
-
+var doorMaxCapacity = function (productId, trip){
 	var dates = getSelectedAndNextDay();
-	var count5m = 0;
 	var count6m = 0;
 
 	books = Books.find({
@@ -37,14 +86,150 @@ var checkSpace = function(size, productId, trip){
 	}).fetch();
 
 	for (var i = books.length - 1; i >= 0; i--) {
-		if(books[i].vehicle.size <= 5){
-			count5m++;
-		}
-
 		if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
 			count6m++;
 		}
 	};
+
+	if(count6m == 4){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+var checkSpaceExtra = function(size, productId, trip){
+	var dates = getSelectedAndNextDay();
+	
+	var extraSpace1 = 15;
+	var extraSpace2 = 15;
+	var count5m = 0;
+
+	booksSlot1 = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[1]
+	}).fetch();
+
+	booksSlot2 = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[2]
+	}).fetch();
+
+	for (var i = books.length - 1; i >= 0; i--) {
+		if(books[i].vehicle.size <= 5){
+			count5m++;
+		}
+	};
+
+	if(count5m < 25){
+		extraSpace1 = 24;
+		extraSpace2 = 24;
+	}
+
+	if(count5m >= 25 && count5m < 27){
+		extraSpace1 = 24;
+		extraSpace2 = 19;
+	}
+
+	if(count5m >= 27 && count5m < 28){
+		extraSpace1 = 19;
+		extraSpace2 = 19;
+	}
+
+	if(count5m > 28 && count5m < 30){
+		extraSpace1 = 19;
+		extraSpace2 = 15;
+	}
+
+	sumSpacesSlot1 = 0;
+	sumSpacesSlot2 = 0;
+
+	for (var i = 0; i < booksSlot1.length; i++) {
+		sumSpacesSlot1 += parseInt(booksSlot1[i].vehicle.size);
+	};
+	for (var i = 0; i < booksSlot2.length; i++) {
+		sumSpacesSlot2 += parseInt(booksSlot2[i].vehicle.size);
+	};
+
+	freeSpaceSlot1 = extraSpace1 - sumSpacesSlot1;
+	freeSpaceSlot2 = extraSpace2 - sumSpacesSlot2;
+	console.log(freeSpaceSlot1);
+	console.log(freeSpaceSlot2);
+	
+	if(size <= freeSpaceSlot1){
+		return extraSlots[1];
+	}else if(size <= freeSpaceSlot2){
+		return extraSlots[2];
+	}else{
+		//Tries to realocate
+		return realocate(size, booksSlot1, booksSlot2, sumSpacesSlot1, sumSpacesSlot2, extraSpace1, extraSpace2);
+	}
+}
+
+var countExtraSpace = function(){
+
+	var dates = getSelectedAndNextDay();
+	var trip = Trips.findOne(Session.get('tripId'));
+	var spaceAlocatedSlot1 = 0;
+	var spaceAlocatedSlot2 = 0;
+	var spaceAlocated = 0;
+	var max5slots = 30;
+
+	booksSlot1 = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[1]
+	}).fetch();
+
+
+	booksSlot2 = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[2]
+	}).fetch();
+
+	for (var i = booksSlot1.length - 1; i >= 0; i--) {
+		spaceAlocatedSlot1 += parseInt(booksSlot1[i].vehicle.size);
+	};
+
+	for (var i = booksSlot2.length - 1; i >= 0; i--) {
+		spaceAlocatedSlot2 += parseInt(booksSlot2[i].vehicle.size);
+	};
+
+	spaceAlocated = parseInt(spaceAlocatedSlot1 + spaceAlocatedSlot2);
+
+	if(spaceAlocated == 48){
+		max5slots = 24;
+	}
+
+	if(spaceAlocated >= 43 && spaceAlocated < 48){
+		max5slots = 25;
+	}
+
+	if(spaceAlocated >= 38 && spaceAlocated < 43){
+		max5slots = 27;
+	}
+
+	if(spaceAlocated >= 33 && spaceAlocated < 38){
+		max5slots = 28;
+	}
+
+	if(spaceAlocated >= 30 && spaceAlocated < 33){
+		max5slots = 30;
+	}
+
+	console.log(spaceAlocatedSlot1);
+
+	$("#max5slots").text('Max Qtd: '+parseInt(max5slots));
+	$("#spaceAlocatedSlot1").text(spaceAlocatedSlot1);
+	$("#spaceAlocatedSlot2").text(spaceAlocatedSlot2);
+	$("#spaceAlocated").text(parseInt(spaceAlocated));
 	
 }
 
@@ -94,47 +279,6 @@ var checkHaveToOpenDoor = function(size, productId, trip){
 	return true;
 }
 
-
-var calcMetersAvailable = function(){
-	var metersSlotOne = 24;
-	var metersSlotTwo = 24;
-
-	var date = Session.get('bookingDate'),
-	trip = Trips.findOne(Session.get('tripId'));
-
-	with(date){
-		setDate(getDate() + 1);
-	}
-
-	booksSlot1 = Books.find({
-		dateOfBooking 	: {$gte: Session.get('bookingDate'), $lt: date},
-		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
-		'vehicle.extraSlot' : extraSlots[1]
-	}).fetch();
-
-	booksSlot2 = Books.find({
-		dateOfBooking 	: {$gte: Session.get('bookingDate'), $lt: date},
-		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
-		'vehicle.extraSlot' : extraSlots[2]
-	}).fetch();
-
-	var spaceOnSlotOne = 0;
-	var spaceOnSlotTwo = 0;
-
-	for (var i = 0; i < booksSlot1.length; i++) {
-		spaceOnSlotOne += booksSlot1[i].vehicle.size;
-	};
-
-	for (var i = 0; i < booksSlot2.length; i++) {
-		spaceOnSlotTwo = booksSlot2[i].vehicle.size;
-	};
-
-
-	$('#slotOne').text((metersSlotOne - spaceOnSlotOne) + ' m');
-	$('#slotTwo').text((metersSlotTwo - spaceOnSlotTwo) + ' m');
-}
 
 ///////////////////////////////////////////
 //Template Book Operator
@@ -221,7 +365,7 @@ function setCalendarCapacity (calendar) {
 Template.bookDetail.rendered = function() {
 	$('#passengers').dataTable();
 	$('#boatSlots').dataTable();
-	calcMetersAvailable();
+	countExtraSpace();
 }
 
 Template.bookDetail.fullname = function(id){
@@ -448,7 +592,7 @@ Template.generalPassagerInfo.events({
 						'hour' 	: trip.hour
 					},
 					"totalISK" : $("#totalISK").text(),
-					'dateOfBooking' : new Date(),
+					'dateOfBooking' : Session.get('bookingDate'),
 					'bookStatus' : 'Created',
 					'product' : Product,
 				}
@@ -651,27 +795,61 @@ Template.categoryVehicleBook.events({
 
 		if(value <= 6){
 			showAlert = checkHaveToOpenDoor(value, Session.get('productId'), trip);
+			maxCapacity = doorMaxCapacity(Session.get('productId'), trip);
+
 			if(showAlert){
-				var result = confirm("Hey You have to open the door to put this car on the boat\n Open the Door?");
+				var result = confirm("Hey You have to open the door to put this car on the boat. Open the Door?");
 				if(result){
 					ExtraSlot = extraSlots[0];
 					CanSaveTheBook = true;
 				}else{
-					result = confirm("Hey You not open the door\n, wishes to put on extra slot?");
+					result = confirm("Hey You not open the door, wishes to put on extra slot?");
 					if(result){
-
+						fits = checkSpaceExtra(value, Session.get('productId'), trip);
+						if(fits){
+							console.log(fits);
+							ExtraSlot = fits;
+							CanSaveTheBook = true;
+						}else{
+							alert("This car can't be on the boat, this booking can't be created!");
+							CanSaveTheBook = false;
+						}
 					}else{
 						alert("This car can't be on the boat, this booking can't be created!");
 						CanSaveTheBook = false;
 					}
 				}
-			}else if(checkSpace(value, Session.get('productId'), trip)){
-
+			}else if(value > 5 && value <= 6 && maxCapacity){
+				result = confirm("The Door is already full, place the car on extra slots?");
+				if(result){
+					fits = checkSpaceExtra(value, Session.get('productId'), trip);
+					if(fits){
+						console.log(fits);
+						ExtraSlot = fits;
+						CanSaveTheBook = true;
+					}else{
+						alert("This car can't be on the boat, this booking can't be created!");
+						CanSaveTheBook = false;
+					}
+				}
+			}
+		}else if(value > 6){
+			result = confirm("Place this car on Extra Slot?");
+			if(result){
+				fits = checkSpaceExtra(value, Session.get('productId'), trip);
+				if(fits){
+					ExtraSlot = fits;
+					CanSaveTheBook = true;
+				}else{
+					alert("This car can't be on the boat, there is no space for it, this booking can't be created!");
+					CanSaveTheBook = false;
+				}
+			}else{
+				alert("This car can't be on the boat, this booking can't be created!");
+				CanSaveTheBook = false;
 			}
 		}
-		
-		
-
+			
 		$("#totalVehicle").text(base);
 		calcTotal();
 	}
