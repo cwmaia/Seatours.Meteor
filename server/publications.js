@@ -1,34 +1,34 @@
-//Meteor.publish('products', function() { 
-//	return Products.find();
-//});
+Meteor.publish('products', function() { 
+	return Products.find();
+});
 
 Meteor.publish('books', function() { 
 	return Books.find();
 });
 
-//Meteor.publish('vehicles_category', function() { 
-//	return VehiclesCategory.find();
-//});
+Meteor.publish('vehicles_category', function() { 
+	return VehiclesCategory.find();
+});
 
-//Meteor.publish('boats', function() {
-//  return Boats.find();
-//});
+Meteor.publish('boats', function() {
+  return Boats.find();
+});
 
 Meteor.publish('trips', function() {
   return Trips.find();
 });
 
-//Meteor.publish('vehicles', function() {
-//	return Vehicles.find();
-//});
+Meteor.publish('vehicles', function() {
+	return Vehicles.find();
+});
 
 Meteor.publish('loggedUsers', function() {
 	return LoggedUsers.find();
 });
 
-//Meteor.publish('customers', function(){
-//	return Customers.find();
-//});
+Meteor.publish('customers', function(){
+	return Customers.find();
+});
 
 Meteor.publish('notes', function(){
   return Notes.find();
