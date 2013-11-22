@@ -2,6 +2,7 @@ var SaveCustomer = true;
 var ExtraSlot = '';
 var CanSaveTheBook = true;
 var Product = {};
+var CarsToMove = [];
 
 
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
@@ -12,20 +13,25 @@ var realocate = function(size, booksSlot1, booksSlot2, sumSpacesSlot1, sumSpaces
 	temporalFreeSpace1 = extraSpace1 - sumSpacesSlot1;
 	temporalFreeSpace2 = extraSpace2 - sumSpacesSlot2;
 
-
 	//It can goes on slot 1?
 	if(size <= extraSpace1){
+		temporalFreeSpace1 = extraSpace1 - sumSpacesSlot1;
+		temporalFreeSpace2 = extraSpace2 - sumSpacesSlot2;
+
 		//Tries to move cars to slot 2
 		var CarsToMove = [];
 		for (var i = 0; i < booksSlot1.length; i++) {
 			if(booksSlot1[i].vehicle.size <= temporalFreeSpace2){
 				CarsToMove.push(booksSlot1[i]);
-				temporalFreeSpace2 -= booksSlot1[i].vehicle.size;
-				temporalFreeSpace1 += booksSlot1[i].vehicle.size;
+				temporalFreeSpace2 -= parseInt(booksSlot1[i].vehicle.size);
+				temporalFreeSpace1 += parseInt(booksSlot1[i].vehicle.size);
+				console.log(temporalFreeSpace1);
+				console.log(CarsToMove.length);
+				console.log(CarsToMove);
 				if(size <= temporalFreeSpace1){
 					for (var j = 0; j < CarsToMove.length; j++) {
-						CarsToMove[i].vehicle.extraSlots = extraSlots[2];
-						Books.update(CarsToMove[i]._id, CarsToMove[i]);
+						CarsToMove[j].vehicle.extraSlot = extraSlots[2];
+						Books.update(CarsToMove[j]._id, CarsToMove[j]);
 					};
 
 					return extraSlots[1];
@@ -34,6 +40,9 @@ var realocate = function(size, booksSlot1, booksSlot2, sumSpacesSlot1, sumSpaces
 		};
 	//It can goes on slot 2?
 	}else if(size <= extraSpace2){
+		temporalFreeSpace1 = extraSpace1 - sumSpacesSlot1;
+		temporalFreeSpace2 = extraSpace2 - sumSpacesSlot2;
+
 		var CarsToMove = [];
 		for (var i = 0; i < booksSlot2.length; i++) {
 			if(booksSlot2[i].vehicle.size <= temporalFreeSpace1){
@@ -42,8 +51,8 @@ var realocate = function(size, booksSlot1, booksSlot2, sumSpacesSlot1, sumSpaces
 				temporalFreeSpace2 += booksSlot1[i].vehicle.size;
 				if(size <= temporalFreeSpace2){
 					for (var j = 0; j < CarsToMove.length; j++) {
-						CarsToMove[i].vehicle.extraSlots = extraSlots[1];
-						Books.update(CarsToMove[i]._id, CarsToMove[i]);
+						CarsToMove[j].vehicle.extraSlot = extraSlots[1];
+						Books.update(CarsToMove[j]._id, CarsToMove[j]);
 					};
 
 					return extraSlots[2];
