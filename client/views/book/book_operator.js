@@ -1,5 +1,294 @@
 var SaveCustomer = true;
+var ExtraSlot = '';
+var CanSaveTheBook = true;
 var Product = {};
+var CarsToMove = [];
+
+
+var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
+
+var realocate = function(size, booksSlot1, booksSlot2, sumSpacesSlot1, sumSpacesSlot2, extraSpace1, extraSpace2){
+
+
+	temporalFreeSpace1 = extraSpace1 - sumSpacesSlot1;
+	temporalFreeSpace2 = extraSpace2 - sumSpacesSlot2;
+
+	//It can goes on slot 1?
+	if(size <= extraSpace1){
+		temporalFreeSpace1 = extraSpace1 - sumSpacesSlot1;
+		temporalFreeSpace2 = extraSpace2 - sumSpacesSlot2;
+
+		//Tries to move cars to slot 2
+		var CarsToMove = [];
+		for (var i = 0; i < booksSlot1.length; i++) {
+			if(booksSlot1[i].vehicle.size <= temporalFreeSpace2){
+				CarsToMove.push(booksSlot1[i]);
+				temporalFreeSpace2 -= parseInt(booksSlot1[i].vehicle.size);
+				temporalFreeSpace1 += parseInt(booksSlot1[i].vehicle.size);
+				console.log(temporalFreeSpace1);
+				console.log(CarsToMove.length);
+				console.log(CarsToMove);
+				if(size <= temporalFreeSpace1){
+					for (var j = 0; j < CarsToMove.length; j++) {
+						CarsToMove[j].vehicle.extraSlot = extraSlots[2];
+						Books.update(CarsToMove[j]._id, CarsToMove[j]);
+					};
+
+					return extraSlots[1];
+				}
+			}
+		};
+	//It can goes on slot 2?
+	}else if(size <= extraSpace2){
+		temporalFreeSpace1 = extraSpace1 - sumSpacesSlot1;
+		temporalFreeSpace2 = extraSpace2 - sumSpacesSlot2;
+
+		var CarsToMove = [];
+		for (var i = 0; i < booksSlot2.length; i++) {
+			if(booksSlot2[i].vehicle.size <= temporalFreeSpace1){
+				CarsToMove.push(booksSlot1[i]);
+				temporalFreeSpace1 -= booksSlot1[i].vehicle.size;
+				temporalFreeSpace2 += booksSlot1[i].vehicle.size;
+				if(size <= temporalFreeSpace2){
+					for (var j = 0; j < CarsToMove.length; j++) {
+						CarsToMove[j].vehicle.extraSlot = extraSlots[1];
+						Books.update(CarsToMove[j]._id, CarsToMove[j]);
+					};
+
+					return extraSlots[2];
+				}
+			}
+		};
+	//So sad can't go
+	}else{
+		return false;
+	}
+	
+
+}
+
+var getSelectedAndNextDay = function(){
+	var selectedDay = Session.get('bookingDate');
+	var nextDay = Session.get('bookingDate');
+
+	with(nextDay){
+		setDate(getDate() +1);	
+	}
+
+	var dates = {
+		selectedDay : selectedDay,
+		nextDay : nextDay
+	}
+
+	return dates;
+}
+
+var doorMaxCapacity = function (productId, trip){
+	var dates = getSelectedAndNextDay();
+	var count6m = 0;
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[0]
+	}).fetch();
+
+	for (var i = books.length - 1; i >= 0; i--) {
+		if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
+			count6m++;
+		}
+	};
+
+	if(count6m == 4){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+var checkSpaceExtra = function(size, productId, trip){
+	var dates = getSelectedAndNextDay();
+	
+	var extraSpace1 = 15;
+	var extraSpace2 = 15;
+	var count5m = 0;
+
+	booksSlot1 = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[1]
+	}).fetch();
+
+	booksSlot2 = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[2]
+	}).fetch();
+
+	for (var i = books.length - 1; i >= 0; i--) {
+		if(books[i].vehicle.size <= 5){
+			count5m++;
+		}
+	};
+
+	if(count5m < 25){
+		extraSpace1 = 24;
+		extraSpace2 = 24;
+	}
+
+	if(count5m >= 25 && count5m < 27){
+		extraSpace1 = 24;
+		extraSpace2 = 19;
+	}
+
+	if(count5m >= 27 && count5m < 28){
+		extraSpace1 = 19;
+		extraSpace2 = 19;
+	}
+
+	if(count5m > 28 && count5m < 30){
+		extraSpace1 = 19;
+		extraSpace2 = 15;
+	}
+
+	sumSpacesSlot1 = 0;
+	sumSpacesSlot2 = 0;
+
+	for (var i = 0; i < booksSlot1.length; i++) {
+		sumSpacesSlot1 += parseInt(booksSlot1[i].vehicle.size);
+	};
+	for (var i = 0; i < booksSlot2.length; i++) {
+		sumSpacesSlot2 += parseInt(booksSlot2[i].vehicle.size);
+	};
+
+	freeSpaceSlot1 = extraSpace1 - sumSpacesSlot1;
+	freeSpaceSlot2 = extraSpace2 - sumSpacesSlot2;
+	console.log(freeSpaceSlot1);
+	console.log(freeSpaceSlot2);
+	
+	if(size <= freeSpaceSlot1){
+		return extraSlots[1];
+	}else if(size <= freeSpaceSlot2){
+		return extraSlots[2];
+	}else{
+		//Tries to realocate
+		return realocate(size, booksSlot1, booksSlot2, sumSpacesSlot1, sumSpacesSlot2, extraSpace1, extraSpace2);
+	}
+}
+
+var countExtraSpace = function(){
+
+	var dates = getSelectedAndNextDay();
+	var trip = Trips.findOne(Session.get('tripId'));
+	var spaceAlocatedSlot1 = 0;
+	var spaceAlocatedSlot2 = 0;
+	var spaceAlocated = 0;
+	var max5slots = 30;
+
+	booksSlot1 = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[1]
+	}).fetch();
+
+
+	booksSlot2 = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[2]
+	}).fetch();
+
+	for (var i = booksSlot1.length - 1; i >= 0; i--) {
+		spaceAlocatedSlot1 += parseInt(booksSlot1[i].vehicle.size);
+	};
+
+	for (var i = booksSlot2.length - 1; i >= 0; i--) {
+		spaceAlocatedSlot2 += parseInt(booksSlot2[i].vehicle.size);
+	};
+
+	spaceAlocated = parseInt(spaceAlocatedSlot1 + spaceAlocatedSlot2);
+
+	if(spaceAlocated == 48){
+		max5slots = 24;
+	}
+
+	if(spaceAlocated >= 43 && spaceAlocated < 48){
+		max5slots = 25;
+	}
+
+	if(spaceAlocated >= 38 && spaceAlocated < 43){
+		max5slots = 27;
+	}
+
+	if(spaceAlocated >= 33 && spaceAlocated < 38){
+		max5slots = 28;
+	}
+
+	if(spaceAlocated >= 30 && spaceAlocated < 33){
+		max5slots = 30;
+	}
+
+	console.log(spaceAlocatedSlot1);
+
+	$("#max5slots").text('Max Qtd: '+parseInt(max5slots));
+	$("#spaceAlocatedSlot1").text(spaceAlocatedSlot1);
+	$("#spaceAlocatedSlot2").text(spaceAlocatedSlot2);
+	$("#spaceAlocated").text(parseInt(spaceAlocated));
+	
+}
+
+var checkHaveToOpenDoor = function(size, productId, trip){	
+
+	var dates = getSelectedAndNextDay();
+	var count5m = 0;
+	var count6m = 0;
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[0]
+	}).fetch();
+
+	for (var i = books.length - 1; i >= 0; i--) {
+		if(books[i].vehicle.size <= 5){
+			count5m++;
+		}
+
+		if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
+			count6m++;
+		}
+	};
+
+	if(size <= 5){
+		if(count5m < 21){
+			return false;
+		}
+
+		if(count5m > 21){
+			return false;
+		}
+	}
+
+	if(size > 5 && size <= 6){
+		if(count6m < 2){
+			return false;
+		}
+
+		if(count6m > 2){
+			return false;
+		}
+	}
+
+	return true;
+}
+
+
 ///////////////////////////////////////////
 //Template Book Operator
 Template.bookOperator.rendered = function() {
@@ -86,143 +375,54 @@ function setCalendarCapacity (calendar) {
 Template.bookDetail.rendered = function() {
 	$('#passengers').dataTable();
 	$('#boatSlots').dataTable();
-
-		$.widget( "custom.colorize", {
-      // default options
-      options: {
-        red: 255,
-        green: 0,
-        blue: 0,
- 
-        // callbacks
-        change: null,
-        random: null
-      },
- 
-      // the constructor
-      _create: function() {
-        this.element
-          // add a class for theming
-          .addClass( "custom-colorize" )
-          // prevent double click to select text
-          .disableSelection();
- 
-        this.changer = $( "<button>", {
-          text: "change",
-          "class": "btn btn-small btn-info"
-        })
-        //.appendTo( this.element )
-        //.button();
- 
-        // bind click events on the changer button to the random method
-        this._on( this.changer, {
-          // _on won't call random when widget is disabled
-          click: "random"
-        });
-        this._refresh();
-      },
- 
-      // called when created, and later when changing options
-      _refresh: function() {
-        this.element.css( "background-color", "rgb(" +
-          this.options.red +"," +
-          this.options.green + "," +
-          this.options.blue + ")"
-        );
- 
-        // trigger a callback/event
-        this._trigger( "change" );
-      },
- 
-      // a public method to change the color to a random value
-      // can be called directly via .colorize( "random" )
-      random: function( event ) {
-        var colors = {
-          red: Math.floor( Math.random() * 256 ),
-          green: Math.floor( Math.random() * 256 ),
-          blue: Math.floor( Math.random() * 256 )
-        };
- 
-        // trigger an event, check if it's canceled
-        if ( this._trigger( "random", event, colors ) !== false ) {
-          this.option( colors );
-        }
-      },
- 
-      // events bound via _on are removed automatically
-      // revert other modifications here
-      _destroy: function() {
-        // remove generated elements
-        this.changer.remove();
- 
-        this.element
-          .removeClass( "custom-colorize" )
-          .enableSelection()
-          .css( "background-color", "transparent" );
-      },
- 
-      // _setOptions is called with a hash of all options that are changing
-      // always refresh when changing options
-      _setOptions: function() {
-        // _super and _superApply handle keeping the right this-context
-        this._superApply( arguments );
-        this._refresh();
-      },
- 
-      // _setOption is called for each individual option that is changing
-      _setOption: function( key, value ) {
-        // prevent invalid color values
-        if ( /red|green|blue/.test(key) && (value < 0 || value > 255) ) {
-          return;
-        }
-        this._super( key, value );
-      }
-    });
- 
-    // initialize with default options
-    var boatId = Products.findOne({_id: Session.get('productId')}).boatId;
-	var boat = Boats.findOne({_id: boatId});
- 	for (var i = 0; i < boat.slots.length; i++) {
- 		var sum = i + 1;
- 		if(boat.slots[i].alocated){
- 			$('#my-widget'+sum).colorize({
-				red: 255,
-				green: 165,
-				blue: 0
-			});
- 		}else if(boat.slots[i].disabled){
- 			 $('#my-widget'+sum).colorize({
-				red: 240,
-				green: 240,
-				blue: 240
-			});
- 		}else{
- 			console.log('aqui');
- 			$('#my-widget'+sum).colorize({
-				red: 0,
-				green: 255,
-				blue: 127
-			});
- 		}
- 	};
-   
- 
-    // click to toggle enabled/disabled
-    $( "#disable" ).click(function() {
-      // use the custom selector created for each widget to find all instances
-      // all instances are toggled together, so we can check the state from the first
-      if ( $( ":custom-colorize" ).colorize( "option", "disabled" ) ) {
-        $( ":custom-colorize" ).colorize( "enable" );
-      } else {
-        $( ":custom-colorize" ).colorize( "disable" );
-      }
-    });
-
-
+	countExtraSpace();
 }
 
 Template.bookDetail.fullname = function(id){
 	return Customers.findOne({_id: id}).fullName;
+}
+
+Template.bookDetail.qtdCarsUpTo5 = function(){
+	var dates = getSelectedAndNextDay();
+	var trip = Trips.findOne(Session.get('tripId'));
+	
+	var count = 0;
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[0]
+	}).fetch();
+
+	for (var i = books.length - 1; i >= 0; i--) {
+		if(books[i].vehicle.size <= 5){
+			count++;
+		}
+	};
+
+	return count;
+}
+
+Template.bookDetail.qtdCarsUpTo6 = function(){
+	var dates = getSelectedAndNextDay();
+	var trip = Trips.findOne(Session.get('tripId'));
+	var count = 0;
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[0]
+	}).fetch();
+
+	for (var i = books.length - 1; i >= 0; i--) {
+		if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
+			count++;
+		}
+	};
+	
+	return count;
 }
 
 //Global Vars
@@ -290,8 +490,18 @@ Template.bookDetail.helpers({
 		return status == 'Created';
 	},
 
-	isBookingNotFull: function(bookings, boat) {
-		return bookings < boat;
+	isBookingNotFull: function(bookingsCreated, boatCapacity) {
+		var isValidDate = true,
+		date = new Date();
+
+		if(Session.get('bookingDate').getFullYear() < date.getFullYear())
+			isValidDate = false;
+		else if(Session.get('bookingDate').getMonth() < date.getMonth())
+			isValidDate = false;
+		else if(Session.get('bookingDate').getDate() < date.getDate())
+			isValidDate = false;
+
+		return (bookingsCreated < boatCapacity) && isValidDate;
 	},
 
 	bookingsCreated : function(){
@@ -379,6 +589,8 @@ Template.generalPassagerInfo.events({
 
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			throwError('Please Inform the size of vehicle');
+		}else if(!CanSaveTheBook){
+			throwError("The Vehicle informed can't go on the boat");
 		}else{
 			if(form.checkValidity()){
 
@@ -414,6 +626,12 @@ Template.generalPassagerInfo.events({
 					"category" : $("#categories").val(),
 					"size" : $("#size").val(),
 					"totalCost" : $("#totalVehicle").text()
+				}
+
+				if(ExtraSlot){
+					book.vehicle.extraSlot = ExtraSlot;
+				}else{
+					book.vehicle.extraSlot = extraSlots[0];
 				}
 
 				if(SaveCustomer){
@@ -592,15 +810,70 @@ Template.categoryVehicleBook.events({
 	'change #size' : function(event){
 		var base = parseInt($("#baseVehicle").val());
 		var value = event.target.selectedOptions[0].value;
+		var trip = Trips.findOne(Session.get('tripId'));
 
 		if(value == ""){
 			$("#totalVehicle").val(0);
 			return;
-		}else if(value > 10){
-			var mult = value - 10;
-			base += mult * 1625;
 		}
 
+		if(value <= 6){
+			showAlert = checkHaveToOpenDoor(value, Session.get('productId'), trip);
+			maxCapacity = doorMaxCapacity(Session.get('productId'), trip);
+
+			if(showAlert){
+				var result = confirm("Hey You have to open the door to put this car on the boat. Open the Door?");
+				if(result){
+					ExtraSlot = extraSlots[0];
+					CanSaveTheBook = true;
+				}else{
+					result = confirm("Hey You not open the door, wishes to put on extra slot?");
+					if(result){
+						fits = checkSpaceExtra(value, Session.get('productId'), trip);
+						if(fits){
+							console.log(fits);
+							ExtraSlot = fits;
+							CanSaveTheBook = true;
+						}else{
+							alert("This car can't be on the boat, this booking can't be created!");
+							CanSaveTheBook = false;
+						}
+					}else{
+						alert("This car can't be on the boat, this booking can't be created!");
+						CanSaveTheBook = false;
+					}
+				}
+			}else if(value > 5 && value <= 6 && maxCapacity){
+				result = confirm("The Door is already full, place the car on extra slots?");
+				if(result){
+					fits = checkSpaceExtra(value, Session.get('productId'), trip);
+					if(fits){
+						console.log(fits);
+						ExtraSlot = fits;
+						CanSaveTheBook = true;
+					}else{
+						alert("This car can't be on the boat, this booking can't be created!");
+						CanSaveTheBook = false;
+					}
+				}
+			}
+		}else if(value > 6){
+			result = confirm("Place this car on Extra Slot?");
+			if(result){
+				fits = checkSpaceExtra(value, Session.get('productId'), trip);
+				if(fits){
+					ExtraSlot = fits;
+					CanSaveTheBook = true;
+				}else{
+					alert("This car can't be on the boat, there is no space for it, this booking can't be created!");
+					CanSaveTheBook = false;
+				}
+			}else{
+				alert("This car can't be on the boat, this booking can't be created!");
+				CanSaveTheBook = false;
+			}
+		}
+			
 		$("#totalVehicle").text(base);
 		calcTotal();
 	}
@@ -651,26 +924,6 @@ loadTypeahead = function(){
     	$('#country').val(customer.country);
     	SaveCustomer = false;
 	});
-}
-
-Template.bookDetail.isTen = function(data){
-	var zero = data % 10;
-	console.log(zero);
-	if(zero){
-		return false;
-	}else{
-		console.log('aqui');
-		return true;
-	}
-}
-
-Template.bookDetail.isOne = function(data){
-	var one = data % 10;
-	if(one === 1){
-		return true;
-	}else{
-		return false;
-	}
 }
 
 buildEmail = function(book, result, customer){

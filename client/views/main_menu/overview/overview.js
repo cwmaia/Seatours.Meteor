@@ -262,7 +262,13 @@ Template.overview.percentageMonth = function(){
 	}else{
 		stat = false;
 	}
-	return Math.abs(parseInt(percentage));
+
+	if(isNaN(percentage)){
+		return Math.abs(parseInt(percentage));
+	}else{
+		return 0;
+	}
+	
 }
 
 Template.overview.stat = function(){

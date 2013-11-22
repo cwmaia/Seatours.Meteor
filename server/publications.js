@@ -46,6 +46,13 @@ Meteor.publish('transactions', function() {
   return Transactions.find();
 });
 
+Meteor.publish('saveTrip', function(trip) {
+  if(trip._id)
+    Trips.update(trip._id, trip);
+  else
+    Trips.insert(trip);
+})
+
 // In your server code: define a method that the client can call
 Meteor.methods({
   sendEmail: function (to, from, subject, text) {
@@ -76,5 +83,26 @@ Meteor.methods({
       subject: subject,
       html: text
     });
+  },
+
+  getTrips: function() {
+    return Trips.find();
+  },
+
+  getTripsById: function(id) {
+    return Trips.findOne(id);
+  },
+
+  createTrip: function(trip) {
+    Trips.insert(trip);
+  },
+
+  updateTrip: function(trip) {
+    console.log(trip);
+    Trips.update(trip._id, trip);
+  },
+
+  removeTrip: function(id) {
+    Trips.remove(id)
   }
 });

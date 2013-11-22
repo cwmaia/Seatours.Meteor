@@ -135,7 +135,6 @@ Template.editTrip.events({
 });
 
 function saveProduct() {
-	console.log(_product);
 	Session.set('_product', _product);
 
 	if(!_product._id)

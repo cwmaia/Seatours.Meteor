@@ -47,10 +47,12 @@
 		<div>
 			<form>
 			<legend>Boat Status<span>&nbsp;&nbsp;</span><i class='icon-anchor'/></legend>
-			<div class='line'>
-				{{#each boat.slots}}
-					<div id="my-widget{{number}}">{{number}}#</div>
-				{{/each}}
+			<div>
+				<label>Cars up to 5m :</label> {{qtdCarsUpTo5}} <span id='max5slots'></span></br>
+				<label>Cars up to 6m :</label> {{qtdCarsUpTo6}} </br>
+				<label>Current meters alocated on extra Slot 1:</label><span id='spaceAlocatedSlot1'></span></br>
+				<label>Current meters alocated on extra Slot 2:</label><span id='spaceAlocatedSlot2'></span></br>
+				<label>Current meters alocated on Extras Slot :</label><span id='spaceAlocated'></span></br>
 			</div>
 			</form>
 		</div>

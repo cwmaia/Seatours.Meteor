@@ -2,370 +2,294 @@ Meteor.startup(function () {
   process.env.MAIL_URL = 'smtp://postmaster%40seatours.com:2-j--rmow2s5@smtp.mailgun.org:587';
 });
 
+var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
+
+var realocate = function(vehicleSize, resumeStatus, from, to, product, trip){
+
+	var spaceAvailableSlot1 = (resumeStatus.totalSpaceSlot1 - resumeStatus.spaceOnExtraSlot1);
+	var spaceAvailableSlot2 = (resumeStatus.totalSpaceSlot2 - resumeStatus.spaceOnExtraSlot2);
+
+	var carsToMove = [];
+	var booksToChange = [];
+	console.log("Vehicle Size: "+vehicleSize);
+	console.log("Resume Status 1: "+resumeStatus.totalSpaceSlot1);
+	console.log("Resume Status 2: "+resumeStatus.totalSpaceSlot2);
+	console.log("Space Available 1: "+spaceAvailableSlot1);
+	console.log("Space Available 2: "+spaceAvailableSlot2);
+
+	with(from){
+		setHours(0);
+		setMinutes(0);
+		setSeconds(0);
+	}
+
+	with(to){
+		setDate(getDate() + 1);
+		setHours(0);
+		setMinutes(0);
+		setSeconds(0);
+	}
+
+	//If vehicle can go on slot 1
+	if(vehicleSize <= resumeStatus.totalSpaceSlot1){
+		//Hey look it can goes on this slot
+		//but we have to realocate the vehicles inside of it
+		temporalSpaceAvailableSlot1 = spaceAvailableSlot1;
+		temporalSpaceAvailableSlot2 = spaceAvailableSlot2;
+
+		books = Books.find({
+			dateOfBooking 	: {$gte: from, $lt: to},
+			'product._id' 	: product._id,
+			'trip.from' 	: trip.from,
+			'vehicle.extraSlot' : extraSlots[1]
+		}).fetch();
+
+		//There is no car so add =]
+		if(books.length == 0){
+			return 'EXTRASLOT1';
+		}else{
+			for (var i = 0; i < books.length; i++) {
+			//can i move this car on other slot??
+				if(books[i].vehicle.size <= temporalSpaceAvailableSlot2){
+					carsToMove.push(books[i]);
+					temporalSpaceAvailableSlot2 += books[i].vehicle.size;
+				}
+			};
+
+			for (var j = 0; j < carsToMove.length; j++) {
+				console.log("Before: "+temporalSpaceAvailableSlot1);
+				temporalSpaceAvailableSlot1 += carsToMove[j].vehicle.size;
+				booksToChange.push(carsToMove[j]);
+				console.log("Size of Vehicle: "+carsToMove[j].vehicle.size);
+				console.log("temporalSpaceAvailableSlot1: "+temporalSpaceAvailableSlot1);
+				//The vehicle can go???
+				if(vehicleSize <= temporalSpaceAvailableSlot1){
+					//Yeaaaa!!
+					for (var k = 0; k < booksToChange.length; k++) {
+						book = booksToChange[k];
+						book.vehicle.extraSlot = 'EXTRASLOT2';
+						Books.update(book._id, book);
+					};
+					console.log('EXTRASLOT1');
+					return 'EXTRASLOT1';
+				} 
+			};
+		}
+	//If vehicle can go on slot 2	
+	}
+
+	if(vehicleSize <= resumeStatus.totalSpaceSlot2){
+		console.log('aqui - 2');
+		//Hey look it can goes on this slot
+		//but we have to realocate the vehicles inside of it
+		temporalSpaceAvailableSlot1 = spaceAvailableSlot1;
+		temporalSpaceAvailableSlot2 = spaceAvailableSlot2;
+
+		books = Books.find({
+			dateOfBooking 	: {$gte: from, $lt: to},
+			'product._id' 	: product._id,
+			'trip.from' 	: trip.from,
+			'vehicle.extraSlot' : extraSlots[2]
+		}).fetch();
+
+		//There is no car so add =]
+		if(books.length == 0){
+			return 'EXTRASLOT2';
+		}else{
+			for (var i = 0; i < books.length; i++) {
+			//can i move this car on other slot??
+				if(books[i].vehicle.size <= temporalSpaceAvailableSlot1){
+					carsToMove.push(books[i]);
+					temporalSpaceAvailableSlot1 += books[i].vehicle.size;
+				}
+			};
+
+			for (var j = 0; j < carsToMove.length; j++) {
+				temporalSpaceAvailableSlot2 += carsToMove[j].vehicle.size;
+				booksToChange.push(carsToMove[j]);
+				//The vehicle can go???
+				if(vehicleSize <= temporalSpaceAvailableSlot2){
+					//Yeaaaa!!
+
+					for (var k = 0; k < booksToChange.length; k++) {
+						book = booksToChange[k];
+						book.vehicle.extraSlot = 'EXTRASLOT1';
+						Books.update(book._id, book);
+					};
+					console.log('EXTRASLOT2');
+					return 'EXTRASLOT2';
+				} 
+			};
+		}	
+	}
+	//Sad but it can't go
+	console.log('false');
+	return false;
+}
+
+
+var calcSpaceOnExtraSlots = function(from, to, product, trip){
+	//calc space available on extra slot 1
+	var spaceOnExtraSlot1 = 0;
+	var spaceOnExtraSlot2 = 0;
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: from, $lt: to},
+		'product._id' 	: product._id,
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[1]
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		spaceOnExtraSlot1 += books[i].vehicle.size;
+	};
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: from, $lt: to},
+		'product._id' 	: product._id,
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlots[2]
+	}).fetch();
+
+	for (var j = 0; j < books.length; j++) {
+		spaceOnExtraSlot2 += books[j].vehicle.size;
+	};
+
+	countVehicle5m = Books.find({
+		dateOfBooking 	: {$gte: from, $lt: to},
+		'product._id' 	: product._id,
+		'trip.from' 	: trip.from,
+		'vehicle.size'  : {$gt: 0, $lte: 5},
+		'vehicle.extraSlot' : extraSlots[0]
+	}).count();
+
+	totalSpaceSlot1 = 24;
+	totalSpaceSlot2 = 24;
+
+	if(countVehicle5m == 25){
+		totalSpaceSlot2 = 19;
+	}
+
+	if(countVehicle5m > 25 && countVehicle5m <= 27){
+		totalSpaceSlot1 = 19;
+		totalSpaceSlot2 = 19;
+	}
+
+	if(countVehicle5m == 28){
+		totalSpaceSlot1 = 19;
+		totalSpaceSlot2 = 15;
+	}
+
+	if(countVehicle5m > 28 && countVehicle5m <= 30){
+		totalSpaceSlot1 = 15;
+		totalSpaceSlot2 = 15;
+	}
+
+
+
+	spaceOnSlots = {
+		totalSpaceSlot1 : totalSpaceSlot1, 
+		spaceOnExtraSlot1 : spaceOnExtraSlot1,
+		totalSpaceSlot2 : totalSpaceSlot2,
+		spaceOnExtraSlot2 : spaceOnExtraSlot2,
+		numberOf5MetersVehicles : countVehicle5m
+	}
+
+	return spaceOnSlots;
+
+
+}
+
+var getTotalExtraSpaceSlot = function(from, to, product, trip, extraSlot){
+
+	extraSpace = 15;
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: from, $lt: to},
+		'product._id' 	: product._id,
+		'trip.from' 	: trip.from,
+		'vehicle.extraSlot' : extraSlot
+	}).fetch();
+
+	var spaceAlocated = 0;
+
+	for (var i = 0; i < books.length; i++) {
+		spaceAlocated += books[i].vehicle.size;
+	};
+
+	extraSpace = extraSpace - spaceAlocated;
+
+	return extraSpace;
+}
+
+var alocateCarExtraSlots = function(from, to, product, trip, size){
+	var extraSlotsResume = calcSpaceOnExtraSlots(from, to, product, trip);
+	return realocate(size, extraSlotsResume, from, to, product, trip);
+}
+
+
+
+var getMaxCarsUpTo5 = function(boatId){
+	boat = Boats.findOne({_id: "1"});
+	getMax = 0;
+
+	for (var i = 0; i < boat.status.length; i++) {
+		if(boat.status[i].qtdCarsUpTo_5 > getMax){
+			getMax = boat.status[i].qtdCarsUpTo_5;
+		}
+	};
+
+	return getMax;
+}
+
+var getMaxCarsUpTo6 = function(boatId){
+	boat = Boats.findOne({_id: "1"});
+	getMax = 0;
+
+	for (var i = 0; i < boat.status.length; i++) {
+		if(boat.status[i].qtdCarsUpTo_6 > getMax){
+			getMax = boat.status[i].qtdCarsUpTo_6;
+		}
+	};
+
+	return getMax;
+}
+
 if(Boats.find().count() == 0){
 	Boats.insert({
 	"_id" : "1",
 	"name" : "Baldur Ferry",
-	"maxCapacity" : 4,
-	'slots' : [
+	"maxCapacity" : 300,
+	'status' : [
 		{
-			"number" : 1,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
+			"qtdCarsUpTo_5" : 24,
+			"qtdCarsUpTo_6" : 4,
+			"bigSlotOne" : 24,
+			"bigSlotTwo" : 24
 		},
 		{
-			"number" : 2,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
+			"qtdCarsUpTo_5" : 25,
+			"qtdCarsUpTo_6" : 4,
+			"bigSlotOne" : 24,
+			"bigSlotTwo" : 19
 		},
 		{
-			"number" : 3,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
+			"qtdCarsUpTo_5" : 27,
+			"qtdCarsUpTo_6" : 4,
+			"bigSlotOne" : 19,
+			"bigSlotTwo" : 19
 		},
 		{
-			"number" : 4,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
+			"qtdCarsUpTo_5" : 28,
+			"qtdCarsUpTo_6" : 4,
+			"bigSlotOne" : 19,
+			"bigSlotTwo" : 15
 		},
 		{
-			"number" : 5,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 6,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 7,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 8,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 9,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 10,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 11,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 12,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 13,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 14,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 15,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 16,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 17,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 18,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 19,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 20,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 21,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 22,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 23,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 24,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : true
-		},
-		{
-			"number" : 25,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : true
-		},
-		{
-			"number" : 26,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : true
-		},
-		{
-			"number" : 27,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : true
-		},
-		{
-			"number" : 28,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : true
-		},
-		{
-			"number" : 29,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 30,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false
-		},
-		{
-			"number" : 31,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 32,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 33,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : true,
-			"disabled" : false
-		},
-		{
-			"number" : 34,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : true,
-			"disabled" : false
-		},
-		{
-			"number" : 35,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 36,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : true,
-			"disabled" : false
-		},
-		{
-			"number" : 37,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 38,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 39,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
-		},
-		{
-			"number" : 40,
-			"slot_name" : "Small Car Slot",
-			"width" : 5,
-			"height" : 5,
-			"split" : false,
-			"alocated" : false,
-			"disabled" : false
+			"qtdCarsUpTo_5" : 30,
+			"qtdCarsUpTo_6" : 4,
+			"bigSlotOne" : 15,
+			"bigSlotTwo" : 15
 		}
 	]
 	})
@@ -650,16 +574,32 @@ if(Books.find().count() == 0){
 	var products = Products.find().fetch();
 	var vehicles = VehiclesCategory.find().fetch();
 	var prices = products[0].prices;
+	var thisDay = new Date();
 	var nextDay = new Date();
+	var saveBook = true;
+	var max5mCars = getMaxCarsUpTo5("1");
+	var max6mCars = getMaxCarsUpTo6("1");
+
+	with(thisDay){
+		setHours(0);
+		setMinutes(0);
+		setSeconds(0);
+	}
+
+	with(nextDay){
+		setDate(getDate() +1);
+		setHours(0);
+		setMinutes(0);
+		setSeconds(0);
+	}
 
 
-
-	for (var i = 0; i < 2000; i++) {
+	for (var i = 0; i < 5000; i++) {
 		var sum = 0;
 		with(date){
-			var randomday = parseInt((Math.random() * (20 - 1) + 1));
+			var randomday = parseInt((Math.random() * (30 - 5) + 5));
 			setDate(randomday);
-			var randomMonth = parseInt((Math.random() * (12 - 0) + 0));
+			var randomMonth = parseInt((Math.random() * (12 - 10) + 10));
 			setMonth(randomMonth);
 		}
 
@@ -681,7 +621,7 @@ if(Books.find().count() == 0){
 		customer._id = result;
 
 		var randomProductIndex = parseInt((Math.random() * (2 - 0) + 0));
-		var randomVehicleIndex = parseInt((Math.random() * (12 - 0) + 0));
+		var randomVehicleIndex = parseInt((Math.random() * (2 - 0) + 0));
 		var zeroOrOne = parseInt((Math.random() * (2 - 0) + 0));
 		var trip = Trips.findOne(products[randomProductIndex].trips[zeroOrOne]);
 
@@ -698,7 +638,7 @@ if(Books.find().count() == 0){
 
 		if(zeroOrOne){
 			//calcs total cost of vehicle
-			var size = vehicles[randomVehicleIndex].size[0];
+			var size = 5;
 			var base = vehicles[randomVehicleIndex].basePrice;
 			if(size > 10){
 				var mult = size - 10;
@@ -711,44 +651,59 @@ if(Books.find().count() == 0){
 				"category" : vehicles[randomVehicleIndex].category,
 				"size" : vehicles[randomVehicleIndex].size[0],
 				"totalCost" : base
-				}
-
-			//First see if can alocate slot
-			//Get All books from this trip
-			books = Books.find({
-				dateOfBooking 	: {$gte: date, $lt: nextDay},
-				'product._id' 	: products[randomProductIndex]._id,
-				'trip.from' 	: trip.from
-			});
-
-			var alocatedSlots = [];
-
-			for (var i = books.length - 1; i >= 0; i--) {
-				if(books[i].slot)
-					alocatedSlots.push(books[i].slot.number);
-			};
-
-			boat = Boats.findOne({_id: products[randomProductIndex].boatId})
-
-			var slot = {};
-			//Get if possible the first slot available
-			for (var i = 0; i < boat.slots.length; i++) {
-				for (var j = 0; j < alocatedSlots.length; j++) {
-					if(!boat.slots[i].disabled && 
-						boat.slots[i].number == alocatedSlots[j] &&
-						boat.slots[i].width <= vehicle.size)
-						slot = boat.slots[i];
-				};
-			};
-
-			if(slot){
-				book.slot = {
-					'number' : slot.number
-				}
-
-				book.vehicle = vehicle;	
 			}
-		
+
+			//If vehicles has less or 5 meters
+			if(vehicle.size <= 5){
+				countVehicle5m = Books.find({
+					dateOfBooking 	: {$gte: thisDay, $lt: nextDay},
+					'product._id' 	: products[randomProductIndex]._id,
+					'trip.from' 	: trip.from,
+					'vehicle.size'  : {$gt: 0, $lte: 5},
+					'vehicle.extraSlot' : extraSlots[0]
+				}).count();
+
+				if(countVehicle5m < max5mCars){
+					vehicle.extraSlot = extraSlots[0];
+				}
+			}
+
+			//If car has between 5 and 6 meters, try alocated him on 6 		
+			if(vehicle.size > 5 && vehicle.size <= 6){
+				countVehicle6m = Books.find({
+					dateOfBooking 	: {$gte: thisDay, $lt: nextDay},
+					'product._id' 	: products[randomProductIndex]._id,
+					'trip.from' 	: trip.from,
+					'vehicle.size'  : {$gt: 5, $lte: 6},
+					'vehicle.extraSlot' : extraSlots[0]
+				}).count();
+
+				if(countVehicle6m < 2){
+					vehicle.extraSlot = extraSlots[0];
+				}
+			}
+
+			//If car can't alocated on normal slots
+			//try alocate it on extra slots
+			if(!vehicle.extraSlot){
+				//Return false if has no space for the vehicle, 
+				//EXTRASLOT1 if alocated on slot 1
+				//EXTRASLOT2 if alocated on slot 2
+				//var alocated = alocateCarExtraSlots(thisDay, nextDay, products[randomProductIndex], trip, vehicle.size);
+				//if(alocated){
+					//vehicle.extraSlot = alocated;
+				//}
+			}
+			
+			//If vehicle can't alocated even on extra slots
+			//the vehicle can't enter on boat 
+			//and the booking is not created
+			if(!vehicle.extraSlot){
+				saveBook = false;
+			}else{
+				book.vehicle = vehicle;
+			}
+
 		}else{
 			book.vehicle = {
 			"vehicleModel" : "",
@@ -785,23 +740,41 @@ if(Books.find().count() == 0){
 			book.bookStatus = 'Canceled';
 		}
 
-		var resultBook = Books.insert(book);
+		if(saveBook){
+			var transaction = {};
+			if(book._id){
+				Books.update(book._id, book);
+				transaction = {
+					'bookId' : book._id,
+					'date' : new Date(),
+					'status' : 'Waiting Payment',
+					'amount' : book.totalISK,
+					'detail' : '',
+					'vendor' : 'Gudrun'
+				}
 
-		var transaction = {
-			'bookId' : resultBook,
-			'date' : new Date(),
-			'status' : 'Waiting Payment',
-			'amount' : book.totalISK,
-			'detail' : '',
-			'vendor' : 'Gudrun'
+			}else{
+				var resultBook = Books.insert(book);
+				transaction = {
+				'bookId' : resultBook,
+				'date' : new Date(),
+				'status' : 'Waiting Payment',
+				'amount' : book.totalISK,
+				'detail' : '',
+				'vendor' : 'Gudrun'
+				}
+			}
+			
+
+			if(zeroOrOne)
+				transaction.type = 'Card';
+			else
+				transaction.type = 'Money';
+
+			Transactions.insert(transaction);
 		}
-
-		if(zeroOrOne)
-			transaction.type = 'Card';
-		else
-			transaction.type = 'Money';
-
-		Transactions.insert(transaction);
+		
 
 	};			
 }
+
