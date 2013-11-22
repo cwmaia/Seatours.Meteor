@@ -1,0 +1,26 @@
+<template name="blockingDates">
+
+	<form id="blockingDates" novalidate>
+		<div class="line-3">
+
+			<div>
+				<label class="required">Trip:</label>
+				<select id="trip" required>
+					<option value="">Select..</option>
+					{{#each trips}}
+						<option value="{{_id}}">{{from}} - {{to}} - {{hour}}</option>
+					{{/each}}
+				</select>
+			</div>
+
+			<div>
+				<div class="calendarWrap">
+					<label>Blocking dates:</label>
+					<div class="calendar" id="calendar_{{_id}}"></div>
+				</div>
+			</div>
+		</div>
+
+		<input type="submit" name="save" class="btn btn-success btn-small" value="Save" />
+	</form>
+</template>

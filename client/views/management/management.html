@@ -1,0 +1,18 @@
+<template name="management">
+	<div class="tabbable">
+		<ul class="nav nav-tabs" id="myTab">
+			<li class="active">
+				<a data-toggle="tab" href="#blockingDates">
+					<i class="blue icon-file bigger-110"></i>
+					Blocking Dates
+				</a>
+			</li>
+		</ul>
+
+		<div class="tab-content">
+			<div id="blockingDates" class="tab-pane in active">
+				{{> blockingDates}}
+			</div>
+		</div>
+	</div>
+</template>

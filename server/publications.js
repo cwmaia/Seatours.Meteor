@@ -11,7 +11,7 @@ Meteor.publish('vehicles_category', function() {
 });
 
 Meteor.publish('boats', function() {
-	return Boats.find();
+  return Boats.find();
 });
 
 Meteor.publish('trips', function() {
@@ -85,24 +85,129 @@ Meteor.methods({
     });
   },
 
-  getTrips: function() {
-    return Trips.find();
+  /////////////////////////////////////////////////////////
+  //Insert and get for all collections
+  //Boats
+  getBoats: function(){    
+    return Boats.find().fetch();
   },
 
-  getTripsById: function(id) {
-    return Trips.findOne(id);
+  getBoatById: function(boatId){
+    return Boats.findOne(boatId);
   },
 
-  createTrip: function(trip) {
+  createBoat: function(boat){
+    Boats.insert(boat);
+  },
+
+  updateBoat: function(boatId, boat){
+    Boats.update(boatId, boat);
+  },
+
+  //Books
+  getBooks: function(){    
+    return Books.find().fetch();
+  },
+
+  getBookById: function(bookId){
+    return Books.findOne(bookId);
+  },
+
+  createBook: function(book){
+    Books.insert(book);
+  },
+
+  updateBook: function(bookId, book){
+    Boats.update(bookId, book);
+  },
+
+  //Products
+  getProducts: function(){    
+    return Products.find().fetch();
+  },
+
+  getProductById: function(productId){
+    return Products.findOne(productId);
+  },
+
+  createProduct: function(product){
+    Products.insert(product);
+  },
+
+  updateProduct: function(productId, product){
+    Products.update(productId, product);
+  },
+
+  //Customers
+  getCustomers: function(){    
+    return Customers.find().fetch();
+  },
+
+  getCustomerById: function(customerId){
+    return Customers.findOne(customerId);
+  },
+
+  createCustomer: function(customer){
+    Customers.insert(customer);
+  },
+
+  updateCustomer: function(customerId, customer){
+    Customers.update(customerId, customer);
+  },
+
+//Vehicles
+  getVehicles: function(){    
+    return Vehicles.find().fetch();
+  },
+
+  getVehicleById: function(vehicleId){
+    return Vehicles.findOne(vehicleId);
+  },
+
+  createVehicle: function(vehicle){
+    Vehicles.insert(vehicle);
+  },
+
+  updateVehicle: function(vehicleId, vehicle){
+    Vehicles.update(vehicleId, vehicle);
+  },
+
+
+  //VehiclesCategory
+  getVehiclesCategories: function(){    
+    return VehiclesCategory.find().fetch();
+  },
+
+  getVehiclesCategoryById: function(vehiclesCategoryId){
+    return VehiclesCategory.findOne(vehiclesCategoryId);
+  },
+
+  createVehiclesCategory: function(vehiclesCategory){
+    VehiclesCategory.insert(vehiclesCategory);
+  },
+
+  updateVehiclesCategory: function(vehiclesCategoryId, vehiclesCategory){
+    VehiclesCategory.update(vehiclesCategoryId, vehiclesCategory);
+  },
+
+//Trips
+  getTrips: function(){    
+    return Trips.find().fetch();
+  },
+
+  getTripById: function(tripId){
+    return Trips.findOne(tripId);
+  },
+
+  createTrip: function(trip){
     Trips.insert(trip);
   },
 
-  updateTrip: function(trip) {
-    console.log(trip);
+  updateTrip: function(trip){
     Trips.update(trip._id, trip);
   },
 
-  removeTrip: function(id) {
-    Trips.remove(id)
+  deleteTripById: function(id){
+    Trips.remove(id);
   }
 });
