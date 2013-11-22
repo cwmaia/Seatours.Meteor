@@ -2,8 +2,16 @@ Template.bookReport.helpers({
 	books : function(){
 		return Session.get('Books') ? Session.get('Books') : [];
 	},
+
 	products : function(){
-		return Products.find();
+		Meteor.call('getProducts', function(error, result){
+		if(error){
+        	console.log(error.reason);
+    	}else{
+    		Session.set("allProducts", result);
+		}	
+	});
+	return Session.get("allProducts");
 	}
 })
 
@@ -13,19 +21,47 @@ Template.bookReport.rendered = function(){
 }
 
 Template.bookReport.fullname = function(id){
-	return Customers.findOne({_id: id}).fullName;
+	_customer = Session.get('_customer') ? Session.get('_customer') : Meteor.call('getCustomerById', id, function(error, result){
+		if(error){
+        	console.log(error.reason);
+    	}else{
+    		Session.set("_customer", result);
+		}	
+	});
+	return _customer.fullName;
 }
 
 Template.bookReport.birth = function(id){
-	return Customers.findOne({_id: id}).birthDate;
+	_customer = Session.get('_customer') ? Session.get('_customer') : Meteor.call('getCustomerById', id, function(error, result){
+		if(error){
+        	console.log(error.reason);
+    	}else{
+    		Session.set("_customer", result);
+		}	
+	});
+	return _customer.birthDate;
 }
 
 Template.bookReport.email = function(id){
-	return Customers.findOne({_id: id}).email;
+	_customer = Session.get('_customer') ? Session.get('_customer') : Meteor.call('getCustomerById', id, function(error, result){
+		if(error){
+        	console.log(error.reason);
+    	}else{
+    		Session.set("_customer", result);
+		}	
+	});
+	return _customer.email;
 }
 
 Template.bookReport.telephone = function(id){
-	return Customers.findOne({_id: id}).telephone;
+	_customer = Session.get('_customer') ? Session.get('_customer') : Meteor.call('getCustomerById', id, function(error, result){
+		if(error){
+        	console.log(error.reason);
+    	}else{
+    		Session.set("_customer", result);
+		}	
+	});
+	return _customer.telephone;
 }
 
 Template.bookReport.adress = function(id){

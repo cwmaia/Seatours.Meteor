@@ -1,5 +1,13 @@
 Template.boats.boats = function() {
-	return Boats.find();
+	Meteor.call('getBoats', function(error, result){
+		if(error){
+        	console.log(error.reason);
+    	}else{
+    		Session.set("allBoats", result);
+		}	
+	});
+	return Session.get("allBoats");
+	
 }
 
 Template.boats.redered = function(){
@@ -11,6 +19,7 @@ Template.boats.events({
 	}
 })
 
+
 ////////////////////////////////////////////////////
 //Variables
 _boat = {};
@@ -19,7 +28,14 @@ cont = 0;
 ////////////////////////////////////////////////////
 //Template Edit Boats
 Template.editBoat.boat = function() {
-	_boat = Session.get('_boat') ? Session.get('_boat') : Boats.findOne(Session.get('boatId'));
+	_boat = Session.get('_boat') ? Session.get('_boat') : Meteor.call('getBoatById',Session.get('boatId'), function(error, result){
+		if(error){
+        	console.log(error.reason);
+    	}else{
+    		Session.set('_boat', result);
+    		return result;
+		}	
+	});
 
 	if(!_boat) {
 		_boat = {slots: []};
@@ -73,9 +89,9 @@ Template.editBoat.events({
 			Session.set("_boat", null);
 			
 			if(!_boat._id)
-				Boats.insert(_boat);
+				Meteor.call('createBoat',_boat);
 			else
-				Boats.update(_boat._id, _boat);
+				Meteor.call('updateBoat',_boat._id, _boat);
 
 			throwSuccess("Boat Saved");
 			Meteor.Router.to('/boats')

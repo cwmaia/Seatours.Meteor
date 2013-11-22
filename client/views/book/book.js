@@ -60,7 +60,7 @@ Template.book.events({
 			"paid" : "No"
 		}
 
-		Books.insert(book);
+		Meteor.call('createBook',book);
 		throwSuccess("Book and Username Created");
 		Meteor.Router.to("/");
 		

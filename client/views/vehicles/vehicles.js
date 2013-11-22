@@ -1,11 +1,26 @@
-Template.categoryVehicle.helpers({
-	categories : function(){
-		return VehiclesCategory.find();
-	}
-});
+Template.categoryVehicle.categories = function(){
+	Meteor.call('getVehiclesCategories', function(error, result){
+		if(error){
+        	console.log(error.reason);
+    	}else{
+    		Session.set("allCategories", result);
+    		return result;
+		}	
+	});
+	return Session.get("allCategories");
+};
 
 Template.categoryVehicle.sizes = function() {
-	return Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}).size : [];
+	var selectedVehiclesCategory = Meteor.call('getVehiclesCategoryById', Session.get('categoryId'), function(error, result){
+		if(error){
+        	console.log(error.reason);
+    	}else{
+    		Session.set("selectedVehiclesCategory", result);
+    		return result;
+		}	
+	});
+	selectedVehiclesCategory = Session.get('selectedVehiclesCategory');
+	return Session.get('selectedVehiclesCategory') ? selectedVehiclesCategory.size : [];
 }
 
 Template.categoryVehicle.events({
@@ -23,7 +38,15 @@ Template.vehicles.events({
 	'submit form' : function(event) {
 		event.preventDefault();
 		var form = event.currentTarget;
-		var category = VehiclesCategory.findOne({_id: Session.get("categoryId")});
+		var category = Meteor.call('getVehiclesCategoryById', Session.get('categoryId'), function(error, result){
+		if(error){
+       		console.log(error.reason);
+    	}else{
+    		Session.set("selectedVehiclesCategory", result);
+    		return result;
+		}	
+		});
+		category = Session.get("selectedVehiclesCategory");
 		if($("#categories").val() != "" && $("#size").val() == ""){
 			throwError('Please Inform the size of vehicle');
 		}else{
@@ -38,7 +61,7 @@ Template.vehicles.events({
 				     }
 				};
 			
-				Vehicles.insert(v);
+				Meteor.call('createVehicle', v);
 				throwSuccess("Vehicle Created");
 
 				form.reset();

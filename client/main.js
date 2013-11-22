@@ -2,7 +2,7 @@ Meteor.subscribe('products');
 Meteor.subscribe('users');
 Meteor.subscribe('books');
 Meteor.subscribe('vehicles_category');
-Meteor.subscribe('boats');
+//Meteor.subscribe('boats');
 Meteor.subscribe('trips');
 Meteor.subscribe('vehicles');
 Meteor.subscribe('customers');
