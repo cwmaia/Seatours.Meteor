@@ -17,6 +17,7 @@ var getExtraSlotsSpace = function(trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
@@ -130,6 +131,7 @@ var doorMaxCapacity = function (trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
@@ -186,6 +188,7 @@ var checkSpaceExtra = function(size, trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
 
@@ -193,6 +196,7 @@ var checkSpaceExtra = function(size, trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
 
@@ -234,6 +238,7 @@ var countExtraSpace = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
 
@@ -242,6 +247,7 @@ var countExtraSpace = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
 
@@ -292,6 +298,7 @@ var checkHaveToOpenDoor = function(size, trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
@@ -432,6 +439,7 @@ Template.bookDetail.qtdCarsUpTo5 = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
@@ -453,6 +461,7 @@ Template.bookDetail.qtdCarsUpTo6 = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
