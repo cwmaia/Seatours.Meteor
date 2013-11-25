@@ -21,39 +21,58 @@ Template.bookReport.rendered = function(){
 }
 
 Template.bookReport.fullname = function(id){
+	try{
 	_customer = Session.get('_customer') ? Session.get('_customer') : Meteor.call('getCustomerById', id, function(error, result){
 		if(error){
         	console.log(error.reason);
     	}else{
     		Session.set("_customer", result);
+    		return result;
 		}	
 	});
-	return _customer.fullName;
+	_customer = Session.get("_customer");
+	return _customer.fullName;}
+	catch(err){
+		return;
+	}
 }
 
 Template.bookReport.birth = function(id){
+	try{
 	_customer = Session.get('_customer') ? Session.get('_customer') : Meteor.call('getCustomerById', id, function(error, result){
 		if(error){
         	console.log(error.reason);
     	}else{
     		Session.set("_customer", result);
+    		return result;
 		}	
 	});
-	return _customer.birthDate;
+	_customer = Session.get("_customer");
+	return _customer.birthDate;}
+	catch(err){
+		return;
+	}
 }
 
 Template.bookReport.email = function(id){
+	try{
 	_customer = Session.get('_customer') ? Session.get('_customer') : Meteor.call('getCustomerById', id, function(error, result){
 		if(error){
         	console.log(error.reason);
     	}else{
     		Session.set("_customer", result);
+    		return result;
 		}	
 	});
-	return _customer.email;
+	_customer = Session.get("_customer");
+	return _customer.email;}
+	catch(err){
+		return;
+	}
 }
 
 Template.bookReport.telephone = function(id){
+	try{
 	_customer = Session.get('_customer') ? Session.get('_customer') : Meteor.call('getCustomerById', id, function(error, result){
 		if(error){
         	console.log(error.reason);
@@ -61,19 +80,32 @@ Template.bookReport.telephone = function(id){
     		Session.set("_customer", result);
 		}	
 	});
-	return _customer.telephone;
+	return _customer.telephone;}
+	catch(err){
+		return;
+	}
 }
 
 Template.bookReport.adress = function(id){
-	var customer = Customers.findOne({_id: id});
+	try{
+	_customer = Session.get('_customer') ? Session.get('_customer') : Meteor.call('getCustomerById', id, function(error, result){
+		if(error){
+        	console.log(error.reason);
+    	}else{
+    		Session.set("selectedCustomer", result);
+    		return result
+		}	
+	});
+	customer = Session.get("selectedCustomer");
 	var adress = customer.adress + ' - ' + customer.city + ' - ' + customer.state + ' - ' + customer.postcode + ' - ' + customer.country;
-	return adress;
+	return adress;}
+	catch(err){
+		return;
+	}
 }
 
 Template.bookReport.events({
 	'click .filter' : function(event){
-
-		var listOfBooks;
 
 		var product = $('#product').val(); 
 		var from = $('#from').val();
@@ -92,19 +124,13 @@ Template.bookReport.events({
 			setDate(getDate() + 1);
 		}
 		
-		var query = {dateOfBooking: {$gte: dateFrom, $lt: dateTo}};
+		Meteor.call('getBookByDateRange', dateFrom, dateTo, product, paymentStatus, bookStatus, function(error, result){
+			if(error){
+        		console.log(error.reason);
+    		}else{
+				Session.set('Books', result);
+			}
+		});
 
-		if(product) 
-			query['product._id'] = product;
-
-		if(paymentStatus)
-			query['paid'] = (paymentStatus === '0') ? false : true;
-
-		if(bookStatus)
-			query['bookStatus'] = bookStatus;
-
-		listOfBooks = Books.find(query).fetch();
-
-		Session.set('Books', listOfBooks);
 	}
 })
