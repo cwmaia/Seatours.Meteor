@@ -129,6 +129,26 @@ Meteor.methods({
     Boats.update(bookId, book);
   },
 
+  getBookByDateRange: function(dateFrom, dateTo, product, paymentStatus, bookStatus){
+    var query = {dateOfBooking: {$gte: dateFrom, $lt: dateTo}};
+
+    if(product) 
+      query['product._id'] = product;
+
+    if(paymentStatus)
+      query['paid'] = (paymentStatus === '0') ? false : true;
+
+    if(bookStatus)
+      query['bookStatus'] = bookStatus;
+    return Books.find(query).fetch();
+
+  },
+
+  //getBookByQuery: function(query){
+  //  return  Books.find(query).fetch();
+  //},
+ 
+
   //Products
   getProducts: function(){    
     return Products.find().fetch();
