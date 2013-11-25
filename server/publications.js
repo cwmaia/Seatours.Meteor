@@ -1,3 +1,7 @@
+Meteor.publish("directory", function () {
+  return Meteor.users.find({}, {fields: {emails: 1, username: 1, 'profile' : 1}});
+});
+
 Meteor.publish('products', function() { 
 	return Products.find();
 });
@@ -44,6 +48,10 @@ Meteor.publish('countries', function() {
 
 Meteor.publish('transactions', function() {
   return Transactions.find();
+});
+
+Meteor.publish('groups', function() {
+  return Groups.find();
 });
 
 Meteor.publish('saveTrip', function(trip) {
@@ -209,5 +217,14 @@ Meteor.methods({
 
   deleteTripById: function(id){
     Trips.remove(id);
+  },
+
+  //Groups
+  getGroups : function(){
+    return Groups.find().fetch();
+  },
+
+  getGroupById : function(groupId){
+    return Groups.findOne(groupId);
   }
 });

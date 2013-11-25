@@ -1,17 +1,51 @@
 <template name="management">
 	<div class="tabbable">
 		<ul class="nav nav-tabs" id="myTab">
+
 			<li class="active">
+				<a data-toggle="tab" href="#main">
+					<i class="blue icon-file bigger-110"></i>
+					Main
+				</a>
+			</li>
+
+			<li>
 				<a data-toggle="tab" href="#blockingDates">
 					<i class="blue icon-file bigger-110"></i>
 					Blocking Dates
 				</a>
 			</li>
+
+			<li>
+				<a data-toggle="tab" href="#userManagement">
+					<i class="blue icon-file bigger-110"></i>
+					User Management
+				</a>
+			</li>
+
+			<li>
+				<a data-toggle="tab" href="#groupsManagement">
+					<i class="blue icon-file bigger-110"></i>
+					Groups Management
+				</a>
+			</li>
 		</ul>
 
 		<div class="tab-content">
-			<div id="blockingDates" class="tab-pane in active">
+			<div id="main" class="tab-pane in active">
+				
+			</div>
+
+			<div id="blockingDates" class="tab-pane in">
 				{{> blockingDates}}
+			</div>
+
+			<div id="userManagement" class="tab-pane in">
+				{{> createAccount}}
+			</div>
+
+			<div id="groupsManagement" class="tab-pane in">
+				{{> createGroups}}
 			</div>
 		</div>
 	</div>

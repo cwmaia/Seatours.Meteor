@@ -1,31 +1,48 @@
 Template.createAccount.events({
-	'submit #people_form' : function(event){
+	'click #addUsers' : function(event){
+
+		var password1 = $('#password1').val();
+		var password2 = $('#password2').val();
+
+		if(!(password1 === password2)){
+			throwError('The passwords must be equals!')
+			return;
+		}
 
 		var user = {
-			firstname : $(event.target).find('[name=firstName]').val(),
-			lastname : $(event.target).find('[name=lastName]').val(),
-			email : $(event.target).find('[name=email]').val(),
-			birthdate : $(event.target).find('[name=birthDate]').val(),
-			username : $(event.target).find('[name=username]').val(),
-			authKey : $(event.target).find('[name=authKey]').val(),
-			authLvl : 'guest'
+			username : $('#username').val(),
+			email : $('#mail').val(),
+			password : $('#password1').val(),
+			profile : {'groupID': $('#group').val()}
 		}
 
-		Users.insert(user);
-		Meteor.Router.to('/');
-	},
-
-	'submit #travel_form' : function(event){
-
-		var agency = {
-
+		Accounts.createUser(user);
+		try{
+			throwSuccess('User Created!');
+		}catch(err){
+			console.log(err);
 		}
 
-		Agencies.insert(agency);
-		Meteor.Router.to('/');
+		$('#fieldsetGroup input').filter(function(){
+			$(this).val('');
+		})
+		
 	}
 })
 
-Template.createAccount.rendered = function() {
-  $('.datepicker').datepicker();
+Template.usersList.users = function(){
+	return Meteor.users.find().fetch();
 }
+
+Template.usersList.getGroup = function(groupID){
+	return Groups.findOne({_id: groupID}) ? Groups.findOne({_id: groupID}).name : '';
+}
+
+Template.createAccount.groups = function(){
+	return Groups.find();
+}
+
+Template.usersList.rendered = function(){
+	$("#usersTable").dataTable();
+}
+

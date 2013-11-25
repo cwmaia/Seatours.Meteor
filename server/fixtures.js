@@ -3,7 +3,7 @@ Meteor.startup(function () {
 });
 
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
-
+var admId = '';
 var realocate = function(vehicleSize, resumeStatus, from, to, product, trip){
 
 	var spaceAvailableSlot1 = (resumeStatus.totalSpaceSlot1 - resumeStatus.spaceOnExtraSlot1);
@@ -253,6 +253,23 @@ var getMaxCarsUpTo6 = function(boatId){
 	};
 
 	return getMax;
+}
+
+if(Groups.find().count() == 0){
+	admId = Groups.insert({
+		'name' : 'Administrators',
+		'description' : 'Lords of the Universe'
+	});
+
+	Groups.insert({
+		'name' : 'Vendors',
+		'description' : 'Vendors'
+	})
+
+	Groups.insert({
+		'name' : 'Agencies',
+		'description' : 'Travel Agencies'
+	})
 }
 
 if(Boats.find().count() == 0){
@@ -519,6 +536,7 @@ if(Meteor.users.find().count() == 0){
 	Accounts.createUser({
 	  'username'  : 'gudrun',
 	  'email'     : 'gudrun@me.com',
+	  'profile'	  : {'groupID' : admId},
 	  'password'  : '1234' //encrypted automatically 
 	});
 }

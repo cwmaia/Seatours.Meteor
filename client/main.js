@@ -9,6 +9,8 @@ Meteor.subscribe('customers');
 Meteor.subscribe('notes');
 Meteor.subscribe('mails');
 Meteor.subscribe('transactions');
+Meteor.subscribe("directory");
+Meteor.subscribe("groups");
 
 Template.redirect.helpers({
   userLogged : function(){

@@ -1,126 +1,97 @@
 <template name='createAccount'>
-   <article>
-        <div id="div-form">
-            <div class="visible widget-box no-border">
-                <div class="widget-body">
-                    <div class="widget-main">
-                        <h4 class="blue lighter bigger">
-                            <a href="/" title='Click here to back!'><img src='/images/logo-en.png'></a><br/>
-                            Create Account
-                        </h4>
-                        <div id='create-account-box'>
-                        	<div class="tabbable">
-									<ul class="nav nav-tabs" id="myTab">
-										<li class="active">
-											<a data-toggle="tab" href="#home">
-												<i class="green icon-user bigger-110"></i>
-												Guests
-											</a>
-										</li>
+	<article>
+	<div class="tabbable">
+		<ul class="nav nav-tabs" id="myTab">
+			<li class="active">
+				<a data-toggle="tab" href="#users">
+				<i class="green icon-user bigger-110"></i>
+					Users
+				</a>
+			</li>
+		</ul>
 
-										<li>
-											<a data-toggle="tab" href="#profile">
-												Travel Agencies
-												<span class="blue icon-group bigger-110"></span>
-											</a>
-										</li>
-									</ul>
-
-									<div class="tab-content">
-										<div id="home" class="tab-pane in active">
-											<fieldset>
-												<legend>Personal Data<span>&nbsp;&nbsp;</span><i class='icon-user'/></legend>
-												<form method='post' id='people_form'>
-													<div class='span3'>
-														<label>First Name: </label>
-														<input name='firstName' type='text' required>
-													</div>
-													<div class='span3'>
-														<label>Last Name: </label>
-														<input name='lastName' type='text' class='input-text' required>
-													</div>
-													<div class='span3'>
-														<label>Email: </label>
-														<input name='email' type='email' required>
-													</div>
-													<div class='span3'>
-														<label>Birth Date: </label>
-														<input name='birthDate' type="text" class='datepicker'>
-													</div>
-													</fieldset>
-													<fieldset>
-														<legend>Seatours User<span>&nbsp;&nbsp;</span><i class='icon-cog'/></legend>
-														<div class='span3'>
-															<label>Username: </label>
-															<input name='username' type='text' required>
-														</div>		
-														<div class='span3'>
-															<label>Password: </label>
-															<input name='authKey' type='password' required>
-														</div>
-													</fieldset>
-													
-
-													<button type='submit' class='btn btn-success create-account-button'>
-						                        		<i class="icon-user"></i>
-						                        		Create
-						                    		</button>
-												</form>
-											
-										</div>
-
-										<div id="profile" class="tab-pane">
-											<fieldset>
-												<legend>Travel Agency Data<span>&nbsp;&nbsp;</span><i class='icon-group'/></legend>
-												<form method='post' id='travel_form'>
-													<div class='span3'>
-														<label>First Name: </label>
-														<input name='firstName' type='text' class='input-text' required>
-													</div>
-													<div class='span3'>
-														<label>Last Name: </label>
-														<input name='lastName' type='text' class='input-text' required>
-													</div>
-													<div class='span3'>
-														<label>Email: </label>
-														<input name='email' type='email' class='input-text' required>
-													</div>
-													<div class='span3'>
-														<label>Birth Date: </label>
-														<input name='birthDate' type="text" class="datepicker" >
-													</div>
-												</fieldset>
-												<fieldset>
-													<legend>Seatours User<span>&nbsp;&nbsp;</span><i class='icon-cog'/></legend>
-													<div class='span3'>
-														<label>Username: </label>
-														<input name='username' type='text' class='input-text' required>
-													</div>		
-													<div class='span3'>
-														<label>Password: </label>
-														<input name='authKey' type='password' class='input-text' required>
-													</div>
-												</fielset>
-													<button type='submit' class='btn btn-info create-account-button'>
-						                        		<i class="icon-user"></i>
-						                        		Create
-						                    		</button>
-						                    	</form>
-										</div>
-									</div>
-								</div>
-							</div>
-                        	
+		<div class="tab-content">
+			<div class='line-2'>
+				<div id="users" class="tab-pane in active">
+					<fieldset id='fieldsetUser'>
+						<legend>User Data<span>&nbsp;&nbsp;</span><i class='icon-user'/></legend>
+							<div class='line-2'>
+								<div>
+									<label>Username: </label>
+									<input name='login' type='text' required id='username'>
 								</div>
 								<div>
-		                        	
+								<label>Email: </label>
+									<input name='email' type='email' required id='mail'>
 								</div>
-								
-							</form>
-						</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+							</div>
+
+							<div class='line-2'>
+								<div>
+									<label>Password: </label>
+									<input name='password1' type='password' required id='password1'>
+								</div>
+								<div>
+									<label>Confirm Password: </label>
+									<input name='password2' type="password" required id='password2'>
+								</div>
+							</div>							
+							
+							<label>Group: </label>
+							<select id='group' required>
+								<option value=''>Select...</option>
+								{{#each groups}}
+									<option value='{{_id}}'>{{name}}</option>
+								{{/each}}
+							</select>
+							</fieldset>
+
+							<button class='btn btn-success create-account-button' id='addUsers'>
+	                    		<i class="icon-user"></i>
+	                    		Create
+	                		</button>
+					</fieldset>
+					</div>
+
+					<div>
+						{{> usersList}}
+					</div>
+				</div>
+				
+			</div>
+
+
+		</div>
     </article>
+</template>
+
+<template name='usersList'>
+	<fieldset>
+		<legend>Users<span>&nbsp;&nbsp;</span><i class='icon-group'/></legend>
+		<table class='table table-striped table-bordered trable-hover' id='usersTable'>
+			<thead>
+				<tr>
+					<th>Login</th>
+					<th>Email</th>
+					<th>Group</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each users}}
+					<tr>
+						<td>{{username}}</td>
+						{{#each emails}}
+							<td>{{address}}</td>
+						{{/each}}
+						<td>{{getGroup profile.groupID}}</td>
+						<td>
+							<a class="btn btn-mini btn-danger sendMail" title="Remove" rel='{{customer.email}}'>
+							<i class="icon-trash bigger-120"></i></a>
+						</td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</fieldset>
 </template>
