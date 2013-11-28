@@ -1370,35 +1370,3 @@ function drawPieChart( elementId, data ) {
 function ಠ_ಠ() {
     drawPieChart('pieChart', data.pieChart );
 }
-
-buildEmail = function(book, result, customer){
-	var prices = '';
-	for (var i = 0; i < book.prices.length; i++) {
-		prices += book.prices[i].prices + " - " + book.prices[i].persons + " X " + book.prices[i].perUnit + " = " +  book.prices[i].sum + " ISK <br/>";
-	};
-
-	var vehicle = '';
-	if(book.vehicle.category != ''){
-		vehicle = book.vehicle.category +" - "+ book.vehicle.size+ "m = " + book.vehicle.totalCost + " ISK";
-	}
-
-	var qrcodeTag = Meteor.call("generateQRCode", result, function(error, resulttag){
-		if(error){
-        	console.log(error.reason);
-       	}
-       	else{
-       		Session.set('_qrcodeTag', resulttag);
-       		return result;
-       	}
-    });
-    qrcodeTag = Session.get('_qrcodeTag');
-
-    Session.set("qrCode", qrcodeTag);
-
-    console.log(qrcodeTag);
-    console.log(Session.get("qrCode"));
-
-	var html = Template.voucher();
-
-	return html;
-}

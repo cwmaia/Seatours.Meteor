@@ -32,6 +32,8 @@ Template.cart.events({
 		var books = CartItems.find().fetch();
 		for (var i = 0; i < books.length; i++) {
 			Books.insert(books[i]);
+			var costumer = Customers.findOne(book.costumerId);
+			sendMail(books[i],books[i]._id, costumer);
 			CartItems.remove({_id : books[i]._id});
 		};
 
@@ -59,4 +61,39 @@ var calcTotalItems = function(){
 	})
 
 	$('#total').text(total);
+}
+
+
+var sendMail : function(book, result, customer){
+	var prices = '';
+	for (var i = 0; i < book.prices.length; i++) {
+		prices += book.prices[i].prices + " - " + book.prices[i].persons + " X " + book.prices[i].perUnit + " = " +  book.prices[i].sum + " ISK <br/>";
+	};
+
+	var vehicle = '';
+	if(book.vehicle.category != ''){
+		vehicle = book.vehicle.category +" - "+ book.vehicle.size+ "m = " + book.vehicle.totalCost + " ISK";
+	}
+
+	var qrcodeTag = Meteor.call("generateQRCode", result, function(error, resulttag){
+		if(error){
+        	console.log(error.reason);
+       	}
+       	else{
+       		Session.set('_qrcodeTag', resulttag);
+       		return result;
+       	}
+    });
+    qrcodeTag = Session.get('_qrcodeTag');
+
+    Session.set("qrCode", qrcodeTag);
+
+    console.log(qrcodeTag);
+    console.log(Session.get("qrCode"));
+
+	var html = Template.voucher();
+	console.log(book);
+	console.log(costumer.email);
+	Meteor.call('sendEmailHTML', customer.email, "noreply@seatours.is", "Your Voucher at Seatours!", html);
+
 }
