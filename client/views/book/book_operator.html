@@ -75,11 +75,36 @@
 			<form>
 				<legend>Boat Status<span>&nbsp;&nbsp;</span><i class='icon-anchor'/></legend>
 				<div>
-					<label>Cars up to 5m :</label> {{qtdCarsUpTo5}} <span id='max5slots'></span></br>
-					<label>Cars up to 6m :</label> {{qtdCarsUpTo6}} </br>
-					<label>Current meters alocated on extra Slot 1:</label><span id='spaceAlocatedSlot1'></span><span id='spaceAlocatedSlot3'></span></br>
-					<label>Current meters alocated on extra Slot 2:</label><span id='spaceAlocatedSlot2'></span><span id='spaceAlocatedSlot4'></span></br>
-					<label>Current meters alocated on Extras Slot :</label><span id='spaceAlocated'><span id='spaceAlocatedSlotCart'></span></span></br>
+					<table class='table table-striped table-bordered trable-hover'>
+						<thead>
+							<tr>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Cars up to 5m</td>
+								<td>{{qtdCarsUpTo5}} - <span id='max5slots'></span></td>
+							</tr>
+							<tr>
+								<td>Cars up to 6m</td>
+								<td>{{qtdCarsUpTo6}}</td>
+							</tr>
+							<tr>
+								<td>Current meters alocated on extra Slot 1</td>
+								<td><span id='spaceAlocatedSlot1'></span>m - <span id='spaceAlocatedSlot3'>m</span></td>
+							</tr>	
+							<tr>
+								<td>Current meters alocated on extra Slot 2</td>
+								<td><span id='spaceAlocatedSlot2'></span>m - <span id='spaceAlocatedSlot4'>m</span></td>
+							</tr>	
+							<tr>	
+								<td>Current meters alocated on Extras Slot</td>
+								<td><span id='spaceAlocated'> - <span id='spaceAlocatedSlotCart'></span></span></td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</form>
 		</div>
@@ -314,12 +339,7 @@
 	            <div>
 	            	<label class="required">Country: </label>
 	            	<select id="country" name="country" required>
-	            		{{#each countries}}
-	            			<option value="{{name}}">{{name}}</option>
-	            		{{/each}}
-	            		
-	            		<option value="">Select..</option>
-	            		<option value="Brazil">Brazil</option>
+	            		{{>countries}}
 	            	</select>
 	            </div>
 

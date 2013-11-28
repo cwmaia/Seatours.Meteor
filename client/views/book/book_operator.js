@@ -1056,164 +1056,32 @@ var createBook = function(){
 	CartItems.insert(book);
 }
 
-    // Helper functions!!!
-    function drawCircle( datum, index ) {
-      circleContainer.datum( datum )
-                    .append( 'circle' )
-                    .attr( 'class', 'lineChart--circle' )
-                    .attr( 'r', 0 )
-                    .attr(
-                      'cx',
-                      function( d ) {
-                        return x( d.date ) + detailWidth / 2;
-                      }
-                    )
-                    .attr(
-                      'cy',
-                      function( d ) {
-                        return y( d.value );
-                      }
-                    )
-                    .on( 'mouseenter', function( d ) {
-                      d3.select( this )
-                        .attr(
-                          'class',
-                          'lineChart--circle lineChart--circle__highlighted' 
-                        )
-                        .attr( 'r', 7 );
-                      
-                        d.active = true;
-                        
-                        showCircleDetail( d );
-                    } )
-                    .on( 'mouseout', function( d ) {
-                      d3.select( this )
-                        .attr(
-                          'class',
-                          'lineChart--circle' 
-                        )
-                        .attr( 'r', 6 );
-                      
-                      if ( d.active ) {
-                        hideCircleDetails();
-                        
-                        d.active = false;
-                      }
-                    } )
-                    .on( 'click touch', function( d ) {
-                      if ( d.active ) {
-                        showCircleDetail( d )
-                      } else {
-                        hideCircleDetails();
-                      }
-                    } )
-                    .transition()
-                    .delay( DURATION / 10 * index )
-                    .attr( 'r', 6 );
-    }
     
-    function drawCircles( data ) {
-      circleContainer = svg.append( 'g' );
-
-      data.forEach( function( datum, index ) {
-        drawCircle( datum, index );
-      } );
-    }
-    
-    function hideCircleDetails() {
-      circleContainer.selectAll( '.lineChart--bubble' )
-                      .remove();
-    }
-    
-    function showCircleDetail( data ) {
-      var details = circleContainer.append( 'g' )
-                        .attr( 'class', 'lineChart--bubble' )
-                        .attr(
-                          'transform',
-                          function() {
-                            var result = 'translate(';
-                            
-                            result += x( data.date );
-                            result += ', ';
-                            result += y( data.value ) - detailHeight - detailMargin;
-                            result += ')';
-                            
-                            return result;
-                          }
-                        );
-      
-      details.append( 'path' )
-              .attr( 'd', 'M2.99990186,0 C1.34310181,0 0,1.34216977 0,2.99898218 L0,47.6680579 C0,49.32435 1.34136094,50.6670401 3.00074875,50.6670401 L44.4095996,50.6670401 C48.9775098,54.3898926 44.4672607,50.6057129 49,54.46875 C53.4190918,50.6962891 49.0050244,54.4362793 53.501875,50.6670401 L94.9943116,50.6670401 C96.6543075,50.6670401 98,49.3248703 98,47.6680579 L98,2.99898218 C98,1.34269006 96.651936,0 95.0000981,0 L2.99990186,0 Z M2.99990186,0' )
-              .attr( 'width', detailWidth )
-              .attr( 'height', detailHeight );
-      
-      var text = details.append( 'text' )
-                        .attr( 'class', 'lineChart--bubble--text' );
-      
-      text.append( 'tspan' )
-          .attr( 'class', 'lineChart--bubble--label' )
-          .attr( 'x', detailWidth / 2 )
-          .attr( 'y', detailHeight / 3 )
-          .attr( 'text-anchor', 'middle' )
-          .text( data.label );
-      
-      text.append( 'tspan' )
-          .attr( 'class', 'lineChart--bubble--value' )
-          .attr( 'x', detailWidth / 2 )
-          .attr( 'y', detailHeight / 4 * 3 )
-          .attr( 'text-anchor', 'middle' )
-          .text( data.value );
-    }
-    
-    function tween( b, callback ) {
-      return function( a ) {
-        var i = (function interpolate() {
-          return function( t ) {
-            return a.map( function( datum, index ) {
-              return {
-                date  : datum.date,
-                value : datum.value + b[ index ].value * t
-              };
-            } ); 
-          };
-        })();
-  
-        return function( t ) {
-          return callback( i ( t ) );
-        };
-      };
-    }
-  
-
 var data = {
     pieChart  : [
       {
         color       : 'red',
         description : 'Created',
         title       : 'flowers',
-        value       : 0.62
+        value       : 0.25
       },
       {
         color       : 'blue',
         description : 'Canceled',
         title       : 'trains',
-        value       : 0.28
+        value       : 0.25
       },
       {
         color       : 'green',
         description : 'Paid',
         title       : 'trains',
-        value       : 0.18
-      }
-    ],
-    balanceChart: [
-      {
-        label : 'Oh yeah',
-        value : 62
+        value       : 0.25
       },
       {
-        label : 'Oh nooo',
-        value : 38
+        color       : 'orange',
+        description : 'What',
+        title       : 'trains',
+        value       : 0.25
       }
     ]
   };
