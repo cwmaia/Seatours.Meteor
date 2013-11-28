@@ -1,14 +1,7 @@
 var _product = {};
 
 Template.trips.trips = function(){ 
-	Meteor.call('getProducts', function(error, result){
-		if(error){
-        	console.log(error.reason);
-    	}else{
-    		Session.set("allProducts", result);
-		}	
-	});
-	return Session.get("allProducts");
+	return Products.find();
 }
 
 Template.trips.events({
@@ -39,56 +32,23 @@ Template.editTrip.equalBoatId = function(id) {
 
 Template.editTrip.helpers({
 	product : function(){
-		_product = Session.get('_product') ? Session.get('_product') :  Meteor.call('getProductById',Session.get('tripId'), function(error, result){
-		if(error){
-        	console.log(error.reason);
-    	}else{
-    		Session.set('_product', result);
-    		return result;
-		}	
-	});
-
-		if(!_product){
-			_product = {
-				trips : [],
-				prices: [],
-				blockingDates: []
-			};
-		}
-		
+		_product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
 		return _product;
 	},
 
 	trips : function() {
 		var trips = [];
-
-		for (var i = _product.trips.length - 1; i >= 0; i--) {
-			var _selectedTrip = Meteor.call('getTripById', _product.trips[i],function(error, result){
-			if(error){
-        		console.log(error.reason);
-    		}else{
-    			Session.set('selectedTrip', result);
-    			return result;
-			}	
-			});
-			_selectedTrip = Session.get('selectedTrip');
-			trips.push(_selectedTrip);
-		}
-
-		return trips;
+ 
+	     for (var i = _product.trips.length - 1; i >= 0; i--) {
+	       	trips.push(Trips.findOne(_product.trips[i]));
+	     }
+ 
+     	return trips;
 	}
 });
 
 Template.editTrip.boats = function() {
-	Meteor.call('getBoats', function(error, result){
-		if(error){
-        	console.log(error.reason);
-    	}else{
-    		Session.set("allBoats", result);
-    		return result;
-		}	
-	});
-	return Session.get("allBoats"); 
+	return Boats.find(); 
 }
 
 Template.editTrip.equalBoatId = function(id) {
@@ -104,7 +64,12 @@ Template.editTrip.events({
 			_product.name = form.name.value;
 			_product.boatId = form.boat.selectedOptions[0].value;
 			
-			saveProduct();
+			if(_product._id){
+				Products.update(_product._id, {$set : {name : _product.name, boatId: _product.boatId}})
+			}else{
+				Products.insert(_product);
+			}
+				
 			Meteor.Router.to('/trips')
 			throwSuccess(_product.name + ' saved');
 		}
@@ -121,8 +86,11 @@ Template.editTrip.events({
 				hour 	: $('#hour')[0].value
 			}
 
-			_product.trips.push(Meteor.call('createTrip',trip));
-			saveProduct();
+			var trips = _product.trips;
+
+			trips.push(Trips.insert(trip));
+
+			Products.update(_product._id, {$set : {trips : trips}})
 
 			form.reset();
 
@@ -140,8 +108,11 @@ Template.editTrip.events({
 				unit	: form.unit.value,
 			};
 
-			_product.prices.push(price);
-			Session.set('_product', _product);
+			var prices = _product.prices;
+
+			prices.push(price);
+
+			Products.update(_product._id, {$set : {prices : prices}})
 
 			form.reset();
 
@@ -154,10 +125,11 @@ Template.editTrip.events({
 
 		var id = event.currentTarget.id;
 
-		Meteor.call('deleteById',id);
-		_product.trips.splice(_product.trips.indexOf(id), 1);
+		Trips.remove(id);
+
+		var trips = _product.trips.splice(_product.trips.indexOf(id), 1);
 		
-		saveProduct();
+		Products.update(_product._id, {$set : {trips : trips}});
 
 		throwSuccess('Trip added');
 	},
@@ -166,19 +138,14 @@ Template.editTrip.events({
 		event.preventDefault();
 
 		var index = $(event.currentTarget).parents('tr').index();
-		_product.prices.splice(index, 1);
-		Session.set('_product', _product);
+
+		var prices = _product.prices.splice(_product.prices.indexOf(id), 1);
+		
+		Products.update(_product._id, {$set : {prices : prices}});
 	}
 });
 
-function saveProduct() {
-	Session.set('_product', _product);
 
-	if(!_product._id)
-		Meteor.call('createProduct',_product);
-	else
-		Meteor.call('updateProduct',_product._id, _product);
-}
 
 Template.editTrip.rendered = function(argument) {
 	$('#hour').timepicker({

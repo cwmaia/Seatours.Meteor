@@ -55,9 +55,7 @@ Template.bookCustomerEmailResume.events({
 		if(newMail){
 			book = Books.findOne({_id: Session.get('bookId')});
 			customer = Customers.findOne({_id: book.customerId});
-
-			customer.email = newMail;
-			Customers.update(customer._id, customer);
+			Customers.update(customer._id, {$set : {email: newMail}});
 			throwSuccess('Main Email Changed!');
 			$('#editMailModal').hide();
 		}else{

@@ -50,9 +50,9 @@
 			<div>
 				<label>Cars up to 5m :</label> {{qtdCarsUpTo5}} <span id='max5slots'></span></br>
 				<label>Cars up to 6m :</label> {{qtdCarsUpTo6}} </br>
-				<label>Current meters alocated on extra Slot 1:</label><span id='spaceAlocatedSlot1'></span></br>
-				<label>Current meters alocated on extra Slot 2:</label><span id='spaceAlocatedSlot2'></span></br>
-				<label>Current meters alocated on Extras Slot :</label><span id='spaceAlocated'></span></br>
+				<label>Current meters alocated on extra Slot 1:</label><span id='spaceAlocatedSlot1'></span><span id='spaceAlocatedSlot3'></span></br>
+				<label>Current meters alocated on extra Slot 2:</label><span id='spaceAlocatedSlot2'></span><span id='spaceAlocatedSlot4'></span></br>
+				<label>Current meters alocated on Extras Slot :</label><span id='spaceAlocated'><span id='spaceAlocatedSlotCart'></span></span></br>
 			</div>
 			</form>
 		</div>
@@ -212,7 +212,7 @@
 </template>
 
 <template name="generalPassagerInfo">
-	<form novalidate>
+	<form novalidate id='pasagerInfo'>
 		<fieldset>
 			<legend>Personal Info<span>&nbsp;&nbsp;</span><i class='icon-user'/></legend>
 	        
@@ -298,11 +298,21 @@
 	            		<option value="Brazil">Brazil</option>
 	            	</select>
 	            </div>
+
+				<div class="simpleCart_shelfItem">
+					<div class='hidden'>
+						<p id='itemDescription' class="item_name"></p>
+						<p><input type="text" value="1" class="item_Quantity"><br>
+						<span id='itemPrice' class="item_price"></span><br>
+						<a id='addToCart' class="item_add" href="javascript:;"></a></p>
+					</div>
+				</div>
 	        </div>
     	</fieldset>
 
-        <input type='submit' class="btn btn-small btn-success" value='Save Book'/>
+        <input type='submit' class="btn btn-small btn-info" value='Buy Booking'/>
     </form>
+     <button class="btn btn-small btn-success procedToCart">Buy Booking & Go To Cart</button>
 </template>
 
 <template name="categoryBook">

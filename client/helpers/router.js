@@ -52,7 +52,8 @@ Meteor.Router.add({
 			Session.set('bookId', id);
 		}
 	},
-	'/management' :'management'
+	'/management' :'management',
+	'/cart'       : 'cart'
 });
 
 Meteor.Router.filters({

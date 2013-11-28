@@ -1,26 +1,9 @@
 Template.categoryVehicle.categories = function(){
-	Meteor.call('getVehiclesCategories', function(error, result){
-		if(error){
-        	console.log(error.reason);
-    	}else{
-    		Session.set("allCategories", result);
-    		return result;
-		}	
-	});
-	return Session.get("allCategories");
+	return VehiclesCategory.find();
 };
 
 Template.categoryVehicle.sizes = function() {
-	var selectedVehiclesCategory = Meteor.call('getVehiclesCategoryById', Session.get('categoryId'), function(error, result){
-		if(error){
-        	console.log(error.reason);
-    	}else{
-    		Session.set("selectedVehiclesCategory", result);
-    		return result;
-		}	
-	});
-	selectedVehiclesCategory = Session.get('selectedVehiclesCategory');
-	return Session.get('selectedVehiclesCategory') ? selectedVehiclesCategory.size : [];
+	return Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}).size : [];
 }
 
 Template.categoryVehicle.events({
@@ -30,28 +13,20 @@ Template.categoryVehicle.events({
 	}
 })
 
-Template.vehicles.rendered = function(){
-
-}
 
 Template.vehicles.events({
 	'submit form' : function(event) {
 		event.preventDefault();
+		
 		var form = event.currentTarget;
-		var category = Meteor.call('getVehiclesCategoryById', Session.get('categoryId'), function(error, result){
-		if(error){
-       		console.log(error.reason);
-    	}else{
-    		Session.set("selectedVehiclesCategory", result);
-    		return result;
-		}	
-		});
-		category = Session.get("selectedVehiclesCategory");
+		
+		var category = VehiclesCategory.findOne({_id: Session.get('categoryId')});
+
 		if($("#categories").val() != "" && $("#size").val() == ""){
 			throwError('Please Inform the size of vehicle');
 		}else{
 			if(form.checkValidity()){
-				v = {
+				vehicle = {
 					'brandname'	: $('#brandname').val(),
 					'model'		: $('#model').val(),
 					'category'  : {
@@ -60,8 +35,7 @@ Template.vehicles.events({
 				         'basePrice' : category.basePrice
 				     }
 				};
-			
-				Meteor.call('createVehicle', v);
+				Meteor.insert(vehicle)
 				throwSuccess("Vehicle Created");
 
 				form.reset();

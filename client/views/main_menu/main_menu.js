@@ -24,3 +24,7 @@ Template.mainMenu.rendered = function(){
 	//bootstrap v 2.3.1 prevents this event which firefox's middle mouse button "new tab link" action, so we off it!
 	$(document).off('click.dropdown-menu');
 }
+
+Template.mainMenu.qtdItems = function(){
+	return CartItems.find().count();
+}
