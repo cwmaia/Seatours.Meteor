@@ -1,0 +1,72 @@
+<template name='createGroups'>
+	<article>
+	<div class="tabbable">
+		<ul class="nav nav-tabs" id="myTab">
+			<li class="active">
+				<a data-toggle="tab" href="#users">
+				<i class="green icon-user bigger-110"></i>
+					Groups
+				</a>
+			</li>
+		</ul>
+
+		<div class="tab-content">
+			<div class='line-2'>
+				<div id="users" class="tab-pane in active">
+					<fieldset id='fieldsetGroup'>
+						<legend>Group Data<span>&nbsp;&nbsp;</span><i class='icon-group'/></legend>
+						<div>
+							<div>
+								<label>Name: </label>
+								<input type='text' required id='name'>
+							</div>
+							<div>
+								<label>Description: </label>
+								<textarea cols='4' rows='10' required id='description'/>
+							</div>
+						</div>
+
+						<button class='btn btn-success create-account-button' id='addGroups'>
+                			<i class="icon-group"></i>
+                			Create
+            			</button>
+					</fieldset>	
+				</div>
+				<div>
+					{{> groupList}}
+				</div>
+			</div>
+		</div>
+
+
+		</div>
+    </article>
+</template>
+
+<template name='groupList'>
+	<fieldset>
+		<legend>Groups<span>&nbsp;&nbsp;</span><i class='icon-group'/></legend>
+		<table class='table table-striped table-bordered trable-hover' id='groupsTable'>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Description</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each groups}}
+					<tr>
+						<td>{{name}}</td>
+						<td>{{description}}</td>
+						<td>
+							<a class="btn btn-mini btn-info editMail" title="Permissions" rel='{{customer.email}}'><i class="icon-unlock bigger-120"></i></a>
+							<a class="btn btn-mini btn-danger removeGroup" title="Remove" rel='{{_id}}'>
+							<i class="icon-trash bigger-120"></i></a>
+						</td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</fieldset>
+</template>
