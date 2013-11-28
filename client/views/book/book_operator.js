@@ -7,6 +7,75 @@ var CarsToMove = [];
 
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
 
+var updateDataPieChart = function(){
+	totalSpace = 150 + 24 + 30;
+	var dates = getSelectedAndNextDay();
+	var trip = Trips.findOne(Session.get('tripId'));
+	var count5m = 0;
+	var count6m = 0;
+	
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
+		'vehicle.extraSlot' : extraSlots[0]
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		if(books[i].vehicle.size <= 5){
+			count5m++;
+		}
+
+		if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
+			count6m++;
+		}
+	};
+	
+
+	metersFor5mCars = count5m * 5;
+	metersFor6mCars = count6m * 6;
+	metersForExtraSlots = 0;
+
+	booksSlot1 = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
+		'vehicle.extraSlot' : extraSlots[1]
+	}).fetch();
+
+	booksSlot2 = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
+		'vehicle.extraSlot' : extraSlots[2]
+	}).fetch();
+
+	for (var i = 0; i < booksSlot1.length; i++) {
+		metersForExtraSlots += parseInt(booksSlot1[i].vehicle.size);
+	};
+
+	for (var i = 0; i < booksSlot2.length; i++) {
+		metersForExtraSlots += parseInt(booksSlot2[i].vehicle.size);
+	};
+
+	percentage5m = ((count5m * 5 * 100) / totalSpace).toFixed(2);
+	percentage6m = ((count6m * 6 * 100) / totalSpace).toFixed(2);
+	percentageLargeCars = ((metersForExtraSlots * 100) / totalSpace).toFixed(2);
+	percentageUnllocated = (((totalSpace - metersFor6mCars - metersFor5mCars - metersForExtraSlots) *  100 ) / totalSpace).toFixed(2);
+
+	percentages = {
+		percentage5m : percentage5m,
+		percentage6m : percentage6m,
+		percentageLargeCars : percentageLargeCars,
+		percentageUnllocated : percentageUnllocated
+	}
+
+	return percentages;
+}
+
 var getExtraSlotsSpace = function(trip){
 	var dates = getSelectedAndNextDay();
 	var extraSpace1 = 0;
@@ -1056,35 +1125,41 @@ var createBook = function(){
 	CartItems.insert(book);
 }
 
+var formatData = function(percentages){
+	var data = {
+	    pieChart  : [
+	      {
+	        color       : 'red',
+	        description : '5 meters cars',
+	        title       : 'Small Cars (5m)',
+	        value       : parseFloat(percentages.percentage5m)
+	      },
+	      {
+	        color       : 'blue',
+	        description : '6 meters cars',
+	        title       : 'trains',
+	        value       : parseFloat(percentages.percentage6m)
+	      },
+	      {
+	        color       : 'green',
+	        description : 'Extra Slots Cars',
+	        title       : 'trains',
+	        value       : parseFloat(percentages.percentageLargeCars)
+	      },
+	      {
+	        color       : 'gray',
+	        description : 'Unallocated Space',
+	        title       : 'trains',
+	        value       : parseFloat(percentages.percentageUnllocated)
+	      }
+	    ]
+  	};
+
+  return data;
+}
+
     
-var data = {
-    pieChart  : [
-      {
-        color       : 'red',
-        description : 'Created',
-        title       : 'flowers',
-        value       : 0.25
-      },
-      {
-        color       : 'blue',
-        description : 'Canceled',
-        title       : 'trains',
-        value       : 0.25
-      },
-      {
-        color       : 'green',
-        description : 'Paid',
-        title       : 'trains',
-        value       : 0.25
-      },
-      {
-        color       : 'orange',
-        description : 'What',
-        title       : 'trains',
-        value       : 0.25
-      }
-    ]
-  };
+
   
   var DURATION = 1500;
   var DELAY    = 500;
@@ -1242,7 +1317,7 @@ function drawPieChart( elementId, data ) {
   }
 
 function ಠ_ಠ() {
-    drawPieChart('pieChart', data.pieChart );
+    drawPieChart('pieChart', formatData(updateDataPieChart()).pieChart );
 }
 
 buildEmail = function(book, result, customer){

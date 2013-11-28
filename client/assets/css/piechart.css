@@ -189,6 +189,10 @@
   fill: #FFCC33;
 }
 
+.pieChart__gray {
+  fill: #808080;
+}
+
 /**
  * Helper classes
  */ 
