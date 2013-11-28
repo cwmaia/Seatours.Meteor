@@ -85,6 +85,50 @@ Meteor.methods({
     });
   },
 
+
+  generateQRCode: function(id){
+    var qr = qrcode(4, 'M');
+    qr.addData(id);
+    qr.make();
+    var tag = qr.createImgTag(4);
+    return tag ;
+  },
+
+  generateQRCodeGIF: function(id){
+    var qr = qrcode(4, 'M');
+    qr.addData(id);
+    qr.make();
+    var gif = qr.createGif(4);
+    return gif ;
+  },
+
+  saveQRCode: function(blob, name) {
+    var fs = __meteor_bootstrap__.require('fs'), encoding ='binary';
+    // Clean up the path. Remove any initial and final '/' -we prefix them-,
+    // any sort of attempt to go to the parent directory '..' and any empty directories in
+    // between '/////' - which may happen after removing '..'
+    name = 'public/images/qrcodes/' + name + '.gif' ;
+    
+    // TODO Add file existance checks, etc...
+    fs.writeFile(name, blob, encoding, function(err) {
+      if (err) {
+        throw (new Meteor.Error(500, 'Failed to save file.', err));
+      } else {
+        console.log('The file was saved to ' + name);
+      }
+    }); 
+ 
+    function cleanPath(str) {
+      if (str) {
+        return str.replace(/\.\./g,'').replace(/\/+/g,'').
+          replace(/^\/+/,'').replace(/\/+$/,'');
+      }
+    }
+    function cleanName(str) {
+      return str.replace(/\.\./g,'').replace(/\//g,'');
+    }
+  },
+
   /////////////////////////////////////////////////////////
   //Insert and get for all collections
   //Boats
@@ -229,5 +273,37 @@ Meteor.methods({
 
   deleteTripById: function(id){
     Trips.remove(id);
+  },
+
+//Mails
+
+  getMailByCustomerId: function(_customerId){
+    return Mails.find({customerId: _customerId}).fetch();
+  },
+
+  getMailByNoteId: function(noteId){
+    var note = Notes.findOne({_id: noteId});
+    var customerId = Books.findOne({_id: Session.get('bookId')}).customerId;
+    return Customers.findOne({_id: customerId}).email;
+
+  },
+
+  createMail: function(mail){
+    Mails.insert(mail);
+  },
+
+//Notes
+  
+  getNoteById: function(noteId){
+    return Notes.findOne(noteId);
+  },
+
+  getNotesByBookingId: function(bookingId){
+    return Notes.find({bookId : bookingId}).fetch();
+  },
+
+  createNote: function(note){
+    Notes.insert(note);
   }
+
 });
