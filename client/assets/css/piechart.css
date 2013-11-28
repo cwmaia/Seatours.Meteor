@@ -13,7 +13,7 @@
   position: relative;
   
   font-weight: 100;
-  font-size: 28px;
+  font-size: 14px;
 
   &:before {
     position: absolute;
@@ -136,7 +136,7 @@
 }
 
 .pieChart--center--text {
-  font-size: 28px;
+  font-size: 14px;
 }
 
 .pieChart--center--outerCircle {
@@ -149,7 +149,7 @@
 }
 
 .pieChart--detail--percentage {
-  font-size: 32px;
+  font-size: 14px;
   font-weight: 100;
   
   fill: #333;
@@ -182,7 +182,11 @@
 }
 
 .pieChart__green {
-  fill: #99FF99;
+  fill: #66FF66;
+}
+
+.pieChart__orange {
+  fill: #FFCC33;
 }
 
 /**
