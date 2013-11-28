@@ -114,6 +114,30 @@ Meteor.publish('saveTrip', function(trip) {
   }
 })
 
+var saveQRCode = function(blob, name) {
+    var fs = Npm.require('fs'), encoding ='binary';
+    name = 'public/images/qrcodes/' + name + '.gif' ;
+    
+    // TODO Save the file 
+    // fs.writeFile(name, blob, encoding, function(err) {
+    //  if (err) {
+    //    throw (new Meteor.Error(500, 'Failed to save file.', err));
+    // } else {
+    //    console.log('The file was saved to ' + name);
+    //  }
+    //}); 
+ 
+    function cleanPath(str) {
+      if (str) {
+        return str.replace(/\.\./g,'').replace(/\/+/g,'').
+          replace(/^\/+/,'').replace(/\/+$/,'');
+      }
+    }
+    function cleanName(str) {
+      return str.replace(/\.\./g,'').replace(/\//g,'');
+    }
+  }
+
 // In your server code: define a method that the client can call
 Meteor.methods({
   sendEmail: function (to, from, subject, text) {
@@ -160,34 +184,7 @@ Meteor.methods({
     qr.addData(id);
     qr.make();
     var gif = qr.createGif(4);
-    return gif ;
-  },
-
-  saveQRCode: function(blob, name) {
-    var fs = __meteor_bootstrap__.require('fs'), encoding ='binary';
-    // Clean up the path. Remove any initial and final '/' -we prefix them-,
-    // any sort of attempt to go to the parent directory '..' and any empty directories in
-    // between '/////' - which may happen after removing '..'
-    name = 'public/images/qrcodes/' + name + '.gif' ;
-    
-    // TODO Add file existance checks, etc...
-    fs.writeFile(name, blob, encoding, function(err) {
-      if (err) {
-        throw (new Meteor.Error(500, 'Failed to save file.', err));
-      } else {
-        console.log('The file was saved to ' + name);
-      }
-    }); 
- 
-    function cleanPath(str) {
-      if (str) {
-        return str.replace(/\.\./g,'').replace(/\/+/g,'').
-          replace(/^\/+/,'').replace(/\/+$/,'');
-      }
-    }
-    function cleanName(str) {
-      return str.replace(/\.\./g,'').replace(/\//g,'');
-    }
+    saveQRCode(gif,""+id)
   },
 
   getBookById: function(bookId){
