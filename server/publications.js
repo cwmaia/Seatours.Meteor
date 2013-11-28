@@ -1,5 +1,3 @@
-
-
 Meteor.publish("directory", function () {
   if(this.userId)
       return Meteor.users.find({}, {fields: {emails: 1, username: 1, 'profile' : 1}});
@@ -198,7 +196,6 @@ Meteor.methods({
 
   getCustomerById: function(customerId){
     return Customers.findOne(customerId);
-  },
-
+  }
 
 });

@@ -1189,15 +1189,21 @@ var data = {
     pieChart  : [
       {
         color       : 'red',
-        description : 'Ipsem lorem text goes here. And foo goes bar goes baz. That\'s up!!!',
+        description : 'Created',
         title       : 'flowers',
         value       : 0.62
       },
       {
         color       : 'blue',
-        description : 'Another ipsem text goes here. And baz goes bar goes foo. Oh yeah, whazzz up?',
+        description : 'Canceled',
         title       : 'trains',
-        value       : 0.38
+        value       : 0.28
+      },
+      {
+        color       : 'green',
+        description : 'Paid',
+        title       : 'trains',
+        value       : 0.18
       }
     ],
     balanceChart: [

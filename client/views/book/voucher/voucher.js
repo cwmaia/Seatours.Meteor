@@ -62,22 +62,21 @@ Template.voucher.hasVehicles = function(){
 }
 
 Template.voucher.qrCode = function(){
-	Session.get('bookId') ? {
- 	var qrcodeTag = Meteor.call("generateQRCode", Session.get('bookId'), function(error, result){
-		if(error){
-        	console.log(error.reason);
-       	}
-       	else{
-       		Session.set('_qrcodeTag', result);
-       		return result;
-       	}
+	if(Session.get('bookId')){
+    var qrcodeTag = Meteor.call("generateQRCode", Session.get('bookId'), function(error, result){
+    if(error){
+          console.log(error.reason);
+        }
+        else{
+          Session.set('_qrcodeTag', result);
+          return result;
+        }
     });
     qrcodeTag = Session.get('_qrcodeTag');
-	return qrcodeTag;
-	}
-	:
-	return "testando123;";
-
+    return qrcodeTag;
+  }else{
+    return "testando123;";
+  }
 }
 
 Template.voucher.helpers({
