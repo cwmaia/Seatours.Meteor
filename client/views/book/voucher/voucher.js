@@ -1,56 +1,34 @@
 var Book = {};
 
 Template.voucher.book = function(){
-
-	Book = Meteor.call('getBookById', Session.get('bookId'), function(error, result){
-    	if(error){
-        	console.log(error.reason);
-       	}
-       	else{
-       		Session.set("_selectedBooking", result);
-       		return result;
-       	}
-       });
-    Book = Session.get("_selectedBooking");
-	return Book;
+  if(Session.get('book')){
+    return Session.get('book');
+  }else{
+    Book = Books.findOne({_id: Session.get('bookId')});
+    return Book;
+  }
 }
 
 Template.voucher.date = function(){
-	Book = Meteor.call('getBookById', Session.get('bookId'), function(error, result){
-    	if(error){
-        	console.log(error.reason);
-       	}
-       	else{
-       		Session.set("_selectedBooking", result);
-       		return result;
-       	}
-       });
-    Book = Session.get("_selectedBooking");
-	return Book.dateOfBooking.toDateString();
+  if(Session.get('book')){
+    Book = Session.get('book');
+    return Book.dateOfBooking.toDateString();
+  }else{
+    Book = Books.findOne({_id: Session.get('bookId')});
+    return Book.dateOfBooking.toDateString();
+  }
 }
 
 Template.voucher.customer = function(){
-	var customer;
-	Book = Meteor.call('getBookById', Session.get('bookId'), function(error, result){
-    	if(error){
-        	console.log(error.reason);
-       	}
-       	else{
-       		Session.set("_selectedBooking", result);
-       		Book = Session.get("_selectedBooking");
-       		customer = Meteor.call('getCustomerById', Book.customerId,function(error, resultCustomer){
-    			if(error){
-		        	console.log(error.reason);
-		       	}
-		       	else{
-		       		Session.set("_selectedCustomer", resultCustomer);
-		       		customer = Session.get("_selectedCustomer");
-		       	}
-		       });
-       	}
-       });
-	customer = Session.get("_selectedCustomer");
-	return customer;
+  if(Session.get('customer')){
+    return Session.get('customer');
+  }else{
+    var customer;
+    Book = Books.findOne({_id: Session.get('bookId')});
+    customer = Customers.findOne({_id: Book.customerId});
+    return customer;  
+  }
+	
 }
 
 Template.voucher.hasVehicles = function(){
@@ -75,7 +53,19 @@ Template.voucher.qrCode = function(){
     qrcodeTag = Session.get('_qrcodeTag');
     return qrcodeTag;
   }else{
-    return "testando123;";
+    Book = Session.get('book');
+    var qrcodeTag = Meteor.call("get", Book._id, function(error, result){
+    if(error){
+          console.log(error.reason);
+        }
+        else{
+          Session.set('_qrcodeTag', result);
+          return result;
+        }
+    });
+    qrcodeTag = Session.get('_qrcodeTag');
+    console.log(qrcodeTag);
+    return "jarbas";
   }
 }
 

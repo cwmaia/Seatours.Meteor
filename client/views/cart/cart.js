@@ -31,8 +31,10 @@ Template.cart.events({
 	'click .checkout' : function(){
 		var books = CartItems.find().fetch();
 		for (var i = 0; i < books.length; i++) {
-			Books.insert(books[i]);
+			var customer = Customers.findOne({_id : books[i].customerId});
+			sendMail(books[i],books[i]._id, customer);
 			CartItems.remove({_id : books[i]._id});
+			Books.insert(books[i]);
 		};
 
 		throwSuccess(books.length+' Bookings Created!');
@@ -59,4 +61,28 @@ var calcTotalItems = function(){
 	})
 
 	$('#total').text(total);
+}
+
+
+var sendMail = function(book, result, customer){
+	var prices = '';
+	for (var i = 0; i < book.prices.length; i++) {
+		prices += book.prices[i].prices + " - " + book.prices[i].persons + " X " + book.prices[i].perUnit + " = " +  book.prices[i].sum + " ISK <br/>";
+	};
+
+	var vehicle = '';
+	if(book.vehicle.category != ''){
+		vehicle = book.vehicle.category +" - "+ book.vehicle.size+ "m = " + book.vehicle.totalCost + " ISK";
+	}
+
+	var qrcodeTag = "";
+	 Meteor.call("generateQRCodeGIF", result);
+
+    Session.set("qrCode", qrcodeTag);
+    Session.set("book", book);
+    Session.set("customer", customer);
+
+	var html = Template.voucher();
+	Meteor.call('sendEmailHTML', customer.email, "noreply@seatours.is", "Your Voucher at Seatours!", html);
+
 }
