@@ -21,6 +21,26 @@ var getExtraSlotsSpace = function(trip){
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
+	cartItems = CartItems.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
+		'vehicle.extraSlot' : extraSlots[0]
+	}).fetch();
+
+	for (var i = books.length - 1; i >= 0; i--) {
+		if(books[i].vehicle.size <= 5){
+			count5m++;
+		}
+	};
+
+	for (var i = cartItems.length - 1; i >= 0; i--) {
+		if(cartItems[i].vehicle.size <= 5){
+			count5m++;
+		}
+	};
+
 	if(count5m < 25){
 		extraSpace1 = 24;
 		extraSpace2 = 24;
@@ -53,12 +73,10 @@ var realocate = function(size, booksSlot1, booksSlot2, sumSpacesSlot1, sumSpaces
 
 	temporalFreeSpace1 = extraSpace1 - sumSpacesSlot1;
 	temporalFreeSpace2 = extraSpace2 - sumSpacesSlot2;
-
 	//It can goes on slot 1?
 	if(size <= extraSpace1){
 		temporalFreeSpace1 = extraSpace1 - sumSpacesSlot1;
 		temporalFreeSpace2 = extraSpace2 - sumSpacesSlot2;
-
 		//Tries to move cars to slot 2
 		var CarsToMove = [];
 		for (var i = 0; i < booksSlot1.length; i++) {
@@ -68,8 +86,8 @@ var realocate = function(size, booksSlot1, booksSlot2, sumSpacesSlot1, sumSpaces
 				temporalFreeSpace1 += parseInt(booksSlot1[i].vehicle.size);
 				if(size <= temporalFreeSpace1){
 					for (var j = 0; j < CarsToMove.length; j++) {
-						CarsToMove[j].vehicle.extraSlot = extraSlots[2];
-						Books.update(CarsToMove[j]._id, CarsToMove[j]);
+						Books.update(CarsToMove[j]._id, {$set : {'vehicle.extraSlot' : extraSlots[2]}});
+						CartItems.update(CarsToMove[j]._id, {$set : {'vehicle.extraSlot' : extraSlots[2]}});
 					};
 
 					return extraSlots[1];
@@ -89,8 +107,8 @@ var realocate = function(size, booksSlot1, booksSlot2, sumSpacesSlot1, sumSpaces
 				temporalFreeSpace2 += booksSlot1[i].vehicle.size;
 				if(size <= temporalFreeSpace2){
 					for (var j = 0; j < CarsToMove.length; j++) {
-						CarsToMove[j].vehicle.extraSlot = extraSlots[1];
-						Books.update(CarsToMove[j]._id, CarsToMove[j]);
+						Books.update(CarsToMove[j]._id, {$set : {'vehicle.extraSlot' : extraSlots[1]}});
+						CartItems.update(CarsToMove[j]._id, {$set : {'vehicle.extraSlot' : extraSlots[2]}});
 					};
 
 					return extraSlots[2];
@@ -135,11 +153,28 @@ var doorMaxCapacity = function (trip){
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
+	cartItems = CartItems.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
+		'vehicle.extraSlot' : extraSlots[0]
+	}).fetch();
+
 	for (var i = books.length - 1; i >= 0; i--) {
 		if(books[i].vehicle.size <= 5){
 			count5m++;
 		}
 		if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
+			count6m++;
+		}
+	};
+
+	for (var i = cartItems.length - 1; i >= 0; i--) {
+		if(cartItems[i].vehicle.size <= 5){
+			count5m++;
+		}
+		if(cartItems[i].vehicle.size > 5 && cartItems[i].vehicle.size <= 6){
 			count6m++;
 		}
 	};
@@ -200,6 +235,22 @@ var checkSpaceExtra = function(size, trip){
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
 
+	booksSlot3 = CartItems.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
+		'vehicle.extraSlot' : extraSlots[1]
+	}).fetch();
+
+	booksSlot4 = CartItems.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
+		'vehicle.extraSlot' : extraSlots[2]
+	}).fetch();
+
 	extraSpace = getExtraSlotsSpace(trip);
 
 	sumSpacesSlot1 = 0;
@@ -210,6 +261,15 @@ var checkSpaceExtra = function(size, trip){
 	};
 	for (var i = 0; i < booksSlot2.length; i++) {
 		sumSpacesSlot2 += parseInt(booksSlot2[i].vehicle.size);
+	};
+
+	for (var i = 0; i < booksSlot3.length; i++) {
+		sumSpacesSlot1 += parseInt(booksSlot3[i].vehicle.size);
+		booksSlot1.push(booksSlot3[i]);
+	};
+	for (var i = 0; i < booksSlot4.length; i++) {
+		sumSpacesSlot2 += parseInt(booksSlot4[i].vehicle.size);
+		booksSlot2.push(booksSlot4[i]);
 	};
 
 	freeSpaceSlot1 = parseInt(extraSpace.extraSpace1 - sumSpacesSlot1);
@@ -231,6 +291,8 @@ var countExtraSpace = function(){
 	var trip = Trips.findOne(Session.get('tripId'));
 	var spaceAlocatedSlot1 = 0;
 	var spaceAlocatedSlot2 = 0;
+	var spaceAlocatedSlot3 = 0;
+	var spaceAlocatedSlot4 = 0;
 	var spaceAlocated = 0;
 	var max5slots = 30;
 
@@ -251,6 +313,23 @@ var countExtraSpace = function(){
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
 
+	booksSlot3 = CartItems.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
+		'vehicle.extraSlot' : extraSlots[1]
+	}).fetch();
+
+
+	booksSlot4 = CartItems.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
+		'vehicle.extraSlot' : extraSlots[2]
+	}).fetch();
+
 	for (var i = booksSlot1.length - 1; i >= 0; i--) {
 		spaceAlocatedSlot1 += parseInt(booksSlot1[i].vehicle.size);
 	};
@@ -259,7 +338,15 @@ var countExtraSpace = function(){
 		spaceAlocatedSlot2 += parseInt(booksSlot2[i].vehicle.size);
 	};
 
-	spaceAlocated = parseInt(spaceAlocatedSlot1 + spaceAlocatedSlot2);
+	for (var i = booksSlot3.length - 1; i >= 0; i--) {
+		spaceAlocatedSlot3 += parseInt(booksSlot3[i].vehicle.size);
+	};
+
+	for (var i = booksSlot4.length - 1; i >= 0; i--) {
+		spaceAlocatedSlot4 += parseInt(booksSlot4[i].vehicle.size);
+	};
+
+	spaceAlocated = parseInt(spaceAlocatedSlot1 + spaceAlocatedSlot2 + spaceAlocatedSlot3 + spaceAlocatedSlot4);
 
 	if(spaceAlocated == 48){
 		max5slots = 24;
@@ -284,7 +371,10 @@ var countExtraSpace = function(){
 	$("#max5slots").text('Max Qtd: '+parseInt(max5slots));
 	$("#spaceAlocatedSlot1").text(spaceAlocatedSlot1);
 	$("#spaceAlocatedSlot2").text(spaceAlocatedSlot2);
-	$("#spaceAlocated").text(parseInt(spaceAlocated));
+	$("#spaceAlocatedSlot3").text(' On Cart: '+spaceAlocatedSlot3);
+	$("#spaceAlocatedSlot4").text(' On Cart: '+spaceAlocatedSlot4);
+	$("#spaceAlocated").text(parseInt(spaceAlocated - (spaceAlocatedSlot3 + spaceAlocatedSlot4)));
+	$("#spaceAlocatedCart").text(parseInt(spaceAlocatedSlot3 + spaceAlocatedSlot4));
 	
 }
 
@@ -497,9 +587,7 @@ Template.bookDetail.events({
 	'click .changeStatusBooking' : function(event) {
 		var id = $(event.currentTarget).closest('tr').attr('id'),
 		book = Books.findOne(id);
-
-		book.bookStatus = 'Canceled';
-		Books.update(id, book);
+		Books.update(id, {$set : {bookStatus: 'Canceled'}});
 	}
 });
 
@@ -601,7 +689,6 @@ Template.createBook.events({
 Template.productPrices.events({
 	"change input" : function(event){
 		var totalParcial = event.currentTarget.value * this.unit;
-
 		$('#'+this.price).val(totalParcial).text(totalParcial);
 		var totalPrice = event.currentTarget.value;
 		var totalParcial = totalPrice * this.unit;
@@ -642,99 +729,23 @@ Template.generalPassagerInfo.events({
 			throwError("The Vehicle informed can't go on the boat");
 		}else{
 			if(form.checkValidity()){
-
-				var customer = {
-					"title" : $('#title').val(),
-					"fullName" :  $('#fullName').val(),
-					"birthDate" : $('#birthDate').val(),
-					'email' : $('#email').val(),
-					"telephoneCode" : $('#telephoneCode').val(),
-					"telephone" : $("#telephone").val(),
-					"adress" : $("#adress").val(),
-					"city" : $("#city").val(),
-					"state" : $('#state').val(),
-					"postcode" : $("#postcode").val(),
-					"country" : $("#country").val()
-	 			}	
-
-	 			var trip = Trips.findOne(Session.get('tripId')),
-	 			book = {
-					"trip" : {
-						'from' 	: trip.from,
-						'to' 	: trip.to,
-						'hour' 	: trip.hour
-					},
-					"totalISK" : $("#totalISK").text(),
-					'dateOfBooking' : new Date(),
-					'bookStatus' : 'Created',
-					'product' : Product,
-				}
-		
-				book.vehicle = {
-					"vehicleModel" : $("#listvehicles").val(),
-					"category" : $("#categories").val(),
-					"size" : $("#size").val(),
-					"totalCost" : $("#totalVehicle").text()
-				}
-
-				if(ExtraSlot){
-					book.vehicle.extraSlot = ExtraSlot;
-				}else{
-					book.vehicle.extraSlot = extraSlots[0];
-				}
-
-				if(SaveCustomer){
-	 				var resultId = Customers.insert(customer);
-	 				customer._id = resultId;
-	 				book.customerId = resultId;
-	 			}else{
-	 				book.customerId = $('#customerId').val();
-	 			}
-			
-				var prices = [];
-
-				$('.unitPrice').filter(function(){
-					var split = $(this).val().split("|");
-					if(split[2]){
-						var price = {
-						"prices" : split[0],
-						"perUnit" : split[1],
-						"persons" : split[2],
-						"sum" : split[3]
-						}
-						
-						prices.push(price);
-					}
-				});
-
-				book.prices = prices;
-				book.paid = false;
-
-				var result = Books.insert(book);
-
-				var transaction = {
-					'bookId' : result,
-					'date' : new Date(),
-					'type' : '',
-					'status' : 'Waiting Payment',
-					'amount' : book.totalISK,
-					'detail' : ''
-				}
-
-				Transactions.insert(transaction);
-
-				throwSuccess("Book added");
-				console.log("esse Book: " + book._id);
-
-				var html = buildEmail(book, result, customer);
-
-				Meteor.call('sendEmailHTML',
-					$('#email').val(),
-					'noreply@seatours.com',
-					'Your Voucher at Seatours!',
-					'<html><head></head><body>Thanks for Booking with us, here is your <b>voucher: </b>'+html+'<hr/>Regards! Seatours Team!<body></html>');
-
-				Meteor.Router.to('/bookDetailResume/'+result);
+				createBook();
+				throwSuccess("Book added on Cart");
+				Meteor.Router.to('/bookOperator');
+			}
+		}
+	},
+	'click .procedToCart' : function(){
+		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
+			throwError('Please Inform the size of vehicle');
+		}else if(!CanSaveTheBook){
+			throwError("The Vehicle informed can't go on the boat");
+		}else{
+			var form = document.getElementById('pasagerInfo');
+			if(form.checkValidity()){
+				createBook();
+				throwSuccess("Book added on Cart");
+				Meteor.Router.to('/cart');
 			}
 		}
 	}
@@ -748,7 +759,7 @@ Template.generalPassagerInfo.helpers({
 ///////////////////////////////////////////
 //Template Booking Vehicles
 
-Template.bookingVehicles.helpers({
+Template.bookingVehicles.helpers({ 
 	"vehicles" : function(){
 		return Vehicles.find();
 	}
@@ -972,6 +983,76 @@ loadTypeahead = function(){
     	$('#country').val(customer.country);
     	SaveCustomer = false;
 	});
+}
+
+var createBook = function(){
+	var customer = {
+		"title" : $('#title').val(),
+		"fullName" :  $('#fullName').val(),
+		"birthDate" : $('#birthDate').val(),
+		'email' : $('#email').val(),
+		"telephoneCode" : $('#telephoneCode').val(),
+		"telephone" : $("#telephone").val(),
+		"adress" : $("#adress").val(),
+		"city" : $("#city").val(),
+		"state" : $('#state').val(),
+		"postcode" : $("#postcode").val(),
+		"country" : $("#country").val()
+		}	
+
+		var trip = Trips.findOne(Session.get('tripId')),
+		book = {
+		"trip" : {
+			'from' 	: trip.from,
+			'to' 	: trip.to,
+			'hour' 	: trip.hour
+		},
+		"totalISK" : $("#totalISK").text(),
+		'dateOfBooking' : new Date(),
+		'bookStatus' : 'Created',
+		'product' : Product,
+	}
+
+	book.vehicle = {
+		"vehicleModel" : $("#listvehicles").val(),
+		"category" : $("#categories").val(),
+		"size" : $("#size").val(),
+		"totalCost" : $("#totalVehicle").text()
+	}
+
+	if(ExtraSlot){
+		book.vehicle.extraSlot = ExtraSlot;
+	}else{
+		book.vehicle.extraSlot = extraSlots[0];
+	}
+
+	if(SaveCustomer){
+			var resultId = Customers.insert(customer);
+			customer._id = resultId;
+			book.customerId = resultId;
+		}else{
+			book.customerId = $('#customerId').val();
+		}
+
+	var prices = [];
+
+	$('.unitPrice').filter(function(){
+		var split = $(this).val().split("|");
+		if(split[2]){
+			var price = {
+			"prices" : split[0],
+			"perUnit" : split[1],
+			"persons" : split[2],
+			"sum" : split[3]
+			}
+			
+			prices.push(price);
+		}
+	});
+
+	book.prices = prices;
+	book.paid = false;
+	CartItems.insert(book);
 }
 
 buildEmail = function(book, result, customer){

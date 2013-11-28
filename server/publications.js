@@ -1,56 +1,119 @@
+
+
+Meteor.publish("directory", function () {
+  if(this.userId)
+      return Meteor.users.find({}, {fields: {emails: 1, username: 1, 'profile' : 1}});
+  else
+     return null; 
+});
+
+Meteor.publish("cartItems", function () {
+  if(this.userId)
+    return CartItems.find();
+  else
+     return null; 
+});
+
 Meteor.publish('products', function() { 
-	return Products.find();
+  if(this.userId)
+	   return Products.find();
+  else
+     return null; 
 });
 
 Meteor.publish('books', function() { 
-	return Books.find();
+  if(this.userId)
+	   return Books.find();
+  else
+     return null;  
 });
 
 Meteor.publish('vehicles_category', function() { 
-	return VehiclesCategory.find();
+  if(this.userId)
+	   return VehiclesCategory.find();
+  else
+     return null; 
 });
 
 Meteor.publish('boats', function() {
+  if(this.userId)
   return Boats.find();
+else
+     return null; 
 });
 
 Meteor.publish('trips', function() {
-  return Trips.find();
+  if(this.userId)
+    return Trips.find();
+  else
+     return null; 
 });
 
 Meteor.publish('vehicles', function() {
-	return Vehicles.find();
+  if(this.userId)
+	   return Vehicles.find();
+  else
+     return null; 
 });
 
 Meteor.publish('loggedUsers', function() {
-	return LoggedUsers.find();
+  if(this.userId)
+    return LoggedUsers.find();
+  else
+     return null; 
 });
 
 Meteor.publish('customers', function(){
-	return Customers.find();
+  if(this.userId)
+    return Customers.find();
+  else
+    return null; 
 });
 
 Meteor.publish('notes', function(){
-  return Notes.find();
+  if(this.userId)
+    return Notes.find();
+  else
+    return null; 
 });
 
 Meteor.publish('mails', function(){
-  return Mails.find();
+  if(this.userId)
+    return Mails.find();
+  else
+     return null; 
 });
 
 Meteor.publish('countries', function() {
-  return Countries.find();
+  if(this.userId)
+    return Countries.find();
+  else
+     return null; 
 });
 
 Meteor.publish('transactions', function() {
-  return Transactions.find();
+  if(this.userId)
+    return Transactions.find();
+  else
+     return null; 
+});
+
+Meteor.publish('groups', function() {
+  if(this.userId)
+      return Groups.find();
+  else
+      return null; 
 });
 
 Meteor.publish('saveTrip', function(trip) {
-  if(trip._id)
-    Trips.update(trip._id, trip);
-  else
-    Trips.insert(trip);
+  if(this.userId){
+    if(trip._id)
+      Trips.update(trip._id, trip);
+    else
+      Trips.insert(trip);
+  }else{
+    return null;
+  }
 })
 
 // In your server code: define a method that the client can call
@@ -83,6 +146,7 @@ Meteor.methods({
       subject: subject,
       html: text
     });
+<<<<<<< HEAD
   },
 
 
@@ -304,6 +368,8 @@ Meteor.methods({
 
   createNote: function(note){
     Notes.insert(note);
+=======
+>>>>>>> bfe162c57202d7f7eae236e72fd5002d08ecbd20
   }
 
 });

@@ -9,6 +9,9 @@ Meteor.subscribe('customers');
 Meteor.subscribe('notes');
 Meteor.subscribe('mails');
 Meteor.subscribe('transactions');
+Meteor.subscribe("directory");
+Meteor.subscribe("groups");
+Meteor.subscribe("cartItems");
 
 Template.redirect.helpers({
   userLogged : function(){
@@ -20,7 +23,7 @@ Template.redirect.helpers({
   }
 })
 
-Template.redirect.rendered = function(){
+Template.redirect.rendered = function(){	
 	$('input[attr=required]').popover({
 		trigger: 'manual',
 		placement: 'top'

@@ -40,6 +40,7 @@ Template.blockingDates.events({
 
 	'submit #blockingDates': function(event) {
 		event.preventDefault();
+
 		Meteor.call('updateTrip', _trip, function(error) {
 			console.log(error);
 		});
