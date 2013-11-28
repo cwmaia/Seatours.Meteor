@@ -1,5 +1,3 @@
-
-
 Meteor.publish("directory", function () {
   if(this.userId)
       return Meteor.users.find({}, {fields: {emails: 1, username: 1, 'profile' : 1}});
@@ -146,7 +144,6 @@ Meteor.methods({
       subject: subject,
       html: text
     });
-<<<<<<< HEAD
   },
 
 
@@ -368,8 +365,6 @@ Meteor.methods({
 
   createNote: function(note){
     Notes.insert(note);
-=======
->>>>>>> bfe162c57202d7f7eae236e72fd5002d08ecbd20
   }
 
 });

@@ -46,39 +46,42 @@
 	<div class='line-2'>
 		<div>
 			<form>
-			<legend>Boat Status<span>&nbsp;&nbsp;</span><i class='icon-anchor'/></legend>
-			<div>
-				<label>Cars up to 5m :</label> {{qtdCarsUpTo5}} <span id='max5slots'></span></br>
-				<label>Cars up to 6m :</label> {{qtdCarsUpTo6}} </br>
-				<label>Current meters alocated on extra Slot 1:</label><span id='spaceAlocatedSlot1'></span><span id='spaceAlocatedSlot3'></span></br>
-				<label>Current meters alocated on extra Slot 2:</label><span id='spaceAlocatedSlot2'></span><span id='spaceAlocatedSlot4'></span></br>
-				<label>Current meters alocated on Extras Slot :</label><span id='spaceAlocated'><span id='spaceAlocatedSlotCart'></span></span></br>
+				<legend>Bookings<span>&nbsp;&nbsp;</span><i class='icon-book'/></legend>
+				<div id="pieChart">
+		        <svg id="pieChartSVG">
+		          <defs>
+		            <filter id='pieChartInsetShadow'>
+		              <feOffset dx='0' dy='0'/>
+		              <feGaussianBlur stdDeviation='3' result='offset-blur' />
+		              <feComposite operator='out' in='SourceGraphic' in2='offset-blur' result='inverse' />
+		              <feFlood flood-color='black' flood-opacity='1' result='color' />
+		              <feComposite operator='in' in='color' in2='inverse' result='shadow' />
+		              <feComposite operator='over' in='shadow' in2='SourceGraphic' />
+		            </filter>
+		            <filter id="pieChartDropShadow">
+		              <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
+		              <feOffset in="blur" dx="0" dy="3" result="offsetBlur" />
+		              <feMerge>
+		                <feMergeNode />
+		                <feMergeNode in="SourceGraphic" />
+		              </feMerge>
+		            </filter>
+		          </defs>
+		        </svg>
+		      </div>
 			</div>
-			</form>
-		</div>
+		</form>
 		<div>
-			<div id="pieChart">
-	        <svg id="pieChartSVG">
-	          <defs>
-	            <filter id='pieChartInsetShadow'>
-	              <feOffset dx='0' dy='0'/>
-	              <feGaussianBlur stdDeviation='3' result='offset-blur' />
-	              <feComposite operator='out' in='SourceGraphic' in2='offset-blur' result='inverse' />
-	              <feFlood flood-color='black' flood-opacity='1' result='color' />
-	              <feComposite operator='in' in='color' in2='inverse' result='shadow' />
-	              <feComposite operator='over' in='shadow' in2='SourceGraphic' />
-	            </filter>
-	            <filter id="pieChartDropShadow">
-	              <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
-	              <feOffset in="blur" dx="0" dy="3" result="offsetBlur" />
-	              <feMerge>
-	                <feMergeNode />
-	                <feMergeNode in="SourceGraphic" />
-	              </feMerge>
-	            </filter>
-	          </defs>
-	        </svg>
-	      </div>
+			<form>
+				<legend>Boat Status<span>&nbsp;&nbsp;</span><i class='icon-anchor'/></legend>
+				<div>
+					<label>Cars up to 5m :</label> {{qtdCarsUpTo5}} <span id='max5slots'></span></br>
+					<label>Cars up to 6m :</label> {{qtdCarsUpTo6}} </br>
+					<label>Current meters alocated on extra Slot 1:</label><span id='spaceAlocatedSlot1'></span><span id='spaceAlocatedSlot3'></span></br>
+					<label>Current meters alocated on extra Slot 2:</label><span id='spaceAlocatedSlot2'></span><span id='spaceAlocatedSlot4'></span></br>
+					<label>Current meters alocated on Extras Slot :</label><span id='spaceAlocated'><span id='spaceAlocatedSlotCart'></span></span></br>
+				</div>
+			</form>
 		</div>
 	</div>
 	
