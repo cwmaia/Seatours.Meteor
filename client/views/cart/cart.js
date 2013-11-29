@@ -27,6 +27,11 @@ Template.cart.total = function(){
 
 }
 
+Template.items.customerName = function(customerId){
+	var customer = Customers.findOne({_id : customerId});
+	return customer.title + '. ' + customer.fullName; 
+}
+
 Template.cart.events({
 	'click .checkout' : function(){
 		var books = CartItems.find().fetch();
@@ -62,7 +67,6 @@ var calcTotalItems = function(){
 
 	$('#total').text(total);
 }
-
 
 var sendMail = function(book, result, customer){
 	var prices = '';

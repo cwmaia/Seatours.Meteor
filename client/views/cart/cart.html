@@ -33,7 +33,7 @@
 <template name="items">
 	<tr>
 		<input type='hidden' id='{{totalISK}}' class='unitPrice'>
-		<td style='width: 70%'>{{product.name}}</br> <b>From</b> {{trip.from}} <b>To</b> {{trip.to}}</td>
+		<td style='width: 70%'>{{product.name}} - {{dateOfBooking}}</br> <b>From</b> {{trip.from}} <b>To</b> {{trip.to}}</br></br>{{customerName customerId}}</br></br>{{#each prices}}{{prices}} X {{persons}} = kr {{sum}}{{/each}}</br>{{vehicle.category}} - {{vehicle.size}}m = kr {{vehicle.totalCost}}</td>
 		<td style='width: 5%; text-align: center'><a class='remove' rel='{{_id}}'>remove</a></td>
 		<td style='width: 10%; text-align: center'>kr <span id='{{_id}}' class='calcTotal'>{{totalISK}}</span></td>
 	</tr>

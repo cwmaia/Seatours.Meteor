@@ -1,4 +1,5 @@
 var SaveCustomer = true;
+var CustomerSelected = false;
 var ExtraSlot = '';
 var CanSaveTheBook = true;
 var Product = {};
@@ -582,7 +583,7 @@ Template.bookDetail.rendered = function() {
 	$('#passengers').dataTable();
 	$('#boatSlots').dataTable();
 	countExtraSpace();
-	ಠ_ಠ();
+	drawPieChartBoatSlots();
 }
 
 Template.bookDetail.fullname = function(id){
@@ -771,7 +772,7 @@ Template.productPrices.events({
 
 Template.generalPassagerInfo.events({
 	'keyup #fullName' : function(event){
-		if(event.keyCode != 13)
+		if(event.keyCode != 13 && CustomerSelected)
 		{
 			$('#customerId').val('');
 			$('#title').val('')
@@ -1052,6 +1053,7 @@ loadTypeahead = function(){
     	$('#postcode').val(customer.postcode);
     	$('#country').val(customer.country);
     	SaveCustomer = false;
+    	CustomerSelected = true;
 	});
 }
 
@@ -1068,7 +1070,15 @@ var createBook = function(){
 		"state" : $('#state').val(),
 		"postcode" : $("#postcode").val(),
 		"country" : $("#country").val()
-		}	
+		}
+
+		var date = new Date();
+		var selectedDay = Session.get('bookingDate');
+
+		with(date){
+			setDate(selectedDay.getDate());
+		}
+
 
 		var trip = Trips.findOne(Session.get('tripId')),
 		book = {
@@ -1078,7 +1088,7 @@ var createBook = function(){
 			'hour' 	: trip.hour
 		},
 		"totalISK" : $("#totalISK").text(),
-		'dateOfBooking' : new Date(),
+		'dateOfBooking' : date,
 		'bookStatus' : 'Created',
 		'product' : Product,
 	}
@@ -1217,7 +1227,7 @@ function drawPieChart( elementId, data ) {
                               };
                             } )
                             .each( 'end', function handleAnimationEnd( d ) {
-                              drawDetailedInformation( d.data, this ); 
+                              //drawDetailedInformation( d.data, this ); 
                             } );
 
     drawChartCenter(); 
@@ -1316,6 +1326,6 @@ function drawPieChart( elementId, data ) {
     }
   }
 
-function ಠ_ಠ() {
+function drawPieChartBoatSlots() {
     drawPieChart('pieChart', formatData(updateDataPieChart()).pieChart );
 }
