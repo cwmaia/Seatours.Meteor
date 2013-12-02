@@ -932,89 +932,57 @@ Template.categoryVehicleBook.sizes = function() {
 	return Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}).size : [];
 }
 
+Template.sizesBook.isBaseSize = function(number) {
+	category =  Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}) : null;
+	if(number == category.baseSize){	
+		return true;
+	}else{
+		return false;
+	}
+
+}
+
 Template.categoryVehicleBook.events({
 	'change #categories' : function(event){
 		var id = event.target.selectedOptions[0].id;
 		var category = VehiclesCategory.findOne({_id: id});
 		if(category){
-			$("#baseVehicle").val(category.basePrice);
-			$("#totalVehicle").val(0);
+			$("#baseVehicle").val(parseInt(category.basePrice));
+			$("#totalVehicle").text(parseInt(category.basePrice));
 			Session.set('categoryId', id);
 		}else{
 			$("#baseVehicle").val(0);
-			$("#totalVehicle").val(0);
+			$("#totalVehicle").text(0);
 			Session.set('categoryId', null);
 		}
-			
+		
+		checkIfCarsFits(category.baseSize);	
 		calcTotal();
 	},
 
 	'change #size' : function(event){
 		var base = parseInt($("#baseVehicle").val());
 		var value = event.target.selectedOptions[0].value;
-		var trip = Trips.findOne(Session.get('tripId'));
 
-		if(value == ""){
-			$("#totalVehicle").val(0);
-			return;
-		}
-
-		if(value <= 6){
-			showAlert = checkHaveToOpenDoor(value, trip);
-			maxCapacity = doorMaxCapacity(Session.get('productId'), trip);
-
-			if(showAlert){
-				var result = confirm("Hey You have to open the door to put this car on the boat. Open the Door?");
-				if(result){
-					ExtraSlot = extraSlots[0];
-					CanSaveTheBook = true;
+		var calcVehiclePrice = function(){
+			category = Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}) : null;
+			if(category){
+				sum = parseInt(value - category.baseSize);
+				if(sum < 0 && category.onReduce){
+					multFactor = sum * (-1);
+					totalToBeReduced = multFactor * category.step;
+					$("#totalVehicle").text(parseInt(base - totalToBeReduced));
+				}else if(sum > 0){
+					totalToBeAdded = sum * category.step;
+					$("#totalVehicle").text(parseInt(base + totalToBeAdded));
 				}else{
-					result = confirm("Hey You not open the door, wishes to put on extra slot?");
-					if(result){
-						fits = checkSpaceExtra(value, trip);
-						if(fits){
-							ExtraSlot = fits;
-							CanSaveTheBook = true;
-						}else{
-							alert("This car can't be on the boat, this booking can't be created!");
-							CanSaveTheBook = false;
-						}
-					}else{
-						alert("This car can't be on the boat, this booking can't be created!");
-						CanSaveTheBook = false;
-					}
-				}
-			}else if(value > 5 && value <= 6 && maxCapacity){
-				result = confirm("The Door is already full, place the car on extra slots?");
-				if(result){
-					fits = checkSpaceExtra(value, trip);
-					if(fits){
-						ExtraSlot = fits;
-						CanSaveTheBook = true;
-					}else{
-						alert("This car can't be on the boat, this booking can't be created!");
-						CanSaveTheBook = false;
-					}
+					$("#totalVehicle").text(parseInt(base));
 				}
 			}
-		}else if(value > 6){
-			result = confirm("Place this car on Extra Slot?");
-			if(result){
-				fits = checkSpaceExtra(value, trip);
-				if(fits){
-					ExtraSlot = fits;
-					CanSaveTheBook = true;
-				}else{
-					alert("This car can't be on the boat, there is no space for it, this booking can't be created!");
-					CanSaveTheBook = false;
-				}
-			}else{
-				alert("This car can't be on the boat, this booking can't be created!");
-				CanSaveTheBook = false;
-			}
-		}
-			
-		$("#totalVehicle").text(base);
+		}		
+		
+		calcVehiclePrice();
+		checkIfCarsFits(value);
 		calcTotal();
 	}
 })
@@ -1352,4 +1320,63 @@ function drawPieChart( elementId, data ) {
 
 function drawPieChartBoatSlots() {
     drawPieChart('pieChart', formatData(updateDataPieChart()).pieChart );
+}
+
+
+var checkIfCarsFits = function(size){
+	var trip = Trips.findOne(Session.get('tripId'));
+	if(size <= 6){
+	showAlert = checkHaveToOpenDoor(size, trip);
+	maxCapacity = doorMaxCapacity(Session.get('productId'), trip);
+
+	if(showAlert){
+		var result = confirm("Hey You have to open the door to put this car on the boat. Open the Door?");
+		if(result){
+			ExtraSlot = extraSlots[0];
+			CanSaveTheBook = true;
+		}else{
+			result = confirm("Hey You not open the door, wishes to put on extra slot?");
+			if(result){
+				fits = checkSpaceExtra(size, trip);
+				if(fits){
+					ExtraSlot = fits;
+					CanSaveTheBook = true;
+				}else{
+					alert("This car can't be on the boat, this booking can't be created!");
+					CanSaveTheBook = false;
+					}
+			}else{
+				alert("This car can't be on the boat, this booking can't be created!");
+				CanSaveTheBook = false;
+			}
+			}
+		}else if(size > 5 && size <= 6 && maxCapacity){
+			result = confirm("The Door is already full, place the car on extra slots?");
+			if(result){
+				fits = checkSpaceExtra(size, trip);
+				if(fits){
+					ExtraSlot = fits;
+					CanSaveTheBook = true;
+				}else{
+					alert("This car can't be on the boat, this booking can't be created!");
+					CanSaveTheBook = false;
+				}
+			}
+		}
+	}else if(size > 6){
+		result = confirm("Place this car on Extra Slot?");
+		if(result){
+			fits = checkSpaceExtra(size, trip);
+			if(fits){
+				ExtraSlot = fits;
+				CanSaveTheBook = true;
+			}else{
+				alert("This car can't be on the boat, there is no space for it, this booking can't be created!");
+				CanSaveTheBook = false;
+			}
+		}else{
+			alert("This car can't be on the boat, this booking can't be created!");
+			CanSaveTheBook = false;
+		}
+	}
 }

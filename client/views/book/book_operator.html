@@ -364,7 +364,11 @@
 </template>
 
 <template name="sizesBook">
-	<option value="{{this}}">{{this}}m</option>
+	{{#if isBaseSize this}}
+		<option value="{{this}}" selected>{{this}}m</option>
+	{{else}}
+		<option value="{{this}}">{{this}}m</option>	
+	{{/if}}	
 </template>
 
 <template name="categoryVehicleBook">
@@ -383,7 +387,6 @@
 	<div>
 		<label>Size: </label>
 		<select name="size" id="size">
-			<option value=""></option>
 			{{#each sizes}}
     			{{> sizesBook}}	
     		{{/each}}

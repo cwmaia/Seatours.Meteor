@@ -456,79 +456,118 @@ if(VehiclesCategory.find().count() == 0){
 	VehiclesCategory.insert({
 		"category" 	: "Normal car with cart",
 		"size"		: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-		"basePrice" : 7815
+		"basePrice" : 7815,
+		'baseSize'  : 10,
+		'onReduce'  : false,
+		'step'      : 1625
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Small car",
 		"size"		: [4.5],
-		"basePrice" : 4080
+		"basePrice" : 4080,
+		'baseSize'  : 4.5,
+		'onReduce'  : false,
+		'step'      : 1625
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Motorcycle",
 		"size"		: [2.5],
-		"basePrice" : 2442
+		"basePrice" : 2442,
+		'baseSize'  : 2.5,
+		'onReduce'  : false,
+		'step'      : 1625
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Lorry (price incl. VAT)",
 		"size"		: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
-		"basePrice" : 41074
+		"basePrice" : 41074,
+		'baseSize'  : 11,
+		'onReduce'  : true,
+		'step'      : 3734
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Normal car with trailler/caravan",
 		"size"		: [10, 11, 12, 13, 14, 15],
-		"basePrice" : 100030
+		"basePrice" : 100030,
+		'baseSize'  : 10,
+		'onReduce'  : false,
+		'step'      : 1625
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Van (price incl. VAT)",
 		"size"		: [5, 6, 7 ,8 , 9, 10, 11],
-		"basePrice" : 17712
+		"basePrice" : 17712,
+		'baseSize'  : 8,
+		'onReduce'  : true,
+		'step'      : 2214
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Cart (without car)",
 		"size"		: [2, 3, 4, 5, 6, 7 ,8 , 9],
-		"basePrice" : 3735
+		"basePrice" : 3735,
+		'baseSize'  : 5,
+		'onReduce'  : false,
+		'step'      : 1625
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Large Car / Motor-Home",
 		"size"		: [6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15],
-		"basePrice" : 7575
+		"basePrice" : 7575,
+		'baseSize'  : 6,
+		'onReduce'  : false,
+		'step'      : 1625
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Bus",
 		"size"		: [6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-		"basePrice" : 13080
+		"basePrice" : 13080,
+		'baseSize'  : 8,
+		'onReduce'  : true,
+		'step'      : 1635
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Large Car with cart",
 		"size"		: [11, 12, 13, 14, 15, 16],
-		"basePrice" : 11310
+		"basePrice" : 11310,
+		'baseSize'  : 11,
+		'onReduce'  : false,
+		'step'      : 1625
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Jeep",
 		"size"		: [4, 5, 6, 7],
-		"basePrice" : 4080
+		"basePrice" : 4080,
+		'baseSize'  : 5,
+		'onReduce'  : false,
+		'step'      : 1625
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Normal Car",
 		"size"		: [5, 6, 7],
-		"basePrice" : 4080
+		"basePrice" : 4080,
+		'baseSize'  : 5,
+		'onReduce'  : false,
+		'step'      : 1625
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Large Car with trailler / caravan",
 		"size"		: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
-		"basePrice" : 13525
+		"basePrice" : 13525,
+		'baseSize'  : 11,
+		'onReduce'  : false,
+		'step'      : 1625
 	});
 }
 
