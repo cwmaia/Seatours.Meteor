@@ -353,10 +353,9 @@
 				</div>
 	        </div>
     	</fieldset>
-
-        <input type='submit' class="btn btn-small btn-info" value='Buy Booking'/>
     </form>
-     <button class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Buy Booking & Go To Cart</button>
+    <button class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Buy Booking</button>
+    <button class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Buy Booking & Go To Cart</button>
 </template>
 
 <template name="categoryBook">
@@ -371,7 +370,7 @@
 	<input type="hidden" id="baseVehicle"/>
 
 	<div>
-		<label class="required">Category:</label>
+		<label>Category:</label>
 		<select name="categories" id="categories">
 			<option value="">Select..</option>
 			{{#each categories}}
@@ -381,7 +380,7 @@
 	</div>
 
 	<div>
-		<label class="required">Size: </label>
+		<label>Size: </label>
 		<select name="size" id="size">
 			<option value=""></option>
 			{{#each sizes}}

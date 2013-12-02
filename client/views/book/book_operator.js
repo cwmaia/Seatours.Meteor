@@ -788,25 +788,28 @@ Template.generalPassagerInfo.events({
 			SaveCustomer = true;
 		}
 	},
-		
-	'submit form' : function(event){
-		event.preventDefault();
-
-		var form = event.currentTarget;
-
+	
+	//Events for identify 
+	'click .addBook' : function(event){
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			throwError('Please Inform the size of vehicle');
 		}else if(!CanSaveTheBook){
 			throwError("The Vehicle informed can't go on the boat");
 		}else{
+			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
 				createBook();
 				throwSuccess("Book added on Cart");
 				Meteor.Router.to('/bookOperator');
+			}else{
+				$('#pasagerInfo').submit(function(event){
+					event.preventDefault();
+				});
 			}
 		}
 	},
-	'click .procedToCart' : function(){
+	
+	'click .procedToCart' : function(event){
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			throwError('Please Inform the size of vehicle');
 		}else if(!CanSaveTheBook){
@@ -817,6 +820,10 @@ Template.generalPassagerInfo.events({
 				createBook();
 				throwSuccess("Book added on Cart");
 				Meteor.Router.to('/cart');
+			}else{
+				$('#pasagerInfo').submit(function(event){
+					event.preventDefault();
+				});
 			}
 		}
 	}
