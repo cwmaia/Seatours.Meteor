@@ -64,11 +64,15 @@ Meteor.Router.filters({
 	},
 
 	'checkAuth'	: function(page) {
-		if(location.href != '' && Meteor.user() == null)
-			Meteor.Router.to("/login");
-		return page;
+		if(Meteor.user()){
+			return page;
+		}
 	}
 })
 
+
+
 Meteor.Router.filter('clearErrors');
 Meteor.Router.filter('checkAuth');
+
+

@@ -23,6 +23,7 @@ Template.redirect.helpers({
   }
 })
 
+
 Template.redirect.rendered = function(){	
 	$('input[attr=required]').popover({
 		trigger: 'manual',
