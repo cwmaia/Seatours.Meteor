@@ -116,27 +116,14 @@ Meteor.publish('saveTrip', function(trip) {
 
 var saveQRCode = function(blob, name) {
     var fs = Npm.require('fs'), encoding ='binary';
-    name = 'public/images/qrcodes/' + name + '.gif' ;
-    
-    // TODO Save the file 
-    // fs.writeFile(name, blob, encoding, function(err) {
-    //  if (err) {
-    //    throw (new Meteor.Error(500, 'Failed to save file.', err));
-    // } else {
-    //    console.log('The file was saved to ' + name);
-    //  }
-    //}); 
- 
-    function cleanPath(str) {
-      if (str) {
-        return str.replace(/\.\./g,'').replace(/\/+/g,'').
-          replace(/^\/+/,'').replace(/\/+$/,'');
-      }
-    }
-    function cleanName(str) {
-      return str.replace(/\.\./g,'').replace(/\//g,'');
-    }
-  }
+    var nameAndPath = '../../../../../public/images/qrcodes/' + name + '.gif' ;
+    var base64 = blob;
+    fs.writeFile(nameAndPath, base64, 'base64', function(err) {
+      if (err) {
+          console.log(err);  
+        } 
+    });
+}
 
 // In your server code: define a method that the client can call
 Meteor.methods({

@@ -54,18 +54,9 @@ Template.voucher.qrCode = function(){
     return qrcodeTag;
   }else{
     Book = Session.get('book');
-    var qrcodeTag = Meteor.call("get", Book._id, function(error, result){
-    if(error){
-          console.log(error.reason);
-        }
-        else{
-          Session.set('_qrcodeTag', result);
-          return result;
-        }
-    });
-    qrcodeTag = Session.get('_qrcodeTag');
-    console.log(qrcodeTag);
-    return "jarbas";
+    var server = 'http://localhost:3000/'
+    var qrcodePath = 'images/qrcodes/'  + Book._id + '.gif';
+    return server+qrcodePath;
   }
 }
 
