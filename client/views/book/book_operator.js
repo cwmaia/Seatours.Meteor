@@ -746,6 +746,9 @@ Template.createBook.rendered = function(){
 	SaveCustomer = true;
 	$("#statusDialog").hide();
 	loadTypeahead();
+	$('#pasagerInfo').on('submit', function(event){
+		event.preventDefault();
+	});
 }
 
 Template.createBook.events({
@@ -808,7 +811,7 @@ Template.generalPassagerInfo.events({
 			}
 		}
 	},
-	
+
 	'click .procedToCart' : function(event){
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			throwError('Please Inform the size of vehicle');
@@ -1079,15 +1082,15 @@ var createBook = function(){
 		"country" : $("#country").val()
 		}
 
-		var date = new Date();
-		var selectedDay = Session.get('bookingDate');
+	var date = new Date();
+	var selectedDay = Session.get('bookingDate');
 
-		with(date){
-			setDate(selectedDay.getDate());
-		}
+	with(date){
+		setDate(selectedDay.getDate());
+	}
 
 
-		var trip = Trips.findOne(Session.get('tripId')),
+	var trip = Trips.findOne(Session.get('tripId')),
 		book = {
 		"trip" : {
 			'from' 	: trip.from,
@@ -1106,6 +1109,8 @@ var createBook = function(){
 		"size" : $("#size").val(),
 		"totalCost" : $("#totalVehicle").text()
 	}
+
+
 
 	if(ExtraSlot){
 		book.vehicle.extraSlot = ExtraSlot;
@@ -1136,10 +1141,22 @@ var createBook = function(){
 			prices.push(price);
 		}
 	});
-
+	
 	book.prices = prices;
 	book.paid = false;
-	CartItems.insert(book);
+	temporaryID = CartItems.insert(book);
+
+	var note = $('#notes').val();
+	if(note){
+		var note = {
+			created : date,
+			type : 'Customer Note',
+			note : note,
+			bookId : temporaryID
+		}
+
+		Notes.insert(note);
+	}
 }
 
 var formatData = function(percentages){

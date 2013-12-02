@@ -39,7 +39,12 @@ Template.cart.events({
 			var customer = Customers.findOne({_id : books[i].customerId});
 			sendMail(books[i],books[i]._id, customer);
 			CartItems.remove({_id : books[i]._id});
-			Books.insert(books[i]);
+			bookId = Books.insert(books[i]);
+
+			//UpdateNote
+			note = Notes.findOne({bookId: books[i]._id});
+			if(note)
+				Notes.update(note._id, {$set : {bookId: bookId}});
 		};
 
 		throwSuccess(books.length+' Bookings Created!');
@@ -55,6 +60,13 @@ Template.items.events({
 	'click .remove' : function(event){
 		var link = event.target;
 		CartItems.remove(link.rel);
+
+		//Remove all notes
+		var notes = Notes.find({bookId: link.rel}).fetch();
+		for (var i = 0; i < notes.length; i++) {
+			Notes.remove(notes[i]._id);
+		};
+
 		throwSuccess('Item Removed');
 	}
 })
