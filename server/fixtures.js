@@ -835,3 +835,769 @@ if(Books.find().count() == 0){
 	};			
 }
 
+if(PostCodes.find().count() == 0){
+
+	//1xx Reykjavík North, Reykjavík South, Southwest & South
+
+	PostCodes.insert({
+		'postcode' : 101, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 102, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 103, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 104, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 105, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 107, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 108, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 109, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 110, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 111, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 112, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 113, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 116, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 121, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 123, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 124, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 125, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 127, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 128, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 129, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 130, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 132, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 150, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 155, 
+		'city'     : 'Reykjavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 170, 
+		'city'     : 'Seltjarnarnes'
+	})
+
+	PostCodes.insert({
+		'postcode' : 172, 
+		'city'     : 'Seltjarnarnes'
+	})
+
+	PostCodes.insert({
+		'postcode' : 190, 
+		'city'     : 'Vogar'
+	})
+
+	//2xx Southwest & South
+
+	PostCodes.insert({
+		'postcode' : 200, 
+		'city'     : 'Kópavogur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 201, 
+		'city'     : 'Kópavogur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 202, 
+		'city'     : 'Kópavogur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 210, 
+		'city'     : 'Kópavogur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 212, 
+		'city'     : 'Garðabær'
+	})
+
+	PostCodes.insert({
+		'postcode' : 220, 
+		'city'     : 'Hafnarfjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 221, 
+		'city'     : 'Hafnarfjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 222, 
+		'city'     : 'Hafnarfjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 225, 
+		'city'     : 'Garðabær'
+	})
+
+	PostCodes.insert({
+		'postcode' : 230, 
+		'city'     : 'Reykjanesbær'
+	})
+
+	PostCodes.insert({
+		'postcode' : 232, 
+		'city'     : 'Reykjanesbær'
+	})
+
+	PostCodes.insert({
+		'postcode' : 233, 
+		'city'     : 'Reykjanesbær'
+	})
+
+	PostCodes.insert({
+		'postcode' : 235, 
+		'city'     : 'Reykjanesbær'
+	})
+
+	PostCodes.insert({
+		'postcode' : 240, 
+		'city'     : 'Grindavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 245, 
+		'city'     : 'Sandgerði'
+	})
+
+	PostCodes.insert({
+		'postcode' : 250, 
+		'city'     : 'Garður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 260, 
+		'city'     : 'Reykjanesbær'
+	})
+
+	PostCodes.insert({
+		'postcode' : 270, 
+		'city'     : 'Mosfellsbær'
+	})
+
+	PostCodes.insert({
+		'postcode' : 271, 
+		'city'     : 'Mosfellsbær'
+	})
+
+	PostCodes.insert({
+		'postcode' : 276, 
+		'city'     : 'Mosfellsbær'
+	})
+
+	//3xx Northwest & South
+
+	PostCodes.insert({
+		'postcode' : 300, 
+		'city'     : 'Akranes'
+	})
+
+	PostCodes.insert({
+		'postcode' : 301, 
+		'city'     : 'Akranes'
+	})
+
+	PostCodes.insert({
+		'postcode' : 302, 
+		'city'     : 'Akranes'
+	})
+
+	PostCodes.insert({
+		'postcode' : 310, 
+		'city'     : 'Borgarnes'
+	})
+
+	PostCodes.insert({
+		'postcode' : 311, 
+		'city'     : 'Borgarnes'
+	})
+
+	PostCodes.insert({
+		'postcode' : 320, 
+		'city'     : 'Reykholt'
+	})
+
+	PostCodes.insert({
+		'postcode' : 340, 
+		'city'     : 'Stykkishólmur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 345, 
+		'city'     : 'Flatey'
+	})
+
+	PostCodes.insert({
+		'postcode' : 350, 
+		'city'     : 'Grundarfjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 355, 
+		'city'     : 'Ólafsvík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 356, 
+		'city'     : 'Snæfellsbær'
+	})
+
+	PostCodes.insert({
+		'postcode' : 360, 
+		'city'     : 'Hellissandur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 370, 
+		'city'     : 'Búðardalur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 371, 
+		'city'     : 'Búðardalur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 380, 
+		'city'     : 'Reykhólahreppur'
+	})
+
+	//4xx: Northwest
+
+	PostCodes.insert({
+		'postcode' : 400, 
+		'city'     : 'Ísafjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 401, 
+		'city'     : 'Ísafjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 410, 
+		'city'     : 'Hnífsdalur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 415, 
+		'city'     : 'Bolungarvík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 420, 
+		'city'     : 'Súðavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 425, 
+		'city'     : 'Flateyri'
+	})
+
+	PostCodes.insert({
+		'postcode' : 430, 
+		'city'     : 'Suðureyri'
+	})
+
+	PostCodes.insert({
+		'postcode' : 450, 
+		'city'     : 'Patreksfjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 451, 
+		'city'     : 'Patreksfjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 460, 
+		'city'     : 'Tálknafjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 465, 
+		'city'     : 'Bíldudalur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 470, 
+		'city'     : 'Þingeyri'
+	})
+
+	PostCodes.insert({
+		'postcode' : 471, 
+		'city'     : 'Þingeyri'
+	})
+
+	//5xx: Northwest
+
+
+	PostCodes.insert({
+		'postcode' : 500, 
+		'city'     : 'Staður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 510, 
+		'city'     : 'Hólmavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 512, 
+		'city'     : 'Hólmavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 520, 
+		'city'     : 'Drangsnes'
+	})
+
+	PostCodes.insert({
+		'postcode' : 524, 
+		'city'     : 'Árneshreppur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 530, 
+		'city'     : 'Hvammstangi'
+	})
+
+	PostCodes.insert({
+		'postcode' : 531, 
+		'city'     : 'Hvammstangi'
+	})
+
+	PostCodes.insert({
+		'postcode' : 540, 
+		'city'     : 'Blönduós'
+	})
+
+	PostCodes.insert({
+		'postcode' : 541, 
+		'city'     : 'Blönduós'
+	})
+
+	PostCodes.insert({
+		'postcode' : 545, 
+		'city'     : 'Skagaströnd'
+	})
+
+	PostCodes.insert({
+		'postcode' : 550, 
+		'city'     : 'Sauðárkrókur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 551, 
+		'city'     : 'Sauðárkrókur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 560, 
+		'city'     : 'Varmahlíð'
+	})
+
+
+	PostCodes.insert({
+		'postcode' : 565, 
+		'city'     : 'Hofsós'
+	})
+
+	PostCodes.insert({
+		'postcode' : 566, 
+		'city'     : 'Hofsós'
+	})
+
+	PostCodes.insert({
+		'postcode' : 570, 
+		'city'     : 'Fljót'
+	})
+
+	PostCodes.insert({
+		'postcode' : 580, 
+		'city'     : 'Siglufjörður'
+	})
+
+	//6xx: Northeast
+
+	PostCodes.insert({
+		'postcode' : 600, 
+		'city'     : 'Akureyri'
+	})
+
+	PostCodes.insert({
+		'postcode' : 601, 
+		'city'     : 'Akureyri'
+	})
+
+	PostCodes.insert({
+		'postcode' : 602, 
+		'city'     : 'Akureyri'
+	})
+
+	PostCodes.insert({
+		'postcode' : 603, 
+		'city'     : 'Akureyri'
+	})
+
+	PostCodes.insert({
+		'postcode' : 610, 
+		'city'     : 'Grenivík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 611, 
+		'city'     : 'Grímsey'
+	})
+
+	PostCodes.insert({
+		'postcode' : 620, 
+		'city'     : 'Dalvík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 621, 
+		'city'     : 'Dalvík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 625, 
+		'city'     : 'Ólafsfjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 630, 
+		'city'     : 'Hrísey'
+	})
+
+	PostCodes.insert({
+		'postcode' : 640, 
+		'city'     : 'Húsavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 641, 
+		'city'     : 'Húsavík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 645, 
+		'city'     : 'Fosshóll'
+	})
+
+
+	PostCodes.insert({
+		'postcode' : 650, 
+		'city'     : 'Laugar'
+	})
+
+	PostCodes.insert({
+		'postcode' : 660, 
+		'city'     : 'Mývatn'
+	})
+
+	PostCodes.insert({
+		'postcode' : 670, 
+		'city'     : 'Kópasker'
+	})
+
+	PostCodes.insert({
+		'postcode' : 671, 
+		'city'     : 'Kópaskeri'
+	})
+
+	PostCodes.insert({
+		'postcode' : 675, 
+		'city'     : 'Raufarhöfn'
+	})
+
+	PostCodes.insert({
+		'postcode' : 680, 
+		'city'     : 'Þórshöfn'
+	})
+
+	PostCodes.insert({
+		'postcode' : 681, 
+		'city'     : 'Þórshöfn'
+	})
+
+	PostCodes.insert({
+		'postcode' : 685, 
+		'city'     : 'Bakkafjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 690, 
+		'city'     : 'Vopnafjörður'
+	})
+
+	//7xx: Northeast & South
+
+	PostCodes.insert({
+		'postcode' : 700, 
+		'city'     : 'Egilsstaðir'
+	})
+
+	PostCodes.insert({
+		'postcode' : 701, 
+		'city'     : 'Egilsstaðir'
+	})
+
+	PostCodes.insert({
+		'postcode' : 710, 
+		'city'     : 'Seyðisfjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 715, 
+		'city'     : 'Mjóifjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 720, 
+		'city'     : 'Borgarfjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 730, 
+		'city'     : 'Reyðarfjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 735, 
+		'city'     : 'Eskifjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 740, 
+		'city'     : 'Neskaupstaður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 750, 
+		'city'     : 'Fáskrúðsfjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 755, 
+		'city'     : 'Stöðvarfjörður'
+	})
+
+	PostCodes.insert({
+		'postcode' : 760, 
+		'city'     : 'Breiðdalsvík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 765, 
+		'city'     : 'Djúpivogur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 780, 
+		'city'     : 'Höfn'
+	})
+
+
+	PostCodes.insert({
+		'postcode' : 781, 
+		'city'     : 'Höfn'
+	})
+
+	PostCodes.insert({
+		'postcode' : 785, 
+		'city'     : 'Öræfi'
+	})
+
+	//8xx: South
+
+	PostCodes.insert({
+		'postcode' : 800, 
+		'city'     : 'Selfoss'
+	})
+
+	PostCodes.insert({
+		'postcode' : 801, 
+		'city'     : 'Selfoss'
+	})
+
+	PostCodes.insert({
+		'postcode' : 802, 
+		'city'     : 'Selfoss'
+	})
+
+	PostCodes.insert({
+		'postcode' : 810, 
+		'city'     : 'Hveragerði'
+	})
+
+	PostCodes.insert({
+		'postcode' : 815, 
+		'city'     : 'Þorlákshöfn'
+	})
+
+	PostCodes.insert({
+		'postcode' : 816, 
+		'city'     : 'Ölfus'
+	})
+
+	PostCodes.insert({
+		'postcode' : 820, 
+		'city'     : 'Eyrarbakki'
+	})
+
+	PostCodes.insert({
+		'postcode' : 825, 
+		'city'     : 'Stokkseyri'
+	})
+
+	PostCodes.insert({
+		'postcode' : 840, 
+		'city'     : 'Laugarvatn'
+	})
+
+	PostCodes.insert({
+		'postcode' : 845, 
+		'city'     : 'Flúðir'
+	})
+
+	PostCodes.insert({
+		'postcode' : 850, 
+		'city'     : 'Hella'
+	})
+
+	PostCodes.insert({
+		'postcode' : 851, 
+		'city'     : 'Hella'
+	})
+
+	PostCodes.insert({
+		'postcode' : 860, 
+		'city'     : 'Hvolsvöllur'
+	})
+
+
+	PostCodes.insert({
+		'postcode' : 861, 
+		'city'     : 'Hvolsvöllur'
+	})
+
+	PostCodes.insert({
+		'postcode' : 870, 
+		'city'     : 'Vík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 871, 
+		'city'     : 'Vík'
+	})
+
+	PostCodes.insert({
+		'postcode' : 880, 
+		'city'     : 'Kirkjubæjarklaustur'
+	})
+
+	//9xx: South
+
+	PostCodes.insert({
+		'postcode' : 900, 
+		'city'     : 'Vestmannaeyjar'
+	})
+
+	PostCodes.insert({
+		'postcode' : 902, 
+		'city'     : 'Vestmannaeyjar'
+	})
+}
+

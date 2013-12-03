@@ -1034,6 +1034,31 @@ loadTypeahead = function(){
     	SaveCustomer = false;
     	CustomerSelected = true;
 	});
+
+	$('#postcode').typeahead('destroy');
+	var postCodes = [],
+	finalPostCodes,
+	postTags = PostCodes.find({}, {fields: {number: 1}});
+	postTags.forEach(function(tag){
+    	var datum = {
+    		'value' : tag.number,
+    		'id' : tag._id,
+    		'city' : tag.city
+    	}
+    	postCodes.push(datum);
+	});
+
+	finalItems = _.uniq(postCodes);
+
+	$('#postcode').typeahead({
+		name : 'number',
+		local : finalPostCodes
+	}).bind('typeahead:selected', function (obj, datum) {
+    	$('#city').val(datum.city);
+	});
+
+
+
 }
 
 var createBook = function(){
