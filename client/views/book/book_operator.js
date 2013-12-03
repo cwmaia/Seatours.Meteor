@@ -950,13 +950,14 @@ Template.categoryVehicleBook.events({
 			$("#baseVehicle").val(parseInt(category.basePrice));
 			$("#totalVehicle").text(parseInt(category.basePrice));
 			Session.set('categoryId', id);
+			checkIfCarsFits(category.baseSize);
 		}else{
+			console.log('aqui aqui');
 			$("#baseVehicle").val(0);
 			$("#totalVehicle").text(0);
 			Session.set('categoryId', null);
 		}
 		
-		checkIfCarsFits(category.baseSize);	
 		calcTotal();
 	},
 

@@ -651,7 +651,7 @@ if(Books.find().count() == 0){
 	}
 
 
-	for (var i = 0; i < 5000; i++) {
+	for (var i = 0; i < 500; i++) {
 		var sum = 0;
 		with(date){
 			var randomday = parseInt((Math.random() * (30 - 5) + 5));
