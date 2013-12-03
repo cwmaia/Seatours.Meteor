@@ -1041,7 +1041,7 @@ loadTypeahead = function(){
 	postTags = PostCodes.find({}, {fields: {number: 1}});
 	postTags.forEach(function(tag){
     	var datum = {
-    		'value' : tag.number,
+    		'value' : tag.postcode,
     		'id' : tag._id,
     		'city' : tag.city
     	}
@@ -1051,7 +1051,7 @@ loadTypeahead = function(){
 	finalItems = _.uniq(postCodes);
 
 	$('#postcode').typeahead({
-		name : 'number',
+		name : 'postcode',
 		local : finalPostCodes
 	}).bind('typeahead:selected', function (obj, datum) {
     	$('#city').val(datum.city);
