@@ -12,6 +12,7 @@ Meteor.subscribe('transactions');
 Meteor.subscribe("directory");
 Meteor.subscribe("groups");
 Meteor.subscribe("cartItems");
+Meteor.subscribe("postcodes");
 
 Template.redirect.helpers({
   userLogged : function(){

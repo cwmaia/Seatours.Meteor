@@ -788,6 +788,7 @@ Template.generalPassagerInfo.events({
 	    	$('#state').val('');
 	    	$('#postcode').val('');
 	    	$('#country').val('');
+	    	CustomerSelected = false;
 			SaveCustomer = true;
 		}
 	},
@@ -1038,7 +1039,8 @@ loadTypeahead = function(){
 	$('#postcode').typeahead('destroy');
 	var postCodes = [],
 	finalPostCodes,
-	postTags = PostCodes.find({}, {fields: {number: 1}});
+	postTags = PostCodes.find({}, {fields: {postcode: 1, city: 1}});
+
 	postTags.forEach(function(tag){
     	var datum = {
     		'value' : tag.postcode,
@@ -1048,7 +1050,7 @@ loadTypeahead = function(){
     	postCodes.push(datum);
 	});
 
-	finalItems = _.uniq(postCodes);
+	finalPostCodes = _.uniq(postCodes);
 
 	$('#postcode').typeahead({
 		name : 'postcode',

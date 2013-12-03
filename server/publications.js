@@ -103,6 +103,13 @@ Meteor.publish('groups', function() {
       return null; 
 });
 
+Meteor.publish('postcodes', function() {
+  if(this.userId)
+      return PostCodes.find();
+  else
+      return null; 
+});
+
 Meteor.publish('saveTrip', function(trip) {
   if(this.userId){
     if(trip._id)
