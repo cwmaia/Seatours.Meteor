@@ -13,6 +13,7 @@ Meteor.subscribe("directory");
 Meteor.subscribe("groups");
 Meteor.subscribe("cartItems");
 Meteor.subscribe("postcodes");
+Meteor.subscribe('prices');
 
 Template.redirect.helpers({
   userLogged : function(){

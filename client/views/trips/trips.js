@@ -1,5 +1,3 @@
-var _product = {};
-
 Template.trips.trips = function(){ 
 	return Products.find();
 }
@@ -27,33 +25,33 @@ Template.editTrip.boats = function() {
 }
 
 Template.editTrip.equalBoatId = function(id) {
-	return _product.boatId == id;
+	product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
+	if(product)
+		return product.boatId == id;
+	else
+		return false;
 }
 
 Template.editTrip.helpers({
 	product : function(){
-		_product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
-		return _product;
+		return Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
 	},
 
 	trips : function() {
-		var trips = [];
- 
-	     for (var i = _product.trips.length - 1; i >= 0; i--) {
-	       	trips.push(Trips.findOne(_product.trips[i]));
-	     }
- 
-     	return trips;
+		product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
+		if(product)
+			return Trips.find({productId : product._id});
+		else
+			return [];
+	},
+	prices : function(){
+		product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
+		if(product)
+			return Prices.find({productId : product._id});
+		else
+			return [];
 	}
 });
-
-Template.editTrip.boats = function() {
-	return Boats.find(); 
-}
-
-Template.editTrip.equalBoatId = function(id) {
-	return _product.boatId == id;
-}
 
 Template.editTrip.events({
 	'submit #productForm' : function(event) {
@@ -80,21 +78,27 @@ Template.editTrip.events({
 		var form = event.currentTarget;
 
 		if(form.checkValidity()){
-			var trip = {
+			product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
+			if(product){
+				var trip = {
 				from 	: form.from.value,
 				to		: form.to.value,
-				hour 	: $('#hour')[0].value
+				hour 	: $('#hour')[0].value,
+				season  : form.season.value,
+				active  : true,
+				productId : product._id
 			}
 
-			var trips = _product.trips;
-
-			trips.push(Trips.insert(trip));
-
-			Products.update(_product._id, {$set : {trips : trips}})
+			Trips.insert(trip);
 
 			form.reset();
 
-			throwSuccess('Trip added');
+			throwInfo('Trip added');
+		}else{
+			throwError('tenso');
+		}
+			
+
 		}
 	},
 
@@ -106,6 +110,7 @@ Template.editTrip.events({
 			var price = {
 				price 	: form.price.value,
 				unit	: form.unit.value,
+				season  : form.season.value
 			};
 
 			var prices = _product.prices;
@@ -122,34 +127,27 @@ Template.editTrip.events({
 
 	'click .removeTrip' :function(event) {
 		event.preventDefault();
-
 		var id = event.currentTarget.id;
-
-		Trips.remove(id);
-
-		var trips = _product.trips.splice(_product.trips.indexOf(id), 1);
-		
-		Products.update(_product._id, {$set : {trips : trips}});
-
-		throwSuccess('Trip added');
+		trip = Trips.findOne({_id : id});
+		if(trip.active){
+			Trips.update(id, {$set : {active : false}});
+			throwInfo('Trip Deactivated!');
+		}else{
+			Trips.update(id, {$set : {active : true}});
+			throwInfo('Trip Activated');
+		}
 	},
 
 	'click .removePrice' :function(event) {
 		event.preventDefault();
-
-		var index = $(event.currentTarget).parents('tr').index();
-
-		var prices = _product.prices.splice(_product.prices.indexOf(id), 1);
-		
-		Products.update(_product._id, {$set : {prices : prices}});
+		var id = event.currentTarget.id;
+		trip = Prices.findOne({_id : id});
+		if(trip.active){
+			Prices.update(id, {$set : {active : false}});
+			throwInfo('Price Deactivated!');
+		}else{
+			Prices.update(id, {$set : {active : true}});
+			throwInfo('Price Activated');
+		}
 	}
 });
-
-
-
-Template.editTrip.rendered = function(argument) {
-	$('#hour').timepicker({
-		minuteStep: 1,
-		showMeridian: false
-	});
-}
