@@ -42,7 +42,7 @@
 					<option value="">Select..</option>
 
 					{{#each boats}}
-						
+						<option value="{{_id}}" {{#if _id product._id}} selected="true" {{/if}}>{{name}}</option>
 					{{/each}}
 				</select>
 			</div>
