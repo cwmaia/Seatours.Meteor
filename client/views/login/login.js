@@ -11,9 +11,11 @@ Template.login.events({
 
 		Meteor.loginWithPassword(user.username, user.password, function(err){
         if (err){
-        	console.log(err);
-        	spinner.stop();
-          	throwError("User not Found!") 
+        	if(err.reason == 'Incorrect password')
+        		throwError("Incorrect Password!") 
+        	else
+        		throwError("User not Found!") 
+        	SpinnerStop();
       	}else{
           Session.set('showOverview', true);
       }

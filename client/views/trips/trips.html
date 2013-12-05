@@ -42,7 +42,7 @@
 					<option value="">Select..</option>
 
 					{{#each boats}}
-						<option value="{{_id}}" {{#if _id product._id}} selected="true" {{/if}}>{{name}}</option>
+						
 					{{/each}}
 				</select>
 			</div>
@@ -77,6 +77,17 @@
 					</div>
 				</div>
 			</div>
+
+			<div class='line-3'>
+				<div>
+					<label name='season' id='tripSeason' class="required">Season:</label>
+					<select required id='season'>
+						<option selected value =''>Select...</option>
+						<option>Summer</option>
+						<option>Winter</option>
+					</select>
+				</div>
+			</div>
 		
 			<input type="submit" id="addTrip" class='btn btn-info btn-small' value="Add Trip" />
 		</form>
@@ -87,7 +98,8 @@
 					<th>From</th>
 					<th>To</th>
 					<th>Hour</th>
-					<th>Actions</th>
+					<th>Season</th>
+					<th>Active</th>
 				</tr>
 			</thead>
 			
@@ -97,8 +109,13 @@
 						<td>{{from}}</td>
 						<td>{{to}}</td>
 						<td>{{hour}}</td>
+						<td>{{season}}</td>
 						<td>
-							<a href="#" class="removeTrip" id="{{_id}}">Remove</a>
+							{{#if active}}
+								<a class="removeTrip" id="{{_id}}"><i class='icon-check'></i></a>
+							{{else}}
+								<a class="removeTrip" id="{{_id}}"><i class='icon-check-empty'></i></a>
+							{{/if}}
 						</td>
 					</tr>
 				{{/each}}	
@@ -120,6 +137,15 @@
 						<label class="required">Per unit:</label>
 						<input type="number" name="unit" id="unit" placeholder="Per unit" required>
 					</div>
+
+					<div>
+						<label name='season' id='priceSeason' class="required">Season:</label>
+						<select required id='season'>
+							<option selected value =''>Select...</option>
+							<option>Summer</option>
+							<option>Winter</option>
+						</select>
+					</div>
 			</div>
 
 			<input type='submit' id="addPrice" class='btn btn-info btn-small' value="Add Price">
@@ -130,12 +156,13 @@
 				<tr>
 					<th>Price</th>
 					<th>Per Unit (ISK)</th>
-					<th>Actions</th>
+					<th>Season</th>
+					<td>Active</td>
 				</tr>
 			</thead>
 			
 			<tbody>
-				{{#each product.prices}}
+				{{#each prices}}
 					{{> price}}
 				{{/each}}	
 			</tbody>
@@ -156,7 +183,14 @@
 			{{unit}}
 		</td>
 		<td>
-			<a href="#" class="removePrice" id="{{_id}}">Remove</a>
+			{{season}}
+		</td>
+		<td>
+			{{#if active}}
+				<a class="removePrice" id="{{_id}}"><i class='icon-check'></i></a>
+			{{else}}
+				<a class="removePrice" id="{{_id}}"><i class='icon-check-empty'></i></a>
+			{{/if}}
 		</td>
 	</tr>	
 </template>

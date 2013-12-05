@@ -4,256 +4,6 @@ Meteor.startup(function () {
 
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
 var admId = '';
-var realocate = function(vehicleSize, resumeStatus, from, to, product, trip){
-
-	var spaceAvailableSlot1 = (resumeStatus.totalSpaceSlot1 - resumeStatus.spaceOnExtraSlot1);
-	var spaceAvailableSlot2 = (resumeStatus.totalSpaceSlot2 - resumeStatus.spaceOnExtraSlot2);
-
-	var carsToMove = [];
-	var booksToChange = [];
-	console.log("Vehicle Size: "+vehicleSize);
-	console.log("Resume Status 1: "+resumeStatus.totalSpaceSlot1);
-	console.log("Resume Status 2: "+resumeStatus.totalSpaceSlot2);
-	console.log("Space Available 1: "+spaceAvailableSlot1);
-	console.log("Space Available 2: "+spaceAvailableSlot2);
-
-	with(from){
-		setHours(0);
-		setMinutes(0);
-		setSeconds(0);
-	}
-
-	with(to){
-		setDate(getDate() + 1);
-		setHours(0);
-		setMinutes(0);
-		setSeconds(0);
-	}
-
-	//If vehicle can go on slot 1
-	if(vehicleSize <= resumeStatus.totalSpaceSlot1){
-		//Hey look it can goes on this slot
-		//but we have to realocate the vehicles inside of it
-		temporalSpaceAvailableSlot1 = spaceAvailableSlot1;
-		temporalSpaceAvailableSlot2 = spaceAvailableSlot2;
-
-		books = Books.find({
-			dateOfBooking 	: {$gte: from, $lt: to},
-			'product._id' 	: product._id,
-			'trip.from' 	: trip.from,
-			'vehicle.extraSlot' : extraSlots[1]
-		}).fetch();
-
-		//There is no car so add =]
-		if(books.length == 0){
-			return 'EXTRASLOT1';
-		}else{
-			for (var i = 0; i < books.length; i++) {
-			//can i move this car on other slot??
-				if(books[i].vehicle.size <= temporalSpaceAvailableSlot2){
-					carsToMove.push(books[i]);
-					temporalSpaceAvailableSlot2 += books[i].vehicle.size;
-				}
-			};
-
-			for (var j = 0; j < carsToMove.length; j++) {
-				console.log("Before: "+temporalSpaceAvailableSlot1);
-				temporalSpaceAvailableSlot1 += carsToMove[j].vehicle.size;
-				booksToChange.push(carsToMove[j]);
-				console.log("Size of Vehicle: "+carsToMove[j].vehicle.size);
-				console.log("temporalSpaceAvailableSlot1: "+temporalSpaceAvailableSlot1);
-				//The vehicle can go???
-				if(vehicleSize <= temporalSpaceAvailableSlot1){
-					//Yeaaaa!!
-					for (var k = 0; k < booksToChange.length; k++) {
-						book = booksToChange[k];
-						book.vehicle.extraSlot = 'EXTRASLOT2';
-						Books.update(book._id, book);
-					};
-					console.log('EXTRASLOT1');
-					return 'EXTRASLOT1';
-				} 
-			};
-		}
-	//If vehicle can go on slot 2	
-	}
-
-	if(vehicleSize <= resumeStatus.totalSpaceSlot2){
-		console.log('aqui - 2');
-		//Hey look it can goes on this slot
-		//but we have to realocate the vehicles inside of it
-		temporalSpaceAvailableSlot1 = spaceAvailableSlot1;
-		temporalSpaceAvailableSlot2 = spaceAvailableSlot2;
-
-		books = Books.find({
-			dateOfBooking 	: {$gte: from, $lt: to},
-			'product._id' 	: product._id,
-			'trip.from' 	: trip.from,
-			'vehicle.extraSlot' : extraSlots[2]
-		}).fetch();
-
-		//There is no car so add =]
-		if(books.length == 0){
-			return 'EXTRASLOT2';
-		}else{
-			for (var i = 0; i < books.length; i++) {
-			//can i move this car on other slot??
-				if(books[i].vehicle.size <= temporalSpaceAvailableSlot1){
-					carsToMove.push(books[i]);
-					temporalSpaceAvailableSlot1 += books[i].vehicle.size;
-				}
-			};
-
-			for (var j = 0; j < carsToMove.length; j++) {
-				temporalSpaceAvailableSlot2 += carsToMove[j].vehicle.size;
-				booksToChange.push(carsToMove[j]);
-				//The vehicle can go???
-				if(vehicleSize <= temporalSpaceAvailableSlot2){
-					//Yeaaaa!!
-
-					for (var k = 0; k < booksToChange.length; k++) {
-						book = booksToChange[k];
-						book.vehicle.extraSlot = 'EXTRASLOT1';
-						Books.update(book._id, book);
-					};
-					console.log('EXTRASLOT2');
-					return 'EXTRASLOT2';
-				} 
-			};
-		}	
-	}
-	//Sad but it can't go
-	console.log('false');
-	return false;
-}
-
-
-var calcSpaceOnExtraSlots = function(from, to, product, trip){
-	//calc space available on extra slot 1
-	var spaceOnExtraSlot1 = 0;
-	var spaceOnExtraSlot2 = 0;
-
-	books = Books.find({
-		dateOfBooking 	: {$gte: from, $lt: to},
-		'product._id' 	: product._id,
-		'trip.from' 	: trip.from,
-		'vehicle.extraSlot' : extraSlots[1]
-	}).fetch();
-
-	for (var i = 0; i < books.length; i++) {
-		spaceOnExtraSlot1 += books[i].vehicle.size;
-	};
-
-	books = Books.find({
-		dateOfBooking 	: {$gte: from, $lt: to},
-		'product._id' 	: product._id,
-		'trip.from' 	: trip.from,
-		'vehicle.extraSlot' : extraSlots[2]
-	}).fetch();
-
-	for (var j = 0; j < books.length; j++) {
-		spaceOnExtraSlot2 += books[j].vehicle.size;
-	};
-
-	countVehicle5m = Books.find({
-		dateOfBooking 	: {$gte: from, $lt: to},
-		'product._id' 	: product._id,
-		'trip.from' 	: trip.from,
-		'vehicle.size'  : {$gt: 0, $lte: 5},
-		'vehicle.extraSlot' : extraSlots[0]
-	}).count();
-
-	totalSpaceSlot1 = 24;
-	totalSpaceSlot2 = 24;
-
-	if(countVehicle5m == 25){
-		totalSpaceSlot2 = 19;
-	}
-
-	if(countVehicle5m > 25 && countVehicle5m <= 27){
-		totalSpaceSlot1 = 19;
-		totalSpaceSlot2 = 19;
-	}
-
-	if(countVehicle5m == 28){
-		totalSpaceSlot1 = 19;
-		totalSpaceSlot2 = 15;
-	}
-
-	if(countVehicle5m > 28 && countVehicle5m <= 30){
-		totalSpaceSlot1 = 15;
-		totalSpaceSlot2 = 15;
-	}
-
-
-
-	spaceOnSlots = {
-		totalSpaceSlot1 : totalSpaceSlot1, 
-		spaceOnExtraSlot1 : spaceOnExtraSlot1,
-		totalSpaceSlot2 : totalSpaceSlot2,
-		spaceOnExtraSlot2 : spaceOnExtraSlot2,
-		numberOf5MetersVehicles : countVehicle5m
-	}
-
-	return spaceOnSlots;
-
-
-}
-
-var getTotalExtraSpaceSlot = function(from, to, product, trip, extraSlot){
-
-	extraSpace = 15;
-
-	books = Books.find({
-		dateOfBooking 	: {$gte: from, $lt: to},
-		'product._id' 	: product._id,
-		'trip.from' 	: trip.from,
-		'vehicle.extraSlot' : extraSlot
-	}).fetch();
-
-	var spaceAlocated = 0;
-
-	for (var i = 0; i < books.length; i++) {
-		spaceAlocated += books[i].vehicle.size;
-	};
-
-	extraSpace = extraSpace - spaceAlocated;
-
-	return extraSpace;
-}
-
-var alocateCarExtraSlots = function(from, to, product, trip, size){
-	var extraSlotsResume = calcSpaceOnExtraSlots(from, to, product, trip);
-	return realocate(size, extraSlotsResume, from, to, product, trip);
-}
-
-
-
-var getMaxCarsUpTo5 = function(boatId){
-	boat = Boats.findOne({_id: "1"});
-	getMax = 0;
-
-	for (var i = 0; i < boat.status.length; i++) {
-		if(boat.status[i].qtdCarsUpTo_5 > getMax){
-			getMax = boat.status[i].qtdCarsUpTo_5;
-		}
-	};
-
-	return getMax;
-}
-
-var getMaxCarsUpTo6 = function(boatId){
-	boat = Boats.findOne({_id: "1"});
-	getMax = 0;
-
-	for (var i = 0; i < boat.status.length; i++) {
-		if(boat.status[i].qtdCarsUpTo_6 > getMax){
-			getMax = boat.status[i].qtdCarsUpTo_6;
-		}
-	};
-
-	return getMax;
-}
 
 if(Groups.find().count() == 0){
 	admId = Groups.insert({
@@ -313,143 +63,227 @@ if(Boats.find().count() == 0){
 }
 
 if(Products.find().count() == 0){
-	Products.insert({
+	result = Products.insert({
 		"name" 			: "Baldur Ferry",
 		"description" 	: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tempus neque vitae leo accumsan, ac rutrum urna bibendum. Integer vitae purus ac diam mattis vehicula. Duis tincidunt ultricies felis. In nec congue ligula, ut fermentum nulla. Aliquam elit quam, ultricies ac orci non, consectetur malesuada augue. Sed feugiat nisi ac accumsan vestibulum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam elementum nisi vel turpis dictum, quis accumsan augue porta.",
-		"trips"			: [
-			Trips.insert({
-				"from" 	: "Stykkishólmur",
-				"to"	: "Brjánslækur",
-				"hour"  : "15:00"
-			}),
-
-			Trips.insert({
-				"from" 	: "Brjánslækur",
-				"to"	: "Stykkishólmur",
-				"hour"  : "18:00"		
-			})
-		],
-		"prices" 		: [
-			{
-				"price" : "adult",
-				"unit" : 4080
-			},
-			{
-				"price" : "child",
-				"unit": 2040
-			},
-			{
-				"price"  : "infant",
-				"unit"	: 0
-			},
-			{
-				"price"  : "senior",
-				"unit" : 3264
-			},
-			{
-				"price"  : "school",
-				"unit" : 2040
-			},
-			{
-				"price" : "guides",
-				"unit": 0
-			}
-		],
 		"activated" 	: true,
 		"boatId" : '1'
 	});
 
-	Products.insert({
+	Trips.insert({
+		"from" 	: "Stykkishólmur",
+		"to"	: "Brjánslækur",
+		"hour"  : "15:00",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result
+	}),
+
+	Trips.insert({
+		"from" 	: "Brjánslækur",
+		"to"	: "Stykkishólmur",
+		"hour"  : "18:00",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	})
+
+
+	Prices.insert({
+		"price" 	: "Adult",
+		"unit"	: 4080,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Child",
+		"unit"	: 2040,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Infant",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Senior",
+		"unit"	: 3264,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "School Discount",
+		"unit"	: 2040,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Guides and Drivers",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	result = Products.insert({
 		"name" 			: "Viking Sushi Adventure",
 		"description" 	: "Quisque volutpat suscipit interdum. Nam felis tellus, viverra eu quam ac, accumsan vestibulum quam. Phasellus luctus sem non nunc varius, vitae adipiscing augue gravida. Vestibulum libero velit, ultrices id tortor vitae, elementum congue ligula. Vestibulum in auctor urna, eget aliquam enim. Curabitur in tellus lacinia, consectetur nunc varius, posuere nisl. Mauris porta id eros eu imperdiet. Cras tristique laoreet erat vitae fermentum. Donec ornare lobortis iaculis. Sed sodales suscipit urna, sit amet laoreet dui rhoncus id. Etiam tempus nulla ut fringilla malesuada. Proin ac lorem eget leo ornare rhoncus vel et magna. Nam eu scelerisque nisl, ultricies blandit tellus. In vitae mauris at tortor porta egestas. Integer porta placerat purus, eget mattis nisi molestie vel.",
-		"trips"			: [
-			Trips.insert({
-				"from" 	: "Caicó",
-				"to"	: "Bermudas",
-				"hour"  : "14:00"
-			}),
-
-			Trips.insert({
-				"from" 	: "Bermudas",
-				"to"	: "Caicó",
-				"hour"  : "20:00"
-			})
-		],
-		"prices" 		: [
-			{
-				"price" : "adult",
-				"unit" : 4080
-			},
-			{
-				"price" : "child",
-				"unit": 2040
-			},
-			{
-				"price"  : "infant",
-				"unit"	: 0
-			},
-			{
-				"price"  : "senior",
-				"unit" : 3264
-			},
-			{
-				"price"  : "school",
-				"unit" : 2040
-			},
-			{
-				"price" : "guides",
-				"unit": 0
-			}
-		],
 		"activated" 	: true,
 		"boatId" : '1'
 	});
 
-	Products.insert({
+	Trips.insert({
+		"from" 	: "Caicó",
+		"to"	: "Bermudas",
+		"hour"  : "14:00",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result
+	}),
+
+	Trips.insert({
+		"from" 	: "Bermudas",
+		"to"	: "Caicó",
+		"hour"  : "20:00",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result
+	})
+
+
+	Prices.insert({
+		"price" 	: "Adult",
+		"unit"	: 4080,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Child (12 - 14)",
+		"unit"	: 2040,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Infant (0 - 11)",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Senior",
+		"unit"	: 3264,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "School Discount",
+		"unit"	: 2040,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Guides & Drivers",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	result = Products.insert({
 		"name" 			: "Viking Sushi Short",
-		"description" 	: "Morbi mi quam, hendrerit eget purus in, eleifend eleifend sapien. Proin imperdiet, ipsum viverra hendrerit eleifend, quam nisl vestibulum massa, vitae cursus magna quam vel tortor. Quisque tincidunt eget elit ac consectetur. Donec interdum, eros nec feugiat commodo, purus nibh malesuada sapien, sed consectetur arcu massa ullamcorper urna. Vivamus metus nibh, blandit vel facilisis in, vulputate eget urna. Nulla et aliquet ligula, sit amet tempus sem. Donec vel ligula posuere, ultricies lacus at, porttitor justo. Aenean hendrerit fermentum ipsum, sit amet malesuada purus interdum ac. Donec imperdiet diam congue euismod varius. Quisque volutpat ultrices risus non varius. Quisque malesuada enim ac diam pharetra mollis. Vestibulum tristique massa a odio eleifend, sit amet tincidunt nulla dignissim. Donec tempor, velit vitae dapibus commodo, risus ipsum vehicula nisi, sed vehicula tellus eros sit amet eros. Vestibulum ipsum ipsum, vestibulum vitae nunc quis, tempus ultricies sapien. Proin aliquam feugiat pellentesque.",
-		"trips"			: [
-			Trips.insert({
-				"from" 	: "Pipa",
-				"to"	: "Haiti",
-				"hour"  : "15:00"
-			}),
-
-			Trips.insert({
-				"from" 	: "Haiti",
-				"to"	: "Pipa",
-				"hour"  : "19:00"
-			})
-		],
-		"prices" 		: [
-			{
-				"price" : "adult",
-				"unit" : 4080
-			},
-			{
-				"price" : "child",
-				"unit": 2040
-			},
-			{
-				"price"  : "infant",
-				"unit"	: 0
-			},
-			{
-				"price"  : "senior",
-				"unit" : 3264
-			},
-			{
-				"price"  : "school",
-				"unit" : 2040
-			},
-			{
-				"price" : "guides",
-				"unit": 0
-			}
-		],
+		"description" 	: "Morbi mi quam, hendrerit eget purus in, eleifend eleifend sapien. Proin imperdiet, ipsum viverra hendrerit eleifend, quam nisl vestibulum massa, vitae cursus magna quam vel tortor. Quisque tincidunt eget elit ac consectetur. Donec interdum, eros nec feugiat commodo, purus nibh malesuada sapien, sed consectetur arcu massa ullamcorper urna. Vivamus metus nibh, blandit vel facilisis in, vulputate eget urna. Nulla et aliquet ligula, sit amet tempus sem. Donec vel ligula posuere, ultricies lacus at, porttitor justo. Aenean hendrerit fermentum ipsum, sit amet malesuada purus interdum ac. Donec imperdiet diam congue euismod varius. Quisque volutpat ultrices risus non varius. Quisque malesuada enim ac diam pharetra mollis. Vestibulum tristique massa a odio eleifend, sit amet tincidunt nulla dignissim. Donec tempor, velit vitae dapibus commodo, risus ipsum vehicula nisi, sed vehicula tellus eros sit amet eros. Vestibulum ipsum ipsum, vestibulum vitae nunc quis, tempus ultricies sapien. Proin aliquam feugiat pellentesque.",			
 		"activated" 	: true,
 		"boatId" : '1'
 	});
+
+	Trips.insert({
+		"from" 	: "Pipa",
+		"to"	: "Haiti",
+		"hour"  : "15:00",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result
+	}),
+
+	Trips.insert({
+		"from" 	: "Haiti",
+		"to"	: "Pipa",
+		"hour"  : "19:00",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Adult",
+		"unit"	: 4080,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Child (12 - 14)",
+		"unit"	: 2040,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Infant (0 - 11)",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Senior",
+		"unit"	: 3264,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "School Discount",
+		"unit"	: 2040,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Guides & Drivers",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+		
 }
 
 if(VehiclesCategory.find().count() == 0){
@@ -634,8 +468,7 @@ if(Books.find().count() == 0){
 	var thisDay = new Date();
 	var nextDay = new Date();
 	var saveBook = true;
-	var max5mCars = getMaxCarsUpTo5("1");
-	var max6mCars = getMaxCarsUpTo6("1");
+
 
 	with(thisDay){
 		setHours(0);
@@ -680,7 +513,7 @@ if(Books.find().count() == 0){
 		var randomProductIndex = parseInt((Math.random() * (2 - 0) + 0));
 		var randomVehicleIndex = parseInt((Math.random() * (2 - 0) + 0));
 		var zeroOrOne = parseInt((Math.random() * (2 - 0) + 0));
-		var trip = Trips.findOne(products[randomProductIndex].trips[zeroOrOne]);
+		var trip = Trips.find({productId : products[randomProductIndex]._id}).fetch()[zeroOrOne];
 
 		var book = {
 			"trip" : {
@@ -720,7 +553,7 @@ if(Books.find().count() == 0){
 					'vehicle.extraSlot' : extraSlots[0]
 				}).count();
 
-				if(countVehicle5m < max5mCars){
+				if(countVehicle5m < 30){
 					vehicle.extraSlot = extraSlots[0];
 				}
 			}
@@ -773,7 +606,7 @@ if(Books.find().count() == 0){
 		var pricesRandom = [];
 		var randomLoopPrices = parseInt((Math.random() * (5 - 2) + 2));
 
-		for (var j = 0; j < randomLoopPrices; j++) {
+		/*for (var j = 0; j < randomLoopPrices; j++) {
 			var randomForPrices = parseInt((Math.random() * (5 - 0) + 0));
 			var price = {
 				"prices" : prices[randomForPrices].price,
@@ -786,7 +619,7 @@ if(Books.find().count() == 0){
 			pricesRandom.push(price);	
 		};
 
-		book.prices = pricesRandom;
+		book.prices = pricesRandom;*/
 		book.totalISK = sum;
 
 		if(zeroOrOne){

@@ -5,6 +5,10 @@ throwError = function(message) {
 	showMessage('error', message);
 }
 
+throwInfo = function(message) { 
+	showMessage('info', message);
+}
+
 clearErrors = function() { 
 	Errors.remove({seen: 't'});
 }

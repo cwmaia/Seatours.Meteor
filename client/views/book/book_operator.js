@@ -547,13 +547,13 @@ Template.bookOperator.helpers({
 	},
 
 	'getTripsByProduct' : function(productId) {
-		var trips = [],
-		product = Products.findOne(productId);
-
-		for (var i = product.trips.length - 1; i >= 0; i--)
-			trips.push(Trips.findOne(product.trips[i]));
-
-		return trips;
+		if(productId){
+			return Trips.find({productId: productId, active : true});
+		}else{
+			throwError('tenso');
+			return [];
+		}
+		
 	}
 })
 
@@ -805,7 +805,12 @@ Template.createBook.trips = function(){
 
 Template.createBook.helpers({
 	"prices" : function(){
-		return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).prices : [] ;
+		if(Session.get("productId")){
+			return Prices.find({productId : Session.get("productId"), active : true})
+		}else{
+			throwError('Something Bad Happened, Try Again');
+			return [];
+		}
 	},
 
 	'slots' : function(){
@@ -1492,6 +1497,8 @@ function drawPieChartBoatSlots() {
 
 var checkIfCarsFits = function(size){
 	var trip = Trips.findOne(Session.get('tripId'));
+	ExtraSlot = null;
+	CanSaveTheBook = true;
 	if(size <= 6){
 	showAlert = checkHaveToOpenDoor(size, trip);
 	maxCapacity = doorMaxCapacity(Session.get('productId'), trip);

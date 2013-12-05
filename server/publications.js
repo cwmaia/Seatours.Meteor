@@ -110,6 +110,14 @@ Meteor.publish('postcodes', function() {
       return null; 
 });
 
+Meteor.publish('prices', function() {
+  if(this.userId)
+      return Prices.find();
+  else
+      return null; 
+});
+
+
 Meteor.publish('saveTrip', function(trip) {
   if(this.userId){
     if(trip._id)
