@@ -53,7 +53,8 @@ Meteor.Router.add({
 		}
 	},
 	'/management' :'management',
-	'/cart'       : 'cart'
+	'/cart'       : 'cart',
+	'/bookEdit'   :'bookEdit'
 });
 
 Meteor.Router.filters({

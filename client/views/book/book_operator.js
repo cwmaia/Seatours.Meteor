@@ -223,6 +223,12 @@ var doorMaxCapacity = function (trip){
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
+	if(Session.get('isEditing')){
+		for (var i = books.length - 1; i >= 0; i--) {
+			console.log(books[i]);
+		};
+	}
+
 	cartItems = CartItems.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
@@ -462,6 +468,12 @@ var checkHaveToOpenDoor = function(size, trip){
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
+
+	if(Session.get('isEditing')){
+		books.splice(books.indexOf(Books.findOne({_id : Session.get('bookId')})),1);
+	}
+
+
 	for (var i = books.length - 1; i >= 0; i--) {
 		if(books[i].vehicle.size <= 5){
 			count5m++;
@@ -640,6 +652,9 @@ var MaxCapacity = 0;
 
 Template.bookDetail.events({
 	'click #newBooking' :function(event) {
+		Session.set("isEditing", false);
+		Session.set("firstTime", false);
+		Session.set("categoryId", null);
 		var bookingsCreated = Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId'), bookStatus: 'Created'});
 		if(bookingsCreated.length >= MaxCapacity)
 			throwError('Maximum capacity of passengers reached!');	
@@ -727,13 +742,70 @@ Template.createBook.dateOfBooking = function(){
 	return Session.get('bookingDate').toLocaleDateString();
 }
 
+Template.createBook.booked = function(from,to){
+	if(Session.get('isEditing')){
+		if (book.trip.from == from && book.trip.to == to) {
+			return true;
+		}else{
+			return false;
+		};	
+	}return false;
+}
+
+Template.generalPassagerInfo.isEditing = function(){
+	return Session.get('isEditing');
+}
+
+
+Template.productPrices.priced = function(price){
+	if(Session.get('isEditing')){
+		return _priced(price);
+	}else{
+		return 0;
+	}
+}
+
+Template.productPrices.firstTime = function(){
+	return Session.get('firstTimePrice') ? true : false;
+}
+
+Template.productPrices.firstTimePricing = function(price, unit){
+	var parcialTotal = _priced(price) * unit;
+	calcTotal();
+	return parcialTotal;
+}
+
+var _priced = function(price){
+	for (var i = book.prices.length - 1; i >= 0; i--) {
+		if(price == book.prices[i].prices){
+			return book.prices[i].persons;
+		};
+	};
+	return 0;
+}
+
+Template.categoryVehicleBook.sizes = function() {
+	return Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}).size : [];
+}
+
+Template.categoryVehicleBook.firstTime = function(){
+	return Session.get('firstTime') ? true : false;
+}
+
+Template.createBook.trips = function(){
+	var product = Products.findOne({_id: Session.get("productId")});
+	var possibleTrips = Array();
+	for(var i = 0; i<product.trips.length;i++){
+		possibleTrips[i] = Trips.findOne({_id: product.trips[i]});
+	}
+	return possibleTrips;
+
+}
+
+
 Template.createBook.helpers({
 	"prices" : function(){
 		return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).prices : [] ;
-	},
-
-	'trip' : function(){
-		return Trips.findOne(Session.get("tripId"));
 	},
 
 	'slots' : function(){
@@ -749,6 +821,22 @@ Template.createBook.rendered = function(){
 	$('#pasagerInfo').on('submit', function(event){
 		event.preventDefault();
 	});
+	if(Session.get('isEditing')){
+		var customer = Customers.findOne({_id: Session.get("customerId")});
+
+    	$('#customerId').val(customer._id);
+    	$('#title').val(customer.title)
+    	$('#fullName').val(customer.fullName);
+    	$('#birthDate').val(customer.birthDate);
+    	$('#email').val(customer.email);
+    	$('#telephoneCode').val(customer.telephoneCode);
+    	$('#telephone').val(customer.telephone);
+    	$('#adress').val(customer.adress);
+    	$('#city').val(customer.city);
+    	$('#state').val(customer.state);
+    	$('#postcode').val(customer.postcode);
+    	$('#country').val(customer.country);
+	}
 }
 
 Template.createBook.events({
@@ -761,7 +849,9 @@ Template.createBook.events({
 })
 
 Template.productPrices.events({
+
 	"change input" : function(event){
+		Session.set('firstTimePrice', false);
 		var totalParcial = event.currentTarget.value * this.unit;
 		$('#'+this.price).val(totalParcial).text(totalParcial);
 		var totalPrice = event.currentTarget.value;
@@ -929,22 +1019,59 @@ Template.categoryVehicleBook.helpers({
 	}
 });
 
-Template.categoryVehicleBook.sizes = function() {
-	return Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}).size : [];
+Template.categoryVehicleBook.categorized = function(_category){;
+	if(Session.get('firstTime')){
+		if(_category == book.vehicle.category){
+			var objCategory =  VehiclesCategory.findOne({category : _category});
+			Session.set('categoryId',objCategory._id);
+			Template.categoryVehicleBook.sizes();
+			return true;
+		}else{
+			return false;
+		}
+	}if (Session.get('isEditing')) {
+		if(_category == VehiclesCategory.findOne({_id : Session.get('categoryId')}).category){
+			Template.categoryVehicleBook.sizes();
+			return true;
+		}else{
+			return false;
+		}
+	}
+	else{
+		return false;
+	}
 }
 
-Template.sizesBook.isBaseSize = function(number) {
+Template.categoryVehicleBook.rendered = function(){
+	calcVehiclePrice(Session.get('currentSizeCar'));
+	calcTotal();
+}
+
+
+Template.categoryVehicleBook.isBaseSize = function(number) {
 	category =  Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}) : null;
 	if(number == category.baseSize){	
 		return true;
 	}else{
 		return false;
 	}
-
 }
+
+Template.categoryVehicleBook.sized = function(number) {
+	if (number == book.vehicle.size){
+			Session.set('currentSizeCar', number);
+			calcVehiclePrice(number);
+			calcTotal();
+			return true;
+		}else{
+			return false;
+		}
+
+}	
 
 Template.categoryVehicleBook.events({
 	'change #categories' : function(event){
+		
 		var id = event.target.selectedOptions[0].id;
 		var category = VehiclesCategory.findOne({_id: id});
 		if(category){
@@ -953,41 +1080,53 @@ Template.categoryVehicleBook.events({
 			Session.set('categoryId', id);
 			checkIfCarsFits(category.baseSize);
 		}else{
-			console.log('aqui aqui');
 			$("#baseVehicle").val(0);
 			$("#totalVehicle").text(0);
 			Session.set('categoryId', null);
 		}
 		
 		calcTotal();
+		changeSizes();
+		Session.set("firstTime", false);
 	},
 
 	'change #size' : function(event){
-		var base = parseInt($("#baseVehicle").val());
-		var value = event.target.selectedOptions[0].value;
-
-		var calcVehiclePrice = function(){
-			category = Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}) : null;
-			if(category){
-				sum = parseInt(value - category.baseSize);
-				if(sum < 0 && category.onReduce){
-					multFactor = sum * (-1);
-					totalToBeReduced = multFactor * category.step;
-					$("#totalVehicle").text(parseInt(base - totalToBeReduced));
-				}else if(sum > 0){
-					totalToBeAdded = sum * category.step;
-					$("#totalVehicle").text(parseInt(base + totalToBeAdded));
-				}else{
-					$("#totalVehicle").text(parseInt(base));
-				}
-			}
-		}		
 		
-		calcVehiclePrice();
+		var value = event.target.selectedOptions[0].value;
+		Session.set('currentSizeCar', value);
+		calcVehiclePrice(value);
 		checkIfCarsFits(value);
 		calcTotal();
+
+		Session.set("firstTime", false);
 	}
 })
+
+changeSizes = function(){
+	category = Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}) : null;
+	if(category){
+		Template.categoryVehicleBook.sizes();
+	}
+}
+
+calcVehiclePrice = function(value){
+	category = Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}) : null;
+	if(category){
+		
+		var base = category.basePrice;
+		sum = parseInt(value - category.baseSize);
+		if(sum < 0 && category.onReduce){
+			multFactor = sum * (-1);
+			totalToBeReduced = multFactor * category.step;
+			$("#totalVehicle").text(parseInt(base - totalToBeReduced));
+		}else if(sum > 0){
+			totalToBeAdded = sum * category.step;
+			$("#totalVehicle").text(parseInt(base + totalToBeAdded));
+		}else{
+			$("#totalVehicle").text(parseInt(base));
+		}
+	}
+}
 
 calcTotal = function(){
 	var total = 0;

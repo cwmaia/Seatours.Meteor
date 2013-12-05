@@ -171,7 +171,13 @@
 	<div class="line">
 		<label class="required">Destination: </label>
 		<select id="destination">
-			<option>{{trip.from}} - {{trip.to}} - {{trip.hour}}</option>
+			{{#each trips}}
+				{{#if booked from to}}
+					<option value='{{_id}}' selected='selected'>{{from}} - {{to}} - {{hour}}</option>
+				{{else}}
+					<option value='{{_id}}'>{{from}} - {{to}} - {{hour}}</option>
+				{{/if}}	
+			{{/each}}
 		</select>
 	</div>
 
@@ -244,13 +250,14 @@
 
 <template name="productPrices">
 	<input type='hidden' id='{{unit}}' class='unitPrice'>
-	
-	<div>
-
-		<label>{{price}} ({{unit}} ISK)</label>
-		<input type='number' class="size1-4" min="0" value='0'>
-		<em class="calcTotal price" data-value="" id="{{price}}">0</em>
-	</div>
+			
+			<div>
+				
+				<label>{{price}} ({{unit}} ISK)</label>
+				
+					<input type='number' class="size1-4" min="0" value='{{priced price}}'>
+						<em class="calcTotal price" data-value="" id="{{price}}">{{firstTimePricing price unit}}</em>
+			</div>
 </template>
 
 <template name="bookingVehicles">
@@ -356,41 +363,50 @@
 	        <textarea id='notes' cols='4' rows='4'/>
     	</fieldset>
     </form>
-    <button class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Buy & Continue Booking</button>
-    <button class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Buy & Go To Cart</button>
-</template>
+    {{#if isEditing}}
+    	<button class="btn btn-small btn-info saveEdit" type='submit' form='pasagerInfo'>Save Edits</button>
+    {{else}}
 
-<template name="categoryBook">
-	<option value="{{category}}" id="{{_id}}">{{category}}</option>
-</template>
-
-<template name="sizesBook">
-	{{#if isBaseSize this}}
-		<option value="{{this}}" selected>{{this}}m</option>
-	{{else}}
-		<option value="{{this}}">{{this}}m</option>	
-	{{/if}}	
+	    <button class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Buy & Continue Booking</button>
+	    <button class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Buy & Go To Cart</button>
+    {{/if}}
 </template>
 
 <template name="categoryVehicleBook">
-	<input type="hidden" id="baseVehicle"/>
-
 	<div>
 		<label>Category:</label>
 		<select name="categories" id="categories">
-			<option value="">Select..</option>
-			{{#each categories}}
-    			{{> categoryBook}}	
-    		{{/each}}
+			<option value="" disabled='true'>Select..</option>
+				{{#each categories}}
+					{{#if categorized category}}
+						<option value="{{category}}" id="{{_id}}" selected='selected'>{{category}}</option>
+					{{else}}
+						<option value="{{category}}" id="{{_id}}">{{category}}</option>
+					{{/if}}
+				{{/each}}
 		</select>
 	</div>
 
 	<div>
 		<label>Size: </label>
 		<select name="size" id="size">
-			{{#each sizes}}
-    			{{> sizesBook}}	
-    		{{/each}}
+				{{#if firstTime}}
+					{{#each sizes}}
+						{{#if sized this}}
+							<option value="{{this}}" selected>{{this}}m</option>
+						{{else}}
+							<option value="{{this}}">{{this}}m</option>	
+						{{/if}}	
+					{{/each}}
+				{{else}}
+					{{#each sizes}}
+						{{#if isBaseSize this}}
+							<option value="{{this}}" selected>{{this}}m</option>
+						{{else}}
+							<option value="{{this}}">{{this}}m</option>	
+						{{/if}}	
+					{{/each}}
+				{{/if}}
 		</select>
 	</div>
 </template>
