@@ -1432,5 +1432,13 @@ if(PostCodes.find().count() == 0){
 		'postcode' : 902, 
 		'city'     : 'Vestmannaeyjar'
 	})
+
+	//////////////////////////////////////////////////
+	// Settings
+
+	Settings.insert({'summerStartDate' : '06/01',
+					 '_id' : 'summer'});
+	Settings.insert({'winterStartDate' : '12/01',
+					 '_id' : 'winter'});
 }
 

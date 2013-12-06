@@ -54,7 +54,8 @@ Meteor.Router.add({
 	},
 	'/management' :'management',
 	'/cart'       : 'cart',
-	'/bookEdit'   :'bookEdit'
+	'/bookEdit'   :'bookEdit',
+	'/seasonControl'   :'seasonControl'
 });
 
 Meteor.Router.filters({

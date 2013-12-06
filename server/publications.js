@@ -127,7 +127,15 @@ Meteor.publish('saveTrip', function(trip) {
   }else{
     return null;
   }
-})
+});
+
+Meteor.publish("settings", function () {
+  if(this.userId)
+    return Settings.find();
+  else
+     return null; 
+});
+
 
 var saveQRCode = function(blob, name) {
     var fs = Npm.require('fs'), encoding ='binary';
