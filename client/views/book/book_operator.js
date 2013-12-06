@@ -46,6 +46,10 @@ var updateDataPieChart = function(){
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
 
+	if(Session.get('isEditing')){
+		booksSlot1.splice();
+	}
+
 	booksSlot2 = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
@@ -224,9 +228,9 @@ var doorMaxCapacity = function (trip){
 	}).fetch();
 
 	if(Session.get('isEditing')){
-		for (var i = books.length - 1; i >= 0; i--) {
-			console.log(books[i]);
-		};
+		if(books.indexOf(Books.findOne(Session.get('bookId')))>=0){
+			books.splice(books.indexOf(Books.findOne(Session.get('bookId'))),1);
+		}
 	}
 
 	cartItems = CartItems.find({
@@ -303,6 +307,12 @@ var checkSpaceExtra = function(size, trip){
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
 
+	if(Session.get('isEditing')){
+		if(booksSlot1.indexOf(Books.findOne(Session.get('bookId')))>=0){
+			booksSlot1.splice(booksSlot1.indexOf(Books.findOne(Session.get('bookId'))),1);
+		}
+	}
+
 	booksSlot2 = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
@@ -310,6 +320,12 @@ var checkSpaceExtra = function(size, trip){
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
+
+	if(Session.get('isEditing')){
+		if(booksSlot2.indexOf(Books.findOne(Session.get('bookId')))>=0){
+			booksSlot2.splice(booksSlot2.indexOf(Books.findOne(Session.get('bookId'))),1);
+		}
+	}
 
 	booksSlot3 = CartItems.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
@@ -319,6 +335,12 @@ var checkSpaceExtra = function(size, trip){
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
 
+	if(Session.get('isEditing')){
+		if(booksSlot3.indexOf(Books.findOne(Session.get('bookId')))>=0){
+			booksSlot3.splice(booksSlot3.indexOf(Books.findOne(Session.get('bookId'))),1);
+		}
+	}
+
 	booksSlot4 = CartItems.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
@@ -326,6 +348,12 @@ var checkSpaceExtra = function(size, trip){
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
+
+	if(Session.get('isEditing')){
+		if(booksSlot4.indexOf(Books.findOne(Session.get('bookId')))>=0){
+			booksSlot4.splice(booksSlot4.indexOf(Books.findOne(Session.get('bookId'))),1);
+		}
+	}
 
 	extraSpace = getExtraSlotsSpace(trip);
 
@@ -470,7 +498,9 @@ var checkHaveToOpenDoor = function(size, trip){
 
 
 	if(Session.get('isEditing')){
-		books.splice(books.indexOf(Books.findOne({_id : Session.get('bookId')})),1);
+		if(books.indexOf(Books.findOne(Session.get('bookId')))>=0){
+			books.splice(books.indexOf(Books.findOne(Session.get('bookId'))),1);
+		}
 	}
 
 
@@ -770,9 +800,13 @@ Template.productPrices.firstTime = function(){
 }
 
 Template.productPrices.firstTimePricing = function(price, unit){
-	var parcialTotal = _priced(price) * unit;
-	calcTotal();
-	return parcialTotal;
+	if(Session.get('isEditing')){
+		var parcialTotal = _priced(price) * unit;
+		calcTotal();
+		return parcialTotal;
+	}else{
+		return 0;
+	}
 }
 
 var _priced = function(price){
@@ -793,13 +827,16 @@ Template.categoryVehicleBook.firstTime = function(){
 }
 
 Template.createBook.trips = function(){
-	var product = Products.findOne({_id: Session.get("productId")});
-	var possibleTrips = Array();
-	for(var i = 0; i<product.trips.length;i++){
-		possibleTrips[i] = Trips.findOne({_id: product.trips[i]});
+	if(Session.get('isEditing')){
+		if(Session.get("productId")){
+			return Trips.find({productId : Session.get("productId"), active : true})
+		}else{
+			throwError('Something Bad Happened, Try Again');
+			return [];
+		}
+	}else{
+		return Trips.find({_id : Session.get("tripId")});
 	}
-	return possibleTrips;
-
 }
 
 
@@ -900,6 +937,25 @@ Template.generalPassagerInfo.events({
 				createBook();
 				throwSuccess("Book added on Cart");
 				Meteor.Router.to('/bookOperator');
+			}else{
+				$('#pasagerInfo').submit(function(event){
+					event.preventDefault();
+				});
+			}
+		}
+	},
+
+	'click .saveEdit' : function(event){
+		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
+			throwError('Please Inform the size of vehicle');
+		}else if(!CanSaveTheBook){
+			throwError("The Vehicle informed can't go on the boat");
+		}else{
+			var form = document.getElementById('pasagerInfo');
+			if(form.checkValidity()){
+				updateBook();
+				throwSuccess("Book updated");
+				Meteor.Router.to('/overview');
 			}else{
 				$('#pasagerInfo').submit(function(event){
 					event.preventDefault();
@@ -1284,20 +1340,35 @@ var createBook = function(){
 	
 	book.prices = prices;
 	book.paid = false;
-	temporaryID = CartItems.insert(book);
+	if (Session.get("isEditing")) {
+		Books.update(book);
+		var note = $('#notes').val();
+		if(note){
+			var note = {
+				created : date,
+				type : 'Customer Note',
+				note : note,
+				bookId : book._id
+			}
 
-	var note = $('#notes').val();
-	if(note){
-		var note = {
-			created : date,
-			type : 'Customer Note',
-			note : note,
-			bookId : temporaryID
+			Notes.insert(note);
 		}
+	}else{
+		temporaryID = CartItems.insert(book);
+		var note = $('#notes').val();
+		if(note){
+			var note = {
+				created : date,
+				type : 'Customer Note',
+				note : note,
+				bookId : temporaryID
+			}
 
-		Notes.insert(note);
-	}
+			Notes.insert(note);
+		}
+	};	
 }
+
 
 var formatData = function(percentages){
 	var data = {
@@ -1500,43 +1571,43 @@ var checkIfCarsFits = function(size){
 	ExtraSlot = null;
 	CanSaveTheBook = true;
 	if(size <= 6){
-	showAlert = checkHaveToOpenDoor(size, trip);
-	maxCapacity = doorMaxCapacity(Session.get('productId'), trip);
+		showAlert = checkHaveToOpenDoor(size, trip);
+		maxCapacity = doorMaxCapacity(Session.get('productId'), trip);
 
-	if(showAlert){
-		var result = confirm("Hey You have to open the door to put this car on the boat. Open the Door?");
-		if(result){
-			ExtraSlot = extraSlots[0];
-			CanSaveTheBook = true;
-		}else{
-			result = confirm("Hey You not open the door, wishes to put on extra slot?");
+		if(showAlert){
+			var result = confirm("Hey You have to open the door to put this car on the boat. Open the Door?");
 			if(result){
-				fits = checkSpaceExtra(size, trip);
-				if(fits){
-					ExtraSlot = fits;
-					CanSaveTheBook = true;
-				}else{
-					alert("This car can't be on the boat, this booking can't be created!");
-					CanSaveTheBook = false;
-					}
+				ExtraSlot = extraSlots[0];
+				CanSaveTheBook = true;
 			}else{
-				alert("This car can't be on the boat, this booking can't be created!");
-				CanSaveTheBook = false;
-			}
-			}
-		}else if(size > 5 && size <= 6 && maxCapacity){
-			result = confirm("The Door is already full, place the car on extra slots?");
-			if(result){
-				fits = checkSpaceExtra(size, trip);
-				if(fits){
-					ExtraSlot = fits;
-					CanSaveTheBook = true;
+				result = confirm("Hey You not open the door, wishes to put on extra slot?");
+				if(result){
+					fits = checkSpaceExtra(size, trip);
+					if(fits){
+						ExtraSlot = fits;
+						CanSaveTheBook = true;
+					}else{
+						alert("This car can't be on the boat, this booking can't be created!");
+						CanSaveTheBook = false;
+						}
 				}else{
 					alert("This car can't be on the boat, this booking can't be created!");
 					CanSaveTheBook = false;
 				}
+				}
+			}else if(size > 5 && size <= 6 && maxCapacity){
+				result = confirm("The Door is already full, place the car on extra slots?");
+				if(result){
+					fits = checkSpaceExtra(size, trip);
+					if(fits){
+						ExtraSlot = fits;
+						CanSaveTheBook = true;
+					}else{
+						alert("This car can't be on the boat, this booking can't be created!");
+						CanSaveTheBook = false;
+					}
+				}
 			}
-		}
 	}else if(size > 6){
 		result = confirm("Place this car on Extra Slot?");
 		if(result){
