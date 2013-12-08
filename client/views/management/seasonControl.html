@@ -1,0 +1,31 @@
+<template name="seasonControl">
+
+<fieldset id='fieldsetUser'>
+	<legend>Season Control<span>&nbsp;&nbsp;</span><i class='icon-sun'/></legend>
+	<div class='line-2'>
+
+		<div>
+			
+			<label>Summer start date: </label>
+			<input type='text' id="summerStart" name="summerStart" class="datePickerWYear size1-3" value="{{currentSummer}}">
+		</div>
+		<div>
+			
+			<label>Winter start date: </label>
+			<input type='text' id="winterStart" name="winterStart" class="datePickerWYear size1-3" value="{{currentWinter}}">
+		</div>
+	</div>
+
+	<div class='line-2'>
+		<div>
+			
+		</div>
+		<div>
+			<button class="btn btn-small btn-info saveSettings" >Save settings</button>
+		</div>
+	</div>
+
+</fieldset>
+
+</template>
+
