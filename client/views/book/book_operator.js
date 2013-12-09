@@ -496,6 +496,14 @@ var checkHaveToOpenDoor = function(size, trip){
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
+	cartBooks = CartItems.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
+		'vehicle.extraSlot' : extraSlots[0]
+	}).fetch();
+
 
 	if(Session.get('isEditing')){
 		if(books.indexOf(Books.findOne(Session.get('bookId')))>=0){
@@ -513,6 +521,17 @@ var checkHaveToOpenDoor = function(size, trip){
 			count6m++;
 		}
 	};
+
+	for (var i = cartBooks.length - 1; i >= 0; i--) {
+		if(cartBooks[i].vehicle.size <= 5){
+			count5m++;
+		}
+
+		if(cartBooks[i].vehicle.size > 5 && cartBooks[i].vehicle.size <= 6){
+			count6m++;
+		}
+	};
+
 
 	if(size <= 5){
 		if(count5m < 21){
@@ -1572,8 +1591,7 @@ var checkIfCarsFits = function(size){
 	CanSaveTheBook = true;
 	if(size <= 6){
 		showAlert = checkHaveToOpenDoor(size, trip);
-		maxCapacity = doorMaxCapacity(Session.get('productId'), trip);
-
+		maxCapacity = doorMaxCapacity(trip);
 		if(showAlert){
 			var result = confirm("Hey You have to open the door to put this car on the boat. Open the Door?");
 			if(result){

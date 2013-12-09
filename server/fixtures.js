@@ -484,7 +484,8 @@ if(Books.find().count() == 0){
 	}
 
 
-	for (var i = 0; i < 500; i++) {
+	for (var i = 0; i < 20; i++) {
+		console.log(i);
 		var sum = 0;
 		with(date){
 			var randomday = parseInt((Math.random() * (30 - 5) + 5));
@@ -536,6 +537,8 @@ if(Books.find().count() == 0){
 			}
 			sum += base;
 
+			console.log(vehicles[randomVehicleIndex].size[0]);
+
 			vehicle = {
 				"vehicleModel" : "",
 				"category" : vehicles[randomVehicleIndex].category,
@@ -543,13 +546,13 @@ if(Books.find().count() == 0){
 				"totalCost" : base
 			}
 
+
 			//If vehicles has less or 5 meters
 			if(vehicle.size <= 5){
 				countVehicle5m = Books.find({
 					dateOfBooking 	: {$gte: thisDay, $lt: nextDay},
 					'product._id' 	: products[randomProductIndex]._id,
 					'trip.from' 	: trip.from,
-					'vehicle.size'  : {$gt: 0, $lte: 5},
 					'vehicle.extraSlot' : extraSlots[0]
 				}).count();
 
@@ -622,14 +625,9 @@ if(Books.find().count() == 0){
 		book.prices = pricesRandom;*/
 		book.totalISK = sum;
 
-		if(zeroOrOne){
-			book.paid = true;
-			book.bookStatus = 'Created';
-		}else{
-			book.paid = false;
-			book.bookStatus = 'Canceled';
-		}
-
+		book.paid = true;
+		book.bookStatus = 'Created';
+		
 		if(saveBook){
 			var transaction = {};
 			if(book._id){
