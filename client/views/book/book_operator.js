@@ -4,6 +4,7 @@ var ExtraSlot = '';
 var CanSaveTheBook = true;
 var Product = {};
 var CarsToMove = [];
+var CanAdd2Motocycle = false;
 
 
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
@@ -219,6 +220,8 @@ var doorMaxCapacity = function (trip){
 	var count5m = 0;
 	var max5mCars = 0;
 
+	console.log(trip);
+
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
@@ -264,22 +267,27 @@ var doorMaxCapacity = function (trip){
 	sumExtraSpace = parseInt(extraSpace.extraSpace1 + extraSpace.extraSpace2);
 
 	if(sumExtraSpace <= 48){
+		CanAdd2Motocycle = true;
 		max5mCars = 24;
 	}
 
 	if(sumExtraSpace <= 43){
+		CanAdd2Motocycle = false;
 		max5mCars = 25;
 	}
 
 	if(sumExtraSpace <= 38){
+		CanAdd2Motocycle = false;
 		max5mCars = 27;
 	}
 
 	if(sumExtraSpace <= 33){
+		CanAdd2Motocycle = false;
 		max5mCars = 28;
 	}
 
 	if(sumExtraSpace <= 30){
+		CanAdd2Motocycle = false;
 		max5mCars = 30;
 	}
 
@@ -537,18 +545,10 @@ var checkHaveToOpenDoor = function(size, trip){
 		if(count5m < 21){
 			return false;
 		}
-
-		if(count5m > 21){
-			return false;
-		}
 	}
 
 	if(size > 5 && size <= 6){
 		if(count6m < 2){
-			return false;
-		}
-
-		if(count6m > 2){
 			return false;
 		}
 	}
@@ -1590,15 +1590,21 @@ var checkIfCarsFits = function(size){
 	ExtraSlot = null;
 	CanSaveTheBook = true;
 	if(size <= 6){
+		//Check if all space on the boat for the cars has takken, if yes
+		//will ask to operator if him wants to open the door for place the cars
 		showAlert = checkHaveToOpenDoor(size, trip);
+
+		//If the door has reached the max capacity, there is no space on the boat for the
+		//car based on his size
 		maxCapacity = doorMaxCapacity(trip);
+
 		if(showAlert){
-			var result = confirm("Hey You have to open the door to put this car on the boat. Open the Door?");
+			var result = confirm("There is no space on the boat. Place on the Door?");
 			if(result){
 				ExtraSlot = extraSlots[0];
 				CanSaveTheBook = true;
 			}else{
-				result = confirm("Hey You not open the door, wishes to put on extra slot?");
+				result = confirm("Wishes to put on extra slot?");
 				if(result){
 					fits = checkSpaceExtra(size, trip);
 					if(fits){
@@ -1612,20 +1618,23 @@ var checkIfCarsFits = function(size){
 					alert("This car can't be on the boat, this booking can't be created!");
 					CanSaveTheBook = false;
 				}
-				}
-			}else if(size > 5 && size <= 6 && maxCapacity){
-				result = confirm("The Door is already full, place the car on extra slots?");
-				if(result){
-					fits = checkSpaceExtra(size, trip);
-					if(fits){
-						ExtraSlot = fits;
-						CanSaveTheBook = true;
-					}else{
-						alert("This car can't be on the boat, this booking can't be created!");
-						CanSaveTheBook = false;
-					}
+			}
+		}else if(size <= 2.5 && CanAdd2Motocycle){
+			ExtraSlot = fits;
+			CanSaveTheBook = true;
+		}else if(maxCapacity){
+			result = confirm("The Door is already full, place the car on extra slots?");
+			if(result){
+				fits = checkSpaceExtra(size, trip);
+				if(fits){
+					ExtraSlot = fits;
+					CanSaveTheBook = true;
+				}else{
+					alert("This car can't be on the boat, this booking can't be created!");
+					CanSaveTheBook = false;
 				}
 			}
+		}
 	}else if(size > 6){
 		result = confirm("Place this car on Extra Slot?");
 		if(result){
