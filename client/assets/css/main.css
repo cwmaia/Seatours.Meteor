@@ -292,6 +292,7 @@ select{
 
 .calendarWrap{
 	float: right !important;
+	margin-top: -40px;
 	/*visibility: hidden;*/
 }
 
