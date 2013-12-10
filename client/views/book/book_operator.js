@@ -6,6 +6,7 @@ var CanSaveTheBook = true;
 var Product = {};
 var CarsToMove = [];
 var CanAdd2Motocycle = false;
+var VehicleSelected = false;
 
 
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
@@ -220,8 +221,6 @@ var doorMaxCapacity = function (trip){
 	var count6m = 0;
 	var count5m = 0;
 	var max5mCars = 0;
-
-	console.log(trip);
 
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
@@ -561,7 +560,6 @@ var checkHaveToOpenDoor = function(size, trip){
 ///////////////////////////////////////////
 //Template Book Operator
 Template.bookOperator.rendered = function() {
-	console.log('XXXXXX');
 	$('.calendar').datepicker({
 		onSelect: function() {
 			var date = $(this).datepicker('getDate');
@@ -962,7 +960,6 @@ Template.productPrices.events({
 
 	"change input" : function(event){
 		Session.set('firstTimePrice', false);
-		console.log(this.unit);
 		var totalParcial = event.currentTarget.value * this.unit;
 		$('#'+this._id).val(totalParcial).text(totalParcial);
 		var totalPrice = event.currentTarget.value;
@@ -1091,7 +1088,7 @@ Template.bookingVehicles.rendered = function(){
 	});
 
 	finalItems = _.uniq(items);
-	console.log(finalItems);
+
 
 	$('#vehicle').typeahead({
 		name : 'name',
@@ -1105,8 +1102,10 @@ Template.bookingVehicles.rendered = function(){
 				return $(this).text() == vehicle.category;
 			}).attr('selected', true);
 
+			$('#vehiclePlate').val(vehicle.vehiclePlate);
+
 			var category = VehiclesCategory.findOne({category: vehicle.category});
-			Session.set('categoryId', category._id);
+			VehicleSelected = true;
 
 			$("#size option").filter(function(){
 				return $(this).text() == vehicle.size;
@@ -1118,9 +1117,12 @@ Template.bookingVehicles.rendered = function(){
 				SaveVehicle = true;
 			}
 
+			Session.set('categoryId', category._id);
+			
 			$("#totalVehicle").text(vehicle.totalCost);
 			calcTotal();
 		}else{
+			VehicleSelected = false;
 			SaveVehicle = true;
 			calcTotal();
 		}
@@ -1129,13 +1131,15 @@ Template.bookingVehicles.rendered = function(){
 
 Template.bookingVehicles.events({
 	'keyup #vehicle' : function(event){
-		if(event.keyCode != 13){
+		if(event.keyCode != 13 && VehicleSelected){
 			$("#categories").removeAttr("disabled");
 			$("#size").removeAttr("disabled");
 			$("#categories option:first").attr("selected", true);
 			$("#size option:first").text("").attr("selected", true);
 			$("#size option:first").attr("selected", true);
 			$('#vehiclesField input[type=text]').val('');
+			$('#vehiclePlate').val("");
+			VehicleSelected = false;
 			calcTotal();
 		}
 	}
@@ -1375,7 +1379,7 @@ var createBook = function(){
 	}
 
 	book.vehicle = vehicle;
-	console.log($("#vehicle").val());
+
 	if($("#vehicle").val()){
 		SaveVehicle = true;
 	}
