@@ -486,8 +486,7 @@ var countExtraSpace = function(){
 	$("#spaceAlocatedSlot3").text(' On Cart: '+spaceAlocatedSlot3);
 	$("#spaceAlocatedSlot4").text(' On Cart: '+spaceAlocatedSlot4);
 	$("#spaceAlocated").text(parseInt(spaceAlocated - (spaceAlocatedSlot3 + spaceAlocatedSlot4)));
-	$("#spaceAlocatedCart").text(parseInt(spaceAlocatedSlot3 + spaceAlocatedSlot4));
-	
+	$("#spaceAlocatedCart").text(parseInt(spaceAlocatedSlot3 + spaceAlocatedSlot4));	
 }
 
 var checkHaveToOpenDoor = function(size, trip){	
@@ -560,7 +559,6 @@ var checkHaveToOpenDoor = function(size, trip){
 ///////////////////////////////////////////
 //Template Book Operator
 Template.bookOperator.rendered = function() {
-	console.log('XXXXXX');
 	$('.calendar').datepicker({
 		onSelect: function() {
 			var date = $(this).datepicker('getDate');
@@ -696,6 +694,14 @@ Template.bookDetail.fullname = function(id){
 }
 
 Template.bookDetail.qtdCarsUpTo5 = function(){
+	return carsUpTo5();
+}
+
+Template.createBook.qtdCarsUpTo5 = function(){
+	return carsUpTo5();
+}
+
+carsUpTo5 = function(){
 	var dates = getSelectedAndNextDay();
 	var trip = Trips.findOne(Session.get('tripId'));
 	
@@ -719,6 +725,14 @@ Template.bookDetail.qtdCarsUpTo5 = function(){
 }
 
 Template.bookDetail.qtdCarsUpTo6 = function(){
+	return carsUpto6();
+}
+
+Template.createBook.qtdCarsUpTo6 = function(){
+	return carsUpto6();
+}
+
+carsUpto6 = function(){
 	var dates = getSelectedAndNextDay();
 	var trip = Trips.findOne(Session.get('tripId'));
 	var count = 0;
@@ -946,6 +960,12 @@ Template.createBook.rendered = function(){
     	$('#postcode').val(customer.postcode);
     	$('#country').val(customer.country);
 	}
+
+	$('#passengers').dataTable();
+	$('#boatSlots').dataTable();
+	countExtraSpace();
+	drawPieChartBoatSlots();
+
 }
 
 Template.createBook.events({
