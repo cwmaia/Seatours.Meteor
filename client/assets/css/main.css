@@ -4,6 +4,10 @@ h1, h2, h3, h4, h5, h6{
 	font-family: 'Cabin', Arial, tahoma, sans-serif !important;
 }
 
+.ui-datepicker-current-day a{
+	background-color: orange !important;
+}
+
 table{
 	margin-top: 1%;
 }
@@ -90,11 +94,12 @@ select{
 }
 
 .custom-colorize-changer {
-	font-size: 10px;
+	font-size: 10px;background-color: orange !important;
 	position: absolute;
 	right: 0;
 	bottom: 0;
 }
+
 
 .ui-datepicker-calendar td a.isFull{
 	background-color: orange !important;
@@ -601,8 +606,6 @@ select{
 }
 .item-price,
 .item-subtotal{width:50px;}
-
-
 
 /*
 	Media Query
