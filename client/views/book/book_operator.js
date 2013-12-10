@@ -1620,7 +1620,7 @@ var checkIfCarsFits = function(size){
 				}
 			}
 		}else if(size <= 2.5 && CanAdd2Motocycle){
-			ExtraSlot = fits;
+			ExtraSlot = extraSlots[0];
 			CanSaveTheBook = true;
 		}else if(maxCapacity){
 			result = confirm("The Door is already full, place the car on extra slots?");
