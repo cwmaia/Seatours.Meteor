@@ -2,6 +2,7 @@
 	<div class="page-header">
 		<h1>
 			Bookings
+			<label>Current season: {{currentSeason}}</label>
 		</h1>
 	</div><!-- /.page-header -->
 
@@ -9,19 +10,25 @@
 		{{#each product}}
 			<li id="{{_id}}">
 				<h3>{{name}}</h3>
-				
-				<select id="trip_{{_id}}" class="trip" required>
-					<option value="">Select..</option>
-					{{#each getTripsByProduct _id}}
-						<option value="{{_id}}" data-from="{{from}}">{{from}} - {{to}} - {{hour}}</option>
-					{{/each}}
-				</select>
+
+				<div style="clear: both;"></div>
 
 				<img src="/images/{{name}}.jpg">
 
 				<div class="calendarWrap">
 					<div class="calendar" id="calendar_{{_id}}"></div>
-				</div>
+					<br>
+					<select id="trip_{{_id}}" class="trip" required style="min-width: 260px; max-width: 260px; " >
+					<option value="" disabled="disabled">Select..</option>
+
+					{{#each getTripsByProduct _id selectedDate}}
+						<option value="{{_id}}" data-from="{{from}}">{{from}} - {{to}} - {{hour}}</option>
+					{{/each}}
+					</select>
+
+					<div style="clear: both;"></div>
+					<button style="float: right;" class="btn btn-info proceed">Proceed</button>
+				</div>	
 			</li>	
 		{{/each}}
 	</ul>
@@ -165,6 +172,7 @@
 	<div class="page-header">
 		<h1>
 			Booking - {{productName}} - {{dateOfBooking}}
+			<label>Current Season: {{currentSeason}}</label>
 		</h1>
 	</div><!-- /.page-header -->
 
@@ -179,11 +187,7 @@
 				{{/if}}	
 			{{/each}}
 		</select>
-		{{#if isSummer}}
-			<label>Summer</label>
-		{{else}}
-			<label>Winter</label>
-		{{/if}}
+		
 	</div>
 
 	<div class="line-3">

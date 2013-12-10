@@ -20,6 +20,7 @@ Template.seasonControl.events({
 		Settings.update(summer._id, {$set : {'summerStartDate' : $('#summerStart').val()}});
 		var winter = Settings.findOne({'_id' : 'winter'});
 		Settings.update(winter._id, {$set : {'winterStartDate' : $('#winterStart').val()}});
+		throwSuccess("Settings updated!");
 	}
 });
 

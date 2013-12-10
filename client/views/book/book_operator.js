@@ -562,19 +562,8 @@ var checkHaveToOpenDoor = function(size, trip){
 Template.bookOperator.rendered = function() {
 	$('.calendar').datepicker({
 		onSelect: function() {
-			var productId = $(this).parents('li')[0].id,
-			select = $('#trip_' + productId);
-
-			if(select[0].checkValidity()){
-				var date = $(this).datepicker('getDate');
-				
-				Session.set('bookingDate', date);
-				Session.set('tripId', select.val());
-
-				Meteor.Router.to("/bookOperator/" + $(this).parents('li')[0].id);
-			}
-			else
-				showPopover(select, 'Choose the trip');
+			var date = $(this).datepicker('getDate');
+			Session.set('bookingDate', date);
 		},
 		'onChangeMonthYear': function(year, month) {
 			var calendar = this;
@@ -590,26 +579,77 @@ Template.bookOperator.rendered = function() {
 	});
 }
 
-Template.bookOperator.helpers({
-	'product' : function(){
-		return Products.find();
-	},
 
-	'getTripsByProduct' : function(productId) {
+Template.bookOperator.getTripsByProduct = function(productId, selectedDate){
 		if(productId){
-			return Trips.find({productId: productId, active : true});
+			return Trips.find({productId: productId, active : true, season : currentSeason()});
 		}else{
 			throwError('tenso');
 			return [];
 		}
-		
+}
+
+
+Template.bookOperator.helpers({
+	'product' : function(){
+		return Products.find();
 	}
 })
+
+var currentSeason = function(){
+	var today = Session.get('bookingDate') ? Session.get('bookingDate') : new Date();
+	//Check the closest month
+	var summerStartMonth = parseInt(Settings.findOne({_id : "summer"}).summerStartDate.split("/")[0])-1;
+	var winterStartMonth = parseInt(Settings.findOne({_id : "winter"}).winterStartDate.split("/")[0])-1;
+	var temp1 = Math.abs(summerStartMonth - today.getMonth());
+	var temp2 = Math.abs(winterStartMonth - today.getMonth());
+	var compareDate;
+	//if its closer to winter then is going to check from the winter date
+	if (temp1 >= temp2){
+		//if month is equals or bigger its in the same year
+		if (today.getMonth() >= winterStartMonth){
+			compareDate = new Date(today.getFullYear(),parseInt(Settings.findOne({_id : "winter"}).winterStartDate.split("/")[0])-1,parseInt(Settings.findOne({_id : "winter"}).winterStartDate.split("/")[1]));
+		}else{
+			compareDate = new Date(today.getFullYear()+1,parseInt(Settings.findOne({_id : "winter"}).winterStartDate.split("/")[0])-1,parseInt(Settings.findOne({_id : "winter"}).winterStartDate.split("/")[1]));
+		}
+		if(today >= compareDate){
+			return "winter";
+		}else{
+			return "summer";
+		}
+	}else{
+		//same as for winter
+		if (today.getMonth() >= summerStartMonth){
+			compareDate = new Date(today.getFullYear(),parseInt(Settings.findOne({_id : "summer"}).summerStartDate.split("/")[0])-1,parseInt(Settings.findOne({_id : "summer"}).summerStartDate.split("/")[1]));
+		}else{
+			compareDate = new Date(today.getFullYear()+1,parseInt(Settings.findOne({_id : "summer"}).summerStartDate.split("/")[0])-1,parseInt(Settings.findOne({_id : "summer"}).summerStartDate.split("/")[1]));
+		}
+		if(today >= compareDate){
+			return "summer";
+		}else{
+			return "winter";
+		}
+	}
+}
+
+Template.bookOperator.currentSeason = function(){
+	return currentSeason();
+}
 
 Template.bookOperator.events({
 	'change .trip': function(event) {
 		setCalendarCapacity($(event.currentTarget).closest('li').find('.calendar'))
-	}
+	},
+	'click .proceed': function(event){
+		var productId = $(event.currentTarget).parents('li')[0].id,
+        select = $('#trip_' + productId);
+        if(select[0].checkValidity()){
+			Session.set('tripId',select.val());
+			Meteor.Router.to("/bookOperator/" + $(event.currentTarget).parents('li')[0].id);
+		}else{
+            showPopover(select, 'Choose the trip');
+        }
+    }
 });
 
 function setCalendarCapacity (calendar) {
@@ -785,6 +825,10 @@ Template.bookDetail.helpers({
 //Template Create Book
 Template.createBook.productName = function(){
 	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).name : "" ;
+}
+
+Template.createBook.currentSeason = function(){
+	return currentSeason();
 }
 
 Template.createBook.dateOfBooking = function(){
