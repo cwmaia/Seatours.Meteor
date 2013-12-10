@@ -560,24 +560,15 @@ var checkHaveToOpenDoor = function(size, trip){
 ///////////////////////////////////////////
 //Template Book Operator
 Template.bookOperator.rendered = function() {
+	console.log('XXXXXX');
 	$('.calendar').datepicker({
 		onSelect: function() {
 			var date = $(this).datepicker('getDate');
 			Session.set('bookingDate', date);
 		},
-		'onChangeMonthYear': function(year, month) {
-			var calendar = this;
-
-			$(calendar).attr('data-month', month).attr('data-year', year);
-
-			if($(calendar).closest('li').find('select').val().length > 5){
-				setTimeout(function() {
-					setCalendarCapacity($(calendar));
-				}, 10);
-			}
-		},
 		beforeShowDay: function(date){
-			if(date == Session.get("bookingDate")){
+			var selectedDate = Session.get('bookingDate') ? Session.get('bookingDate') : new Date();
+			if(date == selectedDate){
 				return [true, "isFull"];
 			}
 			else{
@@ -638,6 +629,11 @@ var currentSeason = function(){
 			return "winter";
 		}
 	}
+}
+
+Template.bookOperator.bookingDate = function(){
+	var date = (Session.get('bookingDate') ? Session.get('bookingDate') : new Date()).toLocaleDateString();
+	return date;
 }
 
 Template.bookOperator.currentSeason = function(){
