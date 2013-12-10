@@ -31,12 +31,35 @@ Template.voucher.customer = function(){
 	
 }
 
+Template.voucher.calcTotal = function(totalISK){
+  var bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
+  for (var i = bookTransactions.length - 1; i >= 0; i--) {
+    if(bookTransactions[i].type == 'Refund'){
+      totalISK = totalISK + bookTransactions[i].amount;
+    }else{
+      totalISK = totalISK - bookTransactions[i].amount;
+    }
+  };
+  return totalISK;
+
+}
+
+
 Template.voucher.hasVehicles = function(){
 	if(Book.vehicle.category != ''){
 		return true;
 	}else{
 		return false;
 	}
+}
+
+Template.voucher.transactions = function(){
+  return Transactions.find({bookId : Session.get('bookId')});
+}
+
+Template.voucher.format = function(date){
+  var _date = new Date(""+date);
+  return _date.toLocaleDateString();
 }
 
 Template.voucher.qrCode = function(){
@@ -58,6 +81,11 @@ Template.voucher.qrCode = function(){
     var qrcodePath = 'images/qrcodes/'  + Book._id + '.gif';
     return server+qrcodePath;
   }
+}
+
+Template.voucher.rendered = function(){
+  $("#calcISK").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
+  $("#calcISK").maskMoney('mask');
 }
 
 Template.voucher.helpers({

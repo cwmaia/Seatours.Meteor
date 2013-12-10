@@ -575,6 +575,14 @@ Template.bookOperator.rendered = function() {
 					setCalendarCapacity($(calendar));
 				}, 10);
 			}
+		},
+		beforeShowDay: function(date){
+			if(date == Session.get("bookingDate")){
+				return [true, "isFull"];
+			}
+			else{
+				return [true, ""];
+			}
 		}
 	});
 }

@@ -20,10 +20,10 @@ Template.bookTransactionsResume.events({
 	},
 	'click .saveTransaction' : function(){
 
-		//calc total amount with descount
+		//calc total amount with discount
 		var date = $('#date').val();
 		var amount = $('#amount').val();
-		var descount = $('#descount').val();
+		var discount = $('#discount').val();
 		var vendor = $('#vendor').val();
 		var type = $('#type').val();
 		var detail = $('#detail').val();
@@ -48,8 +48,8 @@ Template.bookTransactionsResume.events({
 			return;
 		}
 
-		var amountDescount = amount * (descount/100);
-		var totalAmount = amount - amountDescount;
+		var amountDiscount = amount * (discount/100);
+		var totalAmount = amount - amountDiscount;
 
 		var transaction = {
 			'bookId' : Session.get('bookId'),
