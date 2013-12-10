@@ -140,7 +140,7 @@
 				<tbody>	
 				{{#each bookings}}
 					<tr id='{{_id}}'>
-						<td><a href="/bookDetailResume/{{_id}}">{{_id}}</a></td>
+						<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
 						<td>{{trip.from}} - {{trip.to}}</td>
 						<td>{{fullname customerId}}</td>
 						<td>{{bookStatus}}</td>
@@ -259,20 +259,24 @@
 
 <template name="productPrices">
 	<input type='hidden' id='{{unit}}' class='unitPrice'>
-			
-			<div>
-				
-				<label>{{price}} ({{unit}} ISK)</label>
-				
-					<input type='number' class="size1-4" min="0" value='{{priced price}}'>
-						<em class="calcTotal price" data-value="" id="{{price}}">{{firstTimePricing price unit}}</em>
-			</div>
+	<div>
+		<label>{{price}} ({{unit}} ISK)</label>
+		<input type='number' class="size1-4" min="0" value='{{priced price}}'>
+		<em class="calcTotal price" data-value="" id="{{_id}}">{{firstTimePricing price unit}}</em>
+	</div>
 </template>
 
 <template name="bookingVehicles">
-	<div>
-		<label>Vehicle</label>
-		<input type="text" name="vehicle" id="vehicle">
+	<div class='line-2'>
+		<div>
+			<label>Vehicle</label>
+			<input type="text" class='size1-1' name="vehicle" id="vehicle">
+		</div>
+
+		<div>
+			<label>Vehicle Plate</label>
+			<input type="text" class='size1-3' name="vehiclePlate" id="vehiclePlate">
+		</div>
 	</div>
 </template>
 
@@ -318,7 +322,7 @@
 	            
 	            <div class="input-append">
 		            <label class="required">Telephone: </label>
-	                <input type="text" class="size1-3" id="telephone" name="telephone" placeholder="Telephone" required>
+	                <input type="text" class="size1-2" id="telephone" name="telephone" placeholder="Telephone" required>
 	                <span class="add-on">
 						<i class="icon-phone"></i>
 					</span>

@@ -37,13 +37,23 @@
 								</div>
 							</div>							
 							
-							<label>Group: </label>
-							<select id='group' required>
-								<option value=''>Select...</option>
-								{{#each groups}}
-									<option value='{{_id}}'>{{name}}</option>
-								{{/each}}
-							</select>
+							<div class='line-2'>
+								<div>
+									<label>Name: </label>
+									<input name='name' type='text' required id='name'>
+								</div>
+
+								<div>
+									<label>Group: </label>
+									<select id='group' required>
+										<option value=''>Select...</option>
+										{{#each groups}}
+											<option value='{{_id}}'>{{name}}</option>
+										{{/each}}
+									</select>
+								</div>
+							</div>
+							
 							</fieldset>
 
 							<button class='btn btn-success create-account-button' id='addUsers'>

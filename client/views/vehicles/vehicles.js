@@ -27,15 +27,12 @@ Template.vehicles.events({
 		}else{
 			if(form.checkValidity()){
 				vehicle = {
-					'brandname'	: $('#brandname').val(),
-					'model'		: $('#model').val(),
-					'category'  : {
-				         'category'  : $('#categories').val(),
-				         'size'    : $('#size').val(),
-				         'basePrice' : category.basePrice
-				     }
+					'vehicleName'		: $('#model').val(),
+					'category'  : $('#categories').val(),
+					'size'    : $('#size').val(),
+					'basePrice' : category.basePrice     
 				};
-				Meteor.insert(vehicle)
+				Vehicles.insert(vehicle);
 				throwSuccess("Vehicle Created");
 
 				form.reset();

@@ -1,4 +1,5 @@
 var SaveCustomer = true;
+var SaveVehicle = false;
 var CustomerSelected = false;
 var ExtraSlot = '';
 var CanSaveTheBook = true;
@@ -906,7 +907,7 @@ Template.createBook.trips = function(){
 Template.createBook.helpers({
 	"prices" : function(){
 		if(Session.get("productId")){
-			return Prices.find({productId : Session.get("productId"), active : true})
+			return Prices.find({productId : Session.get("productId"), active : true, season: currentSeason()})
 		}else{
 			throwError('Something Bad Happened, Try Again');
 			return [];
@@ -957,11 +958,12 @@ Template.productPrices.events({
 
 	"change input" : function(event){
 		Session.set('firstTimePrice', false);
+		console.log(this.unit);
 		var totalParcial = event.currentTarget.value * this.unit;
-		$('#'+this.price).val(totalParcial).text(totalParcial);
+		$('#'+this._id).val(totalParcial).text(totalParcial);
 		var totalPrice = event.currentTarget.value;
 		var totalParcial = totalPrice * this.unit;
-		$('#'+this.price).val(totalParcial);
+		$('#'+this._id).val(totalParcial);
 		$('#'+this.unit).val(this.price+"|"+this.unit+"|"+totalPrice+"|"+totalParcial);
 
 		calcTotal();
@@ -1064,8 +1066,7 @@ Template.bookingVehicles.helpers({
 Template.generalPassagerInfo.rendered = function() {
 	$('.datepicker').datepicker({
 		changeMonth : true,
-      	changeYear 	: true,
-      	yearRange 	: 'c-100:c-10'
+      	changeYear 	: true
 	});
 
 	$('#telephone').mask('(999) 99999999');
@@ -1073,51 +1074,50 @@ Template.generalPassagerInfo.rendered = function() {
 }
 
 Template.bookingVehicles.rendered = function(){
-	var vehicles = Vehicles.find().fetch(),
-	finalItems = [];
+	$('#vehicle').typeahead('destroy');
+	var items = [],
+	finalItems,
+	tags = Vehicles.find({}, {fields: {vehicleName: 1}});
+	tags.forEach(function(tag){
+    	var datum = {
+    		'value' : tag.vehicleName,
+    		'id' : tag._id
+    	}
+    	items.push(datum);
+	});
 
-	for (var i = vehicles.length - 1; i >= 0; i--) {
-		finalItems.push({
-			id 		: vehicles[i]._id,
-			value	: vehicles[i].model + ' - ' + vehicles[i].brandname
-		})
-	}
+	finalItems = _.uniq(items);
+	console.log(finalItems);
 
 	$('#vehicle').typeahead({
-		name : 'brandname',
+		name : 'name',
 		local: finalItems
 	}).bind('typeahead:selected', function (obj, datum) {
 		var id = datum.id;
-
 		if(id != ""){
-			var category = Vehicles.findOne({_id: id}).category;
+			var vehicle = Vehicles.findOne({_id: id});
 
 			$("#categories option").filter(function(){
-				return $(this).text() == category.category;
+				return $(this).text() == vehicle.category;
 			}).attr('selected', true);
 
-			$("#size option:first").text(category.size+"m").val(category.size).attr("selected", true);
-			
-			$("#categories").attr("disabled", true);
-			$("#size").attr("disabled", true);
+			var category = VehiclesCategory.findOne({category: vehicle.category});
+			Session.set('categoryId', category._id);
 
-			$("#baseVehicle").val(category.basePrice);
+			$("#size option").filter(function(){
+				return $(this).text() == vehicle.size;
+			}).attr('selected', true);
 
-			var totalVehiclePrice = category.basePrice;
-			if(category.size > 10){
-				var mult = category.size - 10;
-				totalVehiclePrice += mult * 1625;
+			if(category.vehiclePlate){
+				SaveVehicle = false;
+			}else{
+				SaveVehicle = true;
 			}
 
-			$("#totalVehicle").text(totalVehiclePrice);
+			$("#totalVehicle").text(vehicle.totalCost);
 			calcTotal();
 		}else{
-			$("#categories").removeAttr("disabled");
-			$("#size").removeAttr("disabled");
-			$("#categories option:first").attr("selected", true);
-			$("#size option:first").text("").attr("selected", true);
-			$("#size option:first").attr("selected", true);
-			$('#vehiclesField input[type=text]').val('');
+			SaveVehicle = true;
 			calcTotal();
 		}
 	});
@@ -1362,11 +1362,22 @@ var createBook = function(){
 		'product' : Product,
 	}
 
-	book.vehicle = {
-		"vehicleModel" : $("#listvehicles").val(),
+	vehicle = {
+		"vehicleName" : $("#vehicle").val(),
 		"category" : $("#categories").val(),
 		"size" : $("#size").val(),
-		"totalCost" : $("#totalVehicle").text()
+		"totalCost" : $("#totalVehicle").text(),
+		'vehiclePlate' : $('#vehiclePlate').val()
+	}
+
+	book.vehicle = vehicle;
+	console.log($("#vehicle").val());
+	if($("#vehicle").val()){
+		SaveVehicle = true;
+	}
+
+	if(SaveVehicle){
+		Vehicles.insert(vehicle);
 	}
 
 

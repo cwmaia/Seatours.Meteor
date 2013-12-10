@@ -95,7 +95,7 @@ Template.editTrip.events({
 
 			throwInfo('Trip added');
 		}else{
-			throwError('tenso');
+			throwInfo('Please Save the Product Before Add Trips!');
 		}
 			
 
@@ -107,21 +107,25 @@ Template.editTrip.events({
 		var form = event.currentTarget;
 
 		if(form.checkValidity()){
-			var price = {
-				price 	: form.price.value,
-				unit	: form.unit.value,
-				season  : form.season.value
-			};
+			product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
+			if(product){
+				var price = {
+					price 	: form.price.value,
+					unit	: form.unit.value,
+					season  : form.season.value,
+					productId : product._id,
+					active : true
+				};
 
-			var prices = _product.prices;
+				Prices.insert(price);
 
-			prices.push(price);
+				form.reset();
 
-			Products.update(_product._id, {$set : {prices : prices}})
+				throwInfo('Price added');
+			}else{
+				throwInfo('Please Save the Product Before Add Trips!');
 
-			form.reset();
-
-			throwSuccess('Price added');
+			}	
 		}
 	},
 

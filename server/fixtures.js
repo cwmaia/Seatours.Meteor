@@ -4,6 +4,7 @@ Meteor.startup(function () {
 
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
 var admId = '';
+var vendorsId = '';
 
 if(Groups.find().count() == 0){
 	admId = Groups.insert({
@@ -11,7 +12,7 @@ if(Groups.find().count() == 0){
 		'description' : 'Lords of the Universe'
 	});
 
-	Groups.insert({
+	vendorsId = Groups.insert({
 		'name' : 'Vendors',
 		'description' : 'Vendors'
 	})
@@ -88,6 +89,15 @@ if(Products.find().count() == 0){
 		'productId' : result		
 	})
 
+	Trips.insert({
+		"from" 	: "Stykkishólmur",
+		"to"	: "Brjánslækur",
+		"hour"  : "15:00",
+		'season' : "winter",
+		'active' : true,
+		'productId' : result
+	}),
+
 
 	Prices.insert({
 		"price" 	: "Adult",
@@ -96,6 +106,15 @@ if(Products.find().count() == 0){
 		'season' : 'summer',
 		'productId' : result
 	})
+
+	Prices.insert({
+		"price" 	: "Adult",
+		"unit"	: 4080,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
 
 	Prices.insert({
 		"price" 	: "Child",
@@ -409,7 +428,21 @@ if(Meteor.users.find().count() == 0){
 	Accounts.createUser({
 	  'username'  : 'gudrun',
 	  'email'     : 'gudrun@me.com',
-	  'profile'	  : {'groupID' : admId},
+	  'profile'	  : {'groupID' : admId, 'name' : 'Gudrun'},
+	  'password'  : '1234' //encrypted automatically 
+	});
+
+	Accounts.createUser({
+	  'username'  : 'rhneto',
+	  'email'     : 'rhneto@me.com',
+	  'profile'	  : {'groupID' : vendorsId, 'name' : 'Roberto'},
+	  'password'  : '1234' //encrypted automatically 
+	});
+
+	Accounts.createUser({
+	  'username'  : 'cmaia',
+	  'email'     : 'cmaia@me.com',
+	  'profile'	  : {'groupID' : vendorsId, 'name' : 'Carlos Maia'},
 	  'password'  : '1234' //encrypted automatically 
 	});
 }
@@ -459,7 +492,7 @@ if(Vehicles.find().count() == 0){
 	})*/
 }
 
-if(Books.find().count() == 0){
+/*if(Books.find().count() == 0){
 	//Add Books on past Month
 	var date = new Date();
 	var products = Products.find().fetch();
@@ -623,7 +656,7 @@ if(Books.find().count() == 0){
 		};
 
 		book.prices = pricesRandom;*/
-		book.totalISK = sum;
+		/*book.totalISK = sum;
 
 		book.paid = true;
 		book.bookStatus = 'Created';
@@ -664,7 +697,7 @@ if(Books.find().count() == 0){
 		
 
 	};			
-}
+}*/
 
 if(PostCodes.find().count() == 0){
 
