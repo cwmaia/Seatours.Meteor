@@ -2,37 +2,35 @@
 	<div class="page-header">
 		<h1>
 			Bookings
-			<label>Current season: {{currentSeason}}</label>
-			<label>Selected day: {{bookingDate}}</label>
+			<label>Current season: <span id='currentSeason'></span></label>
 		</h1>
 	</div><!-- /.page-header -->
-
 	<ul class="listing" id="bookings">
 		{{#each product}}
-			<li id="{{_id}}">
-				<h3>{{name}}</h3>
-
-				<div style="clear: both;"></div>
-
-				<img src="/images/{{name}}.jpg">
-
-				<div class="calendarWrap">
-					<div class="calendar" id="calendar_{{_id}}"></div>
-					<br>
-					<select id="trip_{{_id}}" class="trip" required style="min-width: 260px; max-width: 260px; " >
-					<option value="" disabled="disabled">Select..</option>
-
-					{{#each getTripsByProduct _id selectedDate}}
-						<option value="{{_id}}" data-from="{{from}}">{{from}} - {{to}} - {{hour}}</option>
-					{{/each}}
-					</select>
-
-					<div style="clear: both;"></div>
-					<button style="float: right;" class="btn btn-info proceed">Proceed</button>
-				</div>	
-			</li>	
+			{{> productItem}}
 		{{/each}}
 	</ul>
+</template>
+
+<template name='productItem'>
+	<li id="{{_id}}">
+		<h3>{{name}}</h3>
+
+		<div style="clear: both;"></div>
+
+		<img src="/images/{{name}}.jpg">
+
+		<div class="calendarWrap">
+			<div class="calendar"></div>
+			<br>
+			<select id="trip_{{_id}}" class="trip" required style="min-width: 260px; max-width: 260px; " >
+				<option value="" disabled="disabled">Select..</option>
+			</select>
+
+			<div style="clear: both;"></div>
+			<button style="float: right;" class="btn btn-info proceed">Proceed</button>
+		</div>	
+	</li>	
 </template>
 
 <template name="bookDetail">
