@@ -24,16 +24,7 @@ Template.createGroups.events({
 			$(this).val('');
 		})
 		
-	},
-
-	'click .removeGroup' : function(event){
-		var a = event.currentTarget;
-		var id = a.rel;
-
-		Groups.remove(id);
-		throwSuccess('Group Deleted');
-		
-	},
+	}
 
 
 })

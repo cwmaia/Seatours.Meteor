@@ -11,6 +11,12 @@ Template.bookTransactionsResume.dateString = function(data){
 	return data.toDateString();
 }
 
+Template.bookTransactionsResume.vendors = function(){
+	var vendorsGroup = Groups.findOne({name : 'Vendors'});
+	return Meteor.users.find({'profile.groupID' : vendorsGroup._id});
+
+}
+
 Template.bookTransactionsResume.events({
 	'click #addTransaction' : function(){
 		$("#transactionDialog").show();

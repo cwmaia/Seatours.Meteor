@@ -1,10 +1,12 @@
 var SaveCustomer = true;
+var SaveVehicle = false;
 var CustomerSelected = false;
 var ExtraSlot = '';
 var CanSaveTheBook = true;
 var Product = {};
 var CarsToMove = [];
 var CanAdd2Motocycle = false;
+var VehicleSelected = false;
 
 
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
@@ -199,8 +201,8 @@ var realocate = function(size, booksSlot1, booksSlot2, sumSpacesSlot1, sumSpaces
 }
 
 var getSelectedAndNextDay = function(){
-	var selectedDay = Session.get('bookingDate');
-	var nextDay = Session.get('bookingDate');
+	var selectedDay = new Date(localStorage.getItem('date'));
+	var nextDay = new Date(localStorage.getItem('date'));
 
 	with(nextDay){
 		setDate(getDate() +1);	
@@ -219,8 +221,6 @@ var doorMaxCapacity = function (trip){
 	var count6m = 0;
 	var count5m = 0;
 	var max5mCars = 0;
-
-	console.log(trip);
 
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
@@ -559,33 +559,29 @@ var checkHaveToOpenDoor = function(size, trip){
 ///////////////////////////////////////////
 //Template Book Operator
 Template.bookOperator.rendered = function() {
-	$('.calendar').datepicker({
-		onSelect: function() {
-			var date = $(this).datepicker('getDate');
-			Session.set('bookingDate', date);
-		},
-		beforeShowDay: function(date){
-			var selectedDate = Session.get('bookingDate') ? Session.get('bookingDate') : new Date();
-			if(date == selectedDate){
-				return [true, "isFull"];
-			}
-			else{
-				return [true, ""];
-			}
-		}
-	});
+	$('#currentSeason').text(currentSeason());
+};
+
+Template.productItem.rendered = function(){
+	$('.calendar').datepicker()
+		.on('changeDate', function(ev){
+			localStorage.setItem('date', ev.date);
+			console.log(currentSeason())
+			$('#currentSeason').text(currentSeason());
+		});
 }
 
-
-Template.bookOperator.getTripsByProduct = function(productId, selectedDate){
-		if(productId){
-			return Trips.find({productId: productId, active : true, season : currentSeason()});
-		}else{
-			throwError('tenso');
-			return [];
-		}
-}
-
+Template.productItem.events({
+	'click .calendar' : function(event){
+		var trips = Trips.find({productId: this._id, active : true, season : currentSeason()}).fetch();
+		//Remove all previous options
+		$('#trip_'+this._id).find('option').remove();
+		for (var i = trips.length - 1; i >= 0; i--) {
+			//Append new options
+			$('#trip_'+this._id).append("<option value="+trips[i]._id+" data-from="+trips[i].from+">"+trips[i].from +" - "+trips[i].to + " - " +trips[i].hour+"</option>");
+		};
+	}
+})
 
 Template.bookOperator.helpers({
 	'product' : function(){
@@ -594,7 +590,7 @@ Template.bookOperator.helpers({
 })
 
 var currentSeason = function(){
-	var today = Session.get('bookingDate') ? Session.get('bookingDate') : new Date();
+	var today = localStorage.getItem('date') ? new Date(localStorage.getItem('date')) : new Date();
 	//Check the closest month
 	var summerStartMonth = parseInt(Settings.findOne({_id : "summer"}).summerStartDate.split("/")[0])-1;
 	var winterStartMonth = parseInt(Settings.findOne({_id : "winter"}).winterStartDate.split("/")[0])-1;
@@ -630,7 +626,7 @@ var currentSeason = function(){
 }
 
 Template.bookOperator.bookingDate = function(){
-	var date = (Session.get('bookingDate') ? Session.get('bookingDate') : new Date()).toLocaleDateString();
+	var date = (localStorage.getItem('date') ? new Date(localStorage.getItem('date')) : new Date()).toLocaleDateString();
 	return date;
 }
 
@@ -762,20 +758,12 @@ Template.bookDetail.events({
 		Session.set("isEditing", false);
 		Session.set("firstTime", false);
 		Session.set("categoryId", null);
-		var bookingsCreated = Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId'), bookStatus: 'Created'});
+		var bookingsCreated = Books.find({dateOfBooking: new Date(localStorage.getItem('date')), 'product._id': Session.get('productId'), bookStatus: 'Created'});
 		if(bookingsCreated.length >= MaxCapacity)
 			throwError('Maximum capacity of passengers reached!');	
 		else
 			Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');
 	},
-
-	// 'click .changeStatusBooking' : function(event) {
-	// 	var id = $(event.currentTarget).closest('tr').attr('id'),
-	// 	book = Books.findOne(id);
-
-	// 	book.bookStatus == 'Canceled' ? book.bookStatus = 'Created' : book.bookStatus = 'Canceled';
-	// 	Books.update(id, book);
-	// }
 
 	'click .changeStatusBooking' : function(event) {
 		var id = $(event.currentTarget).closest('tr').attr('id'),
@@ -798,19 +786,21 @@ Template.bookDetail.helpers({
 	},
 
 	date: function() {
-		return Session.get('bookingDate').toLocaleDateString();
+		date = new Date(localStorage.getItem('date'));
+		return date.toLocaleDateString();
 	},
 
 	bookings : function(){
-		var date = Session.get('bookingDate'),
-		trip = Trips.findOne(Session.get('tripId'));
+		var date = new Date(localStorage.getItem('date')),
+		trip = Trips.findOne(Session.get('tripId')),
+		currentDate = new Date(localStorage.getItem('date'));
 
 		with(date){
 			setDate(getDate() + 1);
 		}
 
 		return Books.find({
-			dateOfBooking 	: {$gte: Session.get('bookingDate'), $lt: date},
+			dateOfBooking 	: {$gte: currentDate, $lt: date},
 			'product._id' 	: Session.get('productId'),
 			'trip.from' 	: trip.from
 		});
@@ -822,20 +812,17 @@ Template.bookDetail.helpers({
 
 	isBookingNotFull: function(bookingsCreated, boatCapacity) {
 		var isValidDate = true,
+		selectedDate = new Date(localStorage.getItem('date'));
 		date = new Date();
 
-		if(Session.get('bookingDate').getFullYear() < date.getFullYear())
-			isValidDate = false;
-		else if(Session.get('bookingDate').getMonth() < date.getMonth())
-			isValidDate = false;
-		else if(Session.get('bookingDate').getDate() < date.getDate())
+		if(selectedDate < date)
 			isValidDate = false;
 
 		return (bookingsCreated < boatCapacity) && isValidDate;
 	},
 
 	bookingsCreated : function(){
-		return Books.find({dateOfBooking: Session.get('bookingDate'), 'product._id': Session.get('productId'), bookStatus : "Created"});
+		return Books.find({dateOfBooking: new Date(localStorage.getItem('date')), 'product._id': Session.get('productId'), bookStatus : "Created"});
 	}
 });
 
@@ -850,7 +837,7 @@ Template.createBook.currentSeason = function(){
 }
 
 Template.createBook.dateOfBooking = function(){
-	return Session.get('bookingDate').toLocaleDateString();
+	return new Date(localStorage.getItem('date')).toLocaleDateString();
 }
 
 Template.createBook.booked = function(from,to){
@@ -924,7 +911,7 @@ Template.createBook.trips = function(){
 Template.createBook.helpers({
 	"prices" : function(){
 		if(Session.get("productId")){
-			return Prices.find({productId : Session.get("productId"), active : true})
+			return Prices.find({productId : Session.get("productId"), active : true, season: currentSeason()})
 		}else{
 			throwError('Something Bad Happened, Try Again');
 			return [];
@@ -964,8 +951,6 @@ Template.createBook.rendered = function(){
 	$('#passengers').dataTable();
 	$('#boatSlots').dataTable();
 	countExtraSpace();
-	drawPieChartBoatSlots();
-
 }
 
 Template.createBook.events({
@@ -982,10 +967,10 @@ Template.productPrices.events({
 	"change input" : function(event){
 		Session.set('firstTimePrice', false);
 		var totalParcial = event.currentTarget.value * this.unit;
-		$('#'+this.price).val(totalParcial).text(totalParcial);
+		$('#'+this._id).val(totalParcial).text(totalParcial);
 		var totalPrice = event.currentTarget.value;
 		var totalParcial = totalPrice * this.unit;
-		$('#'+this.price).val(totalParcial);
+		$('#'+this._id).val(totalParcial);
 		$('#'+this.unit).val(this.price+"|"+this.unit+"|"+totalPrice+"|"+totalParcial);
 
 		calcTotal();
@@ -1088,8 +1073,7 @@ Template.bookingVehicles.helpers({
 Template.generalPassagerInfo.rendered = function() {
 	$('.datepicker').datepicker({
 		changeMonth : true,
-      	changeYear 	: true,
-      	yearRange 	: 'c-100:c-10'
+      	changeYear 	: true
 	});
 
 	$('#telephone').mask('(999) 99999999');
@@ -1097,51 +1081,55 @@ Template.generalPassagerInfo.rendered = function() {
 }
 
 Template.bookingVehicles.rendered = function(){
-	var vehicles = Vehicles.find().fetch(),
-	finalItems = [];
+	$('#vehicle').typeahead('destroy');
+	var items = [],
+	finalItems,
+	tags = Vehicles.find({}, {fields: {vehicleName: 1}});
+	tags.forEach(function(tag){
+    	var datum = {
+    		'value' : tag.vehicleName,
+    		'id' : tag._id
+    	}
+    	items.push(datum);
+	});
 
-	for (var i = vehicles.length - 1; i >= 0; i--) {
-		finalItems.push({
-			id 		: vehicles[i]._id,
-			value	: vehicles[i].model + ' - ' + vehicles[i].brandname
-		})
-	}
+	finalItems = _.uniq(items);
+	console.log(finalItems);
 
 	$('#vehicle').typeahead({
-		name : 'brandname',
+		name : 'name',
 		local: finalItems
 	}).bind('typeahead:selected', function (obj, datum) {
 		var id = datum.id;
-
 		if(id != ""){
-			var category = Vehicles.findOne({_id: id}).category;
+			var vehicle = Vehicles.findOne({_id: id});
 
 			$("#categories option").filter(function(){
-				return $(this).text() == category.category;
+				return $(this).text() == vehicle.category;
 			}).attr('selected', true);
 
-			$("#size option:first").text(category.size+"m").val(category.size).attr("selected", true);
+			$('#vehiclePlate').val(vehicle.vehiclePlate);
+
+			var category = VehiclesCategory.findOne({category: vehicle.category});
+			VehicleSelected = true;
+
+			$("#size option").filter(function(){
+				return $(this).text() == vehicle.size;
+			}).attr('selected', true);
+
+			if(category.vehiclePlate){
+				SaveVehicle = false;
+			}else{
+				SaveVehicle = true;
+			}T
+
+			Session.set('categoryId', category._id);
 			
-			$("#categories").attr("disabled", true);
-			$("#size").attr("disabled", true);
-
-			$("#baseVehicle").val(category.basePrice);
-
-			var totalVehiclePrice = category.basePrice;
-			if(category.size > 10){
-				var mult = category.size - 10;
-				totalVehiclePrice += mult * 1625;
-			}
-
-			$("#totalVehicle").text(totalVehiclePrice);
+			$("#totalVehicle").text(vehicle.totalCost);
 			calcTotal();
 		}else{
-			$("#categories").removeAttr("disabled");
-			$("#size").removeAttr("disabled");
-			$("#categories option:first").attr("selected", true);
-			$("#size option:first").text("").attr("selected", true);
-			$("#size option:first").attr("selected", true);
-			$('#vehiclesField input[type=text]').val('');
+			VehicleSelected = false;
+			SaveVehicle = true;
 			calcTotal();
 		}
 	});
@@ -1149,13 +1137,15 @@ Template.bookingVehicles.rendered = function(){
 
 Template.bookingVehicles.events({
 	'keyup #vehicle' : function(event){
-		if(event.keyCode != 13){
+		if(event.keyCode != 13 && VehicleSelected){
 			$("#categories").removeAttr("disabled");
 			$("#size").removeAttr("disabled");
 			$("#categories option:first").attr("selected", true);
 			$("#size option:first").text("").attr("selected", true);
 			$("#size option:first").attr("selected", true);
 			$('#vehiclesField input[type=text]').val('');
+			$('#vehiclePlate').val("");
+			VehicleSelected = false;
 			calcTotal();
 		}
 	}
@@ -1366,7 +1356,7 @@ var createBook = function(){
 		}
 
 	var date = new Date();
-	var selectedDay = Session.get('bookingDate');
+	var selectedDay = new Date(localStorage.getItem('date'));
 
 	with(date){
 		setDate(selectedDay.getDate());
@@ -1386,11 +1376,18 @@ var createBook = function(){
 		'product' : Product,
 	}
 
-	book.vehicle = {
-		"vehicleModel" : $("#listvehicles").val(),
+	vehicle = {
+		"vehicleName" : $("#vehicle").val(),
 		"category" : $("#categories").val(),
 		"size" : $("#size").val(),
-		"totalCost" : $("#totalVehicle").text()
+		"totalCost" : $("#totalVehicle").text(),
+		'vehiclePlate' : $('#vehiclePlate').val()
+	}
+
+	book.vehicle = vehicle;
+
+	if(SaveVehicle){
+		Vehicles.insert(vehicle);
 	}
 
 

@@ -39,6 +39,12 @@ Template.cart.events({
 			var customer = Customers.findOne({_id : books[i].customerId});
 			sendMail(books[i],books[i]._id, customer);
 			CartItems.remove({_id : books[i]._id});
+
+			refNumber = new Date().getTime().toString().substr(5);
+			while(Books.findOne({refNumber : refNumber})){
+				refNumber = new Date().getTime().toString().substr(5);
+			}
+			books[i].refNumber = refNumber;
 			bookId = Books.insert(books[i]);
 
 			//UpdateNote

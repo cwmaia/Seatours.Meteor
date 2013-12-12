@@ -13,7 +13,7 @@ Template.createAccount.events({
 			username : $('#username').val(),
 			email : $('#mail').val(),
 			password : $('#password1').val(),
-			profile : {'groupID': $('#group').val()}
+			profile : {'groupID': $('#group').val(), 'name' : $('#name').val()}
 		}
 
 		Accounts.createUser(user);
