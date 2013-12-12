@@ -1025,7 +1025,7 @@ Template.generalPassagerInfo.events({
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
-				updateBook();
+				createBook();
 				throwSuccess("Book updated");
 				Meteor.Router.to('/overview');
 			}else{
@@ -1425,7 +1425,20 @@ var createBook = function(){
 	book.prices = prices;
 	book.paid = false;
 	if (Session.get("isEditing")) {
-		Books.update(book);
+		Books.update(book._id, {$set : {
+			"dateOfBooking" : book.dateOfBooking,
+			"prices" : book.prices,
+			"totalISK": book.totalISK,
+			"trip.from" : book.trip.from,
+			"trip.to" : book.trip.to,
+			"trip.hour" : book.trip.hour,
+			"vehicle.category" : book.vehicle.category,
+			"vehicle.extraSlot" : book.vehicle.extraSlot,
+			"vehicle.size" : book.vehicle.size,
+			"vehicle.totalCost" : book.vehicle.totalCost,
+			"vehicle.vehicleName" : book.vehicle.vehicleName,
+			"vehicle.vehiclePlate" : book.vehicle.vehiclePlate
+		}});
 		var note = $('#notes').val();
 		if(note){
 			var note = {
