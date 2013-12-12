@@ -1452,10 +1452,10 @@ if(Cars.find().count() == 0){
 		else{
 			_data = JSON.parse(data);
 			console.log("--------------------------------------------------------------------------");
-			Session.set('continueee', true);
+			//Session.set('continueee', true);
 		}
 	});
-	while(!Session.get('continueee')){
+	/*while(!Session.get('continueee')){
 		sleep();
 		console.log("ahushauhau");
 		function sleep(){
@@ -1468,7 +1468,7 @@ if(Cars.find().count() == 0){
 		if(_data[i].brandname){
 			Cars.insert(_data[i])
 		}
-	}
+	}*/
 
 }
 
