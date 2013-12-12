@@ -136,6 +136,13 @@ Meteor.publish("settings", function () {
      return null; 
 });
 
+Meteor.publish('cars', function() {
+  if(this.userId)
+      return Cars.find();
+  else
+      return null; 
+});
+
 
 var saveQRCode = function(blob, name) {
     var fs = Npm.require('fs'), encoding ='binary';

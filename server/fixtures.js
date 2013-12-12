@@ -1440,3 +1440,36 @@ if(PostCodes.find().count() == 0){
 					 '_id' : 'winter'});
 }
 
+
+if(Cars.find().count() == 0){
+	var fs = Npm.require('fs');
+	var _data;
+	console.log('YAY TIBBERS');
+	fs.readFile('../../../../../public/cars2.json', function(err, data){
+		if(err){
+			console.log(err);
+		}
+		else{
+			_data = JSON.parse(data);
+			console.log("--------------------------------------------------------------------------");
+			Session.set('continueee', true);
+		}
+	});
+	while(!Session.get('continueee')){
+		sleep();
+		console.log("ahushauhau");
+		function sleep(){
+			var e = new Date().getTime() + (5000);
+			while (new Date().getTime() <= e && !continueee) {}
+		}
+	}
+	console.log("Dat place");
+	for(var i = 1; i < _data.length;i++){
+		if(_data[i].brandname){
+			Cars.insert(_data[i])
+		}
+	}
+
+}
+
+
