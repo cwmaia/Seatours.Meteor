@@ -55,7 +55,7 @@ Template.bookTransactionsResume.events({
 		}
 
 		var amountDiscount = amount * (discount/100);
-		var totalAmount = amount - amountDiscount;
+		var totalAmount = parseInt(amount - amountDiscount);
 
 		var transaction = {
 			'bookId' : Session.get('bookId'),
