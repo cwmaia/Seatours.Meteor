@@ -674,7 +674,8 @@ function setCalendarCapacity (calendar) {
 ///////////////////////////////////////////
 //Template Book Detail
 Template.bookDetail.rendered = function() {
-	$('#passengers').dataTable();
+	var oTable = $('#passengers').dataTable();
+	oTable.fnSort( [ [4,'desc'] ] );
 	$('#boatSlots').dataTable();
 	countExtraSpace();
 	drawPieChartBoatSlots();
