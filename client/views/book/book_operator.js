@@ -565,7 +565,12 @@ Template.bookOperator.rendered = function() {
 Template.productItem.rendered = function(){
 	$('.calendar').datepicker()
 		.on('changeDate', function(ev){
-			localStorage.setItem('date', ev.date);
+			date = new Date(ev.date);
+			with(date){
+				setDate(getDate() +1 );
+			}
+			console.log(date.toLocaleDateString());
+			localStorage.setItem('date', date);
 			$('#currentSeason').text(currentSeason());
 		});
 }
@@ -679,6 +684,7 @@ Template.bookDetail.rendered = function() {
 	$('#boatSlots').dataTable();
 	countExtraSpace();
 	drawPieChartBoatSlots();
+	returnPersons();
 }
 
 Template.bookDetail.fullname = function(id){
@@ -721,6 +727,79 @@ Template.bookDetail.qtdCarsUpTo6 = function(){
 }
 
 Template.createBook.qtdCarsUpTo6 = function(){
+	return carsUpto6();
+}
+
+var returnPersons = function(){
+	var dates = getSelectedAndNextDay();
+	var trip = Trips.findOne(Session.get('tripId'));
+
+	var adults = 0;
+	var childrens = 0;
+	var infants = 0;
+	var seniors = 0;
+	var schoolDiscount = 0;
+	var guidesAndDrivers = 0;
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created',
+	}).fetch();
+
+	console.log(books);
+
+
+	for (var i = 0; i < books.length; i++) {
+		for (var j = 0; j < books[i].prices.length; j++) {
+			if(books[i].prices[j].price == 'Adult'){
+				adults = parseInt(adults + books[i].prices[j].persons);
+			}
+			if(books[i].prices[j].price == 'Child'){
+				childrens = parseInt(childrens + books[i].prices[j].persons);
+			}
+			if(books[i].prices[j].price == 'Infant'){
+				infants = parseInt(infants + books[i].prices[j].persons);
+			}
+			if(books[i].prices[j].price == 'Senior'){
+				seniors = parseInt(seniors + books[i].prices[j].persons);
+			}
+			if(books[i].prices[j].price == 'School Discount'){
+				schoolDiscount = parseInt(schoolDiscount + books[i].prices[j].persons);
+			}
+			if(books[i].prices[j].price == 'Guides and Drivers'){
+				guidesAndDrivers = parseInt(guidesAndDrivers + books[i].prices[j].persons);
+			}
+		};
+	};
+
+	$('#numberOfAdults').text(adults);
+	$('#numberOfChildrens').text(childrens);
+	$('#numberOfInfants').text(infants);
+	$('#numberOfSeniors').text(seniors);
+	$('#numberOfSchoolDiscount').text(schoolDiscount);
+	$('#numberOfGuideAndDrivers').text(guidesAndDrivers);
+
+}
+
+Template.createBook.numbersOfChildren = function(){
+	return carsUpto6();
+}
+
+Template.bookDetail.numbersOfInfants = function(){
+	return carsUpto6();
+}
+
+Template.createBook.numberOfSeniors = function(){
+	return carsUpto6();
+}
+
+Template.bookDetail.schoolDiscount = function(){
+	return carsUpto6();
+}
+
+Template.createBook.numbersOfGuidesAndDrivers = function(){
 	return carsUpto6();
 }
 
@@ -1444,7 +1523,7 @@ var createBook = function(){
 		var split = $(this).val().split("|");
 		if(split[2]){
 			var price = {
-			"prices" : split[0],
+			"price" : split[0],
 			"perUnit" : split[1],
 			"persons" : split[2],
 			"sum" : split[3]
