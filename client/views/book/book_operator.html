@@ -197,8 +197,6 @@
 
 	<div class="line">
 		{{> bookingVehicles}}
-		{{> categoryVehicleBook}}
-		<em type="text" id="totalVehicle" class='calcTotal price'>0</em>
 	</div>
 	
 	<div class='line'>
@@ -287,15 +285,72 @@
 
 <template name="bookingVehicles">
 	<div class='line-2'>
-		<div>
-			<label>Vehicle</label>
-			<input type="text" class='size1-1' name="vehicle" id="vehicle">
-		</div>
+		<fieldset>
+			<legend>Vehicle<span>&nbsp;&nbsp;</span><i class='icon-truck'/></legend>
+			<div>
+				<div>
+					<label>Vehicle</label>
+					<input type="text" class='size1-1' name="vehicle" id="vehicle">
+				</div>
 
-		<div>
-			<label>Vehicle Plate</label>
-			<input type="text" class='size1-3' name="vehiclePlate" id="vehiclePlate">
-		</div>
+				<div class='line'>
+				</div>
+
+				<div>
+					<label>Vehicle Plate</label>
+					<input type="text" class='size1-3' name="vehiclePlate" id="vehiclePlate">
+				</div>
+			</div>
+			{{> categoryVehicleBook}}
+			<em type="text" id="totalVehicle" class='calcTotal price'>0</em>
+		</fieldset>
+
+		<fieldset>
+			<legend>Vehicle Search<span>&nbsp;&nbsp;</span><span id='searchVehicleLegend'><span id='loading'><i class="icon-spinner icon-spin blue bigger-125" id='loading'></i></span></legend>
+			
+			<div>
+				<div>
+					<label>Brandname - Model</label>
+					<input type="text"  class='size1-1' id="vehicleSearch">
+				</div>
+				
+				<div class='line'>
+				</div>
+
+				<div class='line-2'>
+					<div>
+						<label>Model Body</label>
+						<input type="text" class='size1-2' name="vehiclePlate" id="vehicleModelBody" readonly>
+					</div>
+
+					<div>
+						<label>Weight</label>
+						<input type="text" class='size1-2' name="vehiclePlate" id="vehicleWeight" readonly>
+					</div>
+				</div>
+				
+				<div class='line-2'>
+					<div>
+						<label>Length</label>
+						<input type="text" class='size1-2' name="vehiclePlate" id="vehicleLength" readonly>
+					</div>
+
+					<div>
+						<label>Width</label>
+						<input type="text" class='size1-2' name="vehiclePlate" id="vehicleWidth" readonly>
+					</div>
+				</div>	
+
+				<div class='line-2'>
+					<div>
+						<label>Height</label>
+						<input type="text" class='size1-2' name="vehiclePlate" id="vehicleHeight" readonly>
+					</div>
+					<div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
 	</div>
 </template>
 

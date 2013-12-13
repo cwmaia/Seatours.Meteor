@@ -6,6 +6,85 @@ var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
 var admId = '';
 var vendorsId = '';
 
+// This will parse a delimited string into an array of
+// arrays. The default delimiter is the comma, but this
+// can be overriden in the second argument.
+	function CSVToArray( strData, strDelimiter ){
+	// Check to see if the delimiter is defined. If not,
+	// then default to comma.
+	strDelimiter = (strDelimiter || ",");
+	 
+	// Create a regular expression to parse the CSV values.
+	var objPattern = new RegExp(
+	(
+	// Delimiters.
+	"(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+	 
+	// Quoted fields.
+	"(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+	 
+	// Standard fields.
+	"([^\"\\" + strDelimiter + "\\r\\n]*))"
+	),
+	"gi"
+	);
+	 
+
+	// Create an array to hold our data. Give the array
+	// a default empty first row.
+	var arrData = [[]];
+	 
+	// Create an array to hold our individual pattern
+	// matching groups.
+	var arrMatches = null;
+	 
+	 console.log(arrData);
+	// Keep looping over the regular expression matches
+	// until we can no longer find a match.
+	while (arrMatches = objPattern.exec( strData )){
+	 
+		// Get the delimiter that was found.
+		var strMatchedDelimiter = arrMatches[ 1 ];
+		 
+		// Check to see if the given delimiter has a length
+		// (is not the start of string) and if it matches
+		// field delimiter. If id does not, then we know
+		// that this delimiter is a row delimiter.
+		if (
+		strMatchedDelimiter.length &&
+		(strMatchedDelimiter != strDelimiter)
+		){
+			// Since we have reached a new row of data,
+			// add an empty row to our data array.
+			arrData.push( [] );
+		}
+		// Now that we have our delimiter out of the way,
+		// let's check to see which kind of value we
+		// captured (quoted or unquoted).
+		if (arrMatches[ 2 ]){ 
+			// We found a quoted value. When we capture
+			// this value, unescape any double quotes.
+			var strMatchedValue = arrMatches[ 2 ].replace(
+			new RegExp( "\"\"", "g" ),
+			"\""
+			);
+		} else {
+			// We found a non-quoted value.
+			var strMatchedValue = arrMatches[ 3 ];
+		 
+		}
+		 
+		// Now that we have our value string, let's add
+		// it to the data array.
+		arrData[ arrData.length - 1 ].push( strMatchedValue );
+		console.log('tenso');
+	}
+	console.log('aqui'); 
+	console.log(arrData); 
+	// Return the parsed data.
+	return( arrData );
+}
+
 if(Groups.find().count() == 0){
 	admId = Groups.insert({
 		'name' : 'Administrators',
@@ -1473,36 +1552,56 @@ if(PostCodes.find().count() == 0){
 					 '_id' : 'winter'});
 }
 
+var callback = function(data){
+	Fiber = Npm.require('fibers')
+	Fiber(function(){
+			for (var i = 1; i < data.length; i++) {
+			var Car = {
+				'brandname' : data[i].brandname,
+				'model' : data[i].model,
+				'modelBody' : data[i].modelBody,
+				'weight' : data[i].weight,
+				'length' : data[i].length,
+				'width' : data[i].width,
+				'height' : data[i].heigth
+			}
+			Cars.insert(Car);
+		};
+	}).run();
+}
+
+
+var callbackCSV = function(data){
+	var a = CSVToArray(data, '');
+	console.log(a);
+}
 
 if(Cars.find().count() == 0){
-	var fs = Npm.require('fs');
-	var _data;
-	console.log('YAY TIBBERS');
-	fs.readFile('../../../../../public/cars2.json', function(err, data){
-		if(err){
-			console.log(err);
-		}
-		else{
-			_data = JSON.parse(data);
-			console.log("--------------------------------------------------------------------------");
-			//Session.set('continueee', true);
-		}
-	});
-	/*while(!Session.get('continueee')){
-		sleep();
-		console.log("ahushauhau");
-		function sleep(){
-			var e = new Date().getTime() + (5000);
-			while (new Date().getTime() <= e && !continueee) {}
-		}
-	}
-	console.log("Dat place");
-	for(var i = 1; i < _data.length;i++){
-		if(_data[i].brandname){
-			Cars.insert(_data[i])
-		}
-	}*/
 
+	/*var fs = Npm.require('fs');
+		var _data;
+		fs.readFile('../../../../../public/cars.csv', function(err, data){
+			if(err){
+				console.log(err);
+			}
+			else{
+				callbackCSV(data);
+			}
+		});*/
+
+
+
+	var fs = Npm.require('fs');
+		var _data;
+		fs.readFile('../../../../../public/cars2.json', function(err, data){
+			if(err){
+				console.log(err);
+			}
+			else{
+				_data = JSON.parse(data);
+				callback(_data);
+			}
+		});
 }
 
 

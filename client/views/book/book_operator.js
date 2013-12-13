@@ -566,7 +566,6 @@ Template.productItem.rendered = function(){
 	$('.calendar').datepicker()
 		.on('changeDate', function(ev){
 			localStorage.setItem('date', ev.date);
-			console.log(currentSeason())
 			$('#currentSeason').text(currentSeason());
 		});
 }
@@ -670,10 +669,6 @@ function setCalendarCapacity (calendar) {
 
 		if(bookings.count() >= maxCapacity)
 			$(calendar).find('tbody a:eq(' + (j - 1) + ')').addClass('isFull')
-		
-
-		// if(bookings.count() > 0)
-		// 	console.log('Day: %s, %s bookings - %s max capacity', j, bookings.count(), Boats.findOne(product.boatId).maxCapacity);
 	}
 }
 ///////////////////////////////////////////
@@ -1094,7 +1089,6 @@ Template.bookingVehicles.rendered = function(){
 	});
 
 	finalItems = _.uniq(items);
-	console.log(finalItems);
 
 	$('#vehicle').typeahead({
 		name : 'name',
@@ -1336,8 +1330,45 @@ loadTypeahead = function(){
     	$('#city').val(datum.city);
 	});
 
+	$('#vehicleSearch').typeahead('destroy');
 
+	var callback = function(data){
+		var datums = [];
+		for (var i = 0; i < data.length; i++) {
+			var datum = {
+				'value' : data[i].brandname + ' - '+ data[i].model,
+				'brandname' : data[i].brandname,
+				'model' : data[i].model,
+				'modelBody' : data[i].modelBody,
+				'weight' : data[i].weight,
+				'length' : data[i].length,
+				'width' : data[i].width,
+				'height' : data[i].height,
+				'id' : data[i]._id
+			}
 
+			datums.push(datum);
+		};
+
+		$('#vehicleSearch').typeahead({
+			name : 'model',
+			local : datums
+		}).bind('typeahead:selected', function (obj, datum) {
+			$('#vehicle').val(datum.brandname + ' - '+ datum.model);
+		    $('#vehicleModelBody').val(datum.modelBody ? datum.modelBody : 'Not Found');
+			$('#vehicleWeight').val(datum.weight ? datum.weight+'Kg' : 'Not Found')
+			$('#vehicleLength').val(datum.length ? datum.length/1000+"m" : 'Not Found')
+			$('#vehicleWidth').val(datum.width ? datum.width/1000+"m" : 'Not Found')
+			$('#vehicleHeight').val(datum.height ? datum.height/1000+"m" : 'Not Found')
+		});
+
+		$('#loading').hide();
+		$('#searchVehicleLegend').append("<i class='icon-search'></i>");
+	}
+
+	Meteor.call('getAllCars', function(err, data) {
+        callback(data);
+    });
 }
 
 var createBook = function(){
