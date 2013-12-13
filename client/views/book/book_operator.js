@@ -568,8 +568,10 @@ Template.productItem.rendered = function(){
 			date = new Date(ev.date);
 			with(date){
 				setDate(getDate() +1 );
+				setHours(0);
+				setMinutes(0);
+				setSeconds(0);
 			}
-			console.log(date.toLocaleDateString());
 			localStorage.setItem('date', date);
 			$('#currentSeason').text(currentSeason());
 		});
@@ -680,7 +682,7 @@ function setCalendarCapacity (calendar) {
 //Template Book Detail
 Template.bookDetail.rendered = function() {
 	var oTable = $('#passengers').dataTable();
-	oTable.fnSort( [ [4,'desc'] ] );
+	oTable.fnSort( [ [5,'asc'] ] );
 	$('#boatSlots').dataTable();
 	countExtraSpace();
 	drawPieChartBoatSlots();
@@ -689,6 +691,19 @@ Template.bookDetail.rendered = function() {
 
 Template.bookDetail.fullname = function(id){
 	return Customers.findOne({_id: id}).fullName;
+}
+
+Template.bookDetail.telephone = function(id){
+	return Customers.findOne({_id: id}).telephone;
+}
+
+Template.bookDetail.totalPassagers = function(id){
+	var persons = 0;
+	book = Books.findOne({_id : id});
+	for (var i = 0; i < book.prices.length; i++) {
+		persons = parseInt(persons + parseInt(book.prices[i].persons));
+	};
+	return persons;
 }
 
 Template.bookDetail.qtdCarsUpTo5 = function(){
@@ -748,28 +763,25 @@ var returnPersons = function(){
 		'bookStatus'	: 'Created',
 	}).fetch();
 
-	console.log(books);
-
-
 	for (var i = 0; i < books.length; i++) {
 		for (var j = 0; j < books[i].prices.length; j++) {
 			if(books[i].prices[j].price == 'Adult'){
-				adults = parseInt(adults + books[i].prices[j].persons);
+				adults = parseInt(adults + parseInt(books[i].prices[j].persons));
 			}
 			if(books[i].prices[j].price == 'Child'){
-				childrens = parseInt(childrens + books[i].prices[j].persons);
+				childrens = parseInt(childrens + parseInt(books[i].prices[j].persons));
 			}
 			if(books[i].prices[j].price == 'Infant'){
-				infants = parseInt(infants + books[i].prices[j].persons);
+				infants = parseInt(infants + parseInt(books[i].prices[j].persons));
 			}
 			if(books[i].prices[j].price == 'Senior'){
-				seniors = parseInt(seniors + books[i].prices[j].persons);
+				seniors = parseInt(seniors + parseInt(books[i].prices[j].persons));
 			}
 			if(books[i].prices[j].price == 'School Discount'){
-				schoolDiscount = parseInt(schoolDiscount + books[i].prices[j].persons);
+				schoolDiscount = parseInt(schoolDiscount + parseInt(books[i].prices[j].persons));
 			}
 			if(books[i].prices[j].price == 'Guides and Drivers'){
-				guidesAndDrivers = parseInt(guidesAndDrivers + books[i].prices[j].persons);
+				guidesAndDrivers = parseInt(guidesAndDrivers + parseInt(books[i].prices[j].persons));
 			}
 		};
 	};

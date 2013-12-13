@@ -146,10 +146,11 @@
 			<table class='table table-striped table-bordered table-hover' id="passengers">
 				<thead>
 					<tr>
-						<th>ID</th>
-						<th>Trip</th>
+						<th class="sorting_disabled">ID</th>
 						<th class="sorting_disabled">Customer</th>
-						<th>Book Status</th>
+						<th class="sorting_disabled">Vehicle</th>
+						<th class="sorting_disabled">Telephone</th>
+						<th>Total Passagers</th>
 						<th>Payment Status</th>
 						<th class="sorting_disabled">Action</th>
 					</tr>
@@ -158,9 +159,10 @@
 				{{#each bookings}}
 					<tr id='{{_id}}' class='{{#if paid}} green {{else}} red {{/if}}'>
 						<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
-						<td>{{trip.from}} - {{trip.to}}</td>
 						<td>{{fullname customerId}}</td>
-						<td>{{bookStatus}}</td>
+						<td>{{vehicle.category}} - {{vehicle.size}}m</td>
+						<td>{{telephone customerId}}</td>
+						<td>{{totalPassagers _id}}</td>
 						<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
 						<td>
 							{{#if isBookCreated bookStatus}}

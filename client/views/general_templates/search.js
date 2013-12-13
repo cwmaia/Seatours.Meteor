@@ -5,7 +5,6 @@ Template.search.events({
 		var refNumber = $('#nav-search-input').val();
 
 		book = Books.findOne({refNumber : refNumber});
-		console.log(book);
 		if(book){
 			Session.set('bookId', book._id);
 			Meteor.Router.to('/bookDetailResume/'+book._id);
