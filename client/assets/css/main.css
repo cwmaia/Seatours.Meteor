@@ -392,6 +392,10 @@ select{
 		border: 2px solid #333;
 	}
 
+.datepicker-dropdown{
+	max-width: 220px;
+}
+
 .dataTables_filter{
 	margin-right: 0;
 }
