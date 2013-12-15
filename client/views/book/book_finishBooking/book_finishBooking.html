@@ -19,13 +19,15 @@
 			<tbody>	
 			{{#each bookings}}
 				<tr>
-					<td>{{refNumber}}</td>
+					<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
 					<td>{{trip.from}} - {{trip.to}}</td>
 					<td>{{fullName customerId}}</td>
 					<td>{{bookStatus}}</td>
 					<td id="{{_id}}_paymentStatus">{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
 					<td>
-						<a class="btn btn-small btn-success payBooking" title="Edit" rel='{{_id}}'><i class="icon-money bigger-110"></i></a>
+						
+						<a class="btn btn-small btn-info giveDiscount" title="Give Discount" rel='{{_id}}'><i class="icon-gift bigger-110"></i></a>
+						<a class="btn btn-small btn-success payBooking" title="Pay Booking" rel='{{_id}}'><i class="icon-money bigger-110"></i></a>
 					</td>
 				</tr>
 			{{/each}}
@@ -77,7 +79,6 @@
 	</div>
 
 	<div id="discountDialog">
-		  <div class="mask"> </div>
 		  <div class="modal">
 		    <div class="modal-header">
 		      <button type="button" class="close cancel">&times;</button>
@@ -85,7 +86,7 @@
 		    </div>
 		    <form>
 			    <div class="modal-body">
-			    	<div class='line-2'>
+			    
 			    		<div>
 					    	<label>Vendor: </label>
 					    	<label style="font-weight: normal;">{{vendor}}</label>
@@ -93,7 +94,7 @@
 
 
 			    	<label>Discount (%): </label>
-			    	<input type='text' id='discount'/>
+			    	<input id='discount' value="0" type="number" min="0" max="100"/>
 
 
 			    <div class="modal-footer">
@@ -101,7 +102,6 @@
 		    		<a href="#" class="btn cancel">Cancel</a>
 			    </div>
 		    </form>
-	  </div>
 	</div>
 
 </template>

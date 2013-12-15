@@ -20,7 +20,32 @@ Template.finishBooking.vendor = function(){
 Template.finishBooking.events({
 	'click .saveDiscount':function(event){
 		event.preventDefault();
+		var percentage = $('#discount').val();
+		var vendor = Meteor.user().profile.name;
 
+		var book = Books.findOne({_id : Session.get('currentBooking')});
+		var totalISKAfterDiscount = parseInt(book.totalISK * (1-(percentage/100)));
+
+		Books.update(book._id, {$set : {"totalISK" : totalISKAfterDiscount}});
+
+		var note = {
+			created : new Date(),
+			type : 'Discount Note',
+			note : vendor + " gave the customer "+ percentage + "% of discount",
+			bookId : Session.get('currentBooking')
+		}
+
+		Notes.insert(note);
+		
+		$("#discountDialog").hide();
+
+	},
+	'click .giveDiscount':function(event){
+		event.preventDefault();
+		var a = event.currentTarget;
+		var bookId = a.rel;
+		Session.set("currentBooking", bookId);
+		$("#discountDialog").show();
 	},
 
 	'click .payBooking':function(event){
@@ -47,7 +72,6 @@ Template.finishBooking.events({
 		event.preventDefault();
 		//calc total amount with discount
 		var amount = $('#amount').val();
-		var discount = $('#discount').val();
 		var vendor = Meteor.user().profile.name;
 		var type = $('#type').val();
 		var detail = $('#detail').val();
@@ -71,9 +95,6 @@ Template.finishBooking.events({
 			throwError('Please Add the type of Transaction');
 			return;
 		}
-
-		var amountDiscount = amount * (discount/100);
-		var totalAmount = parseInt(amount - amountDiscount);
 
 		var transaction = {
 			'bookId' : Session.get('currentBooking'),
