@@ -81,33 +81,51 @@
 			<form>
 				<legend>Day Resume<span>&nbsp;&nbsp;</span><i class='icon-table'/></legend>
 				<div>
-					<table class='table table-striped table-bordered trable-hover'>
+					<table class='table table-striped table-bordered table-hover'>
 						<thead>
 							<tr>
+								<th></th>
+								<th></th>
 								<th></th>
 								<th></th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
+								<td>#Adult</td>
+								<td><span id='numberOfAdults'></span></td>
 								<td>Cars up to 5m</td>
 								<td>{{qtdCarsUpTo5}} - <span id='max5slots'></span></td>
 							</tr>
 							<tr>
+								<td>#Child</td>
+								<td><span id='numberOfChildrens'></span></td>
 								<td>Cars up to 6m</td>
 								<td>{{qtdCarsUpTo6}}</td>
 							</tr>
 							<tr>
+								<td>#Infant</td>
+								<td><span id='numberOfInfants'></span></td>
 								<td>Current meters alocated on extra Slot 1</td>
 								<td><span id='spaceAlocatedSlot1'></span>m - <span id='spaceAlocatedSlot3'>m</span></td>
 							</tr>	
 							<tr>
+								<td>#Senior</td>
+								<td><span id='numberOfSeniors'></span></td>
 								<td>Current meters alocated on extra Slot 2</td>
 								<td><span id='spaceAlocatedSlot2'></span>m - <span id='spaceAlocatedSlot4'>m</span></td>
 							</tr>	
-							<tr>	
+							<tr>
+								<td>#School Discount</td>
+								<td><span id='numberOfSchoolDiscount'></span></td>	
 								<td>Current meters alocated on Extras Slot</td>
 								<td><span id='spaceAlocated'> - <span id='spaceAlocatedSlotCart'></span></span></td>
+							</tr>
+							<tr>
+								<td>#Guides and Drivers</td>
+								<td><span id='numberOfGuideAndDrivers'></span></td>
+								<td></td>
+								<td></td>
 							</tr>
 						</tbody>
 					</table>
@@ -125,24 +143,26 @@
 		
 			</div>
 
-			<table class='table table-striped table-bordered trable-hover' id="passengers">
+			<table class='table table-striped table-bordered table-hover' id="passengers">
 				<thead>
 					<tr>
-						<th>ID</th>
-						<th>Trip</th>
+						<th class="sorting_disabled">ID</th>
 						<th class="sorting_disabled">Customer</th>
-						<th>Book Status</th>
+						<th class="sorting_disabled">Vehicle</th>
+						<th class="sorting_disabled">Telephone</th>
+						<th>Total Passagers</th>
 						<th>Payment Status</th>
 						<th class="sorting_disabled">Action</th>
 					</tr>
 				</thead>
 				<tbody>	
 				{{#each bookings}}
-					<tr id='{{_id}}'>
+					<tr id='{{_id}}' class='{{#if paid}} green {{else}} red {{/if}}'>
 						<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
-						<td>{{trip.from}} - {{trip.to}}</td>
 						<td>{{fullname customerId}}</td>
-						<td>{{bookStatus}}</td>
+						<td>{{vehicle.category}} - {{vehicle.size}}m</td>
+						<td>{{telephone customerId}}</td>
+						<td>{{totalPassagers _id}}</td>
 						<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
 						<td>
 							{{#if isBookCreated bookStatus}}
@@ -197,8 +217,6 @@
 
 	<div class="line">
 		{{> bookingVehicles}}
-		{{> categoryVehicleBook}}
-		<em type="text" id="totalVehicle" class='calcTotal price'>0</em>
 	</div>
 	
 	<div class='line'>
@@ -229,7 +247,7 @@
 			<form>
 				<legend>Day Resume<span>&nbsp;&nbsp;</span><i class='icon-table'/></legend>
 				<div>
-					<table class='table table-striped table-bordered trable-hover'>
+					<table class='table table-striped table-bordered table-hover'>
 						<thead>
 							<tr>
 								<th></th>
@@ -287,15 +305,72 @@
 
 <template name="bookingVehicles">
 	<div class='line-2'>
-		<div>
-			<label>Vehicle</label>
-			<input type="text" class='size1-1' name="vehicle" id="vehicle">
-		</div>
+		<fieldset>
+			<legend>Vehicle<span>&nbsp;&nbsp;</span><i class='icon-truck'/></legend>
+			<div>
+				<div>
+					<label>Vehicle</label>
+					<input type="text" class='size1-1' name="vehicle" id="vehicle">
+				</div>
 
-		<div>
-			<label>Vehicle Plate</label>
-			<input type="text" class='size1-3' name="vehiclePlate" id="vehiclePlate">
-		</div>
+				<div class='line'>
+				</div>
+
+				<div>
+					<label>Vehicle Plate</label>
+					<input type="text" class='size1-3' name="vehiclePlate" id="vehiclePlate">
+				</div>
+			</div>
+			{{> categoryVehicleBook}}
+			<em type="text" id="totalVehicle" class='calcTotal price'>0</em>
+		</fieldset>
+
+		<fieldset>
+			<legend>Vehicle Search<span>&nbsp;&nbsp;</span><span id='searchVehicleLegend'><span id='loading'><i class="icon-spinner icon-spin blue bigger-125" id='loading'></i></span></legend>
+			
+			<div>
+				<div>
+					<label>Brandname - Model</label>
+					<input type="text"  class='size1-1' id="vehicleSearch">
+				</div>
+				
+				<div class='line'>
+				</div>
+
+				<div class='line-2'>
+					<div>
+						<label>Model Body</label>
+						<input type="text" class='size1-2' name="vehiclePlate" id="vehicleModelBody" readonly>
+					</div>
+
+					<div>
+						<label>Weight</label>
+						<input type="text" class='size1-2' name="vehiclePlate" id="vehicleWeight" readonly>
+					</div>
+				</div>
+				
+				<div class='line-2'>
+					<div>
+						<label>Length</label>
+						<input type="text" class='size1-2' name="vehiclePlate" id="vehicleLength" readonly>
+					</div>
+
+					<div>
+						<label>Width</label>
+						<input type="text" class='size1-2' name="vehiclePlate" id="vehicleWidth" readonly>
+					</div>
+				</div>	
+
+				<div class='line-2'>
+					<div>
+						<label>Height</label>
+						<input type="text" class='size1-2' name="vehiclePlate" id="vehicleHeight" readonly>
+					</div>
+					<div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
 	</div>
 </template>
 

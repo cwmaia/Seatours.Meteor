@@ -16,6 +16,7 @@ Meteor.subscribe("postcodes");
 Meteor.subscribe('prices');
 Meteor.subscribe('settings');
 
+
 Template.redirect.helpers({
   userLogged : function(){
   	if(Meteor.user()){
