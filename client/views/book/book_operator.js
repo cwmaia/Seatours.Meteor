@@ -566,7 +566,6 @@ Template.productItem.rendered = function(){
 	$('.calendar').datepicker()
 		.on('changeDate', function(ev){
 			localStorage.setItem('date', ev.date);
-			console.log(currentSeason())
 			$('#currentSeason').text(currentSeason());
 		});
 }

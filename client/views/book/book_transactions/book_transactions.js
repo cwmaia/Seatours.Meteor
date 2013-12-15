@@ -14,7 +14,6 @@ Template.bookTransactionsResume.dateString = function(data){
 Template.bookTransactionsResume.vendors = function(){
 	var vendorsGroup = Groups.findOne({name : 'Vendors'});
 	return Meteor.users.find({'profile.groupID' : vendorsGroup._id});
-
 }
 
 Template.bookTransactionsResume.events({
