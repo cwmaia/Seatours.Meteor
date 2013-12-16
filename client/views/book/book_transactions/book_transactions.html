@@ -1,5 +1,6 @@
 <template name='bookTransactionsResume'>
 	<button class='btn btn-info btn-small' id='addTransaction'><i class='icon-plus'></i>Add Transaction</button>
+	<button class="btn btn-small btn-success" id='giveDiscount' ><i class='icon-plus'></i>Give Discount</button>
 	<table class='table table-striped table-bordered table-hover'>
 		<thead>
 			<tr>
@@ -26,17 +27,17 @@
 				<td>
 					<a class="btn btn-mini btn-info" title="Edit"><i class="icon-pencil bigger-120"></i></a>
 					<a class="btn btn-mini btn-success sendMailNote" title="Make Payment" rel='{{_id}}'><i class="icon-money bigger-120"></i></a>
+					 <a class="btn btn-small btn-info giveDiscount" title="Give Discount" rel='{{_id}}'><i class="icon-money bigger-110"></i></a>
 				</td>
 			</tr>
 			{{/each}}
 		</tbody>
 	</table>
 
-	<div id="transactionDialog">
-		  <div class="mask"> </div>
-		  <div class="modal">
-		    <div class="modal-header">
-		      <button type="button" class="close cancel">&times;</button>
+	<div id="transactionDialog" style="z-index : 1000 !important;">
+		  <div class="modal" style="z-index : 1000 !important;" >
+		    <div class="modal-header" style="z-index : 1000 !important;">
+		      <button type="button" class="close cancel" style="z-index : 1000 !important;">&times;</button>
 		      <h3>Add Transaction</h3>
 		    </div>
 		    <form>
@@ -70,9 +71,6 @@
 			    	<label>Amount: </label>
 			    	<input type='text' id='amount'/>
 
-			    	<label>Amount Discont: (%)</label>
-			    	<input type='number' id='discount' value='0' min='0' max='100'/>
-
 			    	<label>Detail:</label>
 			    	<textarea rows='4' cols='10' id='detail'/>	
 			    </div>
@@ -83,6 +81,36 @@
 			    </div>
 		    </form>
 	  </div>
+	</div>
+
+	<div id="discountDialog">
+		  <div class="modal">
+		    <div class="modal-header">
+		      <button type="button" class="close cancel">&times;</button>
+		      <h3>Add Discount</h3>
+		    </div>
+		    <form>
+			    <div class="modal-body">
+			    
+			    		<div>
+					    	<label>Vendor: </label>
+					    	<select id='vendor'>
+					    		{{#each vendors}}
+					    			<option>{{profile.name}}</option>
+					    		{{/each}}
+					    	</select>
+					    </div>
+
+
+			    	<label>Discount (%): </label>
+			    	<input id='discount' value="0" type="number" min="0" max="100"/>
+
+
+			    <div class="modal-footer">
+			    	<a class="btn btn-success saveDiscount">Save</a>
+		    		<a href="#" class="btn cancel">Cancel</a>
+			    </div>
+		    </form>
 	</div>
 
 </template>

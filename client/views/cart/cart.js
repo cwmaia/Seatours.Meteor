@@ -33,8 +33,10 @@ Template.items.customerName = function(customerId){
 }
 
 Template.cart.events({
-	'click .checkout' : function(){
+	'click .checkout' : function(event){
+		event.preventDefault();
 		var books = CartItems.find().fetch();
+		var createdBooks = [];
 		for (var i = 0; i < books.length; i++) {
 			var customer = Customers.findOne({_id : books[i].customerId});
 			sendMail(books[i],books[i]._id, customer);
@@ -46,7 +48,7 @@ Template.cart.events({
 			}
 			books[i].refNumber = refNumber;
 			bookId = Books.insert(books[i]);
-
+			createdBooks[i] = Books.findOne({_id : bookId});
 			//UpdateNote
 			note = Notes.findOne({bookId: books[i]._id});
 			if(note)
@@ -54,6 +56,8 @@ Template.cart.events({
 		};
 
 		throwSuccess(books.length+' Bookings Created!');
+		Session.set("createdBooks", createdBooks);
+		Meteor.Router.to("/finishBooking");
 	}
 })
 

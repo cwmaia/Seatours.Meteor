@@ -140,11 +140,12 @@ var saveQRCode = function(blob, name) {
     var fs = Npm.require('fs'), encoding ='binary';
     var nameAndPath = '../../../../../public/images/qrcodes/' + name + '.gif' ;
     var base64 = blob;
-    fs.writeFile(nameAndPath, base64, 'base64', function(err) {
-      if (err) {
-          console.log(err);  
-        } 
-    });
+   // fs.writeFile(nameAndPath, base64, 'base64', function(err) {
+    //  if (err) {
+     //     console.log(err);  
+      //  } 
+    //});
+    return false;
 }
 
 // In your server code: define a method that the client can call

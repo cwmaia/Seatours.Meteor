@@ -1,0 +1,107 @@
+<template name='finishBooking'>
+	<div class="page-header">
+		<h3>
+			Created Bookings
+		</h3>
+	<div>
+	<div class="divTable">
+		<table class='table table-striped table-bordered trable-hover' id="passengers">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Trip</th>
+					<th class="sorting_disabled">Customer</th>
+					<th>Book Status</th>
+					<th>Payment Status</th>
+					<th class="sorting_disabled">Action</th>
+				</tr>
+			</thead>
+			<tbody>	
+			{{#each bookings}}
+				<tr>
+					<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
+					<td>{{trip.from}} - {{trip.to}}</td>
+					<td>{{fullName customerId}}</td>
+					<td>{{bookStatus}}</td>
+					<td id="{{_id}}_paymentStatus">{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
+					<td>
+						
+						<a class="btn btn-small btn-info giveDiscount" title="Give Discount" rel='{{_id}}'><i class="icon-gift bigger-110"></i></a>
+						<a class="btn btn-small btn-success payBooking" title="Pay Booking" rel='{{_id}}'><i class="icon-money bigger-110"></i></a>
+					</td>
+				</tr>
+			{{/each}}
+			</tbody>
+		</table>
+	</div>
+
+	<div id="transactionDialog">
+		  <div class="mask"> </div>
+		  <div class="modal">
+		    <div class="modal-header">
+		      <button type="button" class="close cancel">&times;</button>
+		      <h3>Add Transaction</h3>
+		    </div>
+		    <form>
+			    <div class="modal-body">
+			    	<div class='line-2'>
+			    		<div>
+					    	<label>Vendor: </label>
+					    	<label style="font-weight: normal;">{{vendor}}</label>
+					    </div>
+
+				    	<div>
+					    	<label>Type: </label>
+					    	<select id='type'>
+					    		<option>Cerdit Card</option>
+					    		<option>Debit Card</option>
+					    		<option>Cash</option>
+					    		<option>Checks</option>
+					    	</select>
+			    		</div>
+			    	</div>
+
+			    	<label>To pay: </label><span id="toPay"> </span>
+
+			    	<label>Amount: </label>
+			    	<input type='text' id='amount'/>
+
+			    	<label>Detail:</label>
+			    	<textarea rows='4' cols='10' id='detail'/>	
+			    </div>
+
+			    <div class="modal-footer">
+			    	<a class="btn btn-success saveTransaction">Save</a>
+		    		<a href="#" class="btn cancel">Cancel</a>
+			    </div>
+		    </form>
+	  </div>
+	</div>
+
+	<div id="discountDialog">
+		  <div class="modal">
+		    <div class="modal-header">
+		      <button type="button" class="close cancel">&times;</button>
+		      <h3>Add Discount</h3>
+		    </div>
+		    <form>
+			    <div class="modal-body">
+			    
+			    		<div>
+					    	<label>Vendor: </label>
+					    	<label style="font-weight: normal;">{{vendor}}</label>
+					    </div>
+
+
+			    	<label>Discount (%): </label>
+			    	<input id='discount' value="0" type="number" min="0" max="100"/>
+
+
+			    <div class="modal-footer">
+			    	<a class="btn btn-success saveDiscount">Save</a>
+		    		<a href="#" class="btn cancel">Cancel</a>
+			    </div>
+		    </form>
+	</div>
+
+</template>

@@ -3,6 +3,7 @@ Template.bookTransactionsResume.transactions = function(){
 }
 
 Template.bookTransactionsResume.rendered = function(){
+	$("#discountDialog").hide();
 	$("#transactionDialog").hide();
 	$('.datepicker').datepicker();
 }
@@ -14,22 +15,47 @@ Template.bookTransactionsResume.dateString = function(data){
 Template.bookTransactionsResume.vendors = function(){
 	var vendorsGroup = Groups.findOne({name : 'Vendors'});
 	return Meteor.users.find({'profile.groupID' : vendorsGroup._id});
-
 }
 
 Template.bookTransactionsResume.events({
+	'click .saveDiscount':function(event){
+		event.preventDefault();
+		var percentage = $('#discount').val();
+		var vendor = $('#vendor').val();
+
+		var book = Books.findOne({_id : Session.get('bookId')});
+		var totalISKAfterDiscount = parseInt(book.totalISK * (1-(percentage/100)));
+
+		Books.update(book._id, {$set : {"totalISK" : totalISKAfterDiscount}});
+
+		var note = {
+			created : new Date(),
+			type : 'Discount Note',
+			note : vendor + " gave the customer "+ percentage + "% of discount",
+			bookId : Session.get('bookId')
+		}
+
+		Notes.insert(note);
+		
+		$("#discountDialog").hide();
+
+	},
+	'click .giveDiscount':function(){
+		$("#discountDialog").show();
+	},
+
 	'click #addTransaction' : function(){
 		$("#transactionDialog").show();
 	},
 	'click .cancel, click .close' : function(){
 		$("#transactionDialog").hide();
+		$("#discountDialog").hide();
 	},
 	'click .saveTransaction' : function(){
 
 		//calc total amount with discount
 		var date = $('#date').val();
 		var amount = $('#amount').val();
-		var discount = $('#discount').val();
 		var vendor = $('#vendor').val();
 		var type = $('#type').val();
 		var detail = $('#detail').val();
@@ -53,9 +79,6 @@ Template.bookTransactionsResume.events({
 			throwError('Please Add the type of Transaction');
 			return;
 		}
-
-		var amountDiscount = amount * (discount/100);
-		var totalAmount = amount - amountDiscount;
 
 		var transaction = {
 			'bookId' : Session.get('bookId'),
