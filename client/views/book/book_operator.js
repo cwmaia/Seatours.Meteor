@@ -563,8 +563,11 @@ Template.bookOperator.rendered = function() {
 };
 
 Template.productItem.rendered = function(){
-	$('.calendar').datepicker()
-		.on('changeDate', function(ev){
+	$('.calendar').datepicker({
+		onRender: function(date) {
+    		return date.valueOf() < now.valueOf() ? 'disabled' : '';
+    	}
+	}).on('changeDate', function(ev){
 			date = new Date(ev.date);
 			with(date){
 				setDate(getDate() +1 );
@@ -574,8 +577,8 @@ Template.productItem.rendered = function(){
 			}
 			localStorage.setItem('date', date);
 			$('#currentSeason').text(currentSeason());
-		});
-}
+		})
+  	};
 
 Template.productItem.events({
 	'click .calendar' : function(event){
@@ -1597,25 +1600,25 @@ var formatData = function(percentages){
 	        color       : 'red',
 	        description : '5 meters cars',
 	        title       : 'Small Cars (5m)',
-	        value       : parseFloat(percentages.percentage5m)
+	        value       : parseFloat(percentages.percentage5m / 100)
 	      },
 	      {
 	        color       : 'blue',
 	        description : '6 meters cars',
 	        title       : 'trains',
-	        value       : parseFloat(percentages.percentage6m)
+	        value       : parseFloat(percentages.percentage6m / 100)
 	      },
 	      {
 	        color       : 'green',
 	        description : 'Extra Slots Cars',
 	        title       : 'trains',
-	        value       : parseFloat(percentages.percentageLargeCars)
+	        value       : parseFloat(percentages.percentageLargeCars / 100)
 	      },
 	      {
 	        color       : 'gray',
 	        description : 'Unallocated Space',
 	        title       : 'trains',
-	        value       : parseFloat(percentages.percentageUnllocated)
+	        value       : parseFloat(percentages.percentageUnllocated / 100)
 	      }
 	    ]
   	};
@@ -1633,6 +1636,9 @@ var formatData = function(percentages){
 
 function drawPieChart( elementId, data ) {
     // TODO code duplication check how you can avoid that
+    var count = 0;
+    var y = 0;
+    var y2 = 0;
     var containerEl = document.getElementById( elementId ),
         width       = containerEl.clientWidth,
         height      = width * 0.4,
@@ -1682,7 +1688,7 @@ function drawPieChart( elementId, data ) {
                               };
                             } )
                             .each( 'end', function handleAnimationEnd( d ) {
-                              //drawDetailedInformation( d.data, this ); 
+                              drawDetailedInformation( d.data, this, count++); 
                             } );
 
     drawChartCenter(); 
@@ -1711,39 +1717,52 @@ function drawPieChart( elementId, data ) {
                       .attr( 'fill', '#fff' );
     }
     
-    function drawDetailedInformation ( data, element ) {
+    function drawDetailedInformation ( data, element, count) {
       var bBox      = element.getBBox(),
           infoWidth = width * 0.3,
           anchor,
           infoContainer,
-          position;
-      
-      if ( ( bBox.x + bBox.width / 2 ) > 0 ) {
-        infoContainer = detailedInfo.append( 'g' )
-                                    .attr( 'width', infoWidth )
-                                    .attr(
-                                      'transform',
-                                      'translate(' + ( width - infoWidth ) + ',' + ( bBox.height + bBox.y ) + ')'
-                                    );
-        anchor   = 'end';
-        position = 'right';
-      } else {
-        infoContainer = detailedInfo.append( 'g' )
-                                    .attr( 'width', infoWidth )
-                                    .attr(
-                                      'transform',
-                                      'translate(' + 0 + ',' + ( bBox.height + bBox.y ) + ')'
-                                    );
+          position,
+          y;
+          var color = "";
+         y = parseInt(count * 50 + 15);
+
+         if(count == 0){
+         	color = '#d15b47';
+         }
+
+         if(count == 1){
+         	color = '#6fb3e0';
+         }
+
+         if(count == 2){
+         	color = '#87b87f';
+         }
+
+         if(count == 3){
+         	color = '#808080';
+         }
+
+
+       
+    	infoContainer = detailedInfo.append( 'g' )
+            .attr( 'width', infoWidth )
+            .attr(
+              'transform',
+              'translate(' + 0 + ',' + y + ')'
+            );
         anchor   = 'start';
         position = 'left';
-      }
+        
+    	
+    
 
       infoContainer.data( [ data.value * 100 ] )
                     .append( 'text' )
                     .text ( '0 %' )
                     .attr( 'class', 'pieChart--detail--percentage' )
                     .attr( 'x', ( position === 'left' ? 0 : infoWidth ) )
-                    .attr( 'y', -10 )
+                    .attr( 'y', 0 )
                     .attr( 'text-anchor', anchor )
                     .transition()
                     .duration( DURATION )
@@ -1777,7 +1796,9 @@ function drawPieChart( elementId, data ) {
                       'class',
                       'pieChart--detail--textContainer ' + 'pieChart--detail__' + position
                     )
-                    .html( data.description );
+                    .html('<div style="width:10px;height:10px;border:1px solid #000; background-color: '+color+'"></div><span>&nbsp;&nbsp;</span>'+data.description );
+
+		          
     }
   }
 

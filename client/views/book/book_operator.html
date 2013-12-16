@@ -166,11 +166,16 @@
 						<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
 						<td>
 							{{#if isBookCreated bookStatus}}
-								<a href="" class="changeStatusBooking">
-									Cancel
+								<a href="" class="changeStatusBooking btn btn-mini btn-danger" title='Cancel Booking'>
+									<i class='icon-remove'></i>
+								</a>
+								<a href="" class="changeStatusBooking btn btn-mini btn-warning" title='No Show'>
+									<i class='icon-thumbs-down'></i>
 								</a>
 							{{else}}
-								<p>-</p>
+								<a href="" class="changeStatusBooking btn btn-mini btn-warning" title='No Show'>
+									<i class='icon-thumbs-down'></i>
+								</a>
 							{{/if}}
 						</td>
 					</tr>
@@ -474,8 +479,8 @@
     	<button class="btn btn-small btn-info saveEdit" type='submit' form='pasagerInfo'>Save Edits</button>
     {{else}}
 
-	    <button class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Buy & Continue Booking</button>
-	    <button class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Buy & Go To Cart</button>
+	    <button class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Add to Basket</button>
+	    <button class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Add to Basket & Checkout</button>
     {{/if}}
 </template>
 
