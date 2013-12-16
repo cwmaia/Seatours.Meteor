@@ -8,7 +8,6 @@ Template.finishBooking.bookings = function(){
 }
 
 Template.finishBooking.fullName = function(customerId){
-	console.log(customerId);
 	return Customers.findOne({_id : customerId}).fullName;
 }
 
@@ -37,7 +36,7 @@ Template.finishBooking.events({
 
 		Notes.insert(note);
 		
-		$("#discountDialog").hide();
+		Template.finishBooking.rendered();
 
 	},
 	'click .giveDiscount':function(event){
@@ -100,7 +99,7 @@ Template.finishBooking.events({
 			'bookId' : Session.get('currentBooking'),
 			'date' : new Date(date),
 			'status' : 'Processing',
-			'amount' : totalAmount,
+			'amount' : amount,
 			'detail' : detail,
 			'vendor' : vendor,
 			'type' : type
@@ -113,8 +112,9 @@ Template.finishBooking.events({
 		var thisBookingTransactions = Transactions.find({'bookId' : bookId}).fetch();
 		var totalTransactions = 0;
 		for (var i = thisBookingTransactions.length - 1; i >= 0; i--) {
-			totalTransactions = totalTransactions + thisBookingTransactions[i].amount;
+			totalTransactions = parseInt(totalTransactions + thisBookingTransactions[i].amount);
 		};
+
 		if( totalISK == totalTransactions){
 			$("#"+bookId+"_paymentStatus").text("Paid");
 			Books.update(bookId, {$set : {paid : true}});

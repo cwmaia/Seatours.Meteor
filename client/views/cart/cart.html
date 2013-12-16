@@ -1,7 +1,7 @@
 <template name='cart'>
 	<div class="page-header">
 		<h1>
-			Cart
+			Basket
 		</h1>
 	</div><!-- /.page-header -->
 	<table class='table table-striped table-bordered table-hover'>
@@ -33,8 +33,8 @@
 <template name="items">
 	<tr>
 		<input type='hidden' id='{{totalISK}}' class='unitPrice'>
-		<td style='width: 70%'>{{product.name}} - {{dateOfBooking}}</br> <b>From</b> {{trip.from}} <b>To</b> {{trip.to}}</br></br>{{customerName customerId}}</br></br>{{#each prices}}{{prices}} X {{persons}} = kr {{sum}}{{/each}}</br>{{vehicle.category}} - {{vehicle.size}}m = kr {{vehicle.totalCost}}</td>
-		<td style='width: 5%; text-align: center'><a class='remove' rel='{{_id}}'>remove</a></td>
+		<td style='width: 70%'>{{product.name}} - {{dateOfBooking}}</br> <b>From</b> {{trip.from}} <b>To</b> {{trip.to}}</br></br>{{customerName customerId}}</br></br>{{#each prices}}{{price}} (kr {{perUnit}}) X {{persons}} = kr {{sum}}{{/each}}</br>{{vehicle.category}} - {{vehicle.size}}m = kr {{vehicle.totalCost}}</td>
+		<td style='width: 5%; text-align: center'><a class='remove btn btn-mini btn-danger' rel='{{_id}}'><i class='icon-remove'></i></a></td>
 		<td style='width: 10%; text-align: center'>kr <span id='{{_id}}' class='calcTotal'>{{totalISK}}</span></td>
 	</tr>
 </template>

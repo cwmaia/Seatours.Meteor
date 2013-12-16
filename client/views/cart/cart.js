@@ -68,7 +68,7 @@ Template.items.events({
 		calcTotalItems();
 	},
 	'click .remove' : function(event){
-		var link = event.target;
+		var link = event.currentTarget;
 		CartItems.remove(link.rel);
 
 		//Remove all notes
@@ -77,7 +77,7 @@ Template.items.events({
 			Notes.remove(notes[i]._id);
 		};
 
-		throwSuccess('Item Removed');
+		throwInfo('Item Removed');
 	}
 })
 

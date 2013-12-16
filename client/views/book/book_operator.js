@@ -709,6 +709,28 @@ Template.bookDetail.totalPassagers = function(id){
 	return persons;
 }
 
+Template.bookDetail.totalPersons = function(){
+	var dates = getSelectedAndNextDay();
+	var trip = Trips.findOne(Session.get('tripId'));
+	
+	var persons = 0;
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip.from' 	: trip.from,
+		'bookStatus'	: 'Created'
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		for (var j = 0; j < books[i].prices.length; j++) {
+			persons = parseInt(persons + parseInt(books[i].prices[j].persons));
+		};
+	};
+
+	return persons;
+}
+
 Template.bookDetail.qtdCarsUpTo5 = function(){
 	return carsUpTo5();
 }
@@ -900,7 +922,7 @@ Template.bookDetail.helpers({
 		return status == 'Created';
 	},
 
-	isBookingNotFull: function(bookingsCreated, boatCapacity) {
+	isBookingNotFull: function(totalPersons, boatCapacity) {
 		var isValidDate = true,
 		selectedDate = new Date(localStorage.getItem('date'));
 		date = new Date();
@@ -908,7 +930,7 @@ Template.bookDetail.helpers({
 		if(selectedDate < date)
 			isValidDate = false;
 
-		return (bookingsCreated < boatCapacity) && isValidDate;
+		return (totalPersons < boatCapacity) && isValidDate;
 	},
 
 	bookingsCreated : function(){
@@ -1796,7 +1818,7 @@ function drawPieChart( elementId, data ) {
                       'class',
                       'pieChart--detail--textContainer ' + 'pieChart--detail__' + position
                     )
-                    .html('<div style="width:10px;height:10px;border:1px solid #000; background-color: '+color+'"></div><span>&nbsp;&nbsp;</span>'+data.description );
+                    .html('<div class="line"><div style="width:10px;height:10px;border:1px solid #000; background-color: '+color+'"></div>'+data.description+'</div>');
 
 		          
     }

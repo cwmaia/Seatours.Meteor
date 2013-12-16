@@ -31,6 +31,25 @@ Template.voucher.customer = function(){
 	
 }
 
+var showAlertDiv = function(){
+  var bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
+  var book = Books.findOne({_id : Session.get('bookId')});
+  var totalISK = book.totalISK;
+  for (var i = bookTransactions.length - 1; i >= 0; i--) {
+    if(bookTransactions[i].type == 'Refund'){
+      totalISK = totalISK + bookTransactions[i].amount;
+    }else{
+      totalISK = totalISK - bookTransactions[i].amount;
+    }
+  };
+
+  if(totalISK > 0){
+    return true;
+  }else{
+    return false;
+  }
+}
+
 Template.voucher.calcTotal = function(totalISK){
   var bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
   for (var i = bookTransactions.length - 1; i >= 0; i--) {
@@ -40,6 +59,11 @@ Template.voucher.calcTotal = function(totalISK){
       totalISK = totalISK - bookTransactions[i].amount;
     }
   };
+
+  if(totalISK > 0){
+    $('#alertNotPaid').show();
+  }
+
   return totalISK;
 
 }
@@ -84,8 +108,11 @@ Template.voucher.qrCode = function(){
 }
 
 Template.voucher.rendered = function(){
-  $("#calcISK").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
-  $("#calcISK").maskMoney('mask');
+  $(".calcISK").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
+  $(".calcISK").maskMoney('mask');
+  if(!showAlertDiv()){
+    $('#alertNotPaid').hide();
+  }
 }
 
 Template.voucher.helpers({

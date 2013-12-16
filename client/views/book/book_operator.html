@@ -40,7 +40,7 @@
 		</h1>
 	</div>
 
-	{{#if isBookingNotFull bookingsCreated.count boat.maxCapacity}}
+	{{#if isBookingNotFull totalPersons boat.maxCapacity}}
 		<h3>
 			<!-- <a href="{{newPath}}" name="newBooking" id="newBooking">New Booking</a> -->
 			<button name="newBooking" id="newBooking" class="btn btn-info">
@@ -139,7 +139,7 @@
 			<div>
 				<h3>Passengers</h3>
 
-				<h4 class="length">Total: {{bookingsCreated.count}}/{{boat.maxCapacity}}</h4>
+				<h4 class="length">Total: {{totalPersons}}/{{boat.maxCapacity}}</h4>
 		
 			</div>
 
@@ -278,7 +278,7 @@
 							</tr>	
 							<tr>	
 								<td>Current meters alocated on Extras Slot</td>
-								<td><span id='spaceAlocated'> - <span id='spaceAlocatedSlotCart'></span></span></td>
+								<td><span id='spaceAlocated'>m - <span id='spaceAlocatedSlotCart'>m</span></span></td>
 							</tr>
 						</tbody>
 					</table>

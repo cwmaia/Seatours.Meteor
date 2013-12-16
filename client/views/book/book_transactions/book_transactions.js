@@ -84,7 +84,7 @@ Template.bookTransactionsResume.events({
 			'bookId' : Session.get('bookId'),
 			'date' : new Date(date),
 			'status' : 'Processing',
-			'amount' : totalAmount,
+			'amount' : amount,
 			'detail' : detail,
 			'vendor' : vendor,
 			'type' : type
