@@ -1569,8 +1569,8 @@ if(Cars.find().count() == 0){
     	car = line.split(',');
     	var Car = {
 				'brandname' : car[1].charAt(0).toUpperCase() + car[1].slice(1),
-				'model' : car[2].charAt(0).toUpperCase() + car[2].slice(1),
-				'modelTrim' : car[3].charAt(0).toUpperCase() + car[3].slice(1),
+				'model' : car[2] ? car[2].charAt(0).toUpperCase() + car[2].slice(1) :  '',
+				'modelTrim' : car[3] ? car[3].charAt(0).toUpperCase() + car[3].slice(1) : '',
 				'modelYear' : car[4],
 				'modelBody' : car[5],
 				'weight' : car[25],

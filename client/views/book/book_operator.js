@@ -1453,7 +1453,7 @@ loadTypeahead = function(){
 		var datums = [];
 		for (var i = 0; i < data.length; i++) {
 			var datum = {
-				'value' : data[i].brandname + ' ' +data[i].model+ ' ' +data[i].modelTrim + ' ' + data[i].modelYear,
+				'value' : data[i].brandname + ' ' +data[i].model+ ' ' + data[i].modelTrim + ' ' + data[i].modelYear,
 				'brandname' : data[i].brandname,
 				'model' : data[i].model,
 				'modelBody' : data[i].modelBody,
@@ -1469,7 +1469,8 @@ loadTypeahead = function(){
 
 		$('#vehicleSearch').typeahead({
 			name : 'model',
-			local : datums
+			local : datums,
+			minLength: 3
 		}).bind('typeahead:selected', function (obj, datum) {
 			$('#vehicle').val(datum.value);
 		    $('#vehicleModelBody').val(datum.modelBody ? datum.modelBody : 'Not Found');
@@ -1484,7 +1485,6 @@ loadTypeahead = function(){
 	}
 
 	Meteor.call('getAllCars', function(err, data) {
-		console.log(data);
         callback(data);
     });
 }
