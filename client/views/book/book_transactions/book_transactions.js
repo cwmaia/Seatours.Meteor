@@ -12,9 +12,8 @@ Template.bookTransactionsResume.dateString = function(data){
 	return data.toDateString();
 }
 
-Template.bookTransactionsResume.vendors = function(){
-	var vendorsGroup = Groups.findOne({name : 'Vendors'});
-	return Meteor.users.find({'profile.groupID' : vendorsGroup._id});
+Template.bookTransactionsResume.vendor = function(){
+	return Meteor.user().profile.name;
 }
 
 Template.bookTransactionsResume.events({
@@ -54,7 +53,6 @@ Template.bookTransactionsResume.events({
 	'click .saveTransaction' : function(){
 
 		//calc total amount with discount
-		var date = $('#date').val();
 		var amount = $('#amount').val();
 		var vendor = $('#vendor').val();
 		var type = $('#type').val();
@@ -67,11 +65,6 @@ Template.bookTransactionsResume.events({
 
 		if(!vendor){
 			throwError('Please Inform the Vendor');
-			return;
-		}
-
-		if(!date){
-			throwError('Please Add the date of Transaction');
 			return;
 		}
 

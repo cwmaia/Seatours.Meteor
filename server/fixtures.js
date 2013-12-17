@@ -38,7 +38,6 @@ var vendorsId = '';
 	// matching groups.
 	var arrMatches = null;
 	 
-	 console.log(arrData);
 	// Keep looping over the regular expression matches
 	// until we can no longer find a match.
 	while (arrMatches = objPattern.exec( strData )){
@@ -77,10 +76,8 @@ var vendorsId = '';
 		// Now that we have our value string, let's add
 		// it to the data array.
 		arrData[ arrData.length - 1 ].push( strMatchedValue );
-		console.log('tenso');
 	}
-	console.log('aqui'); 
-	console.log(arrData); 
+
 	// Return the parsed data.
 	return( arrData );
 }
@@ -511,19 +508,6 @@ if(Meteor.users.find().count() == 0){
 	  'password'  : '1234' //encrypted automatically 
 	});
 
-	Accounts.createUser({
-	  'username'  : 'rhneto',
-	  'email'     : 'rhneto@me.com',
-	  'profile'	  : {'groupID' : vendorsId, 'name' : 'Roberto'},
-	  'password'  : '1234' //encrypted automatically 
-	});
-
-	Accounts.createUser({
-	  'username'  : 'cmaia',
-	  'email'     : 'cmaia@me.com',
-	  'profile'	  : {'groupID' : vendorsId, 'name' : 'Carlos Maia'},
-	  'password'  : '1234' //encrypted automatically 
-	});
 }
 
 if(Customers.find().count() == 0){
@@ -1557,8 +1541,8 @@ var callback = function(data){
 	Fiber(function(){
 			for (var i = 1; i < data.length; i++) {
 			var Car = {
-				'brandname' : data[i].brandname,
-				'model' : data[i].model,
+				'brandname' : data[i].brandname.charAt(0).toUpperCase() + data[i].brandname.slice(1),
+				'model' : data[i].model.charAt(0).toUpperCase() + data[i].model.slice(1),
 				'modelBody' : data[i].modelBody,
 				'weight' : data[i].weight,
 				'length' : data[i].length,
@@ -1573,35 +1557,35 @@ var callback = function(data){
 
 var callbackCSV = function(data){
 	var a = CSVToArray(data, '');
-	console.log(a);
+	console.log(a[1]);
 }
 
 if(Cars.find().count() == 0){
+		
+    var fs  = Npm.require("fs");
+    var jumpFirstLine = true;
 
-	/*var fs = Npm.require('fs');
-		var _data;
-		fs.readFile('../../../../../public/cars.csv', function(err, data){
-			if(err){
-				console.log(err);
+	fs.readFileSync('../../../../../public/cars.csv').toString().split('\n').forEach(function (line) { 
+    	car = line.split(',');
+    	var Car = {
+				'brandname' : car[1].charAt(0).toUpperCase() + car[1].slice(1),
+				'model' : car[2].charAt(0).toUpperCase() + car[2].slice(1),
+				'modelTrim' : car[3].charAt(0).toUpperCase() + car[3].slice(1),
+				'modelYear' : car[4],
+				'modelBody' : car[5],
+				'weight' : car[25],
+				'length' : car[26],
+				'width' : car[27],
+				'height' : car[28]
 			}
-			else{
-				callbackCSV(data);
-			}
-		});*/
+		if(jumpFirstLine)	
+			jumpFirstLine = false;
+		else
+			Cars.insert(Car);	
+	});
 
 
-
-	var fs = Npm.require('fs');
-		var _data;
-		fs.readFile('../../../../../public/cars2.json', function(err, data){
-			if(err){
-				console.log(err);
-			}
-			else{
-				_data = JSON.parse(data);
-				callback(_data);
-			}
-		});
+		
 }
 
 

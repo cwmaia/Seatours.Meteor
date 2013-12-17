@@ -60,10 +60,6 @@ Template.voucher.calcTotal = function(totalISK){
     }
   };
 
-  if(totalISK > 0){
-    $('#alertNotPaid').show();
-  }
-
   return totalISK;
 
 }

@@ -1453,7 +1453,7 @@ loadTypeahead = function(){
 		var datums = [];
 		for (var i = 0; i < data.length; i++) {
 			var datum = {
-				'value' : data[i].brandname + ' - '+ data[i].model,
+				'value' : data[i].brandname + ' ' +data[i].model+ ' ' +data[i].modelTrim + ' ' + data[i].modelYear,
 				'brandname' : data[i].brandname,
 				'model' : data[i].model,
 				'modelBody' : data[i].modelBody,
@@ -1471,7 +1471,7 @@ loadTypeahead = function(){
 			name : 'model',
 			local : datums
 		}).bind('typeahead:selected', function (obj, datum) {
-			$('#vehicle').val(datum.brandname + ' - '+ datum.model);
+			$('#vehicle').val(datum.value);
 		    $('#vehicleModelBody').val(datum.modelBody ? datum.modelBody : 'Not Found');
 			$('#vehicleWeight').val(datum.weight ? datum.weight+'Kg' : 'Not Found')
 			$('#vehicleLength').val(datum.length ? datum.length/1000+"m" : 'Not Found')
@@ -1484,6 +1484,7 @@ loadTypeahead = function(){
 	}
 
 	Meteor.call('getAllCars', function(err, data) {
+		console.log(data);
         callback(data);
     });
 }
