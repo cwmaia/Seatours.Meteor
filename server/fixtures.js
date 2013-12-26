@@ -1562,13 +1562,13 @@ var callbackCSV = function(data){
 
 if(Cars.find().count() == 0){
 		
-    var fs  = Npm.require("fs");
+  /*  var fs  = Npm.require("fs");
     var jumpFirstLine = true;
 
 	fs.readFileSync('../../../../../public/cars.csv').toString().split('\n').forEach(function (line) { 
     	car = line.split(',');
     	var Car = {
-				'brandname' : car[1].charAt(0).toUpperCase() + car[1].slice(1),
+				'brandname' : car[1] ? car[1].charAt(0).toUpperCase() + car[1].slice(1) : '',
 				'model' : car[2] ? car[2].charAt(0).toUpperCase() + car[2].slice(1) :  '',
 				'modelTrim' : car[3] ? car[3].charAt(0).toUpperCase() + car[3].slice(1) : '',
 				'modelYear' : car[4],
@@ -1582,7 +1582,7 @@ if(Cars.find().count() == 0){
 			jumpFirstLine = false;
 		else
 			Cars.insert(Car);	
-	});
+	});*/
 
 
 		

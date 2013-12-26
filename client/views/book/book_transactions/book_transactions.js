@@ -54,17 +54,11 @@ Template.bookTransactionsResume.events({
 
 		//calc total amount with discount
 		var amount = $('#amount').val();
-		var vendor = $('#vendor').val();
 		var type = $('#type').val();
 		var detail = $('#detail').val();
 
 		if(!amount){
 			throwError('Please Add the Amount of Transaction');
-			return;
-		}
-
-		if(!vendor){
-			throwError('Please Inform the Vendor');
 			return;
 		}
 
@@ -79,7 +73,7 @@ Template.bookTransactionsResume.events({
 			'status' : 'Processing',
 			'amount' : amount,
 			'detail' : detail,
-			'vendor' : vendor,
+			'vendor' : Meteor.user().profile.name,
 			'type' : type
 		}
 
