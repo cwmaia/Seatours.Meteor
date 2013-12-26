@@ -1562,7 +1562,7 @@ var callbackCSV = function(data){
 
 if(Cars.find().count() == 0){
 		
-  /*  var fs  = Npm.require("fs");
+    var fs  = Npm.require("fs");
     var jumpFirstLine = true;
 
 	fs.readFileSync('../../../../../public/cars.csv').toString().split('\n').forEach(function (line) { 
@@ -1582,7 +1582,7 @@ if(Cars.find().count() == 0){
 			jumpFirstLine = false;
 		else
 			Cars.insert(Car);	
-	});*/
+	});
 
 
 		
