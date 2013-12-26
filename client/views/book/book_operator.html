@@ -149,6 +149,8 @@
 						<th class="sorting_disabled">ID</th>
 						<th class="sorting_disabled">Customer</th>
 						<th class="sorting_disabled">Vehicle</th>
+						<th class="sorting_disabled">Vehicle Plate</th>
+						<th class="sorting_disabled">Vehicle Category</th>
 						<th class="sorting_disabled">Telephone</th>
 						<th>Total Passagers</th>
 						<th>Payment Status</th>
@@ -160,6 +162,8 @@
 					<tr id='{{_id}}' class='{{#if paid}} green {{else}} red {{/if}}'>
 						<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
 						<td>{{fullname customerId}}</td>
+						<td>{{vehicle.vehicleName}}</td>
+						<td>{{vehicle.vehiclePlate}}</td>
 						<td>{{vehicle.category}} - {{vehicle.size}}m</td>
 						<td>{{telephone customerId}}</td>
 						<td>{{totalPassagers _id}}</td>

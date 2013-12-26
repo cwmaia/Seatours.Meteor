@@ -18,7 +18,7 @@
 			</thead>
 			<tbody>	
 			{{#each bookings}}
-				<tr>
+				<tr id="{{_id}}_book" class='red'>
 					<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
 					<td>{{trip.from}} - {{trip.to}}</td>
 					<td>{{fullName customerId}}</td>

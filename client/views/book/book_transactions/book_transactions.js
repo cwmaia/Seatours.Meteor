@@ -78,6 +78,21 @@ Template.bookTransactionsResume.events({
 		}
 
 		Transactions.insert(transaction);
+
+		//Check if all was paid
+		var bookId = Session.get('bookId');
+		var totalISK = Books.findOne({"_id" : Session.get('bookId')}).totalISK;
+		var thisBookingTransactions = Transactions.find({'bookId' : bookId}).fetch();
+		var totalTransactions = 0;
+		for (var i = thisBookingTransactions.length - 1; i >= 0; i--) {
+			totalTransactions = parseInt(totalTransactions + thisBookingTransactions[i].amount);
+		};
+
+		if( totalISK == totalTransactions){
+			Books.update(bookId, {$set : {paid : true}});
+		}
+
+		
 		$("#transactionDialog").hide();
 		
 	}

@@ -12,7 +12,7 @@ Template.mainMenu.events({
 Template.mainMenu.rendered = function(){
 	if(Session.get('showOverview')){
 		Session.set('showOverview', false);
-		Meteor.Router.to('/overview');
+		Meteor.Router.to('/bookOperator');
 	}
 
 	if(Session.get('itemMenuId'))

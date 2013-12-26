@@ -685,7 +685,7 @@ function setCalendarCapacity (calendar) {
 //Template Book Detail
 Template.bookDetail.rendered = function() {
 	var oTable = $('#passengers').dataTable();
-	oTable.fnSort( [ [5,'asc'] ] );
+	oTable.fnSort( [ [7,'asc'] ] );
 	$('#boatSlots').dataTable();
 	countExtraSpace();
 	drawPieChartBoatSlots();
@@ -926,6 +926,13 @@ Template.bookDetail.helpers({
 		var isValidDate = true,
 		selectedDate = new Date(localStorage.getItem('date'));
 		date = new Date();
+		
+		with(date){
+			setHours(0);
+			setMinutes(0);
+			setSeconds(0);
+			setMilliseconds(0);
+		}
 
 		if(selectedDate < date)
 			isValidDate = false;

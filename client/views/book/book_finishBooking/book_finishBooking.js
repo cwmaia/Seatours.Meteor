@@ -85,11 +85,6 @@ Template.finishBooking.events({
 			return;
 		}
 
-		if(!date){
-			throwError('Please Add the date of Transaction');
-			return;
-		}
-
 		if(!type){
 			throwError('Please Add the type of Transaction');
 			return;
@@ -117,6 +112,8 @@ Template.finishBooking.events({
 
 		if( totalISK == totalTransactions){
 			$("#"+bookId+"_paymentStatus").text("Paid");
+			$("#"+bookId+"_book").removeClass('red');
+			$("#"+bookId+"_book").addClass('green');
 			Books.update(bookId, {$set : {paid : true}});
 		}else if (totalISK > totalTransactions){
 			var pending = totalISK - totalTransactions;

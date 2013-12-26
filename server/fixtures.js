@@ -90,12 +90,26 @@ if(Groups.find().count() == 0){
 
 	vendorsId = Groups.insert({
 		'name' : 'Vendors',
-		'description' : 'Vendors'
+		'description' : 'Vendors',
+		'permissions' : [
+			'bookOperator',
+			'bookDetail',
+			'createBook',
+			'cart',
+			'finishBooking'
+		]
 	})
 
 	Groups.insert({
 		'name' : 'Agencies',
-		'description' : 'Travel Agencies'
+		'description' : 'Travel Agencies',
+		'permissions' : [
+			'bookOperator',
+			'bookDetail',
+			'createBook',
+			'cart',
+			'finishBooking'
+		]
 	})
 }
 
@@ -505,6 +519,13 @@ if(Meteor.users.find().count() == 0){
 	  'username'  : 'gudrun',
 	  'email'     : 'gudrun@me.com',
 	  'profile'	  : {'groupID' : admId, 'name' : 'Gudrun'},
+	  'password'  : '1234' //encrypted automatically 
+	});
+
+	Accounts.createUser({
+	  'username'  : 'carlos',
+	  'email'     : 'maia@me.com',
+	  'profile'	  : {'groupID' : vendorsId, 'name' : 'Gudrun'},
 	  'password'  : '1234' //encrypted automatically 
 	});
 
