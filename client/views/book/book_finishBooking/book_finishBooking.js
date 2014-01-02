@@ -1,6 +1,7 @@
 Template.finishBooking.rendered = function(){
 	$("#transactionDialog").hide();
 	$("#discountDialog").hide();
+	$("#extraFeeDialog").hide();
 }
 
 Template.finishBooking.bookings = function(){
@@ -36,7 +37,7 @@ Template.finishBooking.events({
 		}
 
 		Notes.insert(note);
-		
+
 		$("#discountDialog").hide();
 
 	},
@@ -63,10 +64,69 @@ Template.finishBooking.events({
 		$("#toPay").text(totalToPay);
 		$("#transactionDialog").show();
 	},
+
+	'click .addExtraFee': function(event){
+		event.preventDefault();
+		var a = event.currentTarget;
+		var bookId = a.rel;
+		Session.set("currentBooking", bookId);
+		$("#extraFeeDialog").show();
+	},
+
+	'click .saveExtraFee':function(event){
+		event.preventDefault();
+		//calc total amount with discount
+		var amount = $('#extraFee').val();
+		amount = 0 - amount;
+		var vendor = Meteor.user().profile.name;
+		var type = $('#typeFee').val();
+
+		if(!amount){
+			throwError('Please Add the Amount of Transaction');
+			return;
+		}
+
+		if(!type){
+			throwError('Please Add the type of Transaction');
+			return;
+		}
+
+		var transaction = {
+			'bookId' : Session.get('currentBooking'),
+			'date' : new Date(date),
+			'status' : 'Extra Fee',
+			'amount' : amount,
+			'detail' : "",
+			'vendor' : vendor,
+			'type' : type
+		}
+		Transactions.insert(transaction);
+		var bookId = Session.get('currentBooking');
+		var totalISK = Books.findOne({"_id" : Session.get('currentBooking')}).totalISK;
+		var thisBookingTransactions = Transactions.find({'bookId' : bookId}).fetch();
+		var totalTransactions = 0;
+		for (var i = thisBookingTransactions.length - 1; i >= 0; i--) {
+			totalTransactions = totalTransactions + thisBookingTransactions[i].amount;
+		};
+		if( totalISK == totalTransactions){
+			$("#"+bookId+"_paymentStatus").text("Paid");
+			Books.update(bookId, {$set : {paid : true}});
+		}else if (totalISK > totalTransactions){
+			var pending = totalISK - totalTransactions;
+			$("#"+bookId+"_paymentStatus").text(pending + "ISK Pending");
+		}else{
+			var refund = totalTransactions - totalISK;
+			$("#"+bookId+"_paymentStatus").text(refund + "ISK to be refund");
+		}
+
+		$("#extraFeeDialog").hide();
+	},
+
 	'click .cancel, click .close' : function(event){
 		event.preventDefault();
 		$("#transactionDialog").hide();
 		$("#discountDialog").hide();
+		$("#extraFeeDialog").hide();
 	},
 	'click .saveTransaction' : function(event){
 		event.preventDefault();
@@ -100,7 +160,7 @@ Template.finishBooking.events({
 			'bookId' : Session.get('currentBooking'),
 			'date' : new Date(date),
 			'status' : 'Processing',
-			'amount' : totalAmount,
+			'amount' : amount,
 			'detail' : detail,
 			'vendor' : vendor,
 			'type' : type
