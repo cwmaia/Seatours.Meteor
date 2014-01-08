@@ -18,7 +18,7 @@
 			</thead>
 			<tbody>	
 			{{#each bookings}}
-				<tr>
+				<tr id="{{_id}}_book" class='red'>
 					<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
 					<td>{{trip.from}} - {{trip.to}}</td>
 					<td>{{fullName customerId}}</td>
@@ -53,7 +53,7 @@
 				    	<div>
 					    	<label>Type: </label>
 					    	<select id='type'>
-					    		<option>Cerdit Card</option>
+					    		<option>Credit Card</option>
 					    		<option>Debit Card</option>
 					    		<option>Cash</option>
 					    		<option>Checks</option>

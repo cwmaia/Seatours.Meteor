@@ -40,7 +40,7 @@
 		</h1>
 	</div>
 
-	{{#if isBookingNotFull bookingsCreated.count boat.maxCapacity}}
+	{{#if isBookingNotFull totalPersons boat.maxCapacity}}
 		<h3>
 			<!-- <a href="{{newPath}}" name="newBooking" id="newBooking">New Booking</a> -->
 			<button name="newBooking" id="newBooking" class="btn btn-info">
@@ -139,7 +139,7 @@
 			<div>
 				<h3>Passengers</h3>
 
-				<h4 class="length">Total: {{bookingsCreated.count}}/{{boat.maxCapacity}}</h4>
+				<h4 class="length">Total: {{totalPersons}}/{{boat.maxCapacity}}</h4>
 		
 			</div>
 
@@ -149,6 +149,8 @@
 						<th class="sorting_disabled">ID</th>
 						<th class="sorting_disabled">Customer</th>
 						<th class="sorting_disabled">Vehicle</th>
+						<th class="sorting_disabled">Vehicle Plate</th>
+						<th class="sorting_disabled">Vehicle Category</th>
 						<th class="sorting_disabled">Telephone</th>
 						<th>Total Passagers</th>
 						<th>Payment Status</th>
@@ -160,17 +162,24 @@
 					<tr id='{{_id}}' class='{{#if paid}} green {{else}} red {{/if}}'>
 						<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
 						<td>{{fullname customerId}}</td>
+						<td>{{vehicle.vehicleName}}</td>
+						<td>{{vehicle.vehiclePlate}}</td>
 						<td>{{vehicle.category}} - {{vehicle.size}}m</td>
 						<td>{{telephone customerId}}</td>
 						<td>{{totalPassagers _id}}</td>
 						<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
 						<td>
 							{{#if isBookCreated bookStatus}}
-								<a href="" class="changeStatusBooking">
-									Cancel
+								<a href="" class="changeStatusBooking btn btn-mini btn-danger" title='Cancel Booking'>
+									<i class='icon-remove'></i>
+								</a>
+								<a href="" class="changeStatusBooking btn btn-mini btn-warning" title='No Show'>
+									<i class='icon-thumbs-down'></i>
 								</a>
 							{{else}}
-								<p>-</p>
+								<a href="" class="changeStatusBooking btn btn-mini btn-warning" title='No Show'>
+									<i class='icon-thumbs-down'></i>
+								</a>
 							{{/if}}
 						</td>
 					</tr>
@@ -273,7 +282,7 @@
 							</tr>	
 							<tr>	
 								<td>Current meters alocated on Extras Slot</td>
-								<td><span id='spaceAlocated'> - <span id='spaceAlocatedSlotCart'></span></span></td>
+								<td><span id='spaceAlocated'>m - <span id='spaceAlocatedSlotCart'>m</span></span></td>
 							</tr>
 						</tbody>
 					</table>
@@ -474,8 +483,8 @@
     	<button class="btn btn-small btn-info saveEdit" type='submit' form='pasagerInfo'>Save Edits</button>
     {{else}}
 
-	    <button class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Buy & Continue Booking</button>
-	    <button class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Buy & Go To Cart</button>
+	    <button class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Add to Basket</button>
+	    <button class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Add to Basket & Checkout</button>
     {{/if}}
 </template>
 

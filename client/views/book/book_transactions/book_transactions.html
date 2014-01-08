@@ -5,7 +5,6 @@
 	<table class='table table-striped table-bordered table-hover'>
 		<thead>
 			<tr>
-				<th>Booking ID</th>
 				<th>Date</th>
 				<th>Vendor</th>
 				<th>Type</th>
@@ -18,7 +17,6 @@
 		<tbody>
 			{{#each transactions}}
 			<tr>	
-				<td>{{refNumber}}</td>
 				<td>{{dateString date}}</td>
 				<td>{{vendor}}</td>
 				<td>{{type}}</td>
@@ -41,17 +39,12 @@
 		    </div>
 		    <form>
 			    <div class="modal-body">
-
-			    	<label>Date: </label>
-			    	<input type='text' class='datepicker' id='date'/>
 			    	<div class='line-2'>
 			    		<div>
-					    	<label>Vendor: </label>
-					    	<select id='vendor'>
-					    		{{#each vendors}}
-					    			<option>{{profile.name}}</option>
-					    		{{/each}}
-					    	</select>
+					    	<div>
+					    		<label>Vendor: </label>
+					    		<label style="font-weight: normal;">{{vendor}}</label>
+					    	</div>
 				    	</div>
 
 				    	<div>
@@ -91,12 +84,10 @@
 		    <form>
 			    <div class="modal-body">
 			    	<div>
-				    	<label>Vendor: </label>
-				    	<select id='vendor'>
-				    		{{#each vendors}}
-				    			<option>{{profile.name}}</option>
-				    		{{/each}}
-				    	</select>
+				    	<div>
+				    		<label>Vendor: </label>
+				    		<label style="font-weight: normal;">{{vendor}}</label>
+					    </div>
 					</div>
 
 
@@ -122,12 +113,10 @@
 			   	<div class="modal-body">
 			    	<div class='line-2'>
 			    		<div>
-					    	<label>Vendor: </label>
-					    	<select id='vendorFee'>
-					    		{{#each vendors}}
-					    			<option>{{profile.name}}</option>
-					    		{{/each}}
-					    	</select>
+					    	<div>
+					    		<label>Vendor: </label>
+					    		<label style="font-weight: normal;">{{vendor}}</label>
+					    	</div>
 					    </div>
 					    <div>
 					    	<label>Type: </label>

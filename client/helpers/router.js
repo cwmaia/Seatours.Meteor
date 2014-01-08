@@ -70,6 +70,27 @@ Meteor.Router.filters({
 		if(Meteor.user()){
 			return page;
 		}
+	},
+
+	'checkPermision' : function(page){
+
+
+		var group = Groups.findOne({_id: Meteor.user().profile.groupID});
+
+		//adm has all access
+		if(group.name == 'Administrators')
+			return page;
+
+		for (var i = 0; i < group.permissions.length; i++) {
+			if(group.permissions[i] == page){
+				return page;
+			}
+		};
+
+		alert('You have no permission to access this page, please consult your administrator!');
+		return;
+
+
 	}
 })
 
@@ -77,5 +98,5 @@ Meteor.Router.filters({
 
 Meteor.Router.filter('clearErrors');
 Meteor.Router.filter('checkAuth');
-
+Meteor.Router.filter('checkPermision');
 

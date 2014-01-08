@@ -9,7 +9,6 @@ Template.finishBooking.bookings = function(){
 }
 
 Template.finishBooking.fullName = function(customerId){
-	console.log(customerId);
 	return Customers.findOne({_id : customerId}).fullName;
 }
 
@@ -23,11 +22,40 @@ Template.finishBooking.events({
 		event.preventDefault();
 		var percentage = $('#discount').val();
 		var vendor = Meteor.user().profile.name;
+		percentage = parseInt(percentage);
 
 		var book = Books.findOne({_id : Session.get('currentBooking')});
-		var totalISKAfterDiscount = parseInt(book.totalISK * (1-(percentage/100)));
+		var amount = parseInt(book.totalISK * (percentage/100));
 
-		Books.update(book._id, {$set : {"totalISK" : totalISKAfterDiscount}});
+
+
+		var transaction = {
+			'bookId' : Session.get('currentBooking'),
+			'date' : new Date(date),
+			'status' : 'Given',
+			'amount' : amount,
+			'detail' : percentage+"% of discount",
+			'vendor' : vendor,
+			'type' : 'Discount'
+		}
+		Transactions.insert(transaction);
+		var bookId = Session.get('currentBooking');
+		var totalISK = Books.findOne({"_id" : Session.get('currentBooking')}).totalISK;
+		var thisBookingTransactions = Transactions.find({'bookId' : bookId}).fetch();
+		var totalTransactions = 0;
+		for (var i = thisBookingTransactions.length - 1; i >= 0; i--) {
+			totalTransactions = totalTransactions + thisBookingTransactions[i].amount;
+		};
+		if( totalISK == totalTransactions){
+			$("#"+bookId+"_paymentStatus").text("Paid");
+			Books.update(bookId, {$set : {paid : true}});
+		}else if (totalISK > totalTransactions){
+			var pending = totalISK - totalTransactions;
+			$("#"+bookId+"_paymentStatus").text(pending + "ISK Pending");
+		}else{
+			var refund = totalTransactions - totalISK;
+			$("#"+bookId+"_paymentStatus").text(refund + "ISK to be refund");
+		}
 
 		var note = {
 			created : new Date(),
@@ -37,8 +65,9 @@ Template.finishBooking.events({
 		}
 
 		Notes.insert(note);
-
 		$("#discountDialog").hide();
+		
+		Template.finishBooking.rendered();
 
 	},
 	'click .giveDiscount':function(event){
@@ -77,6 +106,7 @@ Template.finishBooking.events({
 		event.preventDefault();
 		//calc total amount with discount
 		var amount = $('#extraFee').val();
+		amount = parseInt(amount);
 		amount = 0 - amount;
 		var vendor = Meteor.user().profile.name;
 		var type = $('#typeFee').val();
@@ -132,6 +162,7 @@ Template.finishBooking.events({
 		event.preventDefault();
 		//calc total amount with discount
 		var amount = $('#amount').val();
+		amount = parseInt(amount);
 		var vendor = Meteor.user().profile.name;
 		var type = $('#type').val();
 		var detail = $('#detail').val();
@@ -143,11 +174,6 @@ Template.finishBooking.events({
 
 		if(!vendor){
 			throwError('Please Inform the Vendor');
-			return;
-		}
-
-		if(!date){
-			throwError('Please Add the date of Transaction');
 			return;
 		}
 
@@ -173,10 +199,13 @@ Template.finishBooking.events({
 		var thisBookingTransactions = Transactions.find({'bookId' : bookId}).fetch();
 		var totalTransactions = 0;
 		for (var i = thisBookingTransactions.length - 1; i >= 0; i--) {
-			totalTransactions = totalTransactions + thisBookingTransactions[i].amount;
+			totalTransactions = parseInt(totalTransactions + thisBookingTransactions[i].amount);
 		};
+
 		if( totalISK == totalTransactions){
 			$("#"+bookId+"_paymentStatus").text("Paid");
+			$("#"+bookId+"_book").removeClass('red');
+			$("#"+bookId+"_book").addClass('green');
 			Books.update(bookId, {$set : {paid : true}});
 		}else if (totalISK > totalTransactions){
 			var pending = totalISK - totalTransactions;

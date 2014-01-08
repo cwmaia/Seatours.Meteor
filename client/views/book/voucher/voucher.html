@@ -148,6 +148,18 @@
        		This Voucher is to accepted as payment fot the following service as 
 			per contratct/agreement
 	    </div>
+
+	    <div id='alertNotPaid' class="alert alert-danger" style="font-size: 13px;
+												margin-bottom: 20px;
+												text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+												background-color: #fcf8e3;
+												border: 1px solid #fbeed5;
+												margin-left: 2%;
+												margin-right: 2%;
+												text-align: center;">
+       		<b style="color: #FF2400;">This voucher has not yet been paid full, please complete the payment at our office.</b>
+	    </div>
+
 	    <div id="product" class="line-3" style="float: left; width: 100%;">
 			<section style="float: left; width: 28%; padding-left: 2%;">
 				<span style="font-weight: bold; text-shadow: 2px 1px 1px white; font-size: 14px; ">Service: </span>
@@ -210,7 +222,14 @@
 								text-align: left;
 								vertical-align: top;
 								border-top: 1px solid #dddddd;">
-								<input id='calcISK' value="{{calcTotal totalISK}}" style="
+								Total
+								<br/>
+								<input class='calcISK' value="{{totalISK}}" style="
+											   max-width: 120px; min-width: 120px; border: none;background-color: #f9f9f9;color: black; text-align: right; margin-top: -3px;" disabled='true'> ISK</input>
+								<br/>			   
+								To be Paid
+								<br/>		   
+								<input class='calcISK' value="{{calcTotal totalISK}}" style="
 											   max-width: 120px; min-width: 120px; border: none;background-color: #f9f9f9;color: black; text-align: right; margin-top: -3px;" disabled='true'> ISK</input>
 					</td>
 				</tr>
