@@ -1,7 +1,18 @@
 <template name='header'>
 	<header class="header">
-	  	<div class='limit relative' style='float:left'>
+	  	<div class='limit relative' style='float:left;'>
 		  	<a id='id-logo' class="logo-menu" href="/"><img src='/images/logo-en.png'></a>
 		</div>
+		{{#if loggedIn}}
+		<div style="margin-right:3%; text-align:right;">	
+			<div>
+				<a id="loginLink">Sign in ▾</a>
+			<div>
+			<div id="loginArea" style='float:right;'>
+				{{> login}}
+			</div>
+		</div>
+		{{/if}}
+		<div style='clear:both;'></div>
 	</header>
 </template>

@@ -1,4 +1,4 @@
-/* ========================================================
+(function(){/* ========================================================
  * easyWizard v1
  * http://st3ph.github.com/jquery.easyWizard
  * ========================================================
@@ -18,11 +18,11 @@
 				'stepsText' : '{n}. {t}',
 				'showButtons' : true,
 				'buttonsClass' : '',
-				'prevButton' : '< Back',
-				'nextButton' : 'Next >',
+				'prevButton' : '◀ Back',
+				'nextButton' : 'Next ▶',
 				'debug' : false,
 				'submitButton': true,
-				'submitButtonText': 'Submit',
+				'submitButtonText': 'Finish!',
 				'submitButtonClass': '',
 				before: function(wizardObj, currentStepObj, nextStepObj) {},
 				after: function(wizardObj, prevStepObj, currentStepObj) {},
@@ -84,9 +84,9 @@
 
 					if(thisSettings.showButtons) {
 						paginationHtml = '<div class="easyWizardButtons">';
-							paginationHtml += '<button class="prev '+thisSettings.buttonsClass+'">'+thisSettings.prevButton+'</button>';
-							paginationHtml += '<button class="next '+thisSettings.buttonsClass+'">'+thisSettings.nextButton+'</button>';
-							paginationHtml += thisSettings.submitButton?'<button type="submit" class="submit '+thisSettings.submitButtonClass+'">'+thisSettings.submitButtonText+'</button>':'';
+							paginationHtml += '<button class="btn btn-info prev '+thisSettings.buttonsClass+'">'+thisSettings.prevButton+'</button>';
+							paginationHtml += '<button class="btn btn-success next '+thisSettings.buttonsClass+'">'+thisSettings.nextButton+'</button>';
+							paginationHtml += thisSettings.submitButton?'<button type="submit" class="btn btn-success submit '+thisSettings.submitButtonClass+'">'+thisSettings.submitButtonText+'</button>':'';
 						paginationHtml	+= '</div>';
 						$paginationBloc = $(paginationHtml);
 						$paginationBloc.css('clear', 'both');
@@ -198,3 +198,5 @@
 		}
 	};
 })(jQuery);
+
+})();

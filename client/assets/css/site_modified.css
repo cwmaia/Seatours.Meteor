@@ -553,7 +553,7 @@ a.img-round:hover {
   box-sizing: border-box;
   *behavior: url("libs/boxsizing.htc");
   margin: 0 5px;
-  width: 100%;
+  width: 70%;
   max-width: 960px;
 }
 .limit.relative {

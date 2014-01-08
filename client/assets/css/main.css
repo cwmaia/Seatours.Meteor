@@ -489,6 +489,37 @@ select{
 	padding-top: 3% !important;
 }
 
+.loginZone{
+	margin-top: 3%;
+	margin-right: 2%;
+}
+#loginArea {
+	
+	text-align: right;
+	font-size: medium;
+	text-decoration: none;
+	box-shadow: 1px 1px 1px #888888;
+	border: 1px solid;
+	background-color: white;
+	padding-right: 30px;
+	padding-left: 20px;
+	padding-bottom: 15px;
+}
+
+#loginLink {
+	color: white;
+	margin-right: 10px;
+}
+
+.firstPage {
+	position: absolute;
+	width: 80%;
+	margin-left: 10%;
+	margin-right: 10%;
+	margin-top: 2%;
+
+}
+
 /*
 	Media Query
 */

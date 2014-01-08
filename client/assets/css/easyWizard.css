@@ -6,3 +6,4 @@
 .easyWizardButtons button, .easyWizardButtons .submit {cursor:pointer}
 .easyWizardButtons .prev {float:left}
 .easyWizardButtons .next, .easyWizardButtons .submit {float:right}
+.step {min-height: 280px;}
