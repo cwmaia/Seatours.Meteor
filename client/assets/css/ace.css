@@ -4256,7 +4256,7 @@ input[type=checkbox].ace-switch.ace-switch-7:checked + .lbl::after {
   border: 1px solid #c5d0dc;
   padding: 16px 12px;
   position: relative;
-  z-index: 11;
+  /*z-index: 11;*/
 }
 .tab-content.no-padding {
   padding: 0;
