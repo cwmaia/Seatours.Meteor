@@ -24,14 +24,15 @@ Template.bookTransactionsResume.events({
 		var vendor = Meteor.user().profile.name;
 		percentage = parseInt(percentage);
 
-		var book = Books.findOne({_id : Session.get('currentBooking')});
+		var book = Books.findOne({_id : Session.get('bookId')});
+		console.log("BOOking" + Session.get('bookId'));
 		var amount = parseInt(book.totalISK * (percentage/100));
 
 
 
 		var transaction = {
-			'bookId' : Session.get('currentBooking'),
-			'date' : new Date(date),
+			'bookId' : Session.get('bookId'),
+			'date' : new Date(),
 			'status' : 'Given',
 			'amount' : amount,
 			'detail' : percentage+"% of discount",
@@ -39,23 +40,6 @@ Template.bookTransactionsResume.events({
 			'type' : 'Discount'
 		}
 		Transactions.insert(transaction);
-		var bookId = Session.get('currentBooking');
-		var totalISK = Books.findOne({"_id" : Session.get('currentBooking')}).totalISK;
-		var thisBookingTransactions = Transactions.find({'bookId' : bookId}).fetch();
-		var totalTransactions = 0;
-		for (var i = thisBookingTransactions.length - 1; i >= 0; i--) {
-			totalTransactions = totalTransactions + thisBookingTransactions[i].amount;
-		};
-		if( totalISK == totalTransactions){
-			$("#"+bookId+"_paymentStatus").text("Paid");
-			Books.update(bookId, {$set : {paid : true}});
-		}else if (totalISK > totalTransactions){
-			var pending = totalISK - totalTransactions;
-			$("#"+bookId+"_paymentStatus").text(pending + "ISK Pending");
-		}else{
-			var refund = totalTransactions - totalISK;
-			$("#"+bookId+"_paymentStatus").text(refund + "ISK to be refund");
-		}
 
 		var note = {
 			created : new Date(),
@@ -105,8 +89,8 @@ Template.bookTransactionsResume.events({
 		}
 
 		var transaction = {
-			'bookId' : Session.get('currentBooking'),
-			'date' : new Date(date),
+			'bookId' : Session.get('bookId'),
+			'date' : new Date(),
 			'status' : 'Extra Fee',
 			'amount' : amount,
 			'detail' : "Extra Charges",
@@ -114,24 +98,7 @@ Template.bookTransactionsResume.events({
 			'type' : type
 		}
 		Transactions.insert(transaction);
-		var bookId = Session.get('currentBooking');
-		var totalISK = Books.findOne({"_id" : Session.get('currentBooking')}).totalISK;
-		var thisBookingTransactions = Transactions.find({'bookId' : bookId}).fetch();
-		var totalTransactions = 0;
-		for (var i = thisBookingTransactions.length - 1; i >= 0; i--) {
-			totalTransactions = totalTransactions + thisBookingTransactions[i].amount;
-		};
-		if( totalISK == totalTransactions){
-			$("#"+bookId+"_paymentStatus").text("Paid");
-			Books.update(bookId, {$set : {paid : true}});
-		}else if (totalISK > totalTransactions){
-			var pending = totalISK - totalTransactions;
-			$("#"+bookId+"_paymentStatus").text(pending + "ISK Pending");
-		}else{
-			var refund = totalTransactions - totalISK;
-			$("#"+bookId+"_paymentStatus").text(refund + "ISK to be refund");
-		}
-
+		
 		$("#extraFeeDialog").hide();
 	},
 	'click .saveTransaction' : function(){
@@ -154,7 +121,7 @@ Template.bookTransactionsResume.events({
 
 		var transaction = {
 			'bookId' : Session.get('bookId'),
-			'date' : new Date(date),
+			'date' : new Date(),
 			'status' : 'Processing',
 			'amount' : amount,
 			'detail' : detail,
