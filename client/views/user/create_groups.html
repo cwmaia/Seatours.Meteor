@@ -41,6 +41,48 @@
 
 		</div>
     </article>
+
+	<div id="permissionModal">
+      <div class="mask"> </div>
+
+	  <div class="modal">
+	    <div class="modal-header">
+	      <button type="button" class="close cancel">&times;</button>
+	      <h3>Permissions</h3>
+	    </div>
+
+	    <div class="modal-body">
+	    	<label>
+	    		Make Sales
+	    		<input id="sales_permission" type="checkbox" class="ace ace-switch ace-switch-6">
+	    		<span class='lbl'></span>
+	    	</label>
+
+	    	<label>
+	    		Edit Products, Boats, Prices and Trips.
+	    		<input id="edit_permission" type="checkbox" class="ace ace-switch ace-switch-6">
+	    		<span class='lbl'></span>
+	    	</label>
+
+	    	<label>
+	    		See Overview
+	    		<input id='overview_permission' type="checkbox" class="ace ace-switch ace-switch-6">
+	    		<span class='lbl'></span>
+	    	</label>
+
+	    	<label>
+	    		See Reports
+	    		<input id='reports_permission' type="checkbox" class="ace ace-switch ace-switch-6">
+	    		<span class='lbl'></span>
+	    	</label>
+	    </div>
+
+	    <div class="modal-footer">
+	    	<a class="btn btn-success savePermissions">Save</a>
+	    	<a href="#" class="btn cancel">Cancel</a>
+	    </div>
+	  </div>
+	</div>
 </template>
 
 <template name='groupList'>
@@ -60,7 +102,9 @@
 						<td>{{name}}</td>
 						<td>{{description}}</td>
 						<td>
-							<a class="btn btn-mini btn-info editMail" title="Permissions" rel='{{customer.email}}'><i class="icon-unlock bigger-120"></i></a>
+							{{#if isNotAdmGroup name}}
+								<a class="btn btn-mini btn-info editPermissions" title="Permissions" rel='{{_id}}'><i class="icon-unlock bigger-120"></i></a>
+							{{/if}}
 						</td>
 					</tr>
 				{{/each}}

@@ -75,6 +75,10 @@ Meteor.Router.filters({
 
 	'checkPermision' : function(page){
 
+		if(!Meteor.user() && page == "externView"){
+			return page;
+		}
+
 
 		var group = Groups.findOne({_id: Meteor.user().profile.groupID});
 

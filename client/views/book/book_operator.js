@@ -21,7 +21,7 @@ var updateDataPieChart = function(){
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
@@ -44,7 +44,7 @@ var updateDataPieChart = function(){
 	booksSlot1 = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
@@ -56,7 +56,7 @@ var updateDataPieChart = function(){
 	booksSlot2 = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
@@ -93,7 +93,7 @@ var getExtraSlotsSpace = function(trip){
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
@@ -101,7 +101,7 @@ var getExtraSlotsSpace = function(trip){
 	cartItems = CartItems.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
@@ -225,7 +225,7 @@ var doorMaxCapacity = function (trip){
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
@@ -239,7 +239,7 @@ var doorMaxCapacity = function (trip){
 	cartItems = CartItems.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
@@ -310,7 +310,7 @@ var checkSpaceExtra = function(size, trip){
 	booksSlot1 = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
@@ -324,7 +324,7 @@ var checkSpaceExtra = function(size, trip){
 	booksSlot2 = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
@@ -338,7 +338,7 @@ var checkSpaceExtra = function(size, trip){
 	booksSlot3 = CartItems.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
@@ -352,7 +352,7 @@ var checkSpaceExtra = function(size, trip){
 	booksSlot4 = CartItems.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
@@ -411,7 +411,7 @@ var countExtraSpace = function(){
 	booksSlot1 = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
@@ -420,7 +420,7 @@ var countExtraSpace = function(){
 	booksSlot2 = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
@@ -428,7 +428,7 @@ var countExtraSpace = function(){
 	booksSlot3 = CartItems.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
@@ -437,7 +437,7 @@ var countExtraSpace = function(){
 	booksSlot4 = CartItems.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
@@ -498,7 +498,7 @@ var checkHaveToOpenDoor = function(size, trip){
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
@@ -506,7 +506,7 @@ var checkHaveToOpenDoor = function(size, trip){
 	cartBooks = CartItems.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
@@ -718,7 +718,7 @@ Template.bookDetail.totalPersons = function(){
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created'
 	}).fetch();
 
@@ -748,7 +748,7 @@ carsUpTo5 = function(){
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
@@ -784,7 +784,7 @@ var returnPersons = function(){
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 	}).fetch();
 
@@ -848,7 +848,7 @@ carsUpto6 = function(){
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip.from' 	: trip.from,
+		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Created',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
@@ -914,7 +914,7 @@ Template.bookDetail.helpers({
 		return Books.find({
 			dateOfBooking 	: {$gte: currentDate, $lt: date},
 			'product._id' 	: Session.get('productId'),
-			'trip.from' 	: trip.from
+			'trip._id' 	: trip._id
 		});
 	},
 
@@ -1519,9 +1519,11 @@ var createBook = function(){
 	}
 
 
-	var trip = Trips.findOne(Session.get('tripId')),
+	var trip = Trips.findOne(Session.get('tripId'));
+
 		book = {
 		"trip" : {
+			'_id'	: Session.get('tripId'),
 			'from' 	: trip.from,
 			'to' 	: trip.to,
 			'hour' 	: trip.hour
