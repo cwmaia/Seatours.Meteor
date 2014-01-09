@@ -1,22 +1,18 @@
 var Book = {};
 
 Template.voucher.book = function(){
-  if(Session.get('book')){
-    return Session.get('book');
-  }else{
     Book = Books.findOne({_id: Session.get('bookId')});
     return Book;
-  }
+}
+
+Template.voucher.getRefNumber = function(){
+    Book = Books.findOne({_id: Session.get('bookId')});
+    return Book.refNumber;
 }
 
 Template.voucher.date = function(){
-  if(Session.get('book')){
-    Book = Session.get('book');
-    return Book.dateOfBooking.toDateString();
-  }else{
     Book = Books.findOne({_id: Session.get('bookId')});
     return Book.dateOfBooking.toDateString();
-  }
 }
 
 Template.voucher.customer = function(){
