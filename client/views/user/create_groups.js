@@ -16,17 +16,22 @@ Template.groupList.isNotAdmGroup = function (name) {
 Template.createGroups.events({
 	'click #addGroups' : function(event){
 
-		var name = $('#name').val();
+		var name = $('#groupName').val();
 		var description = $('#description').val();
 
 		var group = {
 			name : name,
-			description : description
+			description : description,
+			permissions: []
 		}
 
-		Groups.insert(group);
-		throwSuccess('Group Created!');
-	
+		try{
+			Meteor.call('createGroup', group);
+			throwSuccess('Group Created!');
+		}catch(err){
+			console.log(err);
+		}
+
 		$('#fieldsetUser input').filter(function(){
 			$(this).val('');
 		})

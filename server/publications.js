@@ -180,6 +180,18 @@ Meteor.methods({
     });
   },
 
+  createAccount: function(user){
+    Accounts.createUser(user);
+  },
+
+  createGroup : function(group){
+    Groups.insert(group);
+  },
+
+  insertBook : function(book){
+    return Books.insert(book);
+  },
+
 
   generateQRCode: function(id){
     var qr = qrcode(4, 'M');

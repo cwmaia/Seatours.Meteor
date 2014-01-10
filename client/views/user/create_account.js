@@ -13,11 +13,31 @@ Template.createAccount.events({
 			username : $('#username').val(),
 			email : $('#mail').val(),
 			password : $('#password1').val(),
-			profile : {'groupID': $('#group').val(), 'name' : $('#name').val()}
+			profile : {'groupID': $('#group').val(), 'name' : $('#nameOfUser').val()}
 		}
 
-		Accounts.createUser(user);
+		if(!user.username){
+			throwError('Please Inform a Username');
+			return;
+		}
+
+		if(!user.email){
+			throwError('Please Inform a Email');
+			return;
+		}
+
+		if(!($('#group').val())){
+			throwError('Please Inform a Group');
+			return;
+		}
+
+		if(!($('#nameOfUser').val())){
+			throwError('Please Inform the Name of User');
+			return;
+		}
+		
 		try{
+			Meteor.call('createAccount', user);
 			throwSuccess('User Created!');
 		}catch(err){
 			console.log(err);
