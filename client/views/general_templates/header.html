@@ -3,25 +3,26 @@
 	  	<div class='limit relative' style='float:left;'>
 		  	<a id='id-logo' class="logo-menu" href="/"><img src='/images/logo-en.png'></a>
 		</div>
-		{{#if loggedIn}}
-		<div style="margin-right:3%; text-align:right;">	
-			<div>
-				<a id="loginLink">SIGN IN</a>
-			<div>
-			<div id="loginArea" style='float:right;'>
-				{{> login}}
+			<div style="margin-right:3%; padding-top:3%; text-align:right; color: white">
+				<span class="profile">LOGGED AS: {{loginName}} </span>
+			{{#if loggedAsUser}}
+				<span> | </span>
+				<a class="cbasket" href="/">
+				BASKET
+				</a>
+				<span> | </span>
+				{{#if loggedIn}}
+					<a id="loginLink">SIGN IN</a>
+					<div id="loginArea" style='float:right;'>
+						{{> login}}
+					</div>
+				{{else}}
+					<a class="logoff">LOG OFF</a>				
+				{{/if}}
+			
+			{{/if}}
 			</div>
-		</div>
-		{{/if}}
-		{{#if loggedAsUser}}
-			<div style="margin-right:3%; text-align:right;">
-				<span class="profile">LOGGED AS: {{loginName}} | </span>
-				<a class="logout">LOG OFF</a>
-			</div>
-			<div>
-				CART ▾
-			</div>
-		{{/if}}
+			
 		<div style='clear:both;'></div>
 	</header>
 </template>

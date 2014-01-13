@@ -13,7 +13,7 @@ Template.header.loginName = function(){
 	if(Meteor.user()){
 		return Meteor.user().profile.name;
 	}
-		return "NEW USER";
+		return "VISITOR";
 }
 
 Template.header.loggedAsUser = function(){
@@ -34,6 +34,10 @@ Template.header.events({
 	'click #loginLink' : function(event){
 		event.preventDefault();
 		$("#loginArea").toggle();
+	},
+	'click .logoff' : function(){
+		Meteor.logout();
+		SpinnerInit();
 	}
 
 });
