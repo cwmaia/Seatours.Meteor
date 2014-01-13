@@ -1,10 +1,3 @@
-Template.externView.rendered = function(){
-	$('#myWizard').easyWizard();
-	$('.datepicker').datepicker();
+Template.externView.selectDate = function(){
+	return !Session.get('dateSelected');
 }
-
-Template.externView.events({
-
-
-	
-})

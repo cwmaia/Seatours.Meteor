@@ -31,7 +31,7 @@ Meteor.Router.add({
 	'/bookOperator/:_id/new' : {
 		to : 'createBook',
 		and: function(id){
-			
+			Session.set('productId', id);
 		}
 	},
 	'/trips/:_id'	: {
@@ -75,8 +75,8 @@ Meteor.Router.filters({
 
 	'checkPermision' : function(page){
 
-		if(!Meteor.user() && page == "externView"){
-			return page;
+		if(!Meteor.user()){
+			return;
 		}
 
 
@@ -88,6 +88,7 @@ Meteor.Router.filters({
 
 		for (var i = 0; i < group.permissions.length; i++) {
 			if(group.permissions[i] == page){
+				console.log(page);
 				return page;
 			}
 		};

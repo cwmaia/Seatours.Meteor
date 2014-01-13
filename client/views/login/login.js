@@ -17,7 +17,8 @@ Template.login.events({
         		throwError("User not Found!") 
         	SpinnerStop();
       	}else{
-          Session.set('showOverview', true);
+      		Session.set('dateSelected', false);
+          	Session.set('showOverview', true);
       }
       });
 	}

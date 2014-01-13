@@ -559,15 +559,12 @@ var checkHaveToOpenDoor = function(size, trip){
 ///////////////////////////////////////////
 //Template Book Operator
 Template.bookOperator.rendered = function() {
-	$('#currentSeason').text(currentSeason());
+	//$('#currentSeason').text(currentSeason());
 };
 
+
 Template.productItem.rendered = function(){
-	$('.calendar').datepicker({
-		onRender: function(date) {
-    		return date.valueOf() < now.valueOf() ? 'disabled' : '';
-    	}
-	}).on('changeDate', function(ev){
+	$('.calendar').datepicker().on('changeDate', function(ev){
 			date = new Date(ev.date);
 			with(date){
 				setDate(getDate() +1 );
@@ -643,6 +640,7 @@ Template.bookOperator.currentSeason = function(){
 	return currentSeason();
 }
 
+
 Template.bookOperator.events({
 	'change .trip': function(event) {
 		setCalendarCapacity($(event.currentTarget).closest('li').find('.calendar'))
@@ -652,7 +650,15 @@ Template.bookOperator.events({
         select = $('#trip_' + productId);
         if(select[0].checkValidity()){
 			Session.set('tripId',select.val());
-			Meteor.Router.to("/bookOperator/" + $(event.currentTarget).parents('li')[0].id);
+			if(Meteor.user()){
+				Meteor.Router.to("/bookOperator/" + $(event.currentTarget).parents('li')[0].id);
+			}				
+			else{
+				Session.set('productId', productId);
+				Session.set('dateSelected', true);
+				formBook();
+			}
+				
 		}else{
             showPopover(select, 'Choose the trip');
         }
@@ -737,6 +743,10 @@ Template.bookDetail.qtdCarsUpTo5 = function(){
 
 Template.createBook.qtdCarsUpTo5 = function(){
 	return carsUpTo5();
+}
+
+Template.generalPassagerInfo.dateSelected = function(){
+	return Session.get('dateSelected');
 }
 
 carsUpTo5 = function(){
@@ -862,19 +872,23 @@ carsUpto6 = function(){
 	return count;
 }
 
+var formBook = function(){
+	Session.set("isEditing", false);
+	Session.set("firstTime", false);
+	Session.set("categoryId", null);
+	var bookingsCreated = Books.find({dateOfBooking: new Date(localStorage.getItem('date')), 'product._id': Session.get('productId'), bookStatus: 'Created'});
+	if(bookingsCreated.length >= MaxCapacity)
+		throwError('Maximum capacity of passengers reached!');	
+	else
+		Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');
+}
+
 //Global Vars
 var MaxCapacity = 0;
 
 Template.bookDetail.events({
 	'click #newBooking' :function(event) {
-		Session.set("isEditing", false);
-		Session.set("firstTime", false);
-		Session.set("categoryId", null);
-		var bookingsCreated = Books.find({dateOfBooking: new Date(localStorage.getItem('date')), 'product._id': Session.get('productId'), bookStatus: 'Created'});
-		if(bookingsCreated.length >= MaxCapacity)
-			throwError('Maximum capacity of passengers reached!');	
-		else
-			Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');
+		formBook();
 	},
 
 	'click .changeStatusBooking' : function(event) {

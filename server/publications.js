@@ -13,10 +13,7 @@ Meteor.publish("cartItems", function () {
 });
 
 Meteor.publish('products', function() { 
-  if(this.userId)
 	   return Products.find();
-  else
-     return null; 
 });
 
 Meteor.publish('books', function() { 
@@ -27,10 +24,7 @@ Meteor.publish('books', function() {
 });
 
 Meteor.publish('vehicles_category', function() { 
-  if(this.userId)
 	   return VehiclesCategory.find();
-  else
-     return null; 
 });
 
 Meteor.publish('boats', function() {
@@ -41,17 +35,11 @@ else
 });
 
 Meteor.publish('trips', function() {
-  if(this.userId)
     return Trips.find();
-  else
-     return null; 
 });
 
 Meteor.publish('vehicles', function() {
-  if(this.userId)
 	   return Vehicles.find();
-  else
-     return null; 
 });
 
 Meteor.publish('loggedUsers', function() {
@@ -104,17 +92,11 @@ Meteor.publish('groups', function() {
 });
 
 Meteor.publish('postcodes', function() {
-  if(this.userId)
       return PostCodes.find();
-  else
-      return null; 
 });
 
 Meteor.publish('prices', function() {
-  if(this.userId)
       return Prices.find();
-  else
-      return null; 
 });
 
 
@@ -130,10 +112,7 @@ Meteor.publish('saveTrip', function(trip) {
 });
 
 Meteor.publish("settings", function () {
-  if(this.userId)
     return Settings.find();
-  else
-     return null; 
 });
 
 var saveQRCode = function(blob, name) {
