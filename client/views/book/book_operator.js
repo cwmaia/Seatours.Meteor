@@ -745,8 +745,12 @@ Template.createBook.qtdCarsUpTo5 = function(){
 	return carsUpTo5();
 }
 
+Template.createBook.dateSelected = function(){
+	return !Session.get('dateSelected');
+}
+
 Template.generalPassagerInfo.dateSelected = function(){
-	return Session.get('dateSelected');
+	return !Session.get('dateSelected');
 }
 
 carsUpTo5 = function(){
@@ -1222,6 +1226,7 @@ Template.generalPassagerInfo.rendered = function() {
 
 	$('#telephone').mask('(999) 99999999');
 	$('#birthDate').mask('99/99/9999');
+	loadTypeAheadPostCodes();
 }
 
 Template.bookingVehicles.rendered = function(){
@@ -1419,6 +1424,31 @@ calcTotal = function(){
 	$('#totalISK').text(total);
 }
 
+loadTypeAheadPostCodes = function(){
+	$('#postcode').typeahead('destroy');
+	var postCodes = [],
+	finalPostCodes,
+	postTags = PostCodes.find({}, {fields: {postcode: 1, city: 1}});
+
+	postTags.forEach(function(tag){
+    	var datum = {
+    		'value' : tag.postcode,
+    		'id' : tag._id,
+    		'city' : tag.city
+    	}
+    	postCodes.push(datum);
+	});
+
+	finalPostCodes = _.uniq(postCodes);
+
+	$('#postcode').typeahead({
+		name : 'postcode',
+		local : finalPostCodes
+	}).bind('typeahead:selected', function (obj, datum) {
+    	$('#city').val(datum.city);
+	});
+}
+
 loadTypeahead = function(){
 	$('#fullName').typeahead('destroy');
 	var items = [],
@@ -1454,29 +1484,6 @@ loadTypeahead = function(){
     	$('#country').val(customer.country);
     	SaveCustomer = false;
     	CustomerSelected = true;
-	});
-
-	$('#postcode').typeahead('destroy');
-	var postCodes = [],
-	finalPostCodes,
-	postTags = PostCodes.find({}, {fields: {postcode: 1, city: 1}});
-
-	postTags.forEach(function(tag){
-    	var datum = {
-    		'value' : tag.postcode,
-    		'id' : tag._id,
-    		'city' : tag.city
-    	}
-    	postCodes.push(datum);
-	});
-
-	finalPostCodes = _.uniq(postCodes);
-
-	$('#postcode').typeahead({
-		name : 'postcode',
-		local : finalPostCodes
-	}).bind('typeahead:selected', function (obj, datum) {
-    	$('#city').val(datum.city);
 	});
 
 	$('#vehicleSearch').typeahead('destroy');
