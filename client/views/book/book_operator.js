@@ -1624,7 +1624,7 @@ var createBook = function(){
 		}
 	}else{
 
-		if(isCustomer()){
+		if(!isCustomer()){
 			temporaryID = CartItems.insert(book);
 			var note = $('#notes').val();
 			if(note){
@@ -1638,7 +1638,7 @@ var createBook = function(){
 				Notes.insert(note);
 			}
 		}else{
-			Meteor.call('insertInquiries', book);
+			CBasket.insert(book);
 		}
 			
 	};	

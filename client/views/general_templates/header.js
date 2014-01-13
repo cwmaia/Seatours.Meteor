@@ -35,9 +35,22 @@ Template.header.events({
 		event.preventDefault();
 		$("#loginArea").toggle();
 	},
-	'click .logoff' : function(){
+	'click .logoff' : function(event){
+		event.preventDefault();
 		Meteor.logout();
 		SpinnerInit();
+	},
+	'click .cbasket' : function(event){
+		event.preventDefault();
+		Session.set('cbasket', true);
+		Session.set('dateSelected', false);
+		Template.externView.cart();
+	},
+
+	'click #id-logo' : function(event){
+		event.preventDefault();
+		Session.set('cbasket', false);
+		Template.externView.cart();
 	}
 
 });
