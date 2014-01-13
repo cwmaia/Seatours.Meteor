@@ -508,7 +508,17 @@ select{
 
 #loginLink {
 	color: white;
+	padding: 8px;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: inset 0 2px 0 -1px rgba(255, 255, 255, 0.2), inset 0 60px 40px -40px #ff9600, 0 1px 2px rgba(0, 0, 0, 0.27);
+	border-top: 1px solid #ed7500;
+	border-right: 1px solid #e16f00;
+	border-bottom: 1px solid #d26800;
+	border-left: 1px solid #e16f00;
+	border-radius: 5px;
+	background: #ff7e00;
 	margin-right: 10px;
+	margin-top: 30%;
 }
 
 .firstPage {
@@ -519,6 +529,24 @@ select{
 	margin-top: 2%;
 
 }
+
+.logout {
+	color: white;
+	padding: 2px;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: inset 0 2px 0 -1px rgba(255, 255, 255, 0.2), inset 0 60px 40px -40px #ff9600, 0 1px 2px rgba(0, 0, 0, 0.27);
+	border-top: 1px solid #ed7500;
+	border-right: 1px solid #e16f00;
+	border-bottom: 1px solid #d26800;
+	border-left: 1px solid #e16f00;
+	border-radius: 5px;
+	background: #ff7e00;
+}
+
+.profile{
+	color: white;
+}
+
 
 /*
 	Media Query
