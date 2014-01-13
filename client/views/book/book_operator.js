@@ -1623,18 +1623,24 @@ var createBook = function(){
 			Notes.insert(note);
 		}
 	}else{
-		temporaryID = CartItems.insert(book);
-		var note = $('#notes').val();
-		if(note){
-			var note = {
-				created : date,
-				type : 'Customer Note',
-				note : note,
-				bookId : temporaryID
-			}
 
-			Notes.insert(note);
+		if(Meteor.user()){
+			temporaryID = CartItems.insert(book);
+			var note = $('#notes').val();
+			if(note){
+				var note = {
+					created : date,
+					type : 'Customer Note',
+					note : note,
+					bookId : temporaryID
+				}
+
+				Notes.insert(note);
+			}
+		}else{
+			Meteor.call('insertInquiries', book);
 		}
+			
 	};	
 }
 
@@ -1852,7 +1858,6 @@ function drawPieChartBoatSlots() {
     drawPieChart('pieChart', formatData(updateDataPieChart()).pieChart );
 }
 
-
 var checkIfCarsFits = function(size){
 	var trip = Trips.findOne(Session.get('tripId'));
 	ExtraSlot = null;
@@ -1872,7 +1877,10 @@ var checkIfCarsFits = function(size){
 				ExtraSlot = extraSlots[0];
 				CanSaveTheBook = true;
 			}else{
-				result = confirm("Wishes to put on extra slot?");
+				if(!isCustomer())
+					result = confirm("Wishes to put on extra slot?");
+				else
+					result = true;
 				if(result){
 					fits = checkSpaceExtra(size, trip);
 					if(fits){
@@ -1891,7 +1899,10 @@ var checkIfCarsFits = function(size){
 			ExtraSlot = extraSlots[0];
 			CanSaveTheBook = true;
 		}else if(maxCapacity){
-			result = confirm("The Door is already full, place the car on extra slots?");
+			if(!isCustomer())
+				result = confirm("The Door is already full, place the car on extra slots?");
+			else
+				result = true;
 			if(result){
 				fits = checkSpaceExtra(size, trip);
 				if(fits){
@@ -1904,7 +1915,10 @@ var checkIfCarsFits = function(size){
 			}
 		}
 	}else if(size > 6){
-		result = confirm("Place this car on Extra Slot?");
+		if(!isCustomer())
+			result = confirm("Place this car on Extra Slot?");
+		else
+			return true;
 		if(result){
 			fits = checkSpaceExtra(size, trip);
 			if(fits){
