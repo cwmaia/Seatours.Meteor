@@ -6,12 +6,21 @@
 		{{#if loggedIn}}
 		<div style="margin-right:3%; text-align:right;">	
 			<div>
-				<a id="loginLink">Sign in ▾</a>
+				<a id="loginLink">SIGN IN</a>
 			<div>
 			<div id="loginArea" style='float:right;'>
 				{{> login}}
 			</div>
 		</div>
+		{{/if}}
+		{{#if loggedAsUser}}
+			<div style="margin-right:3%; text-align:right;">
+				<span class="profile">LOGGED AS: {{loginName}} | </span>
+				<a class="logout">LOG OFF</a>
+			</div>
+			<div>
+				CART ▾
+			</div>
 		{{/if}}
 		<div style='clear:both;'></div>
 	</header>

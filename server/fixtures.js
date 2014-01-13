@@ -5,6 +5,7 @@ Meteor.startup(function () {
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
 var admId = '';
 var vendorsId = '';
+var customersId = '';
 
 
 if(Groups.find().count() == 0){
@@ -35,6 +36,15 @@ if(Groups.find().count() == 0){
 			'cart',
 			'finishBooking'
 		]
+	})
+
+	customersId = Groups.insert({
+		'name' : 'Customers',
+		'description' : 'Extern Customers',
+		'permissions' : [
+			'bookOperator',
+			'createBook',
+			]
 	})
 }
 
@@ -451,6 +461,12 @@ if(Meteor.users.find().count() == 0){
 	  'username'  : 'carlos',
 	  'email'     : 'maia@me.com',
 	  'profile'	  : {'groupID' : vendorsId, 'name' : 'Gudrun'},
+	  'password'  : '1234' //encrypted automatically 
+	});
+	Accounts.createUser({
+	  'username'  : 'jarvis',
+	  'email'     : 'jarvis@me.com',
+	  'profile'	  : {'groupID' : customersId, 'name' : 'Jarvis'},
 	  'password'  : '1234' //encrypted automatically 
 	});
 

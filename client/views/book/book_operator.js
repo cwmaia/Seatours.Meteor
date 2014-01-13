@@ -650,7 +650,7 @@ Template.bookOperator.events({
         select = $('#trip_' + productId);
         if(select[0].checkValidity()){
 			Session.set('tripId',select.val());
-			if(Meteor.user()){
+			if(Groups.findOne({'_id':Meteor.user().profile.groupID}).name != "Customers"){
 				Meteor.Router.to("/bookOperator/" + $(event.currentTarget).parents('li')[0].id);
 			}				
 			else{

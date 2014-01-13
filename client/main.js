@@ -20,6 +20,9 @@ Meteor.subscribe('settings');
 Template.redirect.helpers({
   userLogged : function(){
   	if(Meteor.user()){
+  		if(Groups.findOne({'_id':Meteor.user().profile.groupID}).name == "Customers"){
+  			return false;
+  		}
       	return true;
   	}
   
