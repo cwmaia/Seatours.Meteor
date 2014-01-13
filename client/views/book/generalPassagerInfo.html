@@ -1,0 +1,127 @@
+<!-- JS inside book_operator.js-->
+<template name="generalPassagerInfo">
+	<form novalidate id='pasagerInfo'>
+		<fieldset>
+			<legend>Personal Info<span>&nbsp;&nbsp;</span><i class='icon-user'/></legend>
+	        
+	        <div class="line-3">
+                <div>
+	            	<label class="control-label required">Title: </label>
+	                 <select name='title' id='title' required>
+	                 	<option value=''>Select...</option>
+	                	<option>Mr</option>
+	                	<option>Mrs</option>
+	                	<option>Miss</option>
+	                	<option>Ms</option>
+	            	</select>
+	            </div>
+	            
+	            <div>
+	            	<label class="control-label required">Full Name: </label>
+	                <input type="text" name='firstName' id='fullName' class="tooltip-error" data-trigger="focus" placeholder="Full Name"required>
+	                <input type="hidden" id='customerId'>
+	            </div>
+
+		    </div>
+	        
+	        <div class="line-3 input-append">
+	        	<div>
+		            <label class="control-label required">Birth Date: </label>
+		            <input type='text' id="birthDate" name="birthDate" class="datepicker size1-3" placeholder="Birth Date" required>
+		            
+		            <span class="add-on">
+						<i class="icon-calendar"></i>
+					</span>
+				</div>
+		        
+		        <div>
+		            <label class="required">Email: </label>
+		            <input type="email" id="email" name="email" placeholder="Email" required>
+		        </div>
+	            
+	            <div class="input-append">
+		            <label class="required">Telephone: </label>
+	                <input type="text" class="size1-2" id="telephone" name="telephone" placeholder="Telephone" required>
+	                <span class="add-on">
+						<i class="icon-phone"></i>
+					</span>
+		        </div>
+	        </div>
+
+	        {{#if isCreatingExternalUser}}
+	        <div class="line-3 input-append">
+	        	<div>
+		            <label class="control-label required">Username: </label>
+		            <input type="text" name='firstName' id='fullName' class="tooltip-error" data-trigger="focus" placeholder="Username"required>
+				</div>
+		        
+		        <div>
+		            <label class="required">Password: </label>
+		            <input type="password" id="password" name="password" placeholder="Password" required>
+		        </div>
+	            
+	            <div class="input-append">
+		            <label class="required">Confirm Password: </label>
+	                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+		        </div>
+	        </div>
+	        {{/if}}
+	    </fieldset>
+
+    	<fieldset>
+    		<legend>Address<span>&nbsp;&nbsp;</span><i class='icon-home'/></legend>
+        	
+        	<div class="line-3">
+                <div class="controls">
+            		<label class="required">Adress: </label>
+                	<input type="text"  id='adress'name="adress" placeholder="Address" required>
+            	</div>
+		        
+		        <div>
+		            <label class="required">Postcode: </label>
+	                <input type="text" id='postcode' name="postcode" placeholder="Postcode" required>
+		        </div>
+                
+                <div>
+	            	<label class="required">City: </label>
+	                <input type="text"  id='city'name="city" placeholder="City" required>
+	            </div>
+        	</div>
+
+	        <div class="line-3">
+                <div>
+	            	<label class="required">County / State: </label>
+	                <input type="text"  id='state'name="county" placeholder="County / State" required>
+	            </div>
+
+	            <div>
+	            	<label class="required">Country: </label>
+	            	<select id="country" name="country" required>
+	            		{{>countries}}
+	            	</select>
+	            </div>
+
+				<div class="simpleCart_shelfItem">
+					<div class='hidden'>
+						<p id='itemDescription' class="item_name"></p>
+						<p><input type="text" value="1" class="item_Quantity"><br>
+						<span id='itemPrice' class="item_price"></span><br>
+						<a id='addToCart' class="item_add" href="javascript:;"></a></p>
+					</div>
+				</div>
+	        </div>
+	        <label>Notes:</label>
+	        <textarea id='notes' cols='4' rows='4'/>
+    	</fieldset>
+    </form>
+    {{#if isCreatingExternalUser}}
+    	<button class="btn btn-small btn-success createUser" type='submit' form='pasagerInfo'>Create User</button>
+    {{else}}
+    {{#if isEditing}}
+    	<button class="btn btn-small btn-info saveEdit" type='submit' form='pasagerInfo'>Save Edits</button>
+    {{else}}
+	    <button class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Add to Basket</button>
+	    <button class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Add to Basket & Checkout</button>
+    {{/if}}
+    {{/if}}
+</template>

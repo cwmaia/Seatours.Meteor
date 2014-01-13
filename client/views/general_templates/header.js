@@ -33,6 +33,10 @@ isCustomer = function(){
 Template.header.events({
 	'click #createUser' : function(event){
 		event.preventDefault();
+		cleanExternView();
+		Session.set("creatingUser", true);
+		$("#loginArea").toggle();
+		Template.externView.rendered();
 	},
 	'click #loginLink' : function(event){
 		event.preventDefault();
@@ -45,15 +49,17 @@ Template.header.events({
 	},
 	'click .cbasket' : function(event){
 		event.preventDefault();
+		cleanExternView();
 		Session.set('cbasket', true);
-		Session.set('dateSelected', false);
-		Template.externView.cart();
+		$("#loginArea").hide();
+		Template.externView.rendered();
 	},
 
 	'click #id-logo' : function(event){
 		event.preventDefault();
-		Session.set('cbasket', false);
-		Template.externView.cart();
+		cleanExternView();
+		$("#loginArea").hide();
+		Template.externView.rendered();
 	}
 
 });

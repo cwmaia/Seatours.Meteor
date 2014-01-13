@@ -987,6 +987,10 @@ Template.generalPassagerInfo.isEditing = function(){
 	return Session.get('isEditing');
 }
 
+Template.generalPassagerInfo.isCreatingExternalUser = function(){
+	return Session.get('creatingUser');
+}
+
 
 Template.productPrices.priced = function(price){
 	if(Session.get('isEditing')){
@@ -1185,6 +1189,13 @@ Template.generalPassagerInfo.events({
 					event.preventDefault();
 				});
 			}
+		}
+	},
+
+	'click .createUser' : function(event){
+		event.preventDefault()
+		if($("#password").val() != $("#confirmPassword").val()){
+			throwError('Passwords must match');
 		}
 	}
 })
