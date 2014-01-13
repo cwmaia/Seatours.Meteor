@@ -237,11 +237,13 @@
 	    <em name="totalISK" class="price" id="totalISK">0</em>
 		</div>
 		<div>
-	    <label>
-	    	Current Boat Status
-	    </label>
 
-    	<a id="boatStatus">See Status</a>
+		{{#if dateSelected}}
+		    <label>
+		    	Current Boat Status
+		    </label>
+    		<a id="boatStatus">See Status</a>
+    	{{/if}}
 
     	<div id="statusDialog">
 		  <div class="mask"> </div>
@@ -482,12 +484,8 @@
     {{#if isEditing}}
     	<button class="btn btn-small btn-info saveEdit" type='submit' form='pasagerInfo'>Save Edits</button>
     {{else}}
-    {{#if dateSelected}}
-    	<button class="btn btn-small btn-sucess finishExtern" type='submit' form='pasagerInfo'>Finish Booking</button>
-    {{else}}
 	    <button class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Add to Basket</button>
 	    <button class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Add to Basket & Checkout</button>
-	    {{/if}}
     {{/if}}
 </template>
 

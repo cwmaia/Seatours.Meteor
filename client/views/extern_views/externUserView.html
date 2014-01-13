@@ -2,8 +2,14 @@
 	<div class="firstPage">
 		{{#if selectDate}}
 			{{> bookOperator}}
-		{{else}}
-			{{> createBook}}
 		{{/if}}
+
+		{{#if createBook}}
+			{{> createBook}}
+		{{/if}}	
+
+		{{#if cart}}
+			{{> cart}}
+		{{/if}}	
 	</div>
 </template>

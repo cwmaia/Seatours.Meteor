@@ -5,6 +5,17 @@ Meteor.publish("directory", function () {
      return null; 
 });
 
+Meteor.publish('cbasket', function(){
+  return CBasket.find();
+})
+
+Meteor.publish("inquiries", function () {
+  if(this.userId)
+      return Inquiries.find();
+  else
+     return null; 
+});
+
 Meteor.publish("cartItems", function () {
   if(this.userId)
     return CartItems.find();
@@ -171,6 +182,13 @@ Meteor.methods({
     return Books.insert(book);
   },
 
+  insertOnCBasket : function(book){
+    return CBasket.insert(book);
+  },
+
+  insertInquiries : function(book){
+    return Inquiries.insert(book);
+  },
 
   generateQRCode: function(id){
     var qr = qrcode(4, 'M');
