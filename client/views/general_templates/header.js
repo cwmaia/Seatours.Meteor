@@ -31,6 +31,9 @@ var isCustomer = function(){
 }
 
 Template.header.events({
+	'click #createUser' : function(event){
+		event.preventDefault();
+	},
 	'click #loginLink' : function(event){
 		event.preventDefault();
 		$("#loginArea").toggle();

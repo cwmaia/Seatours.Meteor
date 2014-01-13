@@ -12,17 +12,24 @@
 				</a>
 				<span> | </span>
 				{{#if loggedIn}}
-					<a id="loginLink">SIGN IN</a>
+					<a id="loginLink" class="orangeButton">SIGN IN</a>
 					<div id="loginArea" style='float:right;'>
 						{{> login}}
+						<br />
+						<div style="text-align: center;">
+							<span style="color: black; letter-spacing:-2px;">-------------------- O R --------------------</span>
+							<br />
+							<a id="createUser" class="orangeButton"> Create New User</a>
+						</div>
 					</div>
+
 				{{else}}
-					<a class="logoff">LOG OFF</a>				
+					<a class="logoff orangeButton">LOG OFF</a>				
 				{{/if}}
 			
 			{{/if}}
 			</div>
-			
+
 		<div style='clear:both;'></div>
 	</header>
 </template>
