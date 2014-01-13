@@ -650,7 +650,7 @@ Template.bookOperator.events({
         select = $('#trip_' + productId);
         if(select[0].checkValidity()){
 			Session.set('tripId',select.val());
-			if(Groups.findOne({'_id':Meteor.user().profile.groupID}).name != "Customers"){
+			if(!isCustomer()){
 				Meteor.Router.to("/bookOperator/" + $(event.currentTarget).parents('li')[0].id);
 			}				
 			else{
@@ -1624,7 +1624,7 @@ var createBook = function(){
 		}
 	}else{
 
-		if(Meteor.user()){
+		if(isCustomer()){
 			temporaryID = CartItems.insert(book);
 			var note = $('#notes').val();
 			if(note){

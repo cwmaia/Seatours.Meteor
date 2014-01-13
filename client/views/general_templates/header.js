@@ -20,7 +20,7 @@ Template.header.loggedAsUser = function(){
   	return isCustomer();
 }
 
-var isCustomer = function(){
+isCustomer = function(){
 	if(Meteor.user()){
   		if(Groups.findOne({'_id': Meteor.user().profile.groupID}).name == "Customers"){
   			return true;

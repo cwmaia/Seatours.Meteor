@@ -13,11 +13,19 @@
 			</tr>
 		</thead>
 		<tbody>
-			{{#if hasItems}}
-				{{#each cartBooks}}
-					{{>items}}
-				{{/each}}
-			{{/if}}
+			{{#if customer}}
+				{{#if hasItems}}
+					{{#each cartBooks}}
+						{{>items}}
+					{{/each}}
+				{{/if}}
+			{{else}}
+				{{#if getCBasket}}
+					{{#each cbasketBooks}}
+						{{>items}}
+					{{/each}}
+				{{/if}}
+			{{/if}}	
 		</tbody>
 		<tfoot>
 			<td>Sum</td>

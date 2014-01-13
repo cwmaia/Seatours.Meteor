@@ -9,6 +9,21 @@ Template.cart.hasItems = function(){
 	return false;
 }
 
+Template.cart.getCBasket = function(){
+	if(CBasket.find().count() > 0){
+		return true;
+	}
+	return false;
+}
+
+Template.cart.cbasketBooks = function(){
+	return CBasket.find();
+}
+
+Template.cart.customer = function(){
+	return isCustomer();
+}
+
 Template.cart.totalValue = function(){
 	var sum = 0;
 	var carts = CartItems.find().fetch();

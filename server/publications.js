@@ -5,6 +5,10 @@ Meteor.publish("directory", function () {
      return null; 
 });
 
+Meteor.publish('cbasket', function(){
+  return CBasket.find();
+})
+
 Meteor.publish("inquiries", function () {
   if(this.userId)
       return Inquiries.find();
@@ -176,6 +180,10 @@ Meteor.methods({
 
   insertBook : function(book){
     return Books.insert(book);
+  },
+
+  insertOnCBasket : function(book){
+    return CBasket.insert(book);
   },
 
   insertInquiries : function(book){
