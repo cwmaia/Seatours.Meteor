@@ -745,8 +745,12 @@ Template.createBook.qtdCarsUpTo5 = function(){
 	return carsUpTo5();
 }
 
+Template.createBook.dateSelected = function(){
+	return !Session.get('dateSelected');
+}
+
 Template.generalPassagerInfo.dateSelected = function(){
-	return Session.get('dateSelected');
+	return !Session.get('dateSelected');
 }
 
 carsUpTo5 = function(){

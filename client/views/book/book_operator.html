@@ -477,8 +477,10 @@
 					</div>
 				</div>
 	        </div>
-	        <label>Notes:</label>
-	        <textarea id='notes' cols='4' rows='4'/>
+	        {{#if dateSelected}}
+		        <label>Notes:</label>
+		        <textarea id='notes' cols='4' rows='4'/>
+		    {{/if}}   
     	</fieldset>
     </form>
     {{#if isEditing}}
