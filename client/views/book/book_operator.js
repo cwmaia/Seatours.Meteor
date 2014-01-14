@@ -1451,7 +1451,8 @@ loadTypeAheadPostCodes = function(){
 }
 
 loadTypeahead = function(){
-	$('#fullName').typeahead('destroy');
+	if(!isCustomer()){
+			$('#fullName').typeahead('destroy');
 	var items = [],
 	finalItems,
 	tags = Customers.find({}, {fields: {fullName: 1}});
@@ -1486,6 +1487,8 @@ loadTypeahead = function(){
     	SaveCustomer = false;
     	CustomerSelected = true;
 	});
+	}
+
 
 	$('#vehicleSearch').typeahead('destroy');
 
