@@ -16,6 +16,10 @@ Template.cart.getCBasket = function(){
 	return false;
 }
 
+Template.items.hasVehicle = function(){
+	return this.vehicle.category;
+}
+
 Template.cart.cbasketBooks = function(){
 	return CBasket.find();
 }
@@ -40,6 +44,15 @@ Template.cart.total = function(){
 	};
 	return total;
 
+}
+
+Template.cart.totalCustomer = function(){
+	var carts = CBasket.find().fetch();
+	var total = 0;
+	for (var i = 0; i < carts.length; i++) {
+		total += parseInt(carts[i].totalISK);
+	};
+	return total;
 }
 
 Template.items.customerName = function(customerId){
@@ -84,7 +97,10 @@ Template.items.events({
 	},
 	'click .remove' : function(event){
 		var link = event.currentTarget;
-		CartItems.remove(link.rel);
+		if(isCustomer())
+			CBasket.remove(link.rel);
+		else	
+			CartItems.remove(link.rel);
 
 		//Remove all notes
 		var notes = Notes.find({bookId: link.rel}).fetch();

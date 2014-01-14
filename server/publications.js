@@ -61,10 +61,7 @@ Meteor.publish('loggedUsers', function() {
 });
 
 Meteor.publish('customers', function(){
-  if(this.userId)
     return Customers.find();
-  else
-    return null; 
 });
 
 Meteor.publish('notes', function(){

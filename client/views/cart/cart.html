@@ -14,14 +14,14 @@
 		</thead>
 		<tbody>
 			{{#if customer}}
-				{{#if hasItems}}
-					{{#each cartBooks}}
+				{{#if getCBasket}}
+					{{#each cbasketBooks}}
 						{{>items}}
 					{{/each}}
 				{{/if}}
 			{{else}}
-				{{#if getCBasket}}
-					{{#each cbasketBooks}}
+				{{#if hasItems}}
+					{{#each cartBooks}}
 						{{>items}}
 					{{/each}}
 				{{/if}}
@@ -30,7 +30,11 @@
 		<tfoot>
 			<td>Sum</td>
 			<td></td>
-			<td>kr <spam id='total'>{{total}}</span></td>
+			{{#if customer}}
+				<td>kr <spam id='total'>{{totalCustomer}}</span></td>
+			{{else}}
+				<td>kr <spam id='total'>{{total}}</span></td>
+			{{/if}}
 		</tfoot>
 	</table>
 	<button style='float: right' class='btn btn-success checkout'><i class='icon-shopping-cart'></i>Checkout</button>
@@ -41,7 +45,7 @@
 <template name="items">
 	<tr>
 		<input type='hidden' id='{{totalISK}}' class='unitPrice'>
-		<td style='width: 70%'>{{product.name}} - {{dateOfBooking}}</br> <b>From</b> {{trip.from}} <b>To</b> {{trip.to}}</br></br>{{customerName customerId}}</br></br>{{#each prices}}{{price}} (kr {{perUnit}}) X {{persons}} = kr {{sum}}{{/each}}</br>{{vehicle.category}} - {{vehicle.size}}m = kr {{vehicle.totalCost}}</td>
+		<td style='width: 70%'>{{product.name}} - {{dateOfBooking}}</br> <b>From</b> {{trip.from}} <b>To</b> {{trip.to}}</br></br>{{customerName customerId}}</br></br>{{#each prices}}{{price}} (kr {{perUnit}}) X {{persons}} = kr {{sum}}{{/each}}</br>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m = kr {{vehicle.totalCost}}{{/if}}</td>
 		<td style='width: 5%; text-align: center'><a class='remove btn btn-mini btn-danger' rel='{{_id}}'><i class='icon-remove'></i></a></td>
 		<td style='width: 10%; text-align: center'>kr <span id='{{_id}}' class='calcTotal'>{{totalISK}}</span></td>
 	</tr>
