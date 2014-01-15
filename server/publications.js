@@ -174,6 +174,13 @@ Meteor.methods({
     Accounts.createUser(user);
   },
 
+  createExternalAccount: function(user, userData){
+    group = Groups.findOne({"name": "Customers"});
+    var customerId = Customers.insert(userData);
+    user.profile = {'groupID': group._id, 'name' : userData.fullName, 'customerId' : customerId};
+    Accounts.createUser(user);
+  },
+
   createGroup : function(group){
     Groups.insert(group);
   },

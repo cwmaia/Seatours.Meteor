@@ -1197,12 +1197,84 @@ Template.generalPassagerInfo.events({
 	},
 
 	'click .createUser' : function(event){
-		event.preventDefault()
+		event.preventDefault();
 		if($("#password").val() != $("#confirmPassword").val()){
 			throwError('Passwords must match');
+			return;
+		}
+		var customerData = {
+			'fullName' :  $('#fullName').val(),
+			'title' : $('#title').val(),
+	    	'birthDate': $('#birthDate').val(),
+	    	'email' : $('#email').val(),
+	    	'telephoneCode' : $('#telephoneCode').val(),
+	    	'telephone' : $('#telephone').val(),
+	    	'adress' : $('#adress').val(),
+	    	'city' : $('#city').val(),
+	    	'state' : $('#state').val(),
+	    	'postcode' : $('#postcode').val(),
+	    	'country' : $('#country').val()
+		}
+
+		var user = {
+			username : $('#email').val(),
+			email : $('#email').val(),
+			password : $('#password').val()
+		}
+		Meteor.call('createExternalAccount', user, customerData, function(err, result){
+			if(err){
+				throwError("Email already registered!");
+			}else{
+				throwSuccess("Successfuly registered!");
+				Meteor.Router.to('/');
+			}
+		})
+	},
+
+	'change #myOwnData' : function(event){
+		event.preventDefault();
+		if($("#usingData").val() == 'false'){
+			$("#usingData").val('true');
+			$('#fullName').val(Meteor.user().profile.name);
+			$('#customerId').val(Meteor.user().profile.customerId);
+			var currentCustomer = Customers.findOne({'_id' : Meteor.user().profile.customerId});
+			$('#title').val(currentCustomer.title)
+	    	$('#birthDate').val(currentCustomer.birthDate);
+	    	$('#email').val(currentCustomer.email);
+	    	$('#telephoneCode').val(currentCustomer.telephoneCode);
+	    	$('#telephone').val(currentCustomer.telephone);
+	    	$('#adress').val(currentCustomer.adress);
+	    	$('#city').val(currentCustomer.city);
+	    	$('#state').val(currentCustomer.state);
+	    	$('#postcode').val(currentCustomer.postcode);
+	    	$('#country').val(currentCustomer.country);
+		}else{
+			$("#usingData").val('false');
+			$('#fullName').val('');
+			$('#customerId').val('');
+			$('#title').val('')
+	    	$('#birthDate').val('');
+	    	$('#email').val('');
+	    	$('#telephoneCode').val('');
+	    	$('#telephone').val('');
+	    	$('#adress').val('');
+	    	$('#city').val('');
+	    	$('#state').val('');
+	    	$('#postcode').val('');
+	    	$('#country').val('');
 		}
 	}
+
+
 })
+
+Template.generalPassagerInfo.customerCreation = function(){
+	if(Meteor.user()){
+		return isCustomer();
+	}else{
+		return false;
+	}
+}
 
 Template.generalPassagerInfo.helpers({
 	countries : function() {
