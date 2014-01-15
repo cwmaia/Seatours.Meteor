@@ -16,8 +16,7 @@ Go to bundle.tgz directory and:
 
 Restart or:
 
-    $ PORT=8080 MONGO_URL=mongodb://localhost:27017/bookseatours    
-    ROOT_URL=https://bookseatours.com.is node bundle/main.js
+`service meteor restart`
 
 sudo may be needed.
 
