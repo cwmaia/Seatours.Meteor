@@ -52,6 +52,12 @@ Meteor.Router.add({
 			Session.set('bookId', id);
 		}
 	},
+	'/myVoucher/:_id' : {
+		to: 'myVoucher',
+		and : function(id){
+			Session.set('bookId', id);
+		}
+	},
 	'/management' :'management',
 	'/cart'       : 'cart',
 	'/bookEdit'   :'bookEdit',

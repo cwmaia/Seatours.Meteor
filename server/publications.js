@@ -28,8 +28,14 @@ Meteor.publish('products', function() {
 });
 
 Meteor.publish('books', function() { 
-  if(this.userId)
-	   return Books.find();
+  if(this.userId){
+    if(isCustomer(this.userId)){
+      return Books.find({'customerId' : getCustomerId(this.userId)});
+    }else{
+    return Books.find();
+    }
+  }
+
   else
      return null;  
 });
@@ -122,6 +128,17 @@ Meteor.publish('saveTrip', function(trip) {
 Meteor.publish("settings", function () {
     return Settings.find();
 });
+
+var isCustomer = function(userId){
+  if(Meteor.users.findOne({'_id' : userId}).profile.customerId){
+    return true;
+  }
+  return false;
+}
+
+var getCustomerId = function(userId){
+  return Meteor.users.findOne({'_id' : userId}).profile.customerId;
+}
 
 var saveQRCode = function(blob, name) {
     var fs = Npm.require('fs'), encoding ='binary';

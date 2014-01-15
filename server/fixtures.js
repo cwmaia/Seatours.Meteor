@@ -44,6 +44,7 @@ if(Groups.find().count() == 0){
 		'permissions' : [
 			'bookOperator',
 			'createBook',
+			'myVoucher'
 			]
 	})
 }
