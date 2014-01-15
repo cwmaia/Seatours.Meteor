@@ -10,6 +10,18 @@ Template.mainMenu.events({
 
 	'click .management' : function(){
 		Meteor.Router.to('management');
+	},
+
+	'click #overview_click' : function(){
+		product = Products.find().fetch()[0];
+		date = new Date();
+			with(date){
+				setHours(0);
+				setMinutes(0);
+				setSeconds(0);
+			}
+		localStorage.setItem('date', date);
+		Session.set('productId', product._id);
 	}
 })
 

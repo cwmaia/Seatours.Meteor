@@ -1,4 +1,48 @@
-var stat = true;
+Template.overview.products = function(){
+	return Products.find();
+}
+
+Template.overview.date = function(){
+	return new Date().toLocaleDateString();
+}
+
+Template.overview.trips = function(productId){
+	return Trips.find({productId : productId});
+}
+
+Template.overview.bookings = function(productId, tripId){
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	return Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId
+	});
+}
+
+Template.overview.fullname = function(id){
+	return Customers.findOne({_id: id}).fullName;
+}
+
+Template.overview.telephone = function(id){
+	return Customers.findOne({_id: id}).telephone;
+}
+
+Template.overview.totalPassagers = function(id){
+	var persons = 0;
+	book = Books.findOne({_id : id});
+	for (var i = 0; i < book.prices.length; i++) {
+		persons = parseInt(persons + parseInt(book.prices[i].persons));
+	};
+	return persons;
+}
+
+/*var stat = true;
 
 var makeActive = function(link, i, li){
 
@@ -437,5 +481,5 @@ Template.overview.rendered = function(){
 				}
 			});
 		
-}
+}*/
 
