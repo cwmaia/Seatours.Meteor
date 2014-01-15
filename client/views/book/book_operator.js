@@ -595,7 +595,7 @@ Template.bookOperator.helpers({
 	}
 })
 
-var currentSeason = function(){
+currentSeason = function(){
 	var today = localStorage.getItem('date') ? new Date(localStorage.getItem('date')) : new Date();
 	//Check the closest month
 	var summerStartMonth = parseInt(Settings.findOne({_id : "summer"}).summerStartDate.split("/")[0])-1;

@@ -8,7 +8,7 @@
 	<div class="tabbable">
 		<ul class="nav nav-tabs" id="myTab">
 			{{#each products}}
-				<li>
+				<li class='{{#if isFirst _id}} active {{/if}}'>
 					<a data-toggle="tab" href="#{{_id}}" sytle="z-index: 0;">
 						<i class="blue icon-file bigger-110"></i>
 						{{name}}
@@ -20,11 +20,11 @@
 
 		<div class="tab-content">
 			{{#each products}}
-				<div id="{{_id}}" class="tab-pane in">
+				<div id="{{_id}}" class="tab-pane in {{#if isFirst _id}} active {{/if}}">
 					{{#each trips _id}}
 						<div class="divTable">
 							<div>
-								<h4>Passengers {{from}} - {{to}}</h4>
+								<h4>Resume: {{from}} - {{to}}</h4>
 							</div>
 
 							<table class='table table-striped table-bordered table-hover'>
@@ -81,42 +81,23 @@
 							<table class='table table-striped table-bordered table-hover'>
 								<thead>
 									<tr>
-										<th class="sorting_disabled">ID</th>
-										<th class="sorting_disabled">Customer</th>
-										<th class="sorting_disabled">Vehicle</th>
-										<th class="sorting_disabled">Vehicle Plate</th>
-										<th class="sorting_disabled">Vehicle Category</th>
-										<th class="sorting_disabled">Telephone</th>
-										<th>Total Passagers</th>
-										<th>Payment Status</th>
-										<th class="sorting_disabled">Action</th>
+										<th class="sorting_disabled">Departure</th>
+										<th class="sorting_disabled">Total</th>
+										<th class="sorting_disabled">Total Paid</th>
+										<th class="sorting_disabled">Total Not Paid</th>
+										<th class="sorting_disabled">Creditcard</th>
+										<th class="sorting_disabled">Office</th>
 									</tr>
 								</thead>
 								<tbody>	
-								{{#each bookings productId _id}}
-									<tr id='{{_id}}' class='{{#if paid}} green {{else}} red {{/if}}'>
-										<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
-										<td>{{fullname customerId}}</td>
-										<td>{{vehicle.vehicleName}}</td>
-										<td>{{vehicle.vehiclePlate}}</td>
-										<td>{{vehicle.category}} - {{vehicle.size}}m</td>
-										<td>{{telephone customerId}}</td>
-										<td>{{totalPassagers _id}}</td>
-										<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
-										<td>
-											{{#if isBookCreated bookStatus}}
-												<a href="" class="changeStatusBooking btn btn-mini btn-danger" title='Cancel Booking'>
-													<i class='icon-remove'></i>
-												</a>
-												<a href="" class="changeStatusBooking btn btn-mini btn-warning" title='No Show'>
-													<i class='icon-thumbs-down'></i>
-												</a>
-											{{else}}
-												<a href="" class="changeStatusBooking btn btn-mini btn-warning" title='No Show'>
-													<i class='icon-thumbs-down'></i>
-												</a>
-											{{/if}}
-										</td>
+								{{#each trips _id}}
+									<tr>
+										<td>{{from}} - {{to}} - {{hour}}</td>
+										<td>{{total _id productId}} ISK</td>
+										<td>{{totalPaid _id productId}} ISK</td>
+										<td>{{totalNotPaid _id productId}} ISK</td>
+										<td>{{creditcard _id productId}}</td>
+										<td>{{office _id productId}}</td>
 									</tr>
 								{{/each}}
 								</tbody>
