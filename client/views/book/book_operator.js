@@ -750,7 +750,8 @@ Template.createBook.dateSelected = function(){
 }
 
 Template.generalPassagerInfo.dateSelected = function(){
-	return !Session.get('dateSelected');
+	console.log('aqui');
+	return !Session.get('dateSelected') && !Session.get('creatingUser');
 }
 
 carsUpTo5 = function(){
@@ -1522,7 +1523,8 @@ loadTypeAheadPostCodes = function(){
 }
 
 loadTypeahead = function(){
-	$('#fullName').typeahead('destroy');
+	if(!isCustomer()){
+			$('#fullName').typeahead('destroy');
 	var items = [],
 	finalItems,
 	tags = Customers.find({}, {fields: {fullName: 1}});
@@ -1557,6 +1559,8 @@ loadTypeahead = function(){
     	SaveCustomer = false;
     	CustomerSelected = true;
 	});
+	}
+
 
 	$('#vehicleSearch').typeahead('destroy');
 
@@ -1635,7 +1639,7 @@ var createBook = function(){
 		"totalISK" : $("#totalISK").text(),
 		'dateOfBooking' : date,
 		'bookStatus' : 'Created',
-		'product' : Product,
+		'product' : (isCustomer()) ? Products.findOne(Session.get('productId')) : Product,
 	}
 
 	vehicle = {
@@ -1648,9 +1652,7 @@ var createBook = function(){
 
 	book.vehicle = vehicle;
 
-	if(SaveVehicle){
-		Vehicles.insert(vehicle);
-	}
+	
 
 
 
@@ -1661,12 +1663,17 @@ var createBook = function(){
 	}
 
 	if(SaveCustomer){
-			var resultId = Customers.insert(customer);
-			customer._id = resultId;
-			book.customerId = resultId;
-		}else{
-			book.customerId = $('#customerId').val();
+		var resultId = Customers.insert(customer);
+		customer._id = resultId;
+		book.customerId = resultId;
+	}else{
+		book.customerId = $('#customerId').val();
+	}
+
+		if(SaveVehicle){
+			Vehicles.insert(vehicle);
 		}
+	
 
 	var prices = [];
 

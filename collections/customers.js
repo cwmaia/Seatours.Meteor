@@ -2,10 +2,7 @@ Customers = new Meteor.Collection('customers');
 
 Customers.allow({
 	insert : function(){
-		if(CheckUser())
-			return true;
-		else
-			return false;
+		return true;
 	},
 
 	update : function(){

@@ -6,6 +6,10 @@ Template.mainMenu.events({
 
 	'click .nav li' : function(event) {
 		Session.set('itemMenuId', event.currentTarget.id);
+	},
+
+	'click .management' : function(){
+		Meteor.Router.to('management');
 	}
 })
 
