@@ -22,10 +22,16 @@ Template.header.loggedAsUser = function(){
 
 isCustomer = function(){
 	if(Meteor.user()){
-  		if(Groups.findOne({'_id': Meteor.user().profile.groupID}).name == "Customers"){
+		try{
+			if(Groups.findOne({'_id': Meteor.user().profile.groupID}).name == "Customers"){
   			return true;
   		}
-      	return false;
+      		return false;
+		}catch(err){
+			console.log(err.message);
+			return false;
+		}
+  		
   	}
   	return true
 }
