@@ -1,10 +1,20 @@
 <!-- JS inside book_operator.js-->
 <template name="generalPassagerInfo">
-	<form novalidate id='pasagerInfo'>
+	<form novalidate id='pasagerInfo' method="post">
 		<fieldset>
 			<legend>Personal Info<span>&nbsp;&nbsp;</span><i class='icon-user'/></legend>
 	        
 	        <div class="line-3">
+	        	{{#if customerCreation}}
+	            <div>
+	            	<label>
+	    				Use my own data:
+	    				<input id="myOwnData" type="checkbox" class="ace ace-switch ace-switch-6">
+	    				<span class='lbl'></span>
+	    				<input id="usingData" type="hidden" value="false">
+	    			</label>
+	            </div>
+	            {{/if}}
                 <div>
 	            	<label class="control-label required">Title: </label>
 	                 <select name='title' id='title' required>
@@ -21,7 +31,6 @@
 	                <input type="text" name='firstName' id='fullName' class="tooltip-error" data-trigger="focus" placeholder="Full Name"required>
 	                <input type="hidden" id='customerId'>
 	            </div>
-
 		    </div>
 	        
 	        <div class="line-3 input-append">
@@ -50,11 +59,6 @@
 
 	        {{#if isCreatingExternalUser}}
 	        <div class="line-3 input-append">
-	        	<div>
-		            <label class="control-label required">Username: </label>
-		            <input type="text" name='firstName' id='fullName' class="tooltip-error" data-trigger="focus" placeholder="Username"required>
-				</div>
-		        
 		        <div>
 		            <label class="required">Password: </label>
 		            <input type="password" id="password" name="password" placeholder="Password" required>
@@ -90,8 +94,8 @@
 
 	        <div class="line-3">
                 <div>
-	            	<label class="required">County / State: </label>
-	                <input type="text"  id='state'name="county" placeholder="County / State" required>
+	            	<label >County / State: </label>
+	                <input type="text"  id='state'name="county" placeholder="County / State" >
 	            </div>
 
 	            <div>
