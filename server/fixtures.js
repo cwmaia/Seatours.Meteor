@@ -1522,13 +1522,13 @@ var callbackCSV = function(data){
 	console.log(a[1]);
 }
 
-/*
+
 if(Cars.find().count() == 0){
 		
     var fs  = Npm.require("fs");
     var jumpFirstLine = true;
 
-	fs.readFileSync('public/cars.csv').toString().split('\n').forEach(function (line) { 
+	fs.readFileSync('../../../../../public/cars.csv').toString().split('\n').forEach(function (line) { 
     	car = line.split(',');
     	var Car = {
 				'brandname' : car[1] ? car[1].charAt(0).toUpperCase() + car[1].slice(1) : '',
@@ -1549,6 +1549,6 @@ if(Cars.find().count() == 0){
 
 
 		
-}*/
+}
 
 

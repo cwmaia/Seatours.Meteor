@@ -10,6 +10,10 @@ Template.mainMenu.events({
 
 	'click .management' : function(){
 		Meteor.Router.to('management');
+	},
+
+	'click #overview_click' : function(){
+		
 	}
 })
 
