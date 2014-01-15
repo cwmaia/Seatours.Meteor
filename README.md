@@ -14,7 +14,7 @@ Go to bundle.tgz directory and:
 
 `tar -zxvf bundle.tgz`
 
-Restart or:
+Restart the machine or:
 
 `service meteor restart`
 
