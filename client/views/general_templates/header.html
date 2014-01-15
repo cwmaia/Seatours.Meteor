@@ -6,13 +6,19 @@
 			<div style="margin-right:3%; padding-top:3%; text-align:right; color: white">
 				<span class="profile">LOGGED AS: {{loginName}} </span>
 			{{#if loggedAsUser}}
-				<span> | </span>
-				<a class="cbasket">
+				{{#if loggedIn}}
+				{{else}}
+				<a class="myBookings orangeButton">
+				MY BOOKINGS
+				</a>
+				{{/if}}
+
+				<a class="cbasket orangeButton">
 				BASKET
 				</a>
-				<span> | </span>
 				{{#if loggedIn}}
 					<a id="loginLink" class="orangeButton">SIGN IN</a>
+					<br />
 					<div id="loginArea" style='float:right;'>
 						{{> login}}
 						<br />

@@ -44,6 +44,7 @@ Template.header.events({
 	},
 	'click .logoff' : function(event){
 		event.preventDefault();
+		cleanExternView();
 		Meteor.logout();
 		SpinnerInit();
 	},
@@ -51,6 +52,14 @@ Template.header.events({
 		event.preventDefault();
 		cleanExternView();
 		Session.set('cbasket', true);
+		$("#loginArea").hide();
+		Template.externView.rendered();
+	},
+
+	'click .myBookings' : function(event){
+		event.preventDefault();
+		cleanExternView();
+		Session.set('myBookings', true);
 		$("#loginArea").hide();
 		Template.externView.rendered();
 	},

@@ -58,7 +58,8 @@ Meteor.Router.add({
 	'/seasonControl'   :'seasonControl',
 	'/finishBooking'   :'finishBooking',
 	'/externView' : 'externView',
-	'/createExternalUser' : 'createExternalUser'
+	'/createExternalUser' : 'createExternalUser',
+	'/myBookings' : 'myBookings'
 });
 
 Meteor.Router.filters({
