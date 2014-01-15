@@ -7,7 +7,15 @@ Template.overview.date = function(){
 }
 
 Template.overview.trips = function(productId){
-	return Trips.find({productId : productId});
+	return Trips.find({productId : productId, season : currentSeason()});
+}
+
+Template.overview.isFirst = function(productId){
+	if(Products.find().fetch()[0]){
+		return Products.find().fetch()[0]._id == productId;
+	}else{
+		return false;
+	}
 }
 
 Template.overview.bookings = function(productId, tripId){
@@ -31,6 +39,137 @@ Template.overview.fullname = function(id){
 
 Template.overview.telephone = function(id){
 	return Customers.findOne({_id: id}).telephone;
+}
+
+Template.overview.total = function(tripId, productId){
+	var total = 0;
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books =  Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		total += parseInt(books[i].totalISK);
+	};
+
+	return total;
+}
+
+Template.overview.totalPaid = function(tripId, productId){
+	var total = 0;
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books =  Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		transactions = Transactions.find({bookId : books[i]._id}).fetch();
+		for (var j = 0; j < transactions.length; j++) {
+			total = parseInt(transactions[j].amount);
+		};
+	};
+
+	return total;
+}
+
+Template.overview.totalNotPaid = function(tripId, productId){
+	var total = 0;
+	var totalTransactions = 0;
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books =  Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId,
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		transactions = Transactions.find({bookId : books[i]._id}).fetch();
+		for (var j = 0; j < transactions.length; j++) {
+			totalTransactions += parseInt(transactions[j].amount)
+		};
+		if(totalTransactions < books[i].totalISK){
+			total += books[i].totalISK - totalTransactions;
+		}
+		totalTransactions = 0;
+	};
+
+	return total;
+}
+
+Template.overview.creditcard = function(tripId, productId){
+	var total = 0;
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books =  Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId,
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		transactions = Transactions.find({bookId : books[i]._id}).fetch();
+		for (var j = 0; j < transactions.length; j++) {
+			if(transactions[j].type == 'Credit Card'){
+				total = parseInt(transactions[j].amount)
+			}
+		};
+	};
+
+	return total;
+}
+
+Template.overview.office = function(tripId, productId){
+	var total = 0;
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books =  Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId,
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		transactions = Transactions.find({bookId : books[i]._id}).fetch();
+		for (var j = 0; j < transactions.length; j++) {
+			if(transactions[j].type == 'Cash Office'){
+				total = parseInt(transactions[j].amount)
+			}
+		};
+	};
+
+	return total;
 }
 
 Template.overview.totalPassagers = function(id){
