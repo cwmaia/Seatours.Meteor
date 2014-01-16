@@ -44,7 +44,10 @@
 				{{> voucher}}
 				<div style="width: 800px;">
 					
-					<button class="btn btn-success print" style="float: right; margin: -4 4 0 0;" onclick="window.print()">
+					<button class="btn btn-success print" style="float: right; margin: -4 4 0 0;" onclick="w=window.open();
+					w.document.write($('#wholeVoucher').html());
+					w.print();
+					w.close();">
 						Print
 					</button>
 					<button class="btn btn-small btn-info editBook" type='submit' form='pasagerInfo' style="float: right; margin-right: 10px;padding: 5.5px;" > 
