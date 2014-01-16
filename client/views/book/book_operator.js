@@ -1199,7 +1199,7 @@ Template.generalPassagerInfo.events({
 
 	'click .createUser' : function(event){
 		event.preventDefault();
-		if($("#password").val() != $("#confirmPassword").val()){
+		if($("#firstPasswordToEnter").val() != $("#confirmPassword").val()){
 			throwError('Passwords must match');
 			return;
 		}
