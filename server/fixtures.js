@@ -99,31 +99,75 @@ if(Products.find().count() == 0){
 
 	Trips.insert({
 		"from" 	: "Stykkishólmur",
-		"to"	: "Brjánslækur",
-		"hour"  : "15:00",
-		'season' : "summer",
-		'active' : true,
-		'productId' : result
-	}),
-
-	Trips.insert({
-		"from" 	: "Brjánslækur",
-		"to"	: "Stykkishólmur",
-		"hour"  : "18:00",
-		'season' : "summer",
-		'active' : true,
-		'productId' : result		
-	})
-
-	Trips.insert({
-		"from" 	: "Stykkishólmur",
-		"to"	: "Brjánslækur",
-		"hour"  : "15:00",
+		"to"	: "",
+		"hour"  : "09:00",
 		'season' : "winter",
 		'active' : true,
 		'productId' : result
 	}),
 
+	Trips.insert({
+		"from" 	: "Stykkishólmur",
+		"to"	: "",
+		"hour"  : "15:45",
+		'season' : "winter",
+		'active' : true,
+		'productId' : result
+	}),
+
+	Trips.insert({
+		"from" 	: "Flatey",
+		"to"	: "Brjánslækur",
+		"hour"  : "10:30",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	}),
+
+	Trips.insert({
+		"from" 	: "Flatey",
+		"to"	: "Brjánslækur",
+		"hour"  : "17:15",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	}),
+
+	Trips.insert({
+		"from" 	: "Brjánslækur",
+		"to"	: "",
+		"hour"  : "12:15",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	}),
+
+	Trips.insert({
+		"from" 	: "Brjánslækur",
+		"to"	: "",
+		"hour"  : "19:00",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	}),
+
+	Trips.insert({
+		"from" 	: "Flatey",
+		"to"	: "Stykkishólmur",
+		"hour"  : "13:15",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	}),
+
+	Trips.insert({
+		"from" 	: "Flatey",
+		"to"	: "Stykkishólmur",
+		"hour"  : "20:00",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	}),
 
 	Prices.insert({
 		"price" 	: "Adult",
@@ -132,15 +176,6 @@ if(Products.find().count() == 0){
 		'season' : 'summer',
 		'productId' : result
 	})
-
-	Prices.insert({
-		"price" 	: "Adult",
-		"unit"	: 4080,
-		'active' : true,
-		'season' : 'winter',
-		'productId' : result
-	})
-
 
 	Prices.insert({
 		"price" 	: "Child",
@@ -182,6 +217,56 @@ if(Products.find().count() == 0){
 		'productId' : result
 	})
 
+	//Winter Prices
+	////////////////////////////////////////
+	Prices.insert({
+		"price" 	: "Adult",
+		"unit"	: 4080,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Child",
+		"unit"	: 2040,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Infant",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Senior",
+		"unit"	: 3264,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "School Discount",
+		"unit"	: 2040,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Guides and Drivers",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
 	result = Products.insert({
 		"name" 			: "Viking Sushi Adventure",
 		"description" 	: "Quisque volutpat suscipit interdum. Nam felis tellus, viverra eu quam ac, accumsan vestibulum quam. Phasellus luctus sem non nunc varius, vitae adipiscing augue gravida. Vestibulum libero velit, ultrices id tortor vitae, elementum congue ligula. Vestibulum in auctor urna, eget aliquam enim. Curabitur in tellus lacinia, consectetur nunc varius, posuere nisl. Mauris porta id eros eu imperdiet. Cras tristique laoreet erat vitae fermentum. Donec ornare lobortis iaculis. Sed sodales suscipit urna, sit amet laoreet dui rhoncus id. Etiam tempus nulla ut fringilla malesuada. Proin ac lorem eget leo ornare rhoncus vel et magna. Nam eu scelerisque nisl, ultricies blandit tellus. In vitae mauris at tortor porta egestas. Integer porta placerat purus, eget mattis nisi molestie vel.",
@@ -190,23 +275,14 @@ if(Products.find().count() == 0){
 	});
 
 	Trips.insert({
-		"from" 	: "Caicó",
-		"to"	: "Bermudas",
-		"hour"  : "14:00",
-		'season' : "summer",
+		"from" 	: "Vikingsushi adventure",
+		"to"	: "",
+		"hour"  : "11:00",
+		'season' : "noSeason",
 		'active' : true,
-		'productId' : result
+		'productId' : result,
+		'availableDays' : {start: '05/13/2014', end: '10/15/2014'}
 	}),
-
-	Trips.insert({
-		"from" 	: "Bermudas",
-		"to"	: "Caicó",
-		"hour"  : "20:00",
-		'season' : "summer",
-		'active' : true,
-		'productId' : result
-	})
-
 
 	Prices.insert({
 		"price" 	: "Adult",
@@ -253,6 +329,66 @@ if(Products.find().count() == 0){
 		"unit"	: 0,
 		'active' : true,
 		'season' : 'summer',
+		'productId' : result
+	})
+
+	//Winter Prices
+	/////////////////////////////
+	Prices.insert({
+		"price" 	: "Guides and Drivers",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	//Winter Prices
+	////////////////////////////////////////
+	Prices.insert({
+		"price" 	: "Adult",
+		"unit"	: 4080,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Child",
+		"unit"	: 2040,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Infant",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Senior",
+		"unit"	: 3264,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "School Discount",
+		"unit"	: 2040,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Guides and Drivers",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'winter',
 		'productId' : result
 	})
 
@@ -264,22 +400,24 @@ if(Products.find().count() == 0){
 	});
 
 	Trips.insert({
-		"from" 	: "Pipa",
-		"to"	: "Haiti",
-		"hour"  : "15:00",
-		'season' : "summer",
+		"from" 	: "Viking Sushi Short",
+		"to"	: "",
+		"hour"  : "13:40",
+		'season' : "noSeason",
 		'active' : true,
-		'productId' : result
+		'productId' : result,
+		'availableDays' : {start: '06/15/2014', end: '08/20/2014'}
 	}),
 
 	Trips.insert({
-		"from" 	: "Haiti",
-		"to"	: "Pipa",
-		"hour"  : "19:00",
-		'season' : "summer",
+		"from" 	: "Viking Sushi Short",
+		"to"	: "",
+		"hour"  : "15:30",
+		'season' : "noSeason",
 		'active' : true,
-		'productId' : result
-	})
+		'productId' : result,
+		'availableDays' : {start: '05/17/2014', end: '08/20/2014'}
+	}),
 
 	Prices.insert({
 		"price" 	: "Adult",
@@ -326,6 +464,66 @@ if(Products.find().count() == 0){
 		"unit"	: 0,
 		'active' : true,
 		'season' : 'summer',
+		'productId' : result
+	})
+
+	//Winter Prices
+	//////////////////////////
+	Prices.insert({
+		"price" 	: "Guides and Drivers",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result
+	})
+
+	//Winter Prices
+	////////////////////////////////////////
+	Prices.insert({
+		"price" 	: "Adult",
+		"unit"	: 4080,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Child",
+		"unit"	: 2040,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Infant",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Senior",
+		"unit"	: 3264,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "School Discount",
+		"unit"	: 2040,
+		'active' : true,
+		'season' : 'winter',
+		'productId' : result
+	})
+
+	Prices.insert({
+		"price" 	: "Guides and Drivers",
+		"unit"	: 0,
+		'active' : true,
+		'season' : 'winter',
 		'productId' : result
 	})
 		
@@ -1512,7 +1710,7 @@ if(PostCodes.find().count() == 0){
 
 	Settings.insert({'summerStartDate' : '06/01',
 					 '_id' : 'summer'});
-	Settings.insert({'winterStartDate' : '12/01',
+	Settings.insert({'winterStartDate' : '09/01',
 					 '_id' : 'winter'});
 }
 

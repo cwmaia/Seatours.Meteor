@@ -9,6 +9,10 @@ Template.header.rendered = function(){
 	$("#loginArea").hide();
 }
 
+Template.header.totalItems = function(){
+	return CBasket.find().count();
+}
+
 Template.header.loginName = function(){
 	if(Meteor.user()){
 		return Meteor.user().profile.name;

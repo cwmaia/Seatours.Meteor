@@ -18,6 +18,16 @@ Template.finishBooking.vendor = function(){
 
 
 Template.finishBooking.events({
+	'click #finishBuyBookingCustomer' : function(){
+		//Gather Customer Data
+
+		//Gather User Data
+
+		//Save Books
+		Meteor.call('saveCustomerBooks', books);
+
+
+	},
 	'click .saveDiscount':function(event){
 		event.preventDefault();
 		var percentage = $('#discount').val();
