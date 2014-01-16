@@ -32,3 +32,29 @@ cleanExternView = function(){
 	Session.set('myBookings', false);
 	Session.set('myVoucher', false);
 }
+
+Template.externView.events({
+	'click .cbasket' : function(event){
+		event.preventDefault();
+		cleanExternView();
+		Session.set('cbasket', true);
+		$("#loginArea").hide();
+		Template.externView.rendered();
+	},
+
+	'click .myBookings' : function(event){
+		event.preventDefault();
+		cleanExternView();
+		Session.set('myBookings', true);
+		$("#loginArea").hide();
+		Template.externView.rendered();
+	},
+	
+	'click .icoHome' : function(event){
+		event.preventDefault();
+		cleanExternView();
+		$("#loginArea").hide();
+		Template.externView.rendered();
+	}
+
+})

@@ -1,3 +1,11 @@
 <template name="myVoucher">
 	{{> voucher}}
+	<button class="btn btn-success print" style="float: right; margin: -4 4 0 0;" onclick="
+		w=window.open();
+		w.document.write($('#wholeVoucher').html());
+		w.print();
+		w.close();
+	">
+						Print
+					</button>
 </template>
