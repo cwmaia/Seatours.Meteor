@@ -1,26 +1,32 @@
 <template name='externView'>
 	<div class="firstPage">
+		<span style="font-weight: bold;">You're Here: → </span><a class="icoHome" href="#"><i class="icon-home"></i></a>
 		{{#if selectDate}}
 			{{> bookOperator}}
 		{{/if}}
 
 		{{#if createBook}}
+			→ <a class="createBooking" href="#">Create Booking</a>
 			{{> createBook}}
 		{{/if}}	
 
 		{{#if cart}}
+			→ <a class="cbasket" href="#">Basket</a>
 			{{> cart}}
 		{{/if}}
 
 		{{#if myBookings}}
+			→ <a class="myBookings" href="#">My Bookings</a>
 			{{> myBookings}}
 		{{/if}}
 
 		{{#if myVoucher}}
+			→ <a class="myBookings" href="#">My Bookings</a> → <a class="myVoucher" href="#">My Voucher</a>
 			{{> myVoucher}}
 		{{/if}}
 
 		{{#if createUser}}
+			→ <a class="createUser" href="#">Create User</a>
 		<div class="page-header">
 			<h1>
 				Create User
