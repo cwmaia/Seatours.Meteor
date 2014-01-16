@@ -43,7 +43,6 @@ Meteor.publish('books', function() {
   }else{
     return null;
   }
-       
 });
 
 Meteor.publish('vehicles_category', function() { 
@@ -134,6 +133,17 @@ Meteor.publish('saveTrip', function(trip) {
 Meteor.publish("settings", function () {
     return Settings.find();
 });
+
+var isCustomer = function(userId){
+  if(Meteor.users.findOne({'_id' : userId}).profile.customerId){
+    return true;
+  }
+  return false;
+}
+
+var getCustomerId = function(userId){
+  return Meteor.users.findOne({'_id' : userId}).profile.customerId;
+}
 
 var saveQRCode = function(blob, name) {
     var fs = Npm.require('fs'), encoding ='binary';
