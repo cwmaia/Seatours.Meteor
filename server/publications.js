@@ -28,10 +28,22 @@ Meteor.publish('products', function() {
 });
 
 Meteor.publish('books', function() { 
-  if(this.userId)
-	   return Books.find();
-  else
-     return null;  
+  if(this.userId){
+     user = Meteor.users.findOne({_id : this.userId});
+     group = Groups.findOne({name : 'Customers'});
+     if(user.profile.groupID == group._id){
+        if(user.profile.customerId){
+          return Books.find({customerId : user.profile.customerId});
+        }else{
+          return null;
+        }
+     }else{
+        return Books.find();
+     }
+  }else{
+    return null;
+  }
+       
 });
 
 Meteor.publish('vehicles_category', function() { 
@@ -40,8 +52,8 @@ Meteor.publish('vehicles_category', function() {
 
 Meteor.publish('boats', function() {
   if(this.userId)
-  return Boats.find();
-else
+    return Boats.find();
+  else
      return null; 
 });
 
