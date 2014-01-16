@@ -63,29 +63,41 @@ Template.items.customerName = function(customerId){
 Template.cart.events({
 	'click .checkout' : function(event){
 		event.preventDefault();
-		var books = CartItems.find().fetch();
-		var createdBooks = [];
-		for (var i = 0; i < books.length; i++) {
-			var customer = Customers.findOne({_id : books[i].customerId});
-			sendMail(books[i],books[i]._id, customer);
-			CartItems.remove({_id : books[i]._id});
+		if(isCustomer()){
+			books = CBasket.find().fetch();
+			for (var i = 0; i < books.length; i++) {
+				books[i].temp = true;
+				Meteor.call('insertBook', books[i]);
+				throwSuccess(books.length+' Bookings Created!');
+				CBasket.remove({_id : books[i]._id});
+			};
+		}else{
+			var books = CartItems.find().fetch();
+			var createdBooks = [];
+			for (var i = 0; i < books.length; i++) {
+				var customer = Customers.findOne({_id : books[i].customerId});
+				sendMail(books[i],books[i]._id, customer);
+				CartItems.remove({_id : books[i]._id});
 
-			refNumber = new Date().getTime().toString().substr(5);
-			while(Books.findOne({refNumber : refNumber})){
 				refNumber = new Date().getTime().toString().substr(5);
-			}
-			books[i].refNumber = refNumber;
-			bookId = Books.insert(books[i]);
-			createdBooks[i] = Books.findOne({_id : bookId});
-			//UpdateNote
-			note = Notes.findOne({bookId: books[i]._id});
-			if(note)
-				Notes.update(note._id, {$set : {bookId: bookId}});
+				while(Books.findOne({refNumber : refNumber})){
+					refNumber = new Date().getTime().toString().substr(5);
+				}
+				books[i].refNumber = refNumber;
+				bookId = Books.insert(books[i]);
+				createdBooks[i] = Books.findOne({_id : bookId});
+				//UpdateNote
+				note = Notes.findOne({bookId: books[i]._id});
+				if(note)
+					Notes.update(note._id, {$set : {bookId: bookId}});
 		};
 
 		throwSuccess(books.length+' Bookings Created!');
 		Session.set("createdBooks", createdBooks);
 		Meteor.Router.to("/finishBooking");
+		}
+
+		
 	}
 })
 

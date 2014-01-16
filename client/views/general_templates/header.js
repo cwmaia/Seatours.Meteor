@@ -33,7 +33,23 @@ isCustomer = function(){
 		}
   		
   	}
-  	return true
+  	return true;
+}
+
+isCustomerLogged = function(){
+	if(Meteor.user()){
+		try{
+			if(Groups.findOne({'_id': Meteor.user().profile.groupID}).name == "Customers"){
+  			return true;
+  		}
+      		return false;
+		}catch(err){
+			console.log(err.message);
+			return false;
+		}
+  		
+  	}
+  	return false;
 }
 
 Template.header.events({

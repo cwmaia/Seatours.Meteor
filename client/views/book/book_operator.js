@@ -1662,17 +1662,22 @@ var createBook = function(){
 		book.vehicle.extraSlot = extraSlots[0];
 	}
 
-	if(SaveCustomer){
-		var resultId = Customers.insert(customer);
-		customer._id = resultId;
-		book.customerId = resultId;
+	if(isCustomerLogged()){
+		book.customerId = Meteor.user().profile.customerId;
 	}else{
-		book.customerId = $('#customerId').val();
+		if(SaveCustomer){
+			var resultId = Customers.insert(customer);
+			book.customerId = resultId;
+		}else{
+			book.customerId = $('#customerId').val();
+		}
 	}
 
-		if(SaveVehicle){
-			Vehicles.insert(vehicle);
-		}
+	
+
+	if(SaveVehicle){
+		Vehicles.insert(vehicle);
+	}
 	
 
 	var prices = [];

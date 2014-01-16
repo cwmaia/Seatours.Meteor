@@ -20,7 +20,7 @@
 				<tbody>
 					{{#each bookings}}
 						<tr>
-							<td><a href='/myVoucher/{{_id}}'>{{refNumber}}</a></td>
+							<td><a rel='{{_id}}' class='myVoucher'>{{_id}}</a></td>
 							<td>{{product.name}}: {{trip.from}} - {{trip.to}}</td>
 							<td>{{dateOfBooking}}</td>
 							<td>{{totalISK}}</td>
