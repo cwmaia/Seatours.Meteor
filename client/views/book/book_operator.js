@@ -563,8 +563,12 @@ Template.bookOperator.rendered = function() {
 };
 
 
-Template.productItem.rendered = function(){
-	$('.calendar').datepicker().on('changeDate', function(ev){
+Template.productItem.rendered = function(){	
+	var nowTemp = new Date();
+	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate()-1, 0, 0, 0, 0);
+
+	$('.calendar').datepicker({
+		}).on('changeDate', function(ev){
 			date = new Date(ev.date);
 			with(date){
 				setDate(getDate() +1 );
@@ -574,8 +578,10 @@ Template.productItem.rendered = function(){
 			}
 			localStorage.setItem('date', date);
 			$('#currentSeason').text(currentSeason());
-		})
-  	};
+		});
+	$('.calendar').datepicker("setStartDate", now);
+ };
+
 
 Template.productItem.events({
 	'click .calendar' : function(event){
