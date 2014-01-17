@@ -16,6 +16,7 @@ Meteor.subscribe("postcodes");
 Meteor.subscribe('prices');
 Meteor.subscribe('settings');
 Meteor.subscribe('cbasket');
+Meteor.subscribe('blockingDates');
 
 
 Template.redirect.helpers({

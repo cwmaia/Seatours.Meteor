@@ -648,6 +648,12 @@ Template.bookOperator.events({
 	'click .proceed': function(event){
 		var productId = $(event.currentTarget).parents('li')[0].id,
         select = $('#trip_' + productId);
+
+        if(BlockingDates.findOne({'blockedDay': '0'+(new Date(localStorage.getItem('date'))).toLocaleDateString() ,'tripId' : select.val(), 'blocked' : true})){
+				throwError("Trips not available for this day, please choose another day!");
+				return;
+			}
+
         if(select[0].checkValidity()){
 			Session.set('tripId',select.val());
 			if(!isCustomer()){

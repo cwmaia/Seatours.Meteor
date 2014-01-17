@@ -1,25 +1,16 @@
 var _trip = {};
 
 Template.blockingDates.rendered = function() {
-	$('.calendar').datepicker({
-		onSelect: function(date, calendar) {
-			_trip.blockingDates.push(new Date(date));
-
-			setTimeout(function(){
-				setBlockingDates();
-			}, 10);
-		},
-
-		'onChangeMonthYear': function(year, month) {
-			$(this).attr('data-month', month).attr('data-year', year);
-
-			setTimeout(function(){
-				setBlockingDates();
-			}, 10);
-		}
-	});
-
-	$('.calendar').attr('data-month', new Date().getMonth() + 1).attr('data-year', new Date().getFullYear());
+	$(".datePickerWYear").datepicker().on(
+		'changeDate', function(ev){
+			$("#reason").removeAttr('disabled');
+			if (BlockingDates.findOne({'tripId' : $('#trip').val(), 'blockedDay' : $('#dayBlocked').val() , 'blocked' : true})){
+				$('#blockButton').val('Unblock');
+			}else{
+				$('#blockButton').val('Block');
+			}
+		});
+	$("#usersTable").dataTable();
 }
 
 Template.blockingDates.helpers({
@@ -28,36 +19,51 @@ Template.blockingDates.helpers({
 	}
 });
 
-Template.blockingDates.events({
-	'change #trip': function(event) {
-		_trip = Trips.findOne(event.currentTarget.selectedOptions[0].value);
-
-		if(!_trip.blockingDates)
-			_trip.blockingDates = [];
-
-		setBlockingDates();
-	},
-
-	'submit #blockingDates': function(event) {
-		event.preventDefault();
-
-		Meteor.call('updateTrip', _trip, function(error) {
-			console.log(error);
-		});
-
-		$('.isFull').removeClass('isFull');
-		throwSuccess('Blocking dates added');
+Template.blockingDates.block = function(){
+	if(Session.get("tripSelected")){
+		var todayDate = new Date();
+		var dateString = '0' + (todayDate.getMonth() + 1) + '/' + todayDate.getDate() + '/' + todayDate.getFullYear();
+		console.log(BlockingDates.find({'blockedDay': {$gte: dateString},'tripId' : $('#trip').val(), 'blocked' : true}).fetch());
+		return BlockingDates.find({'tripId' : $('#trip').val(), 'blocked' : true}).fetch();
 	}
-});
-
-function setBlockingDates() {
-	$('.isFull').removeClass('isFull');
-
-	var mes = $('.calendar').attr('data-month'),
-	ano = $('.calendar').attr('data-year');
-
-	for (var i = _trip.blockingDates.length - 1; i >= 0; i--) {
-		if(_trip.blockingDates[i].getFullYear() == ano && _trip.blockingDates[i].getMonth() + 1 == mes)
-			$('.calendar tbody a:eq(' + (_trip.blockingDates[i].getDate() - 1) + ')').addClass('isFull');
-	}
+	return null;
 }
+
+Template.blockingDates.events({
+	'change #trip' : function(event){
+		event.preventDefault();
+		Session.set("tripSelected", true);
+		$("#dayBlocked").removeAttr('disabled');
+		Template.blockingDates.rendered();
+	},
+	'change #reason' : function(){
+		$("#blockButton").removeAttr('disabled');
+	},
+	'click #blockButton' : function(event){
+		event.preventDefault();
+		var blockDate = {
+			'tripId' : $('#trip').val(),
+			'blockedDay' : $('#dayBlocked').val(),
+			'reason' : $('#reason').val(),
+			'blocked' : true
+		}
+		if (BlockingDates.findOne({'tripId' : $('#trip').val(), 'blockedDay' : $('#dayBlocked').val() , 'blocked' : true})){
+				var current = BlockingDates.findOne({'tripId' : $('#trip').val(), 'blockedDay' : $('#dayBlocked').val() , 'blocked' : true});
+				BlockingDates.update(current._id, {$set : {blocked : false}});
+		} else if (BlockingDates.findOne({'tripId' : $('#trip').val(), 'blockedDay' : $('#dayBlocked').val() , 'blocked' : false})){
+				var current = BlockingDates.findOne({'tripId' : $('#trip').val(), 'blockedDay' : $('#dayBlocked').val() , 'blocked' : false});
+				BlockingDates.update(current._id, {$set : {blocked : true}});
+		}else{
+			BlockingDates.insert(blockDate);
+		}
+		$("#dayBlocked").attr('disabled','disabled');
+		$("#reason").attr('disabled','disabled');
+		$("#blockButton").attr('disabled','disabled');
+		$("#dayBlocked").val('');
+		$("#reason").val('');
+		$("#blockButton").val('Save');
+
+		Session.set("tripSelected", false);
+	}
+
+})

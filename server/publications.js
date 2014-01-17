@@ -118,6 +118,9 @@ Meteor.publish('prices', function() {
       return Prices.find();
 });
 
+Meteor.publish('blockingDates', function() {
+  return BlockingDates.find();
+});
 
 Meteor.publish('saveTrip', function(trip) {
   if(this.userId){
