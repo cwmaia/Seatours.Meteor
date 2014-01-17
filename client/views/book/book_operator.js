@@ -559,6 +559,10 @@ var checkHaveToOpenDoor = function(size, trip){
 ///////////////////////////////////////////
 //Template Book Operator
 Template.bookOperator.rendered = function() {
+	var nowTemp = new Date();
+	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+	console.log(now);
+	localStorage.setItem('date', now);
 	//$('#currentSeason').text(currentSeason());
 };
 
@@ -605,7 +609,43 @@ Template.productItem.events({
 			//Append new options
 			$('#trip_'+this._id).append("<option value="+appendTrips[i]._id+" data-from="+appendTrips[i].from+">"+appendTrips[i].from +" - "+appendTrips[i].to + " - " +appendTrips[i].hour+"</option>");
 		};
+		if(appendTrips.length == 0){
+			$('#trip_'+this._id).append("<option disabled>No trips available for this day</option>");
+			$('#button_'+this._id).attr("disabled", "disabled");
+		}else{
+			$('#button_'+this._id).removeAttr("disabled");
+		}
+	},
+	'focus .trip' : function(event){
+		var today = new Date(localStorage.getItem('date'));
+		var appendTrips = [];
+		var trips = Trips.find({productId: this._id, active : true}).fetch();
+		for (var i = 0; i < trips.length; i++) {
+			if(trips[i].season == 'noSeason'){
+				if(today >= new Date(trips[i].availableDays.start) && today <= new Date(trips[i].availableDays.end)){
+					appendTrips.push(trips[i]);
+				}
+			}else if(trips[i].season == currentSeason()){
+				appendTrips.push(trips[i]);
+			}
+		};
+
+		//Remove all previous options
+		$('#trip_'+this._id).find('option').remove();
+
+		for (var i = appendTrips.length - 1; i >= 0; i--) {
+			//Append new options
+			$('#trip_'+this._id).append("<option value="+appendTrips[i]._id+" data-from="+appendTrips[i].from+">"+appendTrips[i].from +" - "+appendTrips[i].to + " - " +appendTrips[i].hour+"</option>");
+		};
+
+		if(appendTrips.length == 0){
+			$('#trip_'+this._id).append("<option disabled>No trips available for this day</option>");
+			$('#button_'+this._id).attr("disabled", "disabled");
+		}else{
+			$('#button_'+this._id).removeAttr("disabled");
+		}
 	}
+
 })
 
 Template.bookOperator.helpers({
