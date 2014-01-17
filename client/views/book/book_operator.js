@@ -1264,37 +1264,39 @@ Template.generalPassagerInfo.events({
 
 	'click .createUser' : function(event){
 		event.preventDefault();
-		if($("#firstPasswordToEnter").val() != $("#confirmPassword").val()){
-			throwError('Passwords must match');
-			return;
-		}
-		var customerData = {
-			'fullName' :  $('#fullName').val(),
-			'title' : $('#title').val(),
-	    	'birthDate': $('#birthDate').val(),
-	    	'email' : $('#email').val(),
-	    	'telephoneCode' : $('#telephoneCode').val(),
-	    	'telephone' : $('#telephone').val(),
-	    	'adress' : $('#adress').val(),
-	    	'city' : $('#city').val(),
-	    	'state' : $('#state').val(),
-	    	'postcode' : $('#postcode').val(),
-	    	'country' : $('#country').val()
-		}
-
-		var user = {
-			username : $('#email').val(),
-			email : $('#email').val(),
-			password : $('#password').val()
-		}
-		Meteor.call('createExternalAccount', user, customerData, function(err, result){
-			if(err){
-				throwError("Email already registered!");
-			}else{
-				throwSuccess("Successfuly registered!");
-				Meteor.Router.to('/');
+		var form = document.getElementById('pasagerInfo');
+		if(form.checkValidity()){
+			var customerData = {
+				'fullName' :  $('#fullName').val(),
+				'title' : $('#title').val(),
+		    	'birthDate': $('#birthDate').val(),
+		    	'email' : $('#email').val(),
+		    	'telephoneCode' : $('#telephoneCode').val(),
+		    	'telephone' : $('#telephone').val(),
+		    	'adress' : $('#adress').val(),
+		    	'city' : $('#city').val(),
+		    	'state' : $('#state').val(),
+		    	'postcode' : $('#postcode').val(),
+		    	'country' : $('#country').val()
 			}
-		})
+
+			var user = {
+				username : $('#email').val(),
+				email : $('#email').val(),
+				password : $('#password').val()
+			}
+			Meteor.call('createExternalAccount', user, customerData, function(err, result){
+				if(err){
+					throwError("Email already registered!");
+				}else{
+					throwSuccess("Successfuly registered!");
+				}
+			})
+		}else{
+			$('#pasagerInfo').submit(function(event){
+				event.preventDefault();
+			});
+		}
 	},
 
 	'change #myOwnData' : function(event){

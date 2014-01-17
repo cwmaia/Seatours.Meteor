@@ -49,6 +49,14 @@ Template.redirect.rendered = function(){
 				minlength: 5,
 				equalTo: "#password"
 			},
+			firstPasswordToEnter:{
+				required: true,
+				minlength: 6
+			},
+			confirmPassword:{
+				required: true,
+				equalTo: "#firstPasswordToEnter"
+			},
 			name: {
 				required: true
 			},
@@ -84,6 +92,13 @@ Template.redirect.rendered = function(){
 			password: {
 				required: "Please specify a password.",
 				minlength: "Please specify a secure password."
+			},
+			firstPasswordToEnter: {
+				required: "Please specify a password.",
+				minlength: "Please specify a secure password, it must contains at least 6 characters."
+			},
+			confirmPassword:{
+				equalTo: "Passwords must match"
 			},
 			subscription: "Please choose at least one option",
 			gender: "Please choose gender",

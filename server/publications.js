@@ -212,9 +212,13 @@ Meteor.methods({
 
   createExternalAccount: function(user, userData){
     group = Groups.findOne({"name": "Customers"});
+    
+    user.profile = {'groupID': group._id, 'name' : userData.fullName};
+    var userId = Accounts.createUser(user);
+
     var customerId = Customers.insert(userData);
-    user.profile = {'groupID': group._id, 'name' : userData.fullName, 'customerId' : customerId};
-    Accounts.createUser(user);
+    
+    Meteor.users.update(userId, {$set :{ "profile.customerId" : customerId}})
   },
 
   createGroup : function(group){
