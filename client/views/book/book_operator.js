@@ -579,12 +579,25 @@ Template.productItem.rendered = function(){
 
 Template.productItem.events({
 	'click .calendar' : function(event){
-		var trips = Trips.find({productId: this._id, active : true, season : currentSeason()}).fetch();
+		var today = new Date(localStorage.getItem('date'));
+		var appendTrips = [];
+		var trips = Trips.find({productId: this._id, active : true}).fetch();
+
+		for (var i = 0; i < trips.length; i++) {
+			if(trips[i].season == 'noSeason'){
+				if(today >= new Date(trips[i].availableDays.start) && today <= new Date(trips[i].availableDays.end)){
+					appendTrips.push(trips[i]);
+				}
+			}else if(trips[i].season == currentSeason()){
+				appendTrips.push(trips[i]);
+			}
+		};
+
 		//Remove all previous options
 		$('#trip_'+this._id).find('option').remove();
-		for (var i = trips.length - 1; i >= 0; i--) {
+		for (var i = appendTrips.length - 1; i >= 0; i--) {
 			//Append new options
-			$('#trip_'+this._id).append("<option value="+trips[i]._id+" data-from="+trips[i].from+">"+trips[i].from +" - "+trips[i].to + " - " +trips[i].hour+"</option>");
+			$('#trip_'+this._id).append("<option value="+appendTrips[i]._id+" data-from="+appendTrips[i].from+">"+appendTrips[i].from +" - "+appendTrips[i].to + " - " +appendTrips[i].hour+"</option>");
 		};
 	}
 })

@@ -6,7 +6,21 @@ Meteor.publish("directory", function () {
 });
 
 Meteor.publish('cbasket', function(){
-  return CBasket.find();
+  if(this.userId){
+     user = Meteor.users.findOne({_id : this.userId});
+     group = Groups.findOne({name : 'Customers'});
+     if(user.profile.groupID == group._id){
+        if(user.profile.customerId){
+          return CBasket.find({customerId : user.profile.customerId});
+        }else{
+          return null;
+        }
+     }else{
+        return null;
+     }
+  }else{
+    return null;
+  }
 })
 
 Meteor.publish("inquiries", function () {
@@ -205,6 +219,14 @@ Meteor.methods({
 
   createGroup : function(group){
     Groups.insert(group);
+  },
+
+  saveCustomerBooks : function(books){
+    for (var i = 0; i < books.length; i++) {
+        books.temp = true;
+        Book.insert(books[i]);
+    };
+
   },
 
   insertBook : function(book){
