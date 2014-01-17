@@ -62,11 +62,13 @@ Template.header.events({
 		cleanExternView();
 		Session.set("creatingUser", true);
 		$("#loginArea").toggle();
+		$('.profile').toggle();
 		Template.externView.rendered();
 	},
 	'click #loginLink' : function(event){
 		event.preventDefault();
 		$("#loginArea").toggle();
+		$('.profile').toggle();
 	},
 	'click .logoff' : function(event){
 		event.preventDefault();
@@ -79,6 +81,7 @@ Template.header.events({
 		cleanExternView();
 		Session.set('cbasket', true);
 		$("#loginArea").hide();
+		$('.profile').show();
 		Template.externView.rendered();
 	},
 
@@ -87,6 +90,7 @@ Template.header.events({
 		cleanExternView();
 		Session.set('myBookings', true);
 		$("#loginArea").hide();
+		$('.profile').show();
 		Template.externView.rendered();
 	},
 
@@ -94,6 +98,7 @@ Template.header.events({
 		event.preventDefault();
 		cleanExternView();
 		$("#loginArea").hide();
+		$('.profile').show();
 		Template.externView.rendered();
 	}
 
