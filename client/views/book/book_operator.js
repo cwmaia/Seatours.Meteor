@@ -1265,9 +1265,10 @@ Template.generalPassagerInfo.events({
 	},
 
 	'click .createUser' : function(event){
-		event.preventDefault();
+		
 		var form = document.getElementById('pasagerInfo');
 		if(form.checkValidity()){
+			event.preventDefault();
 			var customerData = {
 				'fullName' :  $('#fullName').val(),
 				'title' : $('#title').val(),
@@ -1285,7 +1286,7 @@ Template.generalPassagerInfo.events({
 			var user = {
 				username : $('#email').val(),
 				email : $('#email').val(),
-				password : $('#password').val()
+				password : $('#firstPasswordToEnter').val()
 			}
 			Meteor.call('createExternalAccount', user, customerData, function(err, result){
 				if(err){
