@@ -26,12 +26,12 @@
 		{{/if}}
 
 		{{#if finishBooking}}
-			→ <a class="finishBookings" href="#">Finish Booking</a>
-			{{> finishBooking}}
+			→ <a class="cbasket" href="#">Basket</a> → <a class="finishBookings" href="#">Finish Booking</a>
+			{{> finishBookCustomer}}
 		{{/if}}
 
 		{{#if externalLogin}}
-			→ <a class="externalLogin" href="#">Login</a>
+			→ <a class="cbasket" href="#">Basket</a> → <a class="externalLogin" href="#">Login</a>
 			{{> externalLogin}}
 		{{/if}}
 

@@ -815,8 +815,7 @@ Template.createBook.dateSelected = function(){
 }
 
 Template.generalPassagerInfo.dateSelected = function(){
-	console.log('aqui');
-	return !Session.get('dateSelected') && !Session.get('creatingUser');
+	return !Session.get('dateSelected') && !Session.get('creatingUser') && !Session.get("finishBooking");
 }
 
 carsUpTo5 = function(){
@@ -1058,7 +1057,7 @@ Template.generalPassagerInfo.isEditing = function(){
 }
 
 Template.generalPassagerInfo.isCreatingExternalUser = function(){
-	return Session.get('creatingUser');
+	return Session.get('creatingUser') || Session.get('finishBooking');
 }
 
 

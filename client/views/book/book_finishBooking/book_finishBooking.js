@@ -16,50 +16,7 @@ Template.finishBooking.vendor = function(){
 	return Meteor.user().profile.name;
 }
 
-Template.finishBooking.customer = function(){
-	return isCustomer();
-}
-
-Template.finishBooking.getCBasket = function(){
-	return CBasket.find({cartId : getCartId()});
-}
-Template.finishBooking.cbasketBooks = function(){
-	return CBasket.find({cartId : getCartId()});
-}
-
-Template.finishBooking.totalCustomer = function(){
-	var carts = CBasket.find({cartId : getCartId()}).fetch();
-	var total = 0;
-	for (var i = 0; i < carts.length; i++) {
-		total += parseInt(carts[i].totalISK);
-	};
-	return total;
-}
-
-
 Template.finishBooking.events({
-	'click #finishBuyBookingCustomer' : function(){
-		//Gather Customer Data
-
-		//Gather User Data
-		customerId = Customers.insert(customer);
-
-
-		books = CBasket.find({cartId: getCartId()}).fetch();
-		//Save Books
-		for (var i = 0; i < books.length; i++) {
-			books[i].buyerId = customerId;
-			Meteor.call('insertBooks', books[i]);
-		};
-
-		Accounts.crateAccount(user);
-		cleanExternView();
-		Session.set('myBookings', true);
-		$("#loginArea").hide();
-		Template.externView.rendered();
-
-
-	},
 	'click .saveDiscount':function(event){
 		event.preventDefault();
 		var percentage = $('#discount').val();

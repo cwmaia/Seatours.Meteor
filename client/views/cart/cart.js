@@ -9,6 +9,10 @@ Template.cart.hasItems = function(){
 	return false;
 }
 
+Template.items.notFinish = function(){
+	return !Session.get('finishBooking');
+}
+
 Template.cart.getCBasket = function(){
 	return CBasket.find({cartId : getCartId()});
 }
@@ -80,7 +84,10 @@ Template.cart.events({
 			Template.externView.rendered();
 		}else if(isCustomerLogged()){
 			//Show Confirm Purchase
-
+			cleanExternView();
+			Session.set('finishBooking', true);
+			$("#loginArea").hide();
+			Template.externView.rendered();
 		}else{
 			var books = CartItems.find().fetch();
 			var createdBooks = [];
