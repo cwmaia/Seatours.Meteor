@@ -1062,6 +1062,10 @@ Template.generalPassagerInfo.isCreatingExternalUser = function(){
 	return Session.get('creatingUser') || Session.get('finishBooking');
 }
 
+Template.generalPassagerInfo.isCreateUserPage = function(){
+	return Session.get('creatingUser');
+}
+
 
 Template.productPrices.priced = function(price){
 	if(Session.get('isEditing')){

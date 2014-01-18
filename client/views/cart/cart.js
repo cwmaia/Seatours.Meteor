@@ -101,6 +101,7 @@ Template.cart.events({
 					refNumber = new Date().getTime().toString().substr(5);
 				}
 				books[i].refNumber = refNumber;
+				books[i].buyerId = books[i].customerId;
 				bookId = Books.insert(books[i]);
 				createdBooks[i] = Books.findOne({_id : bookId});
 				//UpdateNote

@@ -121,7 +121,9 @@
     	</fieldset>
     </form>
     {{#if isCreatingExternalUser}}
+    	{{#if isCreateUserPage}}
     	<button class="btn btn-small btn-success createUser" type='submit' form='pasagerInfo'>Create User</button>
+    	{{/if}}
     {{else}}
     {{#if isEditing}}
     	<button class="btn btn-small btn-info saveEdit" type='submit' form='pasagerInfo'>Save Edits</button>

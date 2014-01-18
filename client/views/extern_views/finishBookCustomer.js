@@ -49,11 +49,12 @@ Template.finishBookCustomer.events({
 		'click #finishBuyBookingCustomer' : function(){
 		if(isCustomerLogged()){
 			books = CBasket.find({cartId: getCartId()}).fetch();
+			customerId = Meteor.user().profile.customerId;
 			//Save Books
 			for (var i = 0; i < books.length; i++) {
 				delete books[i].cartId;
 				books[i].buyerId = customerId;
-				Meteor.call('insertBooks', books[i]);
+				Meteor.call('insertBook', books[i]);
 				CBasket.remove({_id: books[i]._id});
 			};
 			cleanExternView();
@@ -61,45 +62,66 @@ Template.finishBookCustomer.events({
 			$("#loginArea").hide();
 			Template.externView.rendered();
 		}else{
-			//Gather Customer Data
-			var customerData = {
-				'fullName' :  $('#fullName').val(),
-				'title' : $('#title').val(),
-		    	'birthDate': $('#birthDate').val(),
-		    	'email' : $('#email').val(),
-		    	'telephoneCode' : $('#telephoneCode').val(),
-		    	'telephone' : $('#telephone').val(),
-		    	'adress' : $('#adress').val(),
-		    	'city' : $('#city').val(),
-		    	'state' : $('#state').val(),
-		    	'postcode' : $('#postcode').val(),
-		    	'country' : $('#country').val()
-			}
-			//Gather User Data
-			customerId = Customers.insert(customerData);
-			group = Groups.findOne({"name": "Customers"});
-    		
-			user = {
-				username : a,
-				password : b,
-				email : c,
-				profile : {'groupID': group._id, 'name' : fullName},
-			}
+			event.preventDefault();
+			var form = document.getElementById('pasagerInfo');
+			console.log('hi');
+			if(form.checkValidity()){
+				//Gather Customer Data
+				var customerData = {
+					'fullName' :  $('#fullName').val(),
+					'title' : $('#title').val(),
+			    	'birthDate': $('#birthDate').val(),
+			    	'email' : $('#email').val(),
+			    	'telephoneCode' : $('#telephoneCode').val(),
+			    	'telephone' : $('#telephone').val(),
+			    	'adress' : $('#adress').val(),
+			    	'city' : $('#city').val(),
+			    	'state' : $('#state').val(),
+			    	'postcode' : $('#postcode').val(),
+			    	'country' : $('#country').val()
+				}
 
-			books = CBasket.find({cartId: getCartId()}).fetch();
-			//Save Books
-			for (var i = 0; i < books.length; i++) {
-				delete books[i].cartId;
-				books[i].buyerId = customerId;
-				Meteor.call('insertBooks', books[i]);
-				CBasket.remove({_id: books[i]._id});
-			};
+				var user = {
+					username : $('#email').val(),
+					email : $('#email').val(),
+					password : $('#password').val()
+				}
 
-			Accounts.crateAccount(user);
-			cleanExternView();
-			Session.set('myBookings', true);
-			$("#loginArea").hide();
-			Template.externView.rendered();
+				Meteor.call('createExternalAccount', user, customerData, function(err, result){
+					if(err){
+						throwError("Email already registered!");
+						return;
+					}else{
+						books = CBasket.find({cartId: getCartId()}).fetch();
+						//Save Books
+						for (var i = 0; i < books.length; i++) {
+							delete books[i].cartId;
+							books[i].buyerId = result;
+							Meteor.call('insertBook', books[i]);
+							CBasket.remove({_id: books[i]._id});
+						};
+
+						Meteor.loginWithPassword(user.username, user.password, function(err){
+					        if (err){
+					        	if(err.reason == 'Incorrect password')
+					        		throwError("Incorrect Password!") 
+					        	else
+					        		throwError("User not Found!") 
+					        	SpinnerStop();
+					        }else{
+					        	cleanExternView();
+								Session.set('myBookings', true);
+								$("#loginArea").hide();
+								Template.externView.rendered();
+					        }
+						});
+					}
+				})		
+			}else{
+				$('#pasagerInfo').submit(function(event){
+					event.preventDefault();
+				});
+			}
 		}
 		
 	}

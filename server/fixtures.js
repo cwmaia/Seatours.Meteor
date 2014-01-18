@@ -695,6 +695,12 @@ if(Meteor.users.find().count() == 0){
 	  'profile'	  : {'groupID' : customersId, 'name' : 'Jarvis', customerId: customerID},
 	  'password'  : '1234' //encrypted automatically 
 	});
+	Accounts.createUser({
+	  'username'  : 'teste@teste.com',
+	  'email'     : 'teste@teste.com',
+	  'profile'	  : {'groupID' : customersId, 'name' : 'Teste', customerId: customerID},
+	  'password'  : '1234' //encrypted automatically 
+	});
 
 }
 

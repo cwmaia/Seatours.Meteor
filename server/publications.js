@@ -33,7 +33,7 @@ Meteor.publish('books', function() {
      group = Groups.findOne({name : 'Customers'});
      if(user.profile.groupID == group._id){
         if(user.profile.customerId){
-          return Books.find({customerId : user.profile.customerId});
+          return Books.find({buyerId : user.profile.customerId});
         }else{
           return null;
         }
@@ -205,6 +205,8 @@ Meteor.methods({
     var customerId = Customers.insert(userData);
     
     Meteor.users.update(userId, {$set :{ "profile.customerId" : customerId}})
+
+    return customerId;
   },
 
   createGroup : function(group){
