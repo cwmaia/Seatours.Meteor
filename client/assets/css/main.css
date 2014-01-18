@@ -4,6 +4,10 @@ h1, h2, h3, h4, h5, h6{
 	font-family: 'Cabin', Arial, tahoma, sans-serif !important;
 }
 
+body:after{
+	
+}
+
 .ui-datepicker-current-day a{
 	background-color: orange !important;
 }

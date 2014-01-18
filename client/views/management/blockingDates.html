@@ -1,6 +1,6 @@
 <template name="blockingDates">
 
-	<form id="blockingDates" novalidate>
+	<form id="blockingDates" method="post" novalidate>
 		<div class="line-3">
 
 			<div>
@@ -11,16 +11,35 @@
 						<option value="{{_id}}">{{from}} - {{to}} - {{hour}}</option>
 					{{/each}}
 				</select>
+
+				<label class="required">Day:</label>
+				<input type='text' id="dayBlocked" disabled="disabled" name="dayBlocked" class="datePickerWYear size1-3">
+
+				<label class="required">Reason:</label>
+				<textarea form="blockingDates" id="reason" disabled="disabled" rows="4" name="reason" style="resize: none;" />
+
+
 			</div>
 
 			<div>
-				<div class="calendarWrap">
-					<label>Blocking dates:</label>
-					<div class="calendar" id="calendar_{{_id}}"></div>
+				<div id="listDates"> 
+					<fieldset>
+						<legend>Blocked dates<span>&nbsp;&nbsp;</span></legend>
+						<table class='table table-striped table-bordered table-hover' id='blockedDates'>
+							<tbody>
+								{{#each block}}
+									<tr>
+										<td>{{blockedDay}}</td>
+									</tr>
+								{{/each}}
+							</tbody>
+						</table>
+					</fieldset>
 				</div>
 			</div>
+
 		</div>
 
-		<input type="submit" name="save" class="btn btn-success btn-small" value="Save" />
+		<input id="blockButton" type="submit" name="save" class="btn btn-success btn-small" value="Save" disabled="disabled" />
 	</form>
 </template>
