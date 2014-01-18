@@ -84,7 +84,7 @@ Template.finishBookCustomer.events({
 				var user = {
 					username : $('#email').val(),
 					email : $('#email').val(),
-					password : $('#password').val()
+					password : $('#firstPasswordToEnter').val()
 				}
 
 				Meteor.call('createExternalAccount', user, customerData, function(err, result){
