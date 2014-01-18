@@ -583,7 +583,9 @@ Template.productItem.rendered = function(){
 			localStorage.setItem('date', date);
 			$('#currentSeason').text(currentSeason());
 		});
-	$('.calendar').datepicker("setStartDate", now);
+	if(isCustomer()){
+		$('.calendar').datepicker("setStartDate", now);
+	}
  };
 
 
