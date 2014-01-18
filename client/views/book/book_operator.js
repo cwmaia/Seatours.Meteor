@@ -561,7 +561,6 @@ var checkHaveToOpenDoor = function(size, trip){
 Template.bookOperator.rendered = function() {
 	var nowTemp = new Date();
 	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-	console.log(now);
 	localStorage.setItem('date', now);
 	//$('#currentSeason').text(currentSeason());
 };
@@ -817,7 +816,6 @@ Template.createBook.dateSelected = function(){
 }
 
 Template.generalPassagerInfo.dateSelected = function(){
-	console.log('aqui');
 	return !Session.get('dateSelected') && !Session.get('creatingUser');
 }
 
