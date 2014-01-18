@@ -55,6 +55,7 @@ Template.redirect.rendered = function(){
 			},
 			confirmPassword:{
 				required: true,
+				minlength: 6,
 				equalTo: "#firstPasswordToEnter"
 			},
 			name: {
