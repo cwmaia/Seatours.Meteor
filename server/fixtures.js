@@ -333,16 +333,6 @@ if(Products.find().count() == 0){
 	})
 
 	//Winter Prices
-	/////////////////////////////
-	Prices.insert({
-		"price" 	: "Guides and Drivers",
-		"unit"	: 0,
-		'active' : true,
-		'season' : 'summer',
-		'productId' : result
-	})
-
-	//Winter Prices
 	////////////////////////////////////////
 	Prices.insert({
 		"price" 	: "Adult",
@@ -461,16 +451,6 @@ if(Products.find().count() == 0){
 
 	Prices.insert({
 		"price" 	: "Guides & Drivers",
-		"unit"	: 0,
-		'active' : true,
-		'season' : 'summer',
-		'productId' : result
-	})
-
-	//Winter Prices
-	//////////////////////////
-	Prices.insert({
-		"price" 	: "Guides and Drivers",
 		"unit"	: 0,
 		'active' : true,
 		'season' : 'summer',

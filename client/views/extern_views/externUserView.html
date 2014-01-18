@@ -25,6 +25,16 @@
 			{{> myVoucher}}
 		{{/if}}
 
+		{{#if finishBooking}}
+			→ <a class="finishBookings" href="#">Finish Booking</a>
+			{{> finishBooking}}
+		{{/if}}
+
+		{{#if externalLogin}}
+			→ <a class="externalLogin" href="#">Login</a>
+			{{> externalLogin}}
+		{{/if}}
+
 		{{#if createUser}}
 			→ <a class="createUser" href="#">Create User</a>
 		<div class="page-header">

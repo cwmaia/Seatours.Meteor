@@ -10,7 +10,7 @@ Template.header.rendered = function(){
 }
 
 Template.header.totalItems = function(){
-	return CBasket.find().count();
+	return CBasket.find({cartId : getCartId()}).count();
 }
 
 Template.header.loginName = function(){
@@ -54,6 +54,13 @@ isCustomerLogged = function(){
   		
   	}
   	return false;
+}
+
+isCustomerNotLogged = function(){
+	if(Meteor.user()){
+		return false;
+  	}
+  	return true;
 }
 
 Template.header.events({

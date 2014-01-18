@@ -10,10 +10,7 @@ Template.cart.hasItems = function(){
 }
 
 Template.cart.getCBasket = function(){
-	if(CBasket.find().count() > 0){
-		return true;
-	}
-	return false;
+	return CBasket.find({cartId : getCartId()});
 }
 
 Template.items.hasVehicle = function(){
@@ -21,7 +18,7 @@ Template.items.hasVehicle = function(){
 }
 
 Template.cart.cbasketBooks = function(){
-	return CBasket.find();
+	return CBasket.find({cartId : getCartId()});
 }
 
 Template.cart.customer = function(){
@@ -47,7 +44,7 @@ Template.cart.total = function(){
 }
 
 Template.cart.totalCustomer = function(){
-	var carts = CBasket.find().fetch();
+	var carts = CBasket.find({cartId : getCartId()}).fetch();
 	var total = 0;
 	for (var i = 0; i < carts.length; i++) {
 		total += parseInt(carts[i].totalISK);
@@ -57,20 +54,33 @@ Template.cart.totalCustomer = function(){
 
 Template.items.customerName = function(customerId){
 	var customer = Customers.findOne({_id : customerId});
-	return customer.title + '. ' + customer.fullName; 
+	if(customer)
+		return customer.title + '. ' + customer.fullName;
+	return "";	 
+}
+
+Template.cart.disableCheckout = function(){
+	if(!isCustomer() && CartItems.find().count() > 0){
+		return false;
+	}else if(isCustomer() && CBasket.find().count() > 0){
+		return false;
+	}else{
+		return true;
+	}
 }
 
 Template.cart.events({
 	'click .checkout' : function(event){
 		event.preventDefault();
-		if(isCustomer()){
-			books = CBasket.find().fetch();
-			for (var i = 0; i < books.length; i++) {
-				books[i].temp = true;
-				Meteor.call('insertBook', books[i]);
-				throwSuccess(books.length+' Bookings Created!');
-				CBasket.remove({_id : books[i]._id});
-			};
+		if(isCustomerNotLogged()){
+			//Show Login Screen	
+			cleanExternView();
+			Session.set('externalLogin', true);
+			$("#loginArea").hide();
+			Template.externView.rendered();
+		}else if(isCustomerLogged()){
+			//Show Confirm Purchase
+
 		}else{
 			var books = CartItems.find().fetch();
 			var createdBooks = [];

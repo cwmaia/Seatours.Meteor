@@ -1163,7 +1163,13 @@ Template.generalPassagerInfo.events({
 			if(form.checkValidity()){
 				createBook();
 				throwSuccess("Book added on Cart");
-				Meteor.Router.to('/bookOperator');
+				if(isCustomer()){
+					cleanExternView();
+					$("#loginArea").hide();
+					Template.externView.rendered();
+				}else{
+					Meteor.Router.to('/bookOperator');
+				}
 			}else{
 				$('#pasagerInfo').submit(function(event){
 					event.preventDefault();
@@ -1201,7 +1207,14 @@ Template.generalPassagerInfo.events({
 			if(form.checkValidity()){
 				createBook();
 				throwSuccess("Book added on Cart");
-				Meteor.Router.to('/cart');
+				if(isCustomer()){
+					cleanExternView();
+					Session.set('cbasket', true);
+					$("#loginArea").hide();
+					Template.externView.rendered();
+				}else{
+					Meteor.Router.to('/cart');
+				}
 			}else{
 				$('#pasagerInfo').submit(function(event){
 					event.preventDefault();
@@ -1678,6 +1691,17 @@ var createBook = function(){
 	if(isCustomerLogged()){
 		book.customerId = Meteor.user().profile.customerId;
 	}else{
+		
+		if(isCustomerNotLogged()){
+			if(getCartId()){
+				book.cartId = getCartId();
+			}else{
+				var d = new Date();
+				var name = new Date().getTime().toString();
+				localStorage.setItem('cartId', name);
+				book.cartId = name;
+			}
+		}
 		if(SaveCustomer){
 			var resultId = Customers.insert(customer);
 			book.customerId = resultId;
@@ -1757,6 +1781,10 @@ var createBook = function(){
 		}
 			
 	};	
+}
+
+getCartId = function(){
+	return localStorage.getItem('cartId');
 }
 
 

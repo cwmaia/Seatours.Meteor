@@ -6,21 +6,7 @@ Meteor.publish("directory", function () {
 });
 
 Meteor.publish('cbasket', function(){
-  if(this.userId){
-     user = Meteor.users.findOne({_id : this.userId});
-     group = Groups.findOne({name : 'Customers'});
-     if(user.profile.groupID == group._id){
-        if(user.profile.customerId){
-          return CBasket.find({customerId : user.profile.customerId});
-        }else{
-          return null;
-        }
-     }else{
-        return null;
-     }
-  }else{
-    return null;
-  }
+    return CBasket.find();
 })
 
 Meteor.publish("inquiries", function () {
