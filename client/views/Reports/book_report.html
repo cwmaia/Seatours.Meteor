@@ -19,12 +19,7 @@
 				</a>
 			</li>
 
-			<li>
-				<a data-toggle="tab" href="#customerReport" sytle="z-index: 0;">
-					<i class="blue icon-file bigger-110"></i>
-					Customers
-				</a>
-			</li>
+		
 		</ul>
 
 		<div class="tab-content">
@@ -33,11 +28,7 @@
 			</div>
 
 			<div id="financialReport" class="tab-pane in">
-				
-			</div>
-
-			<div id="customerReport" class="tab-pane in">
-				
+				{{> financialReport}}
 			</div>
 		</div>
 	</div>
@@ -49,7 +40,7 @@
 		<div class='line-3'>
 			<div>
 				<label>Select Product: </label>
-				<select id='product'>
+				<select id='productB'>
 					<option value="">Select...</option>
 					{{#each products}}
 						<option value='{{_id}}'>{{name}}</option>
@@ -58,11 +49,11 @@
 			</div>
 			<div>
 				<label>From Date: <label>
-				<input type='text' id='from' class='calendar'>
+				<input type='text' id='fromB' class='calendar'>
 			</div>
 			<div>
 				<label>To Date: <label>
-				<input type='text' id='to' class='calendar'>
+				<input type='text' id='toB' class='calendar'>
 			</div>
 		</div>
 		<div class='line-3'>
@@ -85,12 +76,12 @@
 				</select>
 			</div>
 		</div>
-		<button class='btn btn-info btn-small filter'>Filter</button>
+		<button class='btn btn-info btn-small filterB'>Filter</button>
 	</fieldset>
 	<br/>
 	<fieldset>
 		<legend>Filter Result</legend>
-		<table class='table table-striped table-bordered table-hover' id='filterResult'>
+		<table class='table table-striped table-bordered table-hover' id='filterResultB'>
 			<thead>
 				<tr>
 					<th>Id</th>
@@ -131,7 +122,7 @@
 		<div class='line-3'>
 			<div>
 				<label>Select Product: </label>
-				<select id='product'>
+				<select id='productF'>
 					<option value="">Select...</option>
 					{{#each products}}
 						<option value='{{_id}}'>{{name}}</option>
@@ -140,19 +131,19 @@
 			</div>
 			<div>
 				<label>From Date: <label>
-				<input type='text' id='from' class='calendar'>
+				<input type='text' id='fromF' class='calendar'>
 			</div>
 			<div>
 				<label>To Date: <label>
-				<input type='text' id='to' class='calendar'>
+				<input type='text' id='toF' class='calendar'>
 			</div>
 		</div>
-		<button class='btn btn-info btn-small filter'>Filter</button>
+		<button class='btn btn-info btn-small filterF'>Filter</button>
 	</fieldset>
 	<br/>
 	<fieldset>
 		<legend>Filter Result</legend>
-		<table class='table table-striped table-bordered table-hover'>
+		<table class='table table-striped table-bordered table-hover' id='filterResultF'>
 			<thead>
 				<tr>
 					<th class="sorting_disabled">Departure</th>
@@ -166,7 +157,7 @@
 			<tbody>	
 			{{#each trips _id}}
 				<tr>
-					<td>{{from}} - {{to}} - {{hour}}</td>
+					<td>{{from}} - {{to}} - {{hour}} {{#if seasons}} ({{season}}) {{/if}}</td>
 					<td>{{total _id productId}} ISK</td>
 					<td>{{totalPaid _id productId}} ISK</td>
 					<td>{{totalNotPaid _id productId}} ISK</td>
