@@ -26,7 +26,7 @@
 				<td>{{customer.email}}</td>
 				<td>
 					<a class="btn btn-mini btn-info editMail" title="Edit" rel='{{customer.email}}'><i class="icon-pencil bigger-120"></i></a>
-					<a class="btn btn-mini btn-success sendMail" title="Send Voucher by Mail" rel='{{customer.email}}'><i class="icon-envelope bigger-120"></i></a>
+					<a class="btn btn-mini btn-success sendMail" title="Send Voucher by email" rel='{{customer.email}}'><i class="icon-envelope bigger-120"></i></a>
 				</td>
 			</tr>
 		</tbody>
@@ -43,7 +43,7 @@
 			{{#each aditionalEmails}}
 				<tr>	
 					<td>{{mail}}</td>
-					<td><a class="btn btn-mini btn-success sendMail" title="Send Voucher by Mail" rel='{{mail}}'><i class="icon-envelope bigger-120"></i></a></td>
+					<td><a class="btn btn-mini btn-success sendMail" title="Send Voucher by email" rel='{{mail}}'><i class="icon-envelope bigger-120"></i></a></td>
 				</tr>
 			{{/each}}
 		</tbody>

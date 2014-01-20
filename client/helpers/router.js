@@ -101,7 +101,7 @@ Meteor.Router.filters({
 			}
 		};
 
-		alert('You have no permission to access this page, please consult your administrator!');
+		alert('You do not have the required permissions to access this page, please contact your administrator.');
 		return;
 
 

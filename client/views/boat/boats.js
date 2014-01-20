@@ -30,9 +30,9 @@ Template.editBoat.events({
 		var form = event.currentTarget;
 
 		if($("#height-slot").val() == ""){
-			throwError("Please Inform the Height of Slot");
+			throwError("Please Inform the Height of the Slot");
 		}else if($("#width-slot").val() == ""){
-			throwError("Please Inform the Width of Slot");
+			throwError("Please Inform the Width of the Slot");
 		}else{
 			
 			var createdSlot = {
@@ -73,7 +73,7 @@ Template.editBoat.events({
 			else
 				Boats.update(_boat._id, {$set : {maxCapacity: _boat.maxCapacity, name: _boat.name}});
 
-			throwSuccess("Boat Saved");
+			throwSuccess("The Boat has been saved");
 			Meteor.Router.to('/boats')
 		}
 	}

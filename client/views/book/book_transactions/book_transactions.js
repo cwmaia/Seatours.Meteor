@@ -35,7 +35,7 @@ Template.bookTransactionsResume.events({
 			'date' : new Date(),
 			'status' : 'Given',
 			'amount' : amount,
-			'detail' : percentage+"% of discount",
+			'detail' : percentage+"% as discount",
 			'vendor' : vendor,
 			'type' : 'Discount'
 		}
@@ -44,7 +44,7 @@ Template.bookTransactionsResume.events({
 		var note = {
 			created : new Date(),
 			type : 'Discount Note',
-			note : vendor + " gave the customer "+ percentage + "% of discount",
+			note : vendor + " gave the customer "+ percentage + "% as discount",
 			bookId : Session.get('currentBooking')
 		}
 
@@ -79,7 +79,7 @@ Template.bookTransactionsResume.events({
 		var type = $('#typeFee').val();
 
 		if(!amount){
-			throwError('Please Add the Amount of Transaction');
+			throwError('Please Add the Amount for the Transaction');
 			return;
 		}
 
@@ -110,7 +110,7 @@ Template.bookTransactionsResume.events({
 		var detail = $('#detail').val();
 
 		if(!amount){
-			throwError('Please Add the Amount of Transaction');
+			throwError('Please Add the Amount for the Transaction');
 			return;
 		}
 
