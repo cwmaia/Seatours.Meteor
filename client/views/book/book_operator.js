@@ -1307,7 +1307,23 @@ Template.generalPassagerInfo.events({
 				if(err){
 					throwError("Email already registered!");
 				}else{
-					throwSuccess("Successfuly registered!");
+					SpinnerInit();
+					Meteor.loginWithPassword(user.username, user.password, function(err){
+					        if (err){
+					        	if(err.reason == 'Incorrect password')
+					        		throwError("Incorrect Password!") 
+					        	else
+					        		throwError("User not Found!") 
+					        	SpinnerStop();
+					        }else{
+					        	throwSuccess("Successfuly registered!");
+					        	cleanExternView();
+								Session.set('myBookings', true);
+								$("#loginArea").hide();
+								Template.externView.rendered();
+					        }
+						});
+					
 				}
 			})
 		}else{
@@ -1747,20 +1763,25 @@ var createBook = function(){
 		book.vehicle.extraSlot = extraSlots[0];
 	}
 
-	if(isCustomerLogged()){
-		book.customerId = Meteor.user().profile.customerId;
-	}else{
-		
-		if(isCustomerNotLogged()){
-			if(getCartId()){
+	if(isCustomer()){
+		if(getCartId()){
 				book.cartId = getCartId();
-			}else{
-				var d = new Date();
-				var name = new Date().getTime().toString();
-				localStorage.setItem('cartId', name);
-				book.cartId = name;
-			}
+		}else{
+			var d = new Date();
+			var name = new Date().getTime().toString();
+			localStorage.setItem('cartId', name);
+			book.cartId = name;
 		}
+	}else{
+		if(getCartIdOperator()){
+				book.cartId = getCartId();
+		}else{
+			var d = new Date();
+			var name = new Date().getTime().toString();
+			localStorage.setItem('cartIdOperator', name);
+			book.cartId = name;
+		}
+
 		if(SaveCustomer){
 			var resultId = Customers.insert(customer);
 			book.customerId = resultId;
@@ -1844,6 +1865,10 @@ var createBook = function(){
 
 getCartId = function(){
 	return localStorage.getItem('cartId');
+}
+
+getCartIdOperator = function(){
+	return localStorage.getItem('cartIdOperator');
 }
 
 

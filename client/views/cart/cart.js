@@ -1,9 +1,9 @@
 Template.cart.cartBooks = function(){
-	return CartItems.find();
+	return CartItems.find({cartId : getCartIdOperator()});
 }
 
 Template.cart.hasItems = function(){
-	if(CartItems.find().count() > 0){
+	if(CartItems.find({cartId : getCartIdOperator()}).count() > 0){
 		return true;
 	}
 	return false;
