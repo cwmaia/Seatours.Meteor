@@ -324,6 +324,10 @@ select{
 	content: ' ISK';
 }
 
+.vehiclePrice:before{
+	content: 'Vehicle Price: ';
+}
+
 #totalISK{
 	color: #87b87f;
 	font-weight: bold;

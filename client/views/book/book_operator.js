@@ -1168,8 +1168,24 @@ Template.createBook.events({
 	'click #boatStatus' : function(){
 		$("#statusDialog").show();
 	},
+
 	'click .cancel, click .close' : function(){
 		$("#statusDialog").hide();
+	},
+
+	'click .searchApisIs' : function(){
+		plate = $("#vehiclePlate").val();
+		SpinnerInit();
+		$.ajax({
+		  'url': 'http://apis.is/car',
+		  'type': 'GET',
+		  'dataType': 'json',
+		  'data': {'number': plate},
+		  'success': function(response) {
+		  	$("#vehicle").val(response.results[0].type + " " + response.results[0].subType)
+		    SpinnerStop();
+		  }
+		});
 	}
 })
 
@@ -1470,7 +1486,52 @@ Template.bookingVehicles.events({
 			VehicleSelected = false;
 			calcTotal();
 		}
-	}
+	},
+
+	'click #searchVehiclesDatabase' : function(){
+
+
+		var callback = function(data){
+			$('#vehicleSearch').typeahead('destroy');
+				var datums = [];
+				for (var i = 0; i < data.length; i++) {
+					var datum = {
+						'value' : data[i].brandname + ' ' +data[i].model+ ' ' + data[i].modelTrim + ' ' + data[i].modelYear,
+						'brandname' : data[i].brandname,
+						'model' : data[i].model,
+						'modelBody' : data[i].modelBody,
+						'weight' : data[i].weight,
+						'length' : data[i].length,
+						'width' : data[i].width,
+						'height' : data[i].height,
+						'id' : data[i]._id
+					}
+
+					datums.push(datum);
+				};
+
+				$('#vehicleSearch').typeahead({
+					name : 'model',
+					local : datums,
+					minLength: 3
+				}).bind('typeahead:selected', function (obj, datum) {
+					$('#vehicle').val(datum.value);
+				    $('#vehicleModelBody').val(datum.modelBody ? datum.modelBody : 'Not Found');
+					$('#vehicleWeight').val(datum.weight ? datum.weight+'Kg' : 'Not Found')
+					$('#vehicleLength').val(datum.length ? datum.length/1000+"m" : 'Not Found')
+					$('#vehicleWidth').val(datum.width ? datum.width/1000+"m" : 'Not Found')
+					$('#vehicleHeight').val(datum.height ? datum.height/1000+"m" : 'Not Found')
+				});
+		}
+
+		if(!Session.get("allCars")){
+			Meteor.call('getAllCars', function(err, data) {
+				console.log('lol');
+	    		callback(data);
+	    		Session.set("allCars", true);
+			});	
+		}
+	}	
 })
 
 Template.categoryVehicleBook.helpers({
@@ -1663,46 +1724,9 @@ loadTypeahead = function(){
 	}
 
 
-	$('#vehicleSearch').typeahead('destroy');
+	
 
-	var callback = function(data){
-		var datums = [];
-		for (var i = 0; i < data.length; i++) {
-			var datum = {
-				'value' : data[i].brandname + ' ' +data[i].model+ ' ' + data[i].modelTrim + ' ' + data[i].modelYear,
-				'brandname' : data[i].brandname,
-				'model' : data[i].model,
-				'modelBody' : data[i].modelBody,
-				'weight' : data[i].weight,
-				'length' : data[i].length,
-				'width' : data[i].width,
-				'height' : data[i].height,
-				'id' : data[i]._id
-			}
 
-			datums.push(datum);
-		};
-
-		$('#vehicleSearch').typeahead({
-			name : 'model',
-			local : datums,
-			minLength: 3
-		}).bind('typeahead:selected', function (obj, datum) {
-			$('#vehicle').val(datum.value);
-		    $('#vehicleModelBody').val(datum.modelBody ? datum.modelBody : 'Not Found');
-			$('#vehicleWeight').val(datum.weight ? datum.weight+'Kg' : 'Not Found')
-			$('#vehicleLength').val(datum.length ? datum.length/1000+"m" : 'Not Found')
-			$('#vehicleWidth').val(datum.width ? datum.width/1000+"m" : 'Not Found')
-			$('#vehicleHeight').val(datum.height ? datum.height/1000+"m" : 'Not Found')
-		});
-
-		$('#loading').hide();
-		$('#searchVehicleLegend').append("<i class='icon-search'></i>");
-	}
-
-	Meteor.call('getAllCars', function(err, data) {
-        callback(data);
-    });
 }
 
 var createBook = function(){

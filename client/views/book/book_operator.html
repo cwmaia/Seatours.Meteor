@@ -245,11 +245,13 @@
     		<a id="boatStatus">See Status</a>
     	{{/if}}
 
+    	
+
     	<div id="statusDialog">
 		  <div class="mask"> </div>
 		  <div class="modal">
 		    <div class="modal-header">
-		      <button type="button" class="close cancel">&times;</button>
+		      <button type="button" class="cancel close">&times;</button>
 		      <h3>Current Status</h3>
 		    </div>
 
@@ -300,6 +302,8 @@
 		  </div>
 		</div>
 
+		
+
     	</div>
 	</div>
     {{> generalPassagerInfo}}
@@ -320,25 +324,36 @@
 			<legend>Vehicle<span>&nbsp;&nbsp;</span><i class='icon-truck'/></legend>
 			<div>
 				<div>
-					<label>Vehicle</label>
-					<input type="text" class='size1-1' name="vehicle" id="vehicle">
+					<label>Vehicle Plate</label>
+					<input type="text" class='size1-3' name="vehiclePlate" id="vehiclePlate">
+					<button class="btn btn-small btn-info searchApisIs" style="
+					    margin-top: -7px;
+					    height: 32px;
+					"><i class="icon-search"></i></button>
 				</div>
 
 				<div class='line'>
 				</div>
 
 				<div>
-					<label>Vehicle Plate</label>
-					<input type="text" class='size1-3' name="vehiclePlate" id="vehiclePlate">
+					<label>Vehicle</label>
+					<input type="text" class='size1-1' name="vehicle" id="vehicle">
 				</div>
+
 			</div>
 			{{> categoryVehicleBook}}
-			<em type="text" id="totalVehicle" class='calcTotal price'>0</em>
+			<div class='line'>
+				<em type="text" id="totalVehicle" class='calcTotal price vehiclePrice'>0</em>
+			</div>
 		</fieldset>
-
-		<fieldset>
-			<legend>Vehicle Search<span>&nbsp;&nbsp;</span><span id='searchVehicleLegend'><span id='loading'><i class="icon-spinner icon-spin blue bigger-125" id='loading'></i></span></legend>
-			
+		{{#if TODO}}
+	    <fieldset>
+			<legend>Search<span>&nbsp;&nbsp;</span><i class='icon-search'/></legend>
+			<label>
+		    	Search on Vehicle Database
+	    	</label>
+			<a id="searchVehiclesDatabase">Search <i class='icon-search'></i></a>
+			<fieldset>			
 			<div>
 				<div>
 					<label>Brandname - Model</label>
@@ -382,6 +397,9 @@
 				</div>
 			</div>
 		</fieldset>
+		</fieldset>
+		{{/if}}
+		
 	</div>
 </template>
 <template name="categoryVehicleBook">
