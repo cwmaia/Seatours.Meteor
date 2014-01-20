@@ -28,7 +28,7 @@ Template.bookCustomerEmailResume.events({
 
 			Mails.insert(mail);
 
-			throwSuccess('Aditional mail added!');
+			throwSuccess('Additional email added!');
 		}
 
 	},
@@ -42,9 +42,9 @@ Template.bookCustomerEmailResume.events({
 			a.rel,
 			'noreply@seatours.com',
 			'Your Voucher at Seatours!',
-			'<html><head></head><body>Thanks for Booking with us, here is your <b>voucher: </b>'+html+'<hr/>Regards! Seatours Team!<body></html>');
+			'<html><head></head><body>Thanks for Booking with Seatours, here is your <b>voucher: </b>'+html+'<hr/>Safe Travels! Seatours Team!<body></html>');
 
-		throwSuccess('Mail Sended');
+		throwSuccess('Mail Sent');
 	},
 	'click .editMail' : function(){
 		$('#editMailModal').show();
@@ -56,10 +56,10 @@ Template.bookCustomerEmailResume.events({
 			book = Books.findOne({_id: Session.get('bookId')});
 			customer = Customers.findOne({_id: book.customerId});
 			Customers.update(customer._id, {$set : {email: newMail}});
-			throwSuccess('Main Email Changed!');
+			throwSuccess('Your main email has changed!');
 			$('#editMailModal').hide();
 		}else{
-			throwError('Please inform a email');
+			throwError('Please inform an email address.');
 		}
 	},
 	'click .cancel, click .close' : function(){

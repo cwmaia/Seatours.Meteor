@@ -111,7 +111,7 @@ Template.finishBooking.events({
 		var type = $('#typeFee').val();
 
 		if(!amount){
-			throwError('Please Add the Amount of Transaction');
+			throwError('Please Add the Amount for the Transaction');
 			return;
 		}
 
@@ -145,7 +145,7 @@ Template.finishBooking.events({
 			$("#"+bookId+"_paymentStatus").text(pending + "ISK Pending");
 		}else{
 			var refund = totalTransactions - totalISK;
-			$("#"+bookId+"_paymentStatus").text(refund + "ISK to be refund");
+			$("#"+bookId+"_paymentStatus").text(refund + "ISK to be refunded");
 		}
 
 		$("#extraFeeDialog").hide();
@@ -167,7 +167,7 @@ Template.finishBooking.events({
 		var detail = $('#detail').val();
 
 		if(!amount){
-			throwError('Please Add the Amount of Transaction');
+			throwError('Please Add the Amount for the Transaction');
 			return;
 		}
 
@@ -211,7 +211,7 @@ Template.finishBooking.events({
 			$("#"+bookId+"_paymentStatus").text(pending + "ISK Pending");
 		}else{
 			var refund = totalTransactions - totalISK;
-			$("#"+bookId+"_paymentStatus").text(refund + "ISK to be refund");
+			$("#"+bookId+"_paymentStatus").text(refund + "ISK to be refunded");
 		}
 	}
 

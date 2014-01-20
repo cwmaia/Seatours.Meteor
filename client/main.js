@@ -87,8 +87,8 @@ Template.redirect.rendered = function(){
 
 		messages: {
 			email: {
-				required: "Please provide a valid email.",
-				email: "Please provide a valid email."
+				required: "Please provide a valid email address.",
+				email: "Please provide a valid email address."
 			},
 			password: {
 				required: "Please specify a password.",
@@ -102,8 +102,8 @@ Template.redirect.rendered = function(){
 				equalTo: "Passwords must match"
 			},
 			subscription: "Please choose at least one option",
-			gender: "Please choose gender",
-			agree: "Please accept our policy"
+			gender: "Please choose a gender",
+			agree: "Please read and accept our policy"
 		},
 
 		invalidHandler: function (event, validator) { //display error alert on form submit   
