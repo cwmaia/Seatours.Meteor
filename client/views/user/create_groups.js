@@ -102,7 +102,7 @@ Template.createGroups.events({
 			$('#permissionModal').hide();
 		}catch(err){
 			console.log(err);
-			throwError("An Error ocurred, please try refresh your browser and try again");
+			throwError("An Error ocurred, please try refreshing your browser and try again");
 			$('#permissionModal').hide();
 		}
 		
