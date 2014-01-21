@@ -13,12 +13,20 @@ Template.items.notFinish = function(){
 	return !Session.get('finishBooking');
 }
 
+Template.items.customer = function(){
+	return isCustomer();
+}
+
 Template.cart.getCBasket = function(){
 	return CBasket.find({cartId : getCartId()});
 }
 
 Template.items.hasVehicle = function(){
 	return this.vehicle.category;
+}
+
+Template.items.discount = function(){
+	return Settings.findOne({_id: "onlineDiscount"}).onlineDiscount;
 }
 
 Template.cart.cbasketBooks = function(){

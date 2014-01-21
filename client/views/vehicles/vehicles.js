@@ -2,6 +2,10 @@ Template.categoryVehicle.categories = function(){
 	return VehiclesCategory.find();
 };
 
+Template.vehiclesCategoryEdit.categories = function(){
+	return VehiclesCategory.find();
+};
+
 Template.categoryVehicle.sizes = function() {
 	return Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}).size : [];
 }
@@ -14,7 +18,7 @@ Template.categoryVehicle.events({
 })
 
 
-Template.vehicles.events({
+Template.preRegisterVehicles.events({
 	'submit form' : function(event) {
 		event.preventDefault();
 		

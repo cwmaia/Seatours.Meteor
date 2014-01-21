@@ -1788,6 +1788,10 @@ var createBook = function(){
 	}
 
 	if(isCustomer()){
+
+		var discount = Settings.findOne({_id: 'onlineDiscount'}).onlineDiscount;
+		book.totalISK = book.totalISK - ((book.totalISK * discount) / 100 );
+
 		if(getCartId()){
 				book.cartId = getCartId();
 		}else{
