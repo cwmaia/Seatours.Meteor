@@ -1182,9 +1182,18 @@ Template.createBook.events({
 		  'dataType': 'json',
 		  'data': {'number': plate},
 		  'success': function(response) {
-		  	$("#vehicle").val(response.results[0].type + " " + response.results[0].subType)
+		  	$("#vehicle").val("");
+		  	$("#vehiclecolor").val("");
+		  	if(response.results[0] != undefined){
+			  	$("#vehicle").val(response.results[0].type + " " + response.results[0].subType);
+				$("#vehiclecolor").val(response.results[0].color);
+			}else{
+			throwError("Please provide a valid Liscense Plate");
+			return;
+			}
 		    SpinnerStop();
-		  }
+		  },
+
 		});
 	}
 })
