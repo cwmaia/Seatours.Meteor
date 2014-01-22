@@ -3,7 +3,7 @@ Template.myBookings.rendered = function(){
 }
 
 Template.myBookings.bookings = function(){
-	return Books.find();
+	return Orders.find();
 }
 
 Template.myBookings.name = function(){
@@ -11,12 +11,12 @@ Template.myBookings.name = function(){
 }
 
 Template.myBookings.events({
-	'click .myVoucher' : function(event){
+	'click .payOrder' : function(event){
 		var a = event.currentTarget;
 		event.preventDefault();
 		cleanExternView();
-		Session.set("bookId", a.rel);
-		Session.set("myVoucher", true);
+		Session.set("orderId", a.rel);
+		Session.set("paymentStep", true);
 		Template.externView.rendered();
 	}
 })

@@ -10,7 +10,7 @@ Template.cart.hasItems = function(){
 }
 
 Template.items.notFinish = function(){
-	return !Session.get('finishBooking');
+	return !Session.get('paymentStep');
 }
 
 Template.items.customer = function(){

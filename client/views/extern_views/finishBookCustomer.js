@@ -1,28 +1,13 @@
-Template.finishBookCustomer.getCBasket = function(){
-	return CBasket.find({cartId : getCartId()});
-}
+
 
 Template.finishBookCustomer.rendered = function(){
 	if(isCustomerNotLogged()){
 		$('#fullName').val(Session.get('fullCustomerNameCreation'));
 		$("#email").val(Session.get('emailCustomerCreation'));
-		$('#fullNameBorgun').val(Session.get('fullCustomerNameCreation'));
-		$("#emailBorgun").val(Session.get('emailCustomerCreation'));
 	}
 }
 
-Template.finishBookCustomer.cbasketBooks = function(){
-	return CBasket.find({cartId : getCartId()});
-}
 
-Template.finishBookCustomer.totalCustomer = function(){
-	var carts = CBasket.find({cartId : getCartId()}).fetch();
-	var total = 0;
-	for (var i = 0; i < carts.length; i++) {
-		total += parseInt(carts[i].totalISK);
-	};
-	return total;
-}
 
 Template.finishBookCustomer.customerLogged = function(){
 	return isCustomerLogged();
@@ -51,26 +36,27 @@ Template.finishBookCustomer.events({
 		'click #finishBuyBookingCustomer' : function(){
 		if(isCustomerLogged()){
 			books = CBasket.find({cartId: getCartId()}).fetch();
-			customerId = Meteor.user().profile.customerId;
 
-			orderID = Orders.insert({customerId: customerId});
-			//REMOVE ONLY TEST!!!
-			localStorage.setItem("orderIDTeste", orderID);
-			//$("#urlSuccess").val("http://localhost:3000/ReturnPageSuccess?orderId\="+orderID);
-			$("#orderIdInput").val(orderID);
+			customerId = Meteor.user().profile.customerId;
+			refNumber = new Date().getTime().toString().substr(1);
+			while(Orders.findOne({refNumber : refNumber})){
+				refNumber = new Date().getTime().toString().substr(1);
+			}
+			Orders.insert({customerId: customerId, paid: false, refNumber: refNumber});
+			
 			//Save Books
 			for (var i = 0; i < books.length; i++) {
 				delete books[i].cartId;
 				books[i].buyerId = customerId;
-				books[i].orderId = orderID;
+				books[i].orderId = refNumber;
+				books[i].bookStatus = "Waiting Payment";
 				Meteor.call('insertBook', books[i]);
 				CBasket.remove({_id: books[i]._id});
 			};
 
-			$("#sendToBorgun").submit();
-			
 			cleanExternView();
-			Session.set('myBookings', true);
+			Session.set('paymentStep', true);
+			Session.set('orderId', refNumber);
 			$("#loginArea").hide();
 			Template.externView.rendered();
 		}else{
@@ -103,25 +89,20 @@ Template.finishBookCustomer.events({
 						return;
 					}else{
 						books = CBasket.find({cartId: getCartId()}).fetch();
-
-						orderID = Orders.insert({customerId: result});
-						//REMOVE ONLY TEST!!!
-						localStorage.setItem("orderIDTeste", orderID);
-						//$("#urlSuccess").val("http://localhost:3000/ReturnPageSuccess?orderId="+result);
-						$("#orderIdInput").val(orderID);
-						$('#fullNameBorgun').val($('#fullName').val());
-						$("#emailBorgun").val($("#email").val());
+						refNumber = new Date().getTime().toString().substr(1);
+						while(Orders.findOne({refNumber : refNumber})){
+							refNumber = new Date().getTime().toString().substr(1);
+						}
+						Orders.insert({customerId: customerId, paid: false, refNumber: refNumber});
 						//Save Books
 						for (var i = 0; i < books.length; i++) {
 							delete books[i].cartId;
 							books[i].buyerId = result;
-							books[i].orderId = orderID;
+							books[i].orderId = refNumber;
 							books[i].bookStatus = "Waiting Payment";
 							Meteor.call('insertBook', books[i]);
 							CBasket.remove({_id: books[i]._id});
 						};
-
-						$("#sendToBorgun").submit();
 
 						Meteor.loginWithPassword(user.username, user.password, function(err){
 					        if (err){
@@ -132,7 +113,8 @@ Template.finishBookCustomer.events({
 					        	SpinnerStop();
 					        }else{
 					        	cleanExternView();
-								Session.set('myBookings', true);
+								SSession.set('paymentStep', true);
+								Session.set('orderId', refNumber);
 								$("#loginArea").hide();
 								Template.externView.rendered();
 					        }

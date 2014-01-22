@@ -947,10 +947,13 @@ var formBook = function(){
 	Session.set("firstTime", false);
 	Session.set("categoryId", null);
 	var bookingsCreated = Books.find({dateOfBooking: new Date(localStorage.getItem('date')), 'product._id': Session.get('productId'), bookStatus: 'Created'});
-	if(bookingsCreated.length >= MaxCapacity)
+	if(bookingsCreated.length >= MaxCapacity){
 		throwError('Maximum capacity of passengers reached!');	
-	else
+	}
+	else if(!isCustomer()){
 		Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');
+	}
+		
 }
 
 //Global Vars
