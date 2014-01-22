@@ -1053,15 +1053,19 @@ Template.createBook.booked = function(from,to){
 	}return false;
 }
 
-Template.generalPassagerInfo.isEditing = function(){
+Template.generalButtons.isEditing = function(){
 	return Session.get('isEditing');
+}
+
+Template.generalButtons.isCreatingExternalUser = function(){
+	return Session.get('creatingUser') || Session.get('finishBooking');
 }
 
 Template.generalPassagerInfo.isCreatingExternalUser = function(){
 	return Session.get('creatingUser') || Session.get('finishBooking');
 }
 
-Template.generalPassagerInfo.isCreateUserPage = function(){
+Template.generalButtons.isCreateUserPage = function(){
 	return Session.get('creatingUser');
 }
 
@@ -1147,6 +1151,7 @@ Template.createBook.rendered = function(){
 
     	$('#customerId').val(customer._id);
     	$('#title').val(customer.title)
+    	$('#socialSecurityNumber').val(customer.socialSecurityNumber);
     	$('#fullName').val(customer.fullName);
     	$('#birthDate').val(customer.birthDate);
     	$('#email').val(customer.email);
@@ -1204,26 +1209,7 @@ Template.productPrices.events({
 	}
 })
 
-Template.generalPassagerInfo.events({
-	'keyup #fullName' : function(event){
-		if(event.keyCode != 13 && CustomerSelected)
-		{
-			$('#customerId').val('');
-			$('#title').val('')
-	    	$('#birthDate').val('');
-	    	$('#email').val('');
-	    	$('#telephoneCode').val('');
-	    	$('#telephone').val('');
-	    	$('#adress').val('');
-	    	$('#city').val('');
-	    	$('#state').val('');
-	    	$('#postcode').val('');
-	    	$('#country').val('');
-	    	CustomerSelected = false;
-			SaveCustomer = true;
-		}
-	},
-	
+Template.generalButtons.events({
 	//Events for identify 
 	'click .addBook' : function(event){
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
@@ -1301,6 +1287,7 @@ Template.generalPassagerInfo.events({
 		if(form.checkValidity()){
 			event.preventDefault();
 			var customerData = {
+				'socialSecurityNumber' :  $('#socialSecurityNumber').val(),
 				'fullName' :  $('#fullName').val(),
 				'title' : $('#title').val(),
 		    	'birthDate': $('#birthDate').val(),
@@ -1347,6 +1334,28 @@ Template.generalPassagerInfo.events({
 				event.preventDefault();
 			});
 		}
+	}
+})
+
+Template.generalPassagerInfo.events({
+	'keyup #socialSecurityNumber' : function(event){
+		if(event.keyCode != 13 && CustomerSelected)
+		{
+			$('#fullName').val('');
+			$('#customerId').val('');
+			$('#title').val('')
+	    	$('#birthDate').val('');
+	    	$('#email').val('');
+	    	$('#telephoneCode').val('');
+	    	$('#telephone').val('');
+	    	$('#adress').val('');
+	    	$('#city').val('');
+	    	$('#state').val('');
+	    	$('#postcode').val('');
+	    	$('#country').val('');
+	    	CustomerSelected = false;
+			SaveCustomer = true;
+		}
 	},
 
 	'change #myOwnData' : function(event){
@@ -1358,6 +1367,7 @@ Template.generalPassagerInfo.events({
 			var currentCustomer = Customers.findOne({'_id' : Meteor.user().profile.customerId});
 			$('#title').val(currentCustomer.title)
 	    	$('#birthDate').val(currentCustomer.birthDate);
+	    	$('#socialSecurityNumber').val(currentCustomer.socialSecurityNumber);
 	    	$('#email').val(currentCustomer.email);
 	    	$('#telephoneCode').val(currentCustomer.telephoneCode);
 	    	$('#telephone').val(currentCustomer.telephone);
@@ -1369,6 +1379,7 @@ Template.generalPassagerInfo.events({
 		}else{
 			$("#usingData").val('false');
 			$('#fullName').val('');
+			$('#socialSecurityNumber').val('');
 			$('#customerId').val('');
 			$('#title').val('')
 	    	$('#birthDate').val('');
@@ -1686,13 +1697,13 @@ loadTypeAheadPostCodes = function(){
 
 loadTypeahead = function(){
 	if(!isCustomer()){
-			$('#fullName').typeahead('destroy');
+			$('#socialSecurityNumber').typeahead('destroy');
 	var items = [],
 	finalItems,
-	tags = Customers.find({}, {fields: {fullName: 1}});
+	tags = Customers.find({}, {fields: {socialSecurityNumber: 1}});
 	tags.forEach(function(tag){
     	var datum = {
-    		'value' : tag.fullName,
+    		'value' : tag.socialSecurityNumber,
     		'id' : tag._id
     	}
     	items.push(datum);
@@ -1700,8 +1711,8 @@ loadTypeahead = function(){
 
 	finalItems = _.uniq(items);
 
-	$('#fullName').typeahead({
-		name : 'fullName',
+	$('#socialSecurityNumber').typeahead({
+		name : 'socialSecurityNumber',
 		local : finalItems
 	}).bind('typeahead:selected', function (obj, datum) {
     	var customer = Customers.findOne({_id: datum.id});
@@ -1709,6 +1720,7 @@ loadTypeahead = function(){
     	$('#customerId').val(customer._id);
     	$('#title').val(customer.title)
     	$('#fullName').val(customer.fullName);
+    	$('#socialSecurityNumber').val(customer.socialSecurityNumber);
     	$('#birthDate').val(customer.birthDate);
     	$('#email').val(customer.email);
     	$('#telephoneCode').val(customer.telephoneCode);
@@ -1718,6 +1730,12 @@ loadTypeahead = function(){
     	$('#state').val(customer.state);
     	$('#postcode').val(customer.postcode);
     	$('#country').val(customer.country);
+    	$("#vehicle").val(customer.lastUsedCar.vehicleName);
+		$("#categories").val(customer.lastUsedCar.categories);
+		$("#size").val(customer.lastUsedCar.size);
+		$("#totalVehicle").text(customer.lastUsedCar.totalCost);
+		$('#vehiclePlate').val(customer.lastUsedCar.vehiclePlate);
+
     	SaveCustomer = false;
     	CustomerSelected = true;
 	});
@@ -1730,8 +1748,17 @@ loadTypeahead = function(){
 }
 
 var createBook = function(){
+	var	vehicle = {
+		"vehicleName" : $("#vehicle").val(),
+		"category" : $("#categories").val(),
+		"size" : $("#size").val(),
+		"totalCost" : $("#totalVehicle").text(),
+		'vehiclePlate' : $('#vehiclePlate').val()
+	}
+
 	var customer = {
 		"title" : $('#title').val(),
+		"socialSecurityNumber" :  $('#socialSecurityNumber').val(),
 		"fullName" :  $('#fullName').val(),
 		"birthDate" : $('#birthDate').val(),
 		'email' : $('#email').val(),
@@ -1741,8 +1768,9 @@ var createBook = function(){
 		"city" : $("#city").val(),
 		"state" : $('#state').val(),
 		"postcode" : $("#postcode").val(),
-		"country" : $("#country").val()
-		}
+		"country" : $("#country").val(),
+		"lastUsedCar" : vehicle
+	}
 
 	var date = new Date();
 	var selectedDay = new Date(localStorage.getItem('date'));
@@ -1766,15 +1794,6 @@ var createBook = function(){
 		'bookStatus' : 'Created',
 		'product' : (isCustomer()) ? Products.findOne(Session.get('productId')) : Product,
 	}
-
-	vehicle = {
-		"vehicleName" : $("#vehicle").val(),
-		"category" : $("#categories").val(),
-		"size" : $("#size").val(),
-		"totalCost" : $("#totalVehicle").text(),
-		'vehiclePlate' : $('#vehiclePlate').val()
-	}
-
 	book.vehicle = vehicle;
 
 	
@@ -1811,6 +1830,15 @@ var createBook = function(){
 			book.customerId = resultId;
 		}else{
 			book.customerId = $('#customerId').val();
+			if(Customers.findOne({'_id': book.customerId}).lastUsedCar.vehiclePlate != $('#vehiclePlate').val()){
+				Customers.update(book.customerId, {$set: {
+					"lastUsedCar.category" : book.vehicle.category,
+					"lastUsedCar.size" : book.vehicle.size,
+					"lastUsedCar.totalCost" : book.vehicle.totalCost,
+					"lastUsedCar.vehicleName" : book.vehicle.vehicleName,
+					"lastUsedCar.vehiclePlate" : book.vehicle.vehiclePlate
+				}});
+			}
 		}
 	}
 

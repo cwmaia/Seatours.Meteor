@@ -225,8 +225,14 @@
 	</div>
 
 	<div class="line">
+		{{> generalPassagerInfo}}
+	</div>
+
+	<div class="line">
 		{{> bookingVehicles}}
 	</div>
+
+
 	
 	<div class='line'>
 		<div>
@@ -306,8 +312,24 @@
 
     	</div>
 	</div>
-    {{> generalPassagerInfo}}
+    {{> generalButtons}}
 </template>
+
+<template name="generalButtons">
+    {{#if isCreatingExternalUser}}
+    	{{#if isCreateUserPage}}
+    	<button class="btn btn-small btn-success createUser" type='submit' form='pasagerInfo'>Create User</button>
+    	{{/if}}
+    {{else}}
+    {{#if isEditing}}
+    	<button class="btn btn-small btn-info saveEdit" type='submit' form='pasagerInfo'>Save Edits</button>
+    {{else}}
+	    <button class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Add to Basket</button>
+	    <button class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Add to Basket & Checkout</button>
+    {{/if}}
+    {{/if}}
+</template>
+
 
 <template name="productPrices">
 	<input type='hidden' id='{{unit}}' class='unitPrice'>

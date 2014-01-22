@@ -2,19 +2,24 @@
 <template name="generalPassagerInfo">
 	<form novalidate id='pasagerInfo' method="post">
 		<fieldset>
-			<legend>Personal Info<span>&nbsp;&nbsp;</span><i class='icon-user'/></legend>
-	        
-	        <div class="line-3">
-	        	{{#if customerCreation}}
-	            <div>
-	            	<label>
-	    				Use my own data:
+			<legend>Personal Info<span>&nbsp;&nbsp;</span><i class='icon-user'/> {{#if customerCreation}}
+	            	
+	    				<span style="font-size: 16px;">Use my own data:<span>
 	    				<input id="myOwnData" type="checkbox" class="ace ace-switch ace-switch-6">
 	    				<span class='lbl'></span>
 	    				<input id="usingData" type="hidden" value="false">
+	    		 
+	    			{{/if}}</legend>
+	        
+	        <div class="line-3">
+	        	
+	            <div>
+	    			<label>
+	    				<label class="required">Social Security Number: </label>
+		            	<input type="text" id="socialSecurityNumber" name="socialSecurityNumber" placeholder="Social Security Number" required>
 	    			</label>
 	            </div>
-	            {{/if}}
+	            
                 <div>
 	            	<label class="control-label required">Title: </label>
 	                 <select name='title' id='title' required>
@@ -120,16 +125,4 @@
 		    {{/if}}   
     	</fieldset>
     </form>
-    {{#if isCreatingExternalUser}}
-    	{{#if isCreateUserPage}}
-    	<button class="btn btn-small btn-success createUser" type='submit' form='pasagerInfo'>Create User</button>
-    	{{/if}}
-    {{else}}
-    {{#if isEditing}}
-    	<button class="btn btn-small btn-info saveEdit" type='submit' form='pasagerInfo'>Save Edits</button>
-    {{else}}
-	    <button class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Add to Basket</button>
-	    <button class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Add to Basket & Checkout</button>
-    {{/if}}
-    {{/if}}
 </template>
