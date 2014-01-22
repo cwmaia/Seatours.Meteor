@@ -50,21 +50,29 @@ Template.finishBookCustomer.events({
 		if(isCustomerLogged()){
 			books = CBasket.find({cartId: getCartId()}).fetch();
 			customerId = Meteor.user().profile.customerId;
+
+			orderID = Orders.insert({customerId: customerId});
+			//REMOVE ONLY TEST!!!
+			localStorage.setItem("orderIDTeste", orderID);
+			//$("#urlSuccess").val("http://localhost:3000/ReturnPageSuccess?orderId\="+orderID);
+			$("#orderIdInput").val(orderID);
 			//Save Books
 			for (var i = 0; i < books.length; i++) {
 				delete books[i].cartId;
 				books[i].buyerId = customerId;
+				books[i].orderId = orderID;
 				Meteor.call('insertBook', books[i]);
 				CBasket.remove({_id: books[i]._id});
 			};
+
+			$("#sendToBorgun").submit();
+			/*
 			cleanExternView();
 			Session.set('myBookings', true);
 			$("#loginArea").hide();
-			Template.externView.rendered();
+			Template.externView.rendered();*/
 		}else{
-			event.preventDefault();
 			var form = document.getElementById('pasagerInfo');
-			console.log('hi');
 			if(form.checkValidity()){
 				//Gather Customer Data
 				var customerData = {
@@ -93,15 +101,26 @@ Template.finishBookCustomer.events({
 						return;
 					}else{
 						books = CBasket.find({cartId: getCartId()}).fetch();
+
+						orderID = Orders.insert({customerId: result});
+						//REMOVE ONLY TEST!!!
+						localStorage.setItem("orderIDTeste", orderID);
+						//$("#urlSuccess").val("http://localhost:3000/ReturnPageSuccess?orderId="+result);
+						$("#orderIdInput").val(orderID);
+
 						//Save Books
 						for (var i = 0; i < books.length; i++) {
 							delete books[i].cartId;
 							books[i].buyerId = result;
+							books[i].orderId = orderID;
+							books[i].bookStatus = "Waiting Payment";
 							Meteor.call('insertBook', books[i]);
 							CBasket.remove({_id: books[i]._id});
 						};
 
-						Meteor.loginWithPassword(user.username, user.password, function(err){
+						$("#sendToBorgun").submit();
+
+						/*Meteor.loginWithPassword(user.username, user.password, function(err){
 					        if (err){
 					        	if(err.reason == 'Incorrect password')
 					        		throwError("Incorrect Password!") 
@@ -114,7 +133,7 @@ Template.finishBookCustomer.events({
 								$("#loginArea").hide();
 								Template.externView.rendered();
 					        }
-						});
+						});*/
 					}
 				})		
 			}else{

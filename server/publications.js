@@ -1,3 +1,16 @@
+Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
+  orderId = this.request.query.orderId;
+
+  books = Books.find({orderId : orderId}).fetch();
+
+  for (var i = 0; i < books.length; i++) {
+    Books.update(books[i]._id, {$set : {paid : true, bookStatus : "Created"}});
+  };
+
+  //do something with this
+  return [204, "No Content"];
+})
+
 Meteor.publish("directory", function () {
   if(this.userId)
       return Meteor.users.find({}, {fields: {emails: 1, username: 1, 'profile' : 1}});
