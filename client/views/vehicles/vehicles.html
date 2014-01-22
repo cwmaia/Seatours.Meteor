@@ -4,6 +4,40 @@
 			Vehicles
 		</h1>
 	</div><!-- /.page-header -->
+	<div class="tabbable">
+		<ul class="nav nav-tabs" id="myTab">
+			<li class="active">
+				<a data-toggle="tab" href="#vehiclesCategoryEdit" sytle="z-index: 0;">
+					<i class="blue icon-money bigger-110"></i>
+					Categories
+				</a>
+			</li>
+			<li>
+				<a data-toggle="tab" href="#pre_registerVehicles" sytle="z-index: 0;">
+					<i class="blue icon-truck bigger-110"></i>
+					Pre-Register Vehicles
+				</a>
+			</li>
+		</ul>
+
+		<div class="tab-content">
+			<div id="vehiclesCategoryEdit" class="tab-pane in active">
+				{{> vehiclesCategoryEdit}}
+			</div>
+
+			<div id="pre_registerVehicles" class="tab-pane in">
+				{{> preRegisterVehicles}}
+			</div>
+		</div>
+	</div>
+</template>
+<template name="preRegisterVehicles">
+
+	<div class="page-header">
+		<h1>
+			Pre Register
+		</h1>
+	</div><!-- /.page-header -->
 
 	<form novalidate>
 		<div class="line-3">
@@ -17,6 +51,38 @@
 
 		<input type="submit" value="Save Vehicle" class="btn btn-small btn-success">		
 	</form>
+</template>
+
+<template name="vehiclesCategoryEdit">
+	<div class="page-header">
+		<h1>
+			Categories
+		</h1>
+	</div><!-- /.page-header -->
+	<table class='table table-striped table-bordered table-hover'>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Sizes</th>
+				<th title='Price of the Base Size'>Base Price</th>
+				<th>Base Size</th>
+				<th title="Value added for each meters more than Base Size">Step</th>
+				<th title="Discounted for each meter less than Base Size?">Step on Reduce</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each categories}}
+				<tr>
+					<th>{{category}}</th>
+					<th>{{size}}</th>
+					<th>{{basePrice}} ISK</th>
+					<th>{{baseSize}}m</th>
+					<th>{{step}} ISK</th>
+					<th>{{#if onReduce}} Yes {{else}} No {{/if}}</th>
+				</tr>
+			{{/each}}
+		</tbody>
+	</table>
 </template>
 
 <template name="category">

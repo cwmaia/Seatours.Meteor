@@ -1691,6 +1691,8 @@ if(PostCodes.find().count() == 0){
 					 '_id' : 'summer'});
 	Settings.insert({'winterStartDate' : '09/01',
 					 '_id' : 'winter'});
+	Settings.insert({'onlineDiscount' : 10,
+					 '_id' : 'onlineDiscount'});
 }
 
 var callback = function(data){
