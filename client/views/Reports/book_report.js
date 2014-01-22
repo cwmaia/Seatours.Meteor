@@ -208,30 +208,32 @@ Template.bookingsReport.adress = function(id){
 
 Template.bookingsReport.events({
 	'click .quickPay' : function(event){
-		event.preventDefault();
-		var a = event.currentTarget;
-		var bookId = a.rel;
-		var currentBooking = Books.findOne({'_id' : bookId});
-		var vendor = Meteor.user().profile.name;
-		var transaction = {
-				'bookId' : currentBooking._id,
-				'date' : new Date(),
-				'status' : 'Given',
-				'amount' : currentBooking.totalISK,
-				'detail' : "Quick Paid",
-				'vendor' : vendor,
-				'type' : 'QuickPay'
+		if(confirm('Are you sure? Clicking this will make the Booking Paid')){
+			event.preventDefault();
+			var a = event.currentTarget;
+			var bookId = a.rel;
+			var currentBooking = Books.findOne({'_id' : bookId});
+			var vendor = Meteor.user().profile.name;
+			var transaction = {
+					'bookId' : currentBooking._id,
+					'date' : new Date(),
+					'status' : 'Given',
+					'amount' : currentBooking.totalISK,
+					'detail' : "Quick Paid",
+					'vendor' : vendor,
+					'type' : 'Office Cash'
+				}
+			Transactions.insert(transaction);
+			Books.update(currentBooking._id, {$set : {'paid' : true}});
+			var note = {
+					created : new Date(),
+					type : 'Quick Pay Note',
+					note : vendor + " marked the booking ID#"+ currentBooking.refNumber + " as paid",
+					bookId : Session.get('currentBooking')
 			}
-		Transactions.insert(transaction);
-		Books.update(currentBooking._id, {$set : {'paid' : true}});
-		var note = {
-				created : new Date(),
-				type : 'Quick Pay Note',
-				note : vendor + " marked the booking ID#"+ currentBooking.refNumber + " as paid",
-				bookId : Session.get('currentBooking')
-		}
 
-		Notes.insert(note);
+			Notes.insert(note);
+		}
 	},
 
 	'click .filterB' : function(event){
