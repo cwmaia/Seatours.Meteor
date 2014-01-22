@@ -1424,7 +1424,7 @@ Template.generalPassagerInfo.rendered = function() {
 		changeMonth : true,
       	changeYear 	: true
 	});
-
+	$('#socialSecurityNumber').mask('999999-9999');
 	$('#telephone').mask('(999) 99999999');
 	$('#birthDate').mask('99/99/9999');
 	loadTypeAheadPostCodes();
