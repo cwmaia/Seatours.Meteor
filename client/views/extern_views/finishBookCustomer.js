@@ -6,6 +6,8 @@ Template.finishBookCustomer.rendered = function(){
 	if(isCustomerNotLogged()){
 		$('#fullName').val(Session.get('fullCustomerNameCreation'));
 		$("#email").val(Session.get('emailCustomerCreation'));
+		$('#fullNameBorgun').val(Session.get('fullCustomerNameCreation'));
+		$("#emailBorgun").val(Session.get('emailCustomerCreation'));
 	}
 }
 
@@ -66,11 +68,11 @@ Template.finishBookCustomer.events({
 			};
 
 			$("#sendToBorgun").submit();
-			/*
+			
 			cleanExternView();
 			Session.set('myBookings', true);
 			$("#loginArea").hide();
-			Template.externView.rendered();*/
+			Template.externView.rendered();
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -107,7 +109,8 @@ Template.finishBookCustomer.events({
 						localStorage.setItem("orderIDTeste", orderID);
 						//$("#urlSuccess").val("http://localhost:3000/ReturnPageSuccess?orderId="+result);
 						$("#orderIdInput").val(orderID);
-
+						$('#fullNameBorgun').val($('#fullName').val());
+						$("#emailBorgun").val($("#email").val());
 						//Save Books
 						for (var i = 0; i < books.length; i++) {
 							delete books[i].cartId;
@@ -120,7 +123,7 @@ Template.finishBookCustomer.events({
 
 						$("#sendToBorgun").submit();
 
-						/*Meteor.loginWithPassword(user.username, user.password, function(err){
+						Meteor.loginWithPassword(user.username, user.password, function(err){
 					        if (err){
 					        	if(err.reason == 'Incorrect password')
 					        		throwError("Incorrect Password!") 
@@ -133,7 +136,7 @@ Template.finishBookCustomer.events({
 								$("#loginArea").hide();
 								Template.externView.rendered();
 					        }
-						});*/
+						});
 					}
 				})		
 			}else{
