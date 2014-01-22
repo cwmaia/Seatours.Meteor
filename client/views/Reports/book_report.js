@@ -207,6 +207,33 @@ Template.bookingsReport.adress = function(id){
 }
 
 Template.bookingsReport.events({
+	'click .quickPay' : function(event){
+		event.preventDefault();
+		var a = event.currentTarget;
+		var bookId = a.rel;
+		var currentBooking = Books.findOne({'_id' : bookId});
+		var vendor = Meteor.user().profile.name;
+		var transaction = {
+				'bookId' : currentBooking._id,
+				'date' : new Date(),
+				'status' : 'Given',
+				'amount' : currentBooking.totalISK,
+				'detail' : "Quick Paid",
+				'vendor' : vendor,
+				'type' : 'QuickPay'
+			}
+		Transactions.insert(transaction);
+		Books.update(currentBooking._id, {$set : {'paid' : true}});
+		var note = {
+				created : new Date(),
+				type : 'Quick Pay Note',
+				note : vendor + " marked the booking ID#"+ currentBooking.refNumber + " as paid",
+				bookId : Session.get('currentBooking')
+		}
+
+		Notes.insert(note);
+	},
+
 	'click .filterB' : function(event){
 
 		var product = $('#productB').val(); 
