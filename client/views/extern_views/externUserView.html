@@ -30,6 +30,10 @@
 			{{> finishBookCustomer}}
 		{{/if}}
 
+		{{#if paymentStep}}
+			{{> paymentStep}}
+		{{/if}}
+
 		{{#if externalLogin}}
 			→ <a class="cbasket" href="#">Basket</a> → <a class="externalLogin" href="#">Login</a>
 			{{> externalLogin}}

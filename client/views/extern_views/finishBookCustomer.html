@@ -1,7 +1,7 @@
 <template name='finishBookCustomer'>
 	<div class="page-header">
 		<h1>
-			Confirm Your Purchase
+			Confirm Your Data
 		</h1>
 	<div>
 	{{#if customerLogged}} 	
@@ -16,29 +16,9 @@
 	{{else}}
 		{{> generalPassagerInfo}}
 	{{/if}}
-	<fieldset>
-		<legend>Your Items<span>&nbsp;&nbsp;</span><i class='icon-shopping-cart'/></legend>
-		<table class='table table-striped table-bordered table-hover'>
-			<thead>
-				<tr>
-					<td style='width: 70%'>Item</td>
-					<td style='width: 10%; text-align: center'>Value</td>
-				</tr>
-			</thead>
-			<tbody>
-				{{#if getCBasket}}
-					{{#each cbasketBooks}}
-						{{>items}}
-					{{/each}}
-				{{/if}}
-			</tbody>
-			<tfoot>
-				<td>Sum</td>
-				<td>kr <spam id='total'>{{totalCustomer}}</span></td>
-			</tfoot>
-		</table>
-	</fieldset>
+	
+	
 	<div class='form-actions center'>
-		<button class='btn btn-success' id='finishBuyBookingCustomer'>Finish Booking</button>
+		<button class='btn btn-info' id='finishBuyBookingCustomer'>Procced to Payment</button>
 	</div>
 </template>

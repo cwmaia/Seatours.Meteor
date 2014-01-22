@@ -1,6 +1,4 @@
-Template.finishBookCustomer.getCBasket = function(){
-	return CBasket.find({cartId : getCartId()});
-}
+
 
 Template.finishBookCustomer.rendered = function(){
 	if(isCustomerNotLogged()){
@@ -9,18 +7,7 @@ Template.finishBookCustomer.rendered = function(){
 	}
 }
 
-Template.finishBookCustomer.cbasketBooks = function(){
-	return CBasket.find({cartId : getCartId()});
-}
 
-Template.finishBookCustomer.totalCustomer = function(){
-	var carts = CBasket.find({cartId : getCartId()}).fetch();
-	var total = 0;
-	for (var i = 0; i < carts.length; i++) {
-		total += parseInt(carts[i].totalISK);
-	};
-	return total;
-}
 
 Template.finishBookCustomer.customerLogged = function(){
 	return isCustomerLogged();
@@ -49,22 +36,31 @@ Template.finishBookCustomer.events({
 		'click #finishBuyBookingCustomer' : function(){
 		if(isCustomerLogged()){
 			books = CBasket.find({cartId: getCartId()}).fetch();
+
 			customerId = Meteor.user().profile.customerId;
+			refNumber = new Date().getTime().toString().substr(1);
+			while(Orders.findOne({refNumber : refNumber})){
+				refNumber = new Date().getTime().toString().substr(1);
+			}
+			Orders.insert({customerId: customerId, paid: false, refNumber: refNumber});
+			
 			//Save Books
 			for (var i = 0; i < books.length; i++) {
 				delete books[i].cartId;
 				books[i].buyerId = customerId;
+				books[i].orderId = refNumber;
+				books[i].bookStatus = "Waiting Payment";
 				Meteor.call('insertBook', books[i]);
 				CBasket.remove({_id: books[i]._id});
 			};
+
 			cleanExternView();
-			Session.set('myBookings', true);
+			Session.set('paymentStep', true);
+			Session.set('orderId', refNumber);
 			$("#loginArea").hide();
 			Template.externView.rendered();
 		}else{
-			event.preventDefault();
 			var form = document.getElementById('pasagerInfo');
-			console.log('hi');
 			if(form.checkValidity()){
 				//Gather Customer Data
 				var customerData = {
@@ -93,10 +89,17 @@ Template.finishBookCustomer.events({
 						return;
 					}else{
 						books = CBasket.find({cartId: getCartId()}).fetch();
+						refNumber = new Date().getTime().toString().substr(1);
+						while(Orders.findOne({refNumber : refNumber})){
+							refNumber = new Date().getTime().toString().substr(1);
+						}
+						Orders.insert({customerId: customerId, paid: false, refNumber: refNumber});
 						//Save Books
 						for (var i = 0; i < books.length; i++) {
 							delete books[i].cartId;
 							books[i].buyerId = result;
+							books[i].orderId = refNumber;
+							books[i].bookStatus = "Waiting Payment";
 							Meteor.call('insertBook', books[i]);
 							CBasket.remove({_id: books[i]._id});
 						};
@@ -110,7 +113,8 @@ Template.finishBookCustomer.events({
 					        	SpinnerStop();
 					        }else{
 					        	cleanExternView();
-								Session.set('myBookings', true);
+								SSession.set('paymentStep', true);
+								Session.set('orderId', refNumber);
 								$("#loginArea").hide();
 								Template.externView.rendered();
 					        }

@@ -48,7 +48,7 @@
 										<td>{{fullname customerId}}</td>
 										<td>{{vehicle.vehicleName}}</td>
 										<td>{{vehicle.vehiclePlate}}</td>
-										<td>{{vehicle.category}} - {{vehicle.size}}m</td>
+										<td>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m{{/if}}</td>
 										<td>{{telephone customerId}}</td>
 										<td>{{totalPassagers _id}}</td>
 										<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>

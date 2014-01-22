@@ -1,3 +1,33 @@
+Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
+  orderId = this.request.body.orderid;
+
+  books = Books.find({orderId : orderId}).fetch();
+  order = Orders.findOne({refNumber : orderId});
+
+  Orders.update(order._id, {$set: {paid : true}});
+
+  for (var i = 0; i < books.length; i++) {
+    Books.update(books[i]._id, {$set : {paid : true, bookStatus : "Created"}});
+    var transaction = {
+      'bookId' : books[i]._id,
+      'date' : new Date(),
+      'status' : 'Borgun Completed',
+      'amount' : books[i].totalISK,
+      'detail' : 10+"% as discount",
+      'vendor' : "Borgun",
+      'type' : 'Credit Card'
+    }
+    Transactions.insert(transaction);
+  };
+
+  //do something with this
+  return [204, "No Content"];
+})
+
+Meteor.Router.add("/ReturnPageError", "POST", function(){
+  console.log(this.request.body);
+})
+
 Meteor.publish("directory", function () {
   if(this.userId)
       return Meteor.users.find({}, {fields: {emails: 1, username: 1, 'profile' : 1}});
@@ -34,6 +64,25 @@ Meteor.publish('books', function() {
      if(user.profile.groupID == group._id){
         if(user.profile.customerId){
           return Books.find({buyerId : user.profile.customerId});
+        }else{
+          return null;
+        }
+     }else{
+        return Books.find();
+     }
+  }else{
+    return null;
+  }
+});
+
+
+Meteor.publish('orders', function() { 
+  if(this.userId){
+     user = Meteor.users.findOne({_id : this.userId});
+     group = Groups.findOne({name : 'Customers'});
+     if(user.profile.groupID == group._id){
+        if(user.profile.customerId){
+          return Orders.find({customerId : user.profile.customerId});
         }else{
           return null;
         }

@@ -107,6 +107,17 @@ Template.header.events({
 		$("#loginArea").hide();
 		$('.profile').show();
 		Template.externView.rendered();
+	},
+
+	'click .testePOST' : function(){
+		orderId = localStorage.getItem('orderIDTeste')
+
+		$.ajax({
+			type : "POST",
+			url : "http://localhost:3000/ReturnPageSuccess?orderId="+orderId,
+			data: {teste : "teste", lol : "lool"},
+			dataType: "JSON"
+		})
 	}
 
 });

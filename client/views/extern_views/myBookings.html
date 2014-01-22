@@ -2,7 +2,7 @@
 
 	<div class="page-header">
 			<h1>
-				My Bookings
+				My Orders
 			</h1>
 	</div>
 	<fieldset>
@@ -10,9 +10,6 @@
 			<thead>
 				<tr>
 					<th>Id</th>
-					<th>Destination</th>
-					<th>Date of Booking</th>
-					<th>Total ISK</th>
 					<th>Paid</th>
 					<th>Actions</th>
 				</tr>
@@ -20,12 +17,19 @@
 				<tbody>
 					{{#each bookings}}
 						<tr>
-							<td><a rel='{{_id}}' class='myVoucher'>{{_id}}</a></td>
-							<td>{{product.name}}: {{trip.from}} - {{trip.to}}</td>
-							<td>{{dateOfBooking}}</td>
-							<td>{{totalISK}}</td>
+							<td>{{refNumber}}</a></td>
 							<td>{{#if paid}} Yes {{else}} No {{/if}}</td>
-							<td>{{#if paid}} <button class="btn btnsucess">PAY</button>{{/if}}</td>
+							<td>
+								<a class="details btn btn-mini btn-info" title='Details'>
+									<i class='icon-pencil'></i>
+								</a>
+								{{#if paid}}
+								{{else}}
+								<a class="payOrder btn btn-mini btn-success" title='Pay' rel='{{refNumber}}'>
+									<i class='icon-money'></i>
+								</a>
+								{{/if}}
+							</td>
 						</tr>
 					{{/each}}
 				</tbody>

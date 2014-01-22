@@ -41,6 +41,10 @@ Template.overview.telephone = function(id){
 	return Customers.findOne({_id: id}).telephone;
 }
 
+Template.overview.hasVehicle = function(){
+	return this.vehicle.category;
+}
+
 Template.overview.total = function(tripId, productId){
 	var total = 0;
 	var date = new Date(localStorage.getItem('date')),

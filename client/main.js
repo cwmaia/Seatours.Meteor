@@ -17,6 +17,7 @@ Meteor.subscribe('prices');
 Meteor.subscribe('settings');
 Meteor.subscribe('cbasket');
 Meteor.subscribe('blockingDates');
+Meteor.subscribe('orders');
 
 
 Template.redirect.helpers({
