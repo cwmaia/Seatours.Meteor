@@ -18,14 +18,17 @@
 					{{#each bookings}}
 						<tr>
 							<td>{{refNumber}}</a></td>
-							<td>{{paid}}</td>
+							<td>{{#if paid}} Yes {{else}} No {{/if}}</td>
 							<td>
 								<a class="details btn btn-mini btn-info" title='Details'>
 									<i class='icon-pencil'></i>
 								</a>
+								{{#if paid}}
+								{{else}}
 								<a class="payOrder btn btn-mini btn-success" title='Pay' rel='{{refNumber}}'>
 									<i class='icon-money'></i>
 								</a>
+								{{/if}}
 							</td>
 						</tr>
 					{{/each}}

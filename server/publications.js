@@ -8,6 +8,16 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
 
   for (var i = 0; i < books.length; i++) {
     Books.update(books[i]._id, {$set : {paid : true, bookStatus : "Created"}});
+    var transaction = {
+      'bookId' : books[i]._id,
+      'date' : new Date(),
+      'status' : 'Borgun Completed',
+      'amount' : books[i].totalISK,
+      'detail' : 10+"% as discount",
+      'vendor' : "Borgun",
+      'type' : 'Credit Card'
+    }
+    Transactions.insert(transaction);
   };
 
   //do something with this

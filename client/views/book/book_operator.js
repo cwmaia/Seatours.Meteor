@@ -1192,16 +1192,15 @@ Template.createBook.events({
 		  'success': function(response) {
 		  	$("#vehicle").val("");
 		  	$("#vehiclecolor").val("");
-		  	if(response.results[0] != undefined){
-			  	$("#vehicle").val(response.results[0].type + " " + response.results[0].subType);
-				$("#vehiclecolor").val(response.results[0].color);
-			}else{
-			throwError("Please provide a valid Liscense Plate");
-			return;
+		  	$("#vehicle").val(response.results[0].type + " " + response.results[0].subType);
+			$("#vehiclecolor").val(response.results[0].color);
+			 SpinnerStop();
+			},
+			'error' : function(response){
+				throwError("Please provide a valid Liscense Plate");
+				SpinnerStop();
 			}
-		    SpinnerStop();
-		  },
-
+		  
 		});
 	}
 })
@@ -1819,6 +1818,9 @@ var createBook = function(){
 	}
 
 	if(isCustomer()){
+
+		var resultId = Customers.insert(customer);
+		book.customerId = resultId;
 
 		var discount = Settings.findOne({_id: 'onlineDiscount'}).onlineDiscount;
 		book.totalISK = book.totalISK - ((book.totalISK * discount) / 100 );
