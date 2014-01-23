@@ -1727,7 +1727,7 @@ var callbackCSV = function(data){
 	console.log(a[1]);
 }
 
-
+/*
 if(Cars.find().count() == 0){
 		
     var fs  = Npm.require("fs");
@@ -1754,6 +1754,6 @@ if(Cars.find().count() == 0){
 
 
 		
-}
+}*/
 
 

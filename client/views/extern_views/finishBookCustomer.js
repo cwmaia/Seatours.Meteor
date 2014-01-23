@@ -64,6 +64,7 @@ Template.finishBookCustomer.events({
 			if(form.checkValidity()){
 				//Gather Customer Data
 				var customerData = {
+					'socialSecurityNumber' : $('#socialSecurityNumber').val(),
 					'fullName' :  $('#fullName').val(),
 					'title' : $('#title').val(),
 			    	'birthDate': $('#birthDate').val(),
@@ -93,7 +94,7 @@ Template.finishBookCustomer.events({
 						while(Orders.findOne({refNumber : refNumber})){
 							refNumber = new Date().getTime().toString().substr(1);
 						}
-						Orders.insert({customerId: customerId, paid: false, refNumber: refNumber});
+						Orders.insert({customerId: result, paid: false, refNumber: refNumber});
 						//Save Books
 						for (var i = 0; i < books.length; i++) {
 							delete books[i].cartId;
@@ -113,7 +114,7 @@ Template.finishBookCustomer.events({
 					        	SpinnerStop();
 					        }else{
 					        	cleanExternView();
-								SSession.set('paymentStep', true);
+								Session.set('paymentStep', true);
 								Session.set('orderId', refNumber);
 								$("#loginArea").hide();
 								Template.externView.rendered();

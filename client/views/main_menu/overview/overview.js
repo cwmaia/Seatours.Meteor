@@ -85,7 +85,7 @@ Template.overview.totalPaid = function(tripId, productId){
 	for (var i = 0; i < books.length; i++) {
 		transactions = Transactions.find({bookId : books[i]._id}).fetch();
 		for (var j = 0; j < transactions.length; j++) {
-			total = parseInt(transactions[j].amount);
+			total += parseInt(transactions[j].amount);
 		};
 	};
 
@@ -113,6 +113,8 @@ Template.overview.totalNotPaid = function(tripId, productId){
 		for (var j = 0; j < transactions.length; j++) {
 			totalTransactions += parseInt(transactions[j].amount)
 		};
+		console.log(totalTransactions);
+		console.log(books[i].totalISK);
 		if(totalTransactions < books[i].totalISK){
 			total += books[i].totalISK - totalTransactions;
 		}
@@ -141,7 +143,7 @@ Template.overview.creditcard = function(tripId, productId){
 		transactions = Transactions.find({bookId : books[i]._id}).fetch();
 		for (var j = 0; j < transactions.length; j++) {
 			if(transactions[j].type == 'Credit Card'){
-				total = parseInt(transactions[j].amount)
+				total += parseInt(transactions[j].amount)
 			}
 		};
 	};
@@ -168,7 +170,7 @@ Template.overview.office = function(tripId, productId){
 		transactions = Transactions.find({bookId : books[i]._id}).fetch();
 		for (var j = 0; j < transactions.length; j++) {
 			if(transactions[j].type == 'Cash Office'){
-				total = parseInt(transactions[j].amount)
+				total += parseInt(transactions[j].amount)
 			}
 		};
 	};
@@ -201,7 +203,7 @@ Template.overview.events({
 					'amount' : currentBooking.totalISK,
 					'detail' : "Quick Paid",
 					'vendor' : vendor,
-					'type' : 'Office Cash'
+					'type' : 'Cash Office'
 				}
 			Transactions.insert(transaction);
 			Books.update(currentBooking._id, {$set : {'paid' : true}});

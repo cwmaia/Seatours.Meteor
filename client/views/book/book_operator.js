@@ -1411,6 +1411,7 @@ Template.generalPassagerInfo.events({
 			Session.set('currentSizeCar', currentCustomer.lastUsedCar.size);
 			checkIfCarsFits(currentCustomer.lastUsedCar.size);
 			changeSizes();
+			SaveCustomer = false;
    		}else{
    			$('#fullName').val('');
 			$('#customerId').val('');
@@ -1430,6 +1431,7 @@ Template.generalPassagerInfo.events({
 	    	$('#size').val('');
 	    	$('#totalVehicle').val('');
 	    	$('#vehiclePlate').val('');
+	    	SaveCustomer = true;
    		}
 	},
 
@@ -1730,7 +1732,7 @@ var createBook = function(){
 		book.customerId = resultId;
 
 		var discount = Settings.findOne({_id: 'onlineDiscount'}).onlineDiscount;
-		book.totalISK = book.totalISK - ((book.totalISK * discount) / 100 );
+		book.totalISK = parseInt((book.totalISK - ((book.totalISK * discount) / 100 )).toFixed());
 
 		if(getCartId()){
 				book.cartId = getCartId();
