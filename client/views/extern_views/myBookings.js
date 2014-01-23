@@ -10,6 +10,10 @@ Template.myBookings.name = function(){
 	return Meteor.user().profile.name;
 }
 
+Template.myBookings.date = function(date){
+	return date.toLocaleDateString();
+}
+
 Template.myBookings.events({
 	'click .payOrder' : function(event){
 		var a = event.currentTarget;

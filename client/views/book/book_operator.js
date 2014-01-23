@@ -576,6 +576,7 @@ Template.productItem.rendered = function(){
 
 	$('.calendar').datepicker({
 		}).on('changeDate', function(ev){
+			console.log(ev);
 			date = new Date(ev.date);
 			with(date){
 				setDate(getDate());

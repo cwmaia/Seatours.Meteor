@@ -13,15 +13,25 @@
 					<th>Date</th>
 					<th>Departure</th>
 					<th>Total</th>
+					<th>Paid</th>
+					<th>Status</th>
+					<th>Action</th>
 				</tr>
 			</thead>
 				<tbody>
 					{{#each bookings}}
 						<tr>
-							<td><a rel='{{_id}}' class='myVoucher'>{{refNumber}}</a></td>
+							<td>{{refNumber}}</td>
 							<td>{{date dateOfBooking}}</td>
 							<td>{{trip.from}} - {{trip.to}} - {{trip.hour}}</td>
 							<td>{{totalISK}} ISK</td>
+							<td>{{#if paid}} Yes {{else}} No {{/if}}</td>
+							<td>{{bookStatus}}</td>
+							<td>
+								<a class="myVoucher btn btn-mini btn-info" rel='{{_id}}' title='Voucher' rel='{{refNumber}}'>
+									<i class='icon-book'></i>
+								</a>
+							</td>
 						</tr>
 					{{/each}}
 				</tbody>
