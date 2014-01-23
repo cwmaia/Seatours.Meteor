@@ -10,6 +10,7 @@
 			<thead>
 				<tr>
 					<th>Id</th>
+					<th>Date of Order</th>
 					<th>Paid</th>
 					<th>Actions</th>
 				</tr>
@@ -17,7 +18,8 @@
 				<tbody>
 					{{#each bookings}}
 						<tr>
-							<td>{{refNumber}}</a></td>
+							<td>{{refNumber}}</td>
+							<td>{{date dateOrder}}</td>
 							<td>{{#if paid}} Yes {{else}} No {{/if}}</td>
 							<td>
 								<a class="details btn btn-mini btn-info" title='Details' rel='{{refNumber}}'>
