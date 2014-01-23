@@ -217,39 +217,36 @@ Template.overview.events({
 		},
 
 		'click .changeStatusBooking' : function(event) {
-		event.preventDefault();
-		var a = event.currentTarget;
-		var id = a.rel;
-		book = Books.findOne(id);
-		var vendor = Meteor.user().profile.name;
+			event.preventDefault();
+			var a = event.currentTarget;
+			var id = a.rel;
+			book = Books.findOne(id);
+			var vendor = Meteor.user().profile.name;
 
-		var dateToday = new Date();
-		var dateTodayFixed = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate(), 0,0,0);
-		var dateOfBookingFixed = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), book.dateOfBooking.getDate(),0,0,0);
-		var aDayPreviousBookingDate = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), (book.dateOfBooking.getDate() -1), 0,0,0);
-		var totalISK = Books.findOne({"_id" : id}).totalISK;
-		
-		var valueFees;
-		if(dateTodayFixed >= aDayPreviousBookingDate){
-			valueFees = -3000;
-		}else{
-			valueFees = parseInt(totalISK * 0.05);
-			valueFees = 0-valueFees;
-		}
-		var transaction = {
-				'bookId' : id,
-				'date' : dateToday,
-				'status' : 'Given',
-				'amount' : valueFees,
-				'detail' : "Cancelation Fee",
-				'vendor' : vendor,
-				'type' : 'Office Cash'
-		}
-		Transactions.insert(transaction);
+			var dateToday = new Date();
+			var dateTodayFixed = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate(), 0,0,0);
+			var dateOfBookingFixed = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), book.dateOfBooking.getDate(),0,0,0);
+			var aDayPreviousBookingDate = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), (book.dateOfBooking.getDate() -1), 0,0,0);
+			var totalISK = Books.findOne({"_id" : id}).totalISK;
+			
+			var valueFees;
+			if(dateTodayFixed >= aDayPreviousBookingDate){
+				valueFees = -3000;
+			}else{
+				valueFees = parseInt(totalISK * 0.05);
+				valueFees = 0-valueFees;
+			}
+			var transaction = {
+					'bookId' : id,
+					'date' : dateToday,
+					'status' : 'Given',
+					'amount' : valueFees,
+					'detail' : "Cancelation Fee",
+					'vendor' : vendor,
+					'type' : 'Office Cash'
+			}
+			Transactions.insert(transaction);
 
-
-		if(book.paid){
-			//24h - 
 			var thisBookingTransactions = Transactions.find({'bookId' : id}).fetch();
 			var totalTransactions = 0;
 			for (var i = thisBookingTransactions.length - 1; i >= 0; i--) {
@@ -259,22 +256,6 @@ Template.overview.events({
 			
 			throwInfo("Cancelation completed! Customer need to be refunded in "+totalTransactions+"ISK. *Cancelation fee already included");
 			
-			
-		}else{
-
-			var transaction = {
-				'bookId' : id,
-				'date' : dateToday,
-				'status' : 'Hidden',
-				'amount' : parseInt(book.totalISK),
-				'detail' : "Cancelation credit for non-paid trips",
-				'vendor' : vendor,
-				'type' : 'Cancelation'
-			}
-			Transactions.insert(transaction);
-			Books.update(id, {$set : {bookStatus: 'Canceled'}});
-			throwError("Cancelation completed! Customer need to pay "+valueFees+"ISK as cancelation fee!");
-		}
 	}
 });
 
