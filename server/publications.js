@@ -19,9 +19,11 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
     }
     Transactions.insert(transaction);
   };
+  
+  //talvez escrever todo o html... eh... talve. tem que ver se funciona....
 
-  //do something with this
-  return [204, "No Content"];
+  return "<script>window.location='http://localhost:3000/myBookings/"+orderId+"'</script>";
+
 })
 
 Meteor.Router.add("/ReturnPageError", "POST", function(){

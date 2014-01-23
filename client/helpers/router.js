@@ -5,6 +5,16 @@ Meteor.Router.add({
 		}	
 		return page;
 	},
+	'/myBookings/:orderId'   : {
+		to : "myBookingsDetail",
+		and : function(orderId){
+			cleanExternView();
+			Session.set("orderId", orderId);
+			Session.set('myBookingsDetail', true);
+			$("#loginArea").hide();
+			Template.externView.rendered();
+		}
+	},
 	'/overview' 	: 'overview',
 	'/guest' 		: 'userMenu',
 	'/adm'   		: 'mainMenu',
