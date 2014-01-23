@@ -154,7 +154,7 @@
 						<th class="sorting_disabled">Telephone</th>
 						<th>Total Passagers</th>
 						<th>Payment Status</th>
-						<th class="sorting_disabled">Action</th>
+						<th class="sorting_disabled" style="min-width: 80px;">Action</th>
 					</tr>
 				</thead>
 				<tbody>	
@@ -164,25 +164,20 @@
 						<td>{{fullname customerId}}</td>
 						<td>{{vehicle.vehicleName}}</td>
 						<td>{{vehicle.vehiclePlate}}</td>
-						<td>{{vehicle.category}} - {{vehicle.size}}m</td>
+						<td>{{#if vehicle.size}}{{vehicle.category}} - {{vehicle.size}}m{{/if}}</td>
 						<td>{{telephone customerId}}</td>
 						<td>{{totalPassagers _id}}</td>
 						<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
-						<td>
+						<td >
 							{{#if isBookCreated bookStatus}}
 								<a href="" class="changeStatusBooking btn btn-mini btn-danger" title='Cancel Booking'>
 									<i class='icon-remove'></i>
 								</a>
-								<a href="" class="changeStatusBooking btn btn-mini btn-warning" title='No Show'>
-									<i class='icon-thumbs-down'></i>
-								</a>
+							{{#if paid}}
+								
 							{{else}}
-								<a href="" class="changeStatusBooking btn btn-mini btn-warning" title='No Show'>
-									<i class='icon-thumbs-down'></i>
-								</a>
+								<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
 							{{/if}}
-							{{#if paid}} {{else}}
-								<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Edit"><i class="icon-money bigger-120"></i></a>
 							{{/if}}
 
 						</td>
