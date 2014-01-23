@@ -661,6 +661,7 @@ if(Customers.find().count() == 0){
 
 	customerID = Customers.insert({
 		"title" : "Mr",
+		"socialSecurityNumber" :  "111111-1111",
 		"fullName" :  "Jarvis Hallais",
 		"birthDate" : "10/10/1992",
 		'email' : "roberto@me.com",
@@ -670,7 +671,14 @@ if(Customers.find().count() == 0){
 		"city" : "Yes it changed",
 		"state" : "Another State",
 		"postcode" : "99551",
-		"country" : "Brazil"
+		"country" : "Brazil",
+		"lastUsedCar" : {
+			"vehicleName" : "Mitsubishi Eclipse",
+			"categories" : "Small Car",
+			"size" : 4.5,
+			"totalCost" : 4080,
+			"vehiclePlate" : "ALLIN00"
+		}
 	});
 }
 
@@ -1719,7 +1727,7 @@ var callbackCSV = function(data){
 	console.log(a[1]);
 }
 
-
+/*
 if(Cars.find().count() == 0){
 		
     var fs  = Npm.require("fs");
@@ -1746,6 +1754,6 @@ if(Cars.find().count() == 0){
 
 
 		
-}
+}*/
 
 

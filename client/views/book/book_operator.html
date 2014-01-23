@@ -456,7 +456,11 @@
 						{{#if isBaseSize this}}
 							<option value="{{this}}" selected>{{this}}m</option>
 						{{else}}
-							<option value="{{this}}">{{this}}m</option>	
+							{{#if wasAutoCompleted this}}
+								<option value="{{this}}" selected>{{this}}m</option>
+							{{else}}
+								<option value="{{this}}">{{this}}m</option>
+							{{/if}}	
 						{{/if}}	
 					{{/each}}
 				{{/if}}

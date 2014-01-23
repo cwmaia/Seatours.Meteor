@@ -71,7 +71,7 @@ Meteor.publish('books', function() {
         return Books.find();
      }
   }else{
-    return null;
+    return Books.find({}, {fields: {dateOfBooking: 1, 'trip._id': 1, 'bookStatus' : 1, 'vehicle.extraSlot' : 1, 'product._id' : 1, 'vehicle.size' : 1}});
   }
 });
 
@@ -87,7 +87,7 @@ Meteor.publish('orders', function() {
           return null;
         }
      }else{
-        return Books.find();
+        return Orders.find();
      }
   }else{
     return null;
@@ -247,12 +247,20 @@ Meteor.methods({
 
   createExternalAccount: function(user, userData){
     group = Groups.findOne({"name": "Customers"});
+    var customerId = 0;
+
     
     user.profile = {'groupID': group._id, 'name' : userData.fullName};
-    var userId = Accounts.createUser(user);
-
-    var customerId = Customers.insert(userData);
     
+    var userId = Accounts.createUser(user);
+    
+    customer = Customers.findOne({socialSecurityNumber : userData.socialSecurityNumber});
+    
+    if(!customer)
+      customerId = Customers.insert(userData);
+    else
+      customerId = customer._id;
+
     Meteor.users.update(userId, {$set :{ "profile.customerId" : customerId}})
 
     return customerId;
@@ -271,6 +279,13 @@ Meteor.methods({
   },
 
   insertBook : function(book){
+    if(!book.refNumber){
+      var refNumber = new Date().getTime().toString().substr(5);
+      while(Books.findOne({refNumber : refNumber})){
+          refNumber = new Date().getTime().toString().substr(5);
+      }
+      book.refNumber = refNumber;
+    }
     return Books.insert(book);
   },
 

@@ -96,7 +96,6 @@ Meteor.Router.filters({
 
 		for (var i = 0; i < group.permissions.length; i++) {
 			if(group.permissions[i] == page){
-				console.log(page);
 				return page;
 			}
 		};
