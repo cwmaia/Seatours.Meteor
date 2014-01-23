@@ -111,10 +111,9 @@ Template.overview.totalNotPaid = function(tripId, productId){
 	for (var i = 0; i < books.length; i++) {
 		transactions = Transactions.find({bookId : books[i]._id}).fetch();
 		for (var j = 0; j < transactions.length; j++) {
-			totalTransactions += parseInt(transactions[j].amount)
+			if(transactions[j].type != "Refound")
+				totalTransactions += parseInt(transactions[j].amount)
 		};
-		console.log(totalTransactions);
-		console.log(books[i].totalISK);
 		if(totalTransactions < books[i].totalISK){
 			total += books[i].totalISK - totalTransactions;
 		}
@@ -187,6 +186,17 @@ Template.overview.totalPassagers = function(id){
 	return persons;
 }
 
+Template.overview.lineColor = function(paid, bookStatus){
+	if(paid && bookStatus == "Booked"){
+		return 'green';
+	}else if(paid && bookStatus == 'Canceled'){
+		return 'orange';
+	}else{
+		return "red";
+	}
+	
+}
+
 
 Template.overview.events({
 	'click .quickPay' : function(event){
@@ -245,7 +255,7 @@ Template.overview.events({
 					'amount' : valueFees,
 					'detail' : "Cancelation Fee",
 					'vendor' : vendor,
-					'type' : 'Office Cash'
+					'type' : 'Refound'
 			}
 			Transactions.insert(transaction);
 
