@@ -94,7 +94,6 @@
 					<th>Telephone</th>
 					<th>Adress</th>
 					<th>Paid</th>
-					<th>Actions</th>
 				</tr>
 			</thead>
 				<tbody>
@@ -110,10 +109,6 @@
 							<td>{{telephone customerId}}</td>
 							<td>{{adress customerId}}</td>
 							<td>{{#if paid}} Yes {{else}} No {{/if}}</td>
-							<td>{{#if paid}} {{else}}
-									<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Edit"><i class="icon-money bigger-120"></i></a>
-								{{/if}}
-							</td>
 						</tr>
 					{{/each}}
 				</tbody>

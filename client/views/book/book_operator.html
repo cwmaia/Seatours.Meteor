@@ -181,6 +181,10 @@
 									<i class='icon-thumbs-down'></i>
 								</a>
 							{{/if}}
+							{{#if paid}} {{else}}
+								<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Edit"><i class="icon-money bigger-120"></i></a>
+							{{/if}}
+
 						</td>
 					</tr>
 				{{/each}}
