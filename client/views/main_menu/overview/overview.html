@@ -53,14 +53,12 @@
 										<td>{{totalPassagers _id}}</td>
 										<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
 										<td>
-											{{#if isBookCreated bookStatus}}
-												{{#if paid}}
-													<a href="" class="changeStatusBooking btn btn-mini btn-danger" title='Cancel Booking'>
-														<i class='icon-remove'></i>
-													</a>
-												{{else}}
-													<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
-												{{/if}}
+											{{#if paid}}
+												<a href="" class="changeStatusBooking btn btn-mini btn-danger" title='Cancel Booking'>
+													<i class='icon-remove'></i>
+												</a>
+											{{else}}
+												<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
 											{{/if}}
 										</td>
 									</tr>
