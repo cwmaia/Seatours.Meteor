@@ -16,12 +16,17 @@
 		{{/if}}
 
 		{{#if myBookings}}
-			→ <a class="myBookings" href="#">My Bookings</a>
+			→ <a class="myBookings" href="#">My Orders</a>
 			{{> myBookings}}
 		{{/if}}
 
+		{{#if myBookingsDetail}}
+			→ <a class="myBookings" href="#">My Orders</a> → <a class="myBookingsDetail" href="#">My Bookings</a>
+			{{> myBookingsDetail}}
+		{{/if}}
+
 		{{#if myVoucher}}
-			→ <a class="myBookings" href="#">My Bookings</a> → <a class="myVoucher" href="#">My Voucher</a>
+			→ <a class="myBookings" href="#">My Orders</a> → <a class="myBookingsDetail" href="#">My Bookings</a> -> <a class="myVoucher" href="#">My Voucher</a>
 			{{> myVoucher}}
 		{{/if}}
 

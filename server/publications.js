@@ -87,7 +87,7 @@ Meteor.publish('orders', function() {
           return null;
         }
      }else{
-        return Books.find();
+        return Orders.find();
      }
   }else{
     return null;
@@ -279,6 +279,13 @@ Meteor.methods({
   },
 
   insertBook : function(book){
+    if(!book.refNumber){
+      var refNumber = new Date().getTime().toString().substr(5);
+      while(Books.findOne({refNumber : refNumber})){
+          refNumber = new Date().getTime().toString().substr(5);
+      }
+      book.refNumber = refNumber;
+    }
     return Books.insert(book);
   },
 

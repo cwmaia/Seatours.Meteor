@@ -18,5 +18,14 @@ Template.myBookings.events({
 		Session.set("orderId", a.rel);
 		Session.set("paymentStep", true);
 		Template.externView.rendered();
+	},
+
+	'click .details' : function(event){
+		var a = event.currentTarget;
+		event.preventDefault();
+		cleanExternView();
+		Session.set("orderId", a.rel);
+		Session.set("myBookingsDetail", true);
+		Template.externView.rendered();
 	}
 })
