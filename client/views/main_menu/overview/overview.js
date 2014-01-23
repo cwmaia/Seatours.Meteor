@@ -201,7 +201,7 @@ Template.overview.events({
 					'amount' : currentBooking.totalISK,
 					'detail' : "Quick Paid",
 					'vendor' : vendor,
-					'type' : 'QuickPay'
+					'type' : 'Office Cash'
 				}
 			Transactions.insert(transaction);
 			Books.update(currentBooking._id, {$set : {'paid' : true}});

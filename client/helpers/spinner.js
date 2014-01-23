@@ -3,7 +3,6 @@ var target = '';
 
 
 SpinnerInit = function(){
-  console.log("aqui");
   target = document.getElementById('spin-in');
   spinner = new Spinner(opts).spin(target);
 }

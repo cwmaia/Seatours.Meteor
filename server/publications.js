@@ -63,7 +63,7 @@ Meteor.publish('books', function() {
      group = Groups.findOne({name : 'Customers'});
      if(user.profile.groupID == group._id){
         if(user.profile.customerId){
-          return Books.find({buyerId : user.profile.customerId});
+          return Books.find({buyerId : customerId});
         }else{
           return null;
         }
@@ -71,7 +71,7 @@ Meteor.publish('books', function() {
         return Books.find();
      }
   }else{
-    return null;
+    return Books.find({}, {fields: {dateOfBooking: 1, 'trip._id': 1, 'bookStatus' : 1, 'vehicle.extraSlot' : 1, 'product._id' : 1, 'vehicle.size' : 1}});
   }
 });
 
