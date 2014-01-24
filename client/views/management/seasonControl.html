@@ -1,31 +1,47 @@
-<template name="seasonControl">
+<template name='seasonControl'>
+	<article>
+	<div class="tabbable">
+		<ul class="nav nav-tabs" id="myTab">
+			<li class="active">
+				<a data-toggle="tab" href="#users">
+				<i class="green icon-leaf bigger-110"></i>
+					Seasons
+				</a>
+			</li>
+		</ul>
 
-<fieldset id='fieldsetUser'>
-	<legend>Season Control<span>&nbsp;&nbsp;</span><i class='icon-sun'/></legend>
-	<div class='line-2'>
+		<div class="tab-content">
+			<div class='line-2'>
+				<div id="users" class="tab-pane in active">
+					<fieldset id='fieldsetUser'>
+						<legend>Summer / Winter<span>&nbsp;&nbsp;</span>
+						</legend>
+							<div class='line-2'>
+								<div>
+									<label>Summer Start Date:</label>
+									<input type='text' id="summerStart" name="summerStart" class="datePickerWYear size1-3" value="{{currentSummer}}">
+								</div>
+								<div>
+								<label>Winter Start Date:</label>
+									<input type='text' id="winterStart" name="winterStart" class="datePickerWYear size1-3" value="{{currentWinter}}">
+								</div>
+							</div>
+							</fieldset>
+							<button class='btn btn-success saveSettings'>
+	                    		<i class="icon-ok"></i>
+	                    		Save Settings
+	                		</button>
+					</fieldset>
+					</div>
 
-		<div>
-			
-			<label>Summer start date: </label>
-			<input type='text' id="summerStart" name="summerStart" class="datePickerWYear size1-3" value="{{currentSummer}}">
+					<div>
+						<!-- TODO SEASON DATES -->
+					</div>
+				</div>
+				
+			</div>
+
+
 		</div>
-		<div>
-			
-			<label>Winter start date: </label>
-			<input type='text' id="winterStart" name="winterStart" class="datePickerWYear size1-3" value="{{currentWinter}}">
-		</div>
-	</div>
-
-	<div class='line-2'>
-		<div>
-			
-		</div>
-		<div>
-			<button class="btn btn-small btn-info saveSettings" >Save settings</button>
-		</div>
-	</div>
-
-</fieldset>
-
+    </article>
 </template>
-
