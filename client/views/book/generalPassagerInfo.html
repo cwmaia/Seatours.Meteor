@@ -49,7 +49,7 @@
 				</div>
 		        
 		        <div>
-		            <label class="required">Email: </label>
+		            <label class="required">Email: {{#if isCreatingExternalUser}}(This is also your username){{/if}} </label>
 		            <input type="email" id="email" name="email" placeholder="Email" required>
 		        </div>
 	            
@@ -116,4 +116,7 @@
 		    {{/if}}   
     	</fieldset>
     </form>
+    {{#if isCreateUserPage}}
+	<button class="btn btn-small btn-success createUser" type='submit' form='pasagerInfo'>Create User</button>
+	{{/if}}
 </template>

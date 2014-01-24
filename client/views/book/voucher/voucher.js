@@ -79,7 +79,14 @@ Template.voucher.format = function(date){
 }
 
 Template.voucher.qrCode = function(){
-	if(Session.get('bookId')){
+	if(Session.get('mailing')){
+    Book = Session.get('book');
+    var server = 'http://localhost:3000/'
+    var qrcodePath = 'images/qrcodes/'  + Book._id + '.gif';
+
+    Session.set("mailing", false);
+    return server+qrcodePath;
+  }else{
     var qrcodeTag = Meteor.call("generateQRCode", Session.get('bookId'), function(error, result){
     if(error){
           console.log(error.reason);
@@ -91,11 +98,6 @@ Template.voucher.qrCode = function(){
     });
     qrcodeTag = Session.get('_qrcodeTag');
     return qrcodeTag;
-  }else{
-    Book = Session.get('book');
-    var server = 'http://localhost:3000/'
-    var qrcodePath = 'images/qrcodes/'  + Book._id + '.gif';
-    return server+qrcodePath;
   }
 }
 
