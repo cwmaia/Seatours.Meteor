@@ -2,11 +2,12 @@
 
 Template.finishBookCustomer.rendered = function(){
 	if(isCustomerNotLogged()){
-		$('#fullName').val(Session.get('fullCustomerNameCreation'));
-		$("#email").val(Session.get('emailCustomerCreation'));
+		
 		books = CBasket.find({cartId: getCartId()}).fetch();
 		book = books[0];
 		customer = Customers.findOne(book.customerId);
+		$('#fullName').val(customer.fullName);
+		$("#email").val(customer.email);
 		$('#socialSecurityNumber').val(customer.socialSecurityNumber);
 		$('#title').val(customer.title);
 		$('#birthDate').val(customer.birthDate);
