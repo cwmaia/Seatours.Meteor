@@ -93,8 +93,8 @@ Meteor.Router.filters({
 
 	'checkPermision' : function(page){
 
-		if(!Meteor.user()){
-			return;
+		if(isCustomer()){
+			return page;
 		}
 
 

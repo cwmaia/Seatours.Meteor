@@ -46,6 +46,15 @@
 					{{/each}}
 				</select>
 			</div>
+			<div>
+				<label>Available for: </label>
+				<select id='groupTrip' required>
+					<option value=''>Select...</option>
+					{{#each groups}}
+						<option value='{{_id}}' {{#if groupProduct _id}} selected='true' {{/if}}>{{name}}</option>
+					{{/each}}
+				</select>
+			</div>
 		</div>
 	</form>
 
@@ -63,7 +72,7 @@
 				</div>
 
 				<div>
-					<label class="required">To:</label>
+					<label>To:</label>
 					<input type="text" name="to" id="to" placeholder="To">
 				</div>
 				
@@ -78,7 +87,13 @@
 				</div>
 			</div>
 
-			<div class='line-3'>
+			<label>
+	    		Available on Seasons:
+	    		<input id="seasonsCheckbox" type="checkbox" checked='checked' class="ace ace-switch ace-switch-6">
+	    		<span class='lbl'></span>
+	    	</label>
+
+			<div class='line-3' id='SeasonSelect'>
 				<div>
 					<label name='season' id='tripSeason' class="required">Season:</label>
 					<select required id='season'>
@@ -86,6 +101,17 @@
 						<option value="summer">Summer</option>
 						<option value="winter">Winter</option>
 					</select>
+				</div>
+			</div>
+
+			<div class='line-3' id='dateRangeSelect'>
+				<div>
+					<label name='season' id='starDate' class="required">Start Date:</label>
+					<input type='text' class='datepicker' id='dateStart'>
+				</div>
+				<div>
+					<label name='season' id='endDate' class="required">End Date:</label>
+					<input type='text' class='datepicker' id='dateEnd'>
 				</div>
 			</div>
 		
@@ -99,6 +125,8 @@
 					<th>To</th>
 					<th>Hour</th>
 					<th>Season</th>
+					<th>Start Date</th>
+					<th>End Date</th>
 					<th>Active</th>
 				</tr>
 			</thead>
@@ -109,7 +137,9 @@
 						<td>{{from}}</td>
 						<td>{{to}}</td>
 						<td>{{hour}}</td>
-						<td>{{season}}</td>
+						<td>{{seasonName season}}</td>
+						<td>{{datesBegin  season}}</td>
+						<td>{{datesEnd season}}</td>
 						<td>
 							{{#if active}}
 								<a class="removeTrip" id="{{_id}}"><i class='icon-check'></i></a>
@@ -144,6 +174,7 @@
 							<option selected value =''>Select...</option>
 							<option value="summer">Summer</option>
 							<option value="winter">Winter</option>
+							<option value='both'>Both</option>
 						</select>
 					</div>
 			</div>

@@ -73,9 +73,6 @@ Template.redirect.rendered = function(){
 			from: {
 				required: true
 			},
-			to: {
-				required: true
-			},
 			hour: {
 				required: true
 			},
