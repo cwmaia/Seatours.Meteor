@@ -38,10 +38,9 @@ body.navbar-fixed {
   padding: 0;
 }
 #page-content {
-  float: left;
   background: #ffffff;
-  width: 98%;
-  padding: 1%;
+  margin: 0;
+  padding: 8px 20px 24px;
 }
 #page-content .page-header:first-child {
   margin: 0 0 12px;
@@ -961,14 +960,26 @@ blockquote.pull-right {
   padding: 0 5px;
 }
 #sidebar {
-  float: left;
   width: 189px;
+  position: absolute;
   margin-left: 0;
   margin-top: 0;
   border-right: 1px solid #cccccc;
   background-color: #FFF;
 }
+#sidebar:before {
+  /* the grey background of sidebar */
 
+  content: "";
+  display: block;
+  width: 189px;
+  position: fixed;
+  bottom: 0px;
+  top: 0px;
+  z-index: -1;
+  background-color: #f2f2f2;
+  border-right: 1px solid #cccccc;
+}
 #sidebar.fixed {
   position: fixed;
   z-index: 14;
