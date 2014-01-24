@@ -1783,7 +1783,7 @@ var createBook = function(){
 			'to' 	: trip.to,
 			'hour' 	: trip.hour
 		},
-		"totalISK" : $("#totalISK").text(),
+		"totalISK" : parseInt($("#totalISK").text()),
 		'dateOfBooking' : date,
 		'bookStatus' : 'Booked',
 		'product' : (isCustomer()) ? Products.findOne(Session.get('productId')) : Product,
@@ -1825,6 +1825,10 @@ var createBook = function(){
 			localStorage.setItem('cartIdOperator', name);
 			book.cartId = name;
 		}
+		if (isOperator()) {
+			var operatorFee = Settings.findOne({_id: 'operatorFee'}).operatorFee;
+			book.totalISK = parseInt((book.totalISK + operatorFee).toFixed());
+		}
 
 		if(SaveCustomer){
 			var resultId = Customers.insert(customer);
@@ -1865,6 +1869,17 @@ var createBook = function(){
 			prices.push(price);
 		}
 	});
+
+	if (isOperator()) {
+		var operatorPrice = {
+			"price" : "Operator Fee",
+			"perUnit" : Settings.findOne({_id: 'operatorFee'}).operatorFee,
+			"persons" : "1",
+			"sum" : Settings.findOne({_id: 'operatorFee'}).operatorFee
+			}
+			
+			prices.push(operatorPrice);
+	}
 	
 	book.prices = prices;
 	book.paid = false;

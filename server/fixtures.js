@@ -1606,6 +1606,8 @@ if(PostCodes.find().count() == 0){
 					 '_id' : 'winter'});
 	Settings.insert({'onlineDiscount' : 10,
 					 '_id' : 'onlineDiscount'});
+	Settings.insert({'operatorFee' : 3000,
+					 '_id' : 'operatorFee'});
 }
 
 var callback = function(data){
