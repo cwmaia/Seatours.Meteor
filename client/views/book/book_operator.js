@@ -566,7 +566,7 @@ Template.bookOperator.rendered = function() {
 	var nowTemp = new Date();
 	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
 	localStorage.setItem('date', now);
-	//$('#currentSeason').text(currentSeason());
+	$('#currentSeason').text(currentSeason());
 };
 
 
