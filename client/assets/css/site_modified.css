@@ -626,7 +626,7 @@ a.img-round:hover {
   }
 }
 .header {
-  position: relative;
+  position: absolute;
   z-index: 50;
   margin: 0;
   text-align: center;
@@ -641,6 +641,10 @@ a.img-round:hover {
   -ms-backface-visibility: hidden;
   -o-backface-visibility: hidden;
   backface-visibility: hidden;
+}
+
+section{
+  padding-top: 120px;
 }
 
 .logo-seatours {
