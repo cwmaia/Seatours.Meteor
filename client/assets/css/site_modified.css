@@ -643,7 +643,7 @@ a.img-round:hover {
   backface-visibility: hidden;
 }
 
-section{
+.mainSec {
   padding-top: 120px;
 }
 
