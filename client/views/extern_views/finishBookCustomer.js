@@ -42,7 +42,7 @@ Template.finishBookCustomer.events({
 			while(Orders.findOne({refNumber : refNumber})){
 				refNumber = new Date().getTime().toString().substr(1);
 			}
-			Orders.insert({customerId: customerId, paid: false, refNumber: refNumber});
+			Orders.insert({customerId: customerId, paid: false, dateOrder: new Date(), refNumber: refNumber});
 			
 			//Save Books
 			for (var i = 0; i < books.length; i++) {
@@ -94,7 +94,7 @@ Template.finishBookCustomer.events({
 						while(Orders.findOne({refNumber : refNumber})){
 							refNumber = new Date().getTime().toString().substr(1);
 						}
-						Orders.insert({customerId: result, paid: false, refNumber: refNumber});
+						Orders.insert({customerId: result, paid: false, dateOrder: new Date(), refNumber: refNumber});
 						//Save Books
 						for (var i = 0; i < books.length; i++) {
 							delete books[i].cartId;

@@ -7,7 +7,7 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
   Orders.update(order._id, {$set: {paid : true}});
 
   for (var i = 0; i < books.length; i++) {
-    Books.update(books[i]._id, {$set : {paid : true, bookStatus : "Created"}});
+    Books.update(books[i]._id, {$set : {paid : true, bookStatus : "Booked"}});
     var transaction = {
       'bookId' : books[i]._id,
       'date' : new Date(),
@@ -19,9 +19,11 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
     }
     Transactions.insert(transaction);
   };
+  
+  //talvez escrever todo o html... eh... talve. tem que ver se funciona....
 
-  //do something with this
-  return [204, "No Content"];
+  return "<script>window.location='http://localhost:3000/myBookings/"+orderId+"'</script>";
+
 })
 
 Meteor.Router.add("/ReturnPageError", "POST", function(){

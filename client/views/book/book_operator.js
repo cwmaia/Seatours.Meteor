@@ -22,7 +22,7 @@ var updateDataPieChart = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
@@ -45,7 +45,7 @@ var updateDataPieChart = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
 
@@ -57,7 +57,7 @@ var updateDataPieChart = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
 
@@ -94,7 +94,7 @@ var getExtraSlotsSpace = function(trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
@@ -102,7 +102,7 @@ var getExtraSlotsSpace = function(trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
@@ -226,7 +226,7 @@ var doorMaxCapacity = function (trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
@@ -240,7 +240,7 @@ var doorMaxCapacity = function (trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
@@ -311,7 +311,7 @@ var checkSpaceExtra = function(size, trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
 
@@ -325,7 +325,7 @@ var checkSpaceExtra = function(size, trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
 
@@ -339,7 +339,7 @@ var checkSpaceExtra = function(size, trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
 
@@ -353,7 +353,7 @@ var checkSpaceExtra = function(size, trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
 
@@ -416,7 +416,7 @@ var countExtraSpace = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
 
@@ -425,7 +425,7 @@ var countExtraSpace = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
 
@@ -433,7 +433,7 @@ var countExtraSpace = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[1]
 	}).fetch();
 
@@ -442,7 +442,7 @@ var countExtraSpace = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[2]
 	}).fetch();
 
@@ -503,7 +503,7 @@ var checkHaveToOpenDoor = function(size, trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
@@ -511,7 +511,7 @@ var checkHaveToOpenDoor = function(size, trip){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
@@ -572,13 +572,14 @@ Template.bookOperator.rendered = function() {
 
 Template.productItem.rendered = function(){	
 	var nowTemp = new Date();
-	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate()-1, 0, 0, 0, 0);
+	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
 
 	$('.calendar').datepicker({
 		}).on('changeDate', function(ev){
+			console.log(ev);
 			date = new Date(ev.date);
 			with(date){
-				setDate(getDate() +1 );
+				setDate(getDate());
 				setHours(0);
 				setMinutes(0);
 				setSeconds(0);
@@ -713,10 +714,11 @@ Template.bookOperator.events({
 		var productId = $(event.currentTarget).parents('li')[0].id,
         select = $('#trip_' + productId);
 
-        if(BlockingDates.findOne({'blockedDay': '0'+(new Date(localStorage.getItem('date'))).toLocaleDateString() ,'tripId' : select.val(), 'blocked' : true})){
-				throwError("Trips not available for this day, please choose another day!");
+        var blocking = BlockingDates.findOne({'blockedDay': '0'+(new Date(localStorage.getItem('date'))).toLocaleDateString() ,'tripId' : select.val(), 'blocked' : true});
+        if(blocking){
+				throwError("Trips not available for this route. Reason: " + blocking.reason);
 				return;
-			}
+	    }
 
         if(select[0].checkValidity()){
 			Session.set('tripId',select.val());
@@ -795,7 +797,7 @@ Template.bookDetail.totalPersons = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created'
+		'bookStatus'	: 'Booked'
 	}).fetch();
 
 	for (var i = 0; i < books.length; i++) {
@@ -833,7 +835,7 @@ carsUpTo5 = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
@@ -869,7 +871,7 @@ var returnPersons = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 	}).fetch();
 
 	for (var i = 0; i < books.length; i++) {
@@ -933,7 +935,7 @@ carsUpto6 = function(){
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Created',
+		'bookStatus'	: 'Booked',
 		'vehicle.extraSlot' : extraSlots[0]
 	}).fetch();
 
@@ -950,7 +952,7 @@ var formBook = function(){
 	Session.set("isEditing", false);
 	Session.set("firstTime", false);
 	Session.set("categoryId", null);
-	var bookingsCreated = Books.find({dateOfBooking: new Date(localStorage.getItem('date')), 'product._id': Session.get('productId'), bookStatus: 'Created'});
+	var bookingsCreated = Books.find({dateOfBooking: new Date(localStorage.getItem('date')), 'product._id': Session.get('productId'), bookStatus: 'Booked'});
 	if(bookingsCreated.length >= MaxCapacity){
 		throwError('Maximum capacity of passengers reached!');	
 	}
@@ -1050,6 +1052,7 @@ Template.bookDetail.events({
 	}
 });
 
+
 Template.bookDetail.helpers({
 	boat: function() {
 		var boatId = Products.findOne({_id: Session.get('productId')}).boatId;
@@ -1085,7 +1088,7 @@ Template.bookDetail.helpers({
 	},
 
 	isBookCreated : function(status) {
-		return status == 'Created';
+		return status == 'Booked';
 	},
 
 	isBookingNotFull: function(totalPersons, boatCapacity) {
@@ -1107,7 +1110,17 @@ Template.bookDetail.helpers({
 	},
 
 	bookingsCreated : function(){
-		return Books.find({dateOfBooking: new Date(localStorage.getItem('date')), 'product._id': Session.get('productId'), bookStatus : "Created"});
+		return Books.find({dateOfBooking: new Date(localStorage.getItem('date')), 'product._id': Session.get('productId'), bookStatus : "Booked"});
+	},
+
+	lineColor : function(paid, bookStatus){
+		if(paid && bookStatus == "Booked"){
+			return 'green';
+		}else if(paid && bookStatus == 'Canceled'){
+			return 'orange';
+		}else{
+			return "red";
+		}
 	}
 });
 
@@ -1757,7 +1770,7 @@ var createBook = function(){
 		},
 		"totalISK" : $("#totalISK").text(),
 		'dateOfBooking' : date,
-		'bookStatus' : 'Created',
+		'bookStatus' : 'Booked',
 		'product' : (isCustomer()) ? Products.findOne(Session.get('productId')) : Product,
 	}
 	book.vehicle = vehicle;

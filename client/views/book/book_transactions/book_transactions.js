@@ -25,7 +25,7 @@ Template.bookTransactionsResume.events({
 		percentage = parseInt(percentage);
 
 		var book = Books.findOne({_id : Session.get('bookId')});
-		console.log("BOOking" + Session.get('bookId'));
+	
 		var amount = parseInt(book.totalISK * (percentage/100));
 
 
