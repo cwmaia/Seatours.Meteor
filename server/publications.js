@@ -240,6 +240,20 @@ Meteor.methods({
     });
   },
 
+  checkVerified : function(email){
+    user = Meteor.users.findOne({mainEmail : email});
+    if(user){
+       if(user.emails[0].verified){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
+   
+  },
+
   createAccount: function(user){
     Accounts.createUser(user);
   },
@@ -249,9 +263,10 @@ Meteor.methods({
     var customerId = 0;
 
     
-    user.profile = {'groupID': group._id, 'name' : userData.fullName};
+    user.profile = {'groupID': group._id, 'name' : userData.fullName, 'mainEmail' : user.email};
     
     var userId = Accounts.createUser(user);
+    Accounts.sendVerificationEmail(userId, user.email);
     
     customer = Customers.findOne({socialSecurityNumber : userData.socialSecurityNumber});
     
@@ -283,10 +298,11 @@ Meteor.methods({
     var base64 = blob;
     fs.writeFile(nameAndPath, base64, encoding, function(err) {
       if (err) {
-          console.log(err);  
+          return err; 
+        }else{
+          return true;
         } 
     });
-    return false;
     }, 
  
 

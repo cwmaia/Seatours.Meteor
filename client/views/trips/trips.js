@@ -134,13 +134,14 @@ Template.editTrip.events({
 					_product.availableFor = $('#groupTrip').val();
 					_product.imageName = file.name;
 
-					Meteor.call('saveFile', e.target.result, file.name);
+					
 					Products.update(_product._id, {$set : {name : _product.name, boatId: _product.boatId, availableFor: $('#groupTrip').val(), imageName: file.name}});
 					throwSuccess(_product.name + ' edited');
+					Meteor.call('saveFile', e.target.result, file.name);
 					Meteor.Router.to('/trips')
 				}
 
-				reader.readAsDataURL(file);
+				reader.readAsBinaryString(file);
 				
 			}else{
 				var reader = new FileReader();
@@ -155,11 +156,11 @@ Template.editTrip.events({
 						availableFor : $('#groupTrip').val(),
 						imageName : file.name
 					}
-					console.log(e.target.result);
-					Meteor.call('saveFile', e.target.result, file.name);
+					
 					Products.insert(product);
 					Meteor.Router.to('/trips')
 					throwSuccess(product.name + ' saved');
+					Meteor.call('saveFile', e.target.result, file.name);
 				}
 				
 				reader.readAsBinaryString(file);

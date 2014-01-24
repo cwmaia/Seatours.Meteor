@@ -387,9 +387,7 @@ var checkSpaceExtra = function(size, trip){
 	freeSpaceSlot1 = parseInt(extraSpace.extraSpace1 - sumSpacesSlot1);
 	freeSpaceSlot2 = parseInt(extraSpace.extraSpace2 - sumSpacesSlot2);
 
-	console.log(size);
-	console.log(freeSpaceSlot1);
-	console.log(freeSpaceSlot2);
+
 	
 	if(size <= freeSpaceSlot1){
 		return extraSlots[1];
@@ -576,7 +574,6 @@ Template.productItem.rendered = function(){
 
 	$('.calendar').datepicker({
 		}).on('changeDate', function(ev){
-			console.log(ev);
 			date = new Date(ev.date);
 			with(date){
 				setDate(getDate());
@@ -2139,10 +2136,8 @@ function drawPieChartBoatSlots() {
 }
 
 var checkIfCarsFits = function(size){
-	console.log('aqui');
+
 	var trip = Trips.findOne(Session.get('tripId'));
-	console.log(trip);
-	console.log(size);
 	ExtraSlot = null;
 	CanSaveTheBook = true;
 	if(size <= 6){
@@ -2153,7 +2148,6 @@ var checkIfCarsFits = function(size){
 		//If the door has reached the max capacity, there is no space on the boat for the
 		//car based on his size
 		maxCapacity = doorMaxCapacity(trip);
-		console.log(showAlert);
 		if(showAlert){
 			var result = confirm("There is no space on the boat. Place on the Door?");
 			if(result){
@@ -2204,7 +2198,6 @@ var checkIfCarsFits = function(size){
 			result = true;
 		if(result){
 			fits = checkSpaceExtra(size, trip);
-			console.log(fits);
 			if(fits){
 				ExtraSlot = fits;
 				CanSaveTheBook = true;
