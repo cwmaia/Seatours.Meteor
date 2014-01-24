@@ -63,20 +63,25 @@ Template.editBoat.events({
 
 		if(form.checkValidity()){
 			
-			_boat.name = form.name.value;
-			_boat.maxCapacity = form.maxCapacity.value;
-
-			Session.set("_boat", null);
-			
-			if(!_boat._id)
-				Boats.insert(_boat);
-			else
+			_boat = Boats.findOne(Session.get('boatId'));
+			if(_boat){
+				_boat.name = form.name.value;
+				_boat.maxCapacity = form.maxCapacity.value;
 				Boats.update(_boat._id, {$set : {maxCapacity: _boat.maxCapacity, name: _boat.name}});
-
-			throwSuccess("The Boat has been saved");
-			Meteor.Router.to('/boats')
+				throwSuccess("The Boat has been updated");
+				Meteor.Router.to('/boats')
+			}else{
+				boat = {
+					name : form.name.value,
+					maxCapacity : form.maxCapacity.value
+				}
+				Boats.insert(boat);
+				throwSuccess("The Boat has been saved");
+				Meteor.Router.to('/boats')
+			}
 		}
 	}
+	
 	
 });
 ////////////////////////////////////////////////////

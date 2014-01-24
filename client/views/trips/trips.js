@@ -12,6 +12,15 @@ Template.editTrip.groups = function(){
 	return Groups.find();
 }
 
+Template.editTrip.boatFind = function(id){
+	product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
+	if(product){
+		return product.boatId == id;
+	}else{
+		return false;
+	}
+}
+
 Template.editTrip.groupProduct = function(id){
 	product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
 	if(product){
@@ -70,18 +79,15 @@ Template.editTrip.rendered = function() {
 	});
 	$("#dateRangeSelect").hide();
 	$(".datepicker").datepicker();
+	if(Products.findOne(Session.get('tripId'))){
+		$("#productTabs").show();
+	}else{
+		$("#productTabs").hide();
+	} 
 }
 
 Template.editTrip.boats = function() {
 	return Boats.find();
-}
-
-Template.editTrip.equalBoatId = function(id) {
-	product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
-	if(product)
-		return product.boatId == id;
-	else
-		return false;
 }
 
 Template.editTrip.helpers({
