@@ -6,6 +6,7 @@ Template.blockDatesList.dates = function(){
 
 Template.blockDatesList.trip = function(id){
 	trip =  Trips.findOne({_id: id});
+	console.log(trip);
 	return trip.from +" "+ trip.to+" "+trip.hour;
 }
 
@@ -31,26 +32,38 @@ Template.blockingDates.events({
 	'change #trip' : function(event){
 		event.preventDefault();
 		Session.set("tripSelected", true);
-		$("#dayBlocked").removeAttr('disabled');
 		Template.blockingDates.rendered();
 	},
 	'change #reason' : function(){
 		$("#blockButton").removeAttr('disabled');
 	},
 	'click #blockButton' : function(event){
+
+		if(!$('#tripBlockDate').val()){
+			throwError('Please Inform the Trip');
+			return;
+		}
+
+		if(!$('#dayBlocked').val()){
+			throwError('Please Inform the Day');
+			return;
+		}
+
+		if(!$('#reasonBlock').val()){
+			throwError('Please Inform the Reason');
+			return;
+		}
 		event.preventDefault();
 		var blockDate = {
-			'tripId' : $('#trip').val(),
+			'tripId' : $('#tripBlockDate').val(),
 			'blockedDay' : $('#dayBlocked').val(),
-			'reason' : $('#reason').val(),
+			'reason' : $('#reasonBlock').val(),
 			'user' : Meteor.user().profile.name
 		}
 		
 		BlockingDates.insert(blockDate);
 		
-		$("#dayBlocked").attr('disabled','disabled');
-		$("#reason").attr('disabled','disabled');
-		$("#blockButton").attr('disabled','disabled');
+
 		$("#dayBlocked").val('');
 		$("#reason").val('');
 

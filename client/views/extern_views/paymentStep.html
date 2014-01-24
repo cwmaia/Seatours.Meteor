@@ -47,12 +47,7 @@
 			value="http://somedomain.is/ReturnPageCancel.aspx" /><br> 
 			<input type="hidden" size=100 name="returnurlerror" 
 			value="http://localhost:3000/ReturnPageError" /><br>
-			{{#each cbasketBooks}} 
-				<input type="hidden" name="itemdescription_0" value="Seatours Ticket: {{product.name}} - From {{trip.from}} {{#if hasTo}} To {{trip.to}} {{/if}} {{trip.hour}}" /><br> 
-				<input type="hidden" name="itemcount_0" value="1" /><br> 
-				<input type="hidden" class="amountBorgun" name="itemunitamount_0" value="{{totalISK}}" /><br> 
-				<input type="hidden" class="amountBorgun" name="itemamount_0" value="{{totalISK}}" /><br>
-			{{/each}} 
+			{{{basket}}}
 			<input type="hidden" class="amountBorgun" name="amount" value="{{totalCustomer}}" /><br> 
 			<input type="hidden" name=" pagetype " value="0" /><br> 
 			<input type="hidden" name=" skipreceiptpage " value="0" /><br> 

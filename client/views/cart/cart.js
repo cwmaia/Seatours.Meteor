@@ -9,6 +9,10 @@ Template.cart.hasItems = function(){
 	return false;
 }
 
+Template.items.hasTo = function(){
+	return this.trip.to;
+}
+
 Template.items.notFinish = function(){
 	return !Session.get('paymentStep');
 }

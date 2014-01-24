@@ -714,9 +714,9 @@ Template.bookOperator.events({
 		var productId = $(event.currentTarget).parents('li')[0].id,
         select = $('#trip_' + productId);
 
-        var blocking = BlockingDates.findOne({'blockedDay': '0'+(new Date(localStorage.getItem('date'))).toLocaleDateString() ,'tripId' : select.val(), 'blocked' : true});
+        var blocking = BlockingDates.findOne({'blockedDay': '0'+(new Date(localStorage.getItem('date'))).toLocaleDateString() ,'tripId' : select.val()});
         if(blocking){
-				throwError("Trips not available for this route. Reason: " + blocking.reason);
+				throwError("Trips not available for this route. Please Select Another Day");
 				return;
 	    }
 
