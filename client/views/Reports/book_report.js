@@ -71,7 +71,7 @@ Template.financialReport.helpers({
 		for (var i = 0; i < books.length; i++) {
 			transactions = Transactions.find({bookId : books[i]._id}).fetch();
 			for (var j = 0; j < transactions.length; j++) {
-				total = parseInt(transactions[j].amount);
+				total += parseInt(transactions[j].amount);
 			};
 		};
 
@@ -144,7 +144,7 @@ Template.financialReport.helpers({
 			transactions = Transactions.find({bookId : books[i]._id}).fetch();
 			for (var j = 0; j < transactions.length; j++) {
 				if(transactions[j].type == 'Credit Card'){
-					total = parseInt(transactions[j].amount)
+					total += parseInt(transactions[j].amount)
 				}
 			};
 		};
@@ -168,7 +168,7 @@ Template.financialReport.helpers({
 			transactions = Transactions.find({bookId : books[i]._id}).fetch();
 			for (var j = 0; j < transactions.length; j++) {
 				if(transactions[j].type == 'Cash Office'){
-					total = parseInt(transactions[j].amount)
+					total += parseInt(transactions[j].amount)
 				}
 			};
 		};
