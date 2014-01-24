@@ -40,6 +40,22 @@ isCustomer = function(){
   	return true;
 }
 
+isOperator = function(){
+	if(Meteor.user()){
+		try{
+			if(Groups.findOne({'_id': Meteor.user().profile.groupID}).name == "Vendors"){
+  			return true;
+  		}
+      		return false;
+		}catch(err){
+			console.log(err.message);
+			return false;
+		}
+  		
+  	}
+  	return false;
+}
+
 isCustomerLogged = function(){
 	if(Meteor.user()){
 		try{

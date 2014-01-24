@@ -184,6 +184,7 @@ var sendMail = function(book, result, customer){
     Session.set("mailing", true);
     Session.set("customer", customer);
 	var html = Template.voucher({book: book, customer: customer});
+
 	Meteor.call('sendEmailHTML', customer.email, "noreply@seatours.is", "Your Voucher at Seatours!", html);
 
 }
