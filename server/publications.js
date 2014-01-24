@@ -277,6 +277,19 @@ Meteor.methods({
 
   },
 
+  saveFile: function(blob, name, path, encoding) {
+    var fs = Npm.require('fs'), encoding ='binary';
+    var nameAndPath = '../../../../../public/images/' + name ;
+    var base64 = blob;
+    fs.writeFile(nameAndPath, base64, encoding, function(err) {
+      if (err) {
+          console.log(err);  
+        } 
+    });
+    return false;
+    }, 
+ 
+
   insertBook : function(book){
     if(!book.refNumber){
       var refNumber = new Date().getTime().toString().substr(5);
@@ -325,3 +338,13 @@ Meteor.methods({
   }
 
 });
+
+function cleanPath(str) {
+  if (str) {
+    return str.replace(/\.\./g,'').replace(/\/+/g,'').
+      replace(/^\/+/,'').replace(/\/+$/,'');
+  }
+}
+function cleanName(str) {
+  return str.replace(/\.\./g,'').replace(/\//g,'');
+}

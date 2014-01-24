@@ -111,6 +111,7 @@ Template.editTrip.helpers({
 	}
 });
 
+
 Template.editTrip.events({
 	'submit #productForm' : function(event) {
 		event.preventDefault();
@@ -118,24 +119,50 @@ Template.editTrip.events({
 
 		if(form.checkValidity()){
 
+			
 			_product = Products.findOne(Session.get('tripId'));
 			if(_product){
-				_product.name = form.name.value;
-				_product.boatId = form.boat.selectedOptions[0].value;
-				_product.availableFor = $('#groupTrip').val();
 
-				Products.update(_product._id, {$set : {name : _product.name, boatId: _product.boatId, availableFor: $('#groupTrip').val()}});
-				Meteor.Router.to('/trips')
-			throwSuccess(_product.name + ' edited');
-			}else{
-				product = {
-					name : form.name.value,
-					boatId : form.boat.selectedOptions[0].value,
-					availableFor : $('#groupTrip').val()
+				var reader = new FileReader();
+
+				fileInput = form.productImage;
+				file = fileInput.files[0];
+
+				reader.onload = function(e){
+					_product.name = form.name.value;
+					_product.boatId = form.boat.selectedOptions[0].value;
+					_product.availableFor = $('#groupTrip').val();
+					_product.imageName = file.name;
+
+					Meteor.call('saveFile', e.target.result, file.name);
+					Products.update(_product._id, {$set : {name : _product.name, boatId: _product.boatId, availableFor: $('#groupTrip').val(), imageName: file.name}});
+					throwSuccess(_product.name + ' edited');
+					Meteor.Router.to('/trips')
 				}
-				Products.insert(product);
-				Meteor.Router.to('/trips')
-				throwSuccess(product.name + ' saved');
+
+				reader.readAsDataURL(file);
+				
+			}else{
+				var reader = new FileReader();
+
+				fileInput = form.productImage;
+				file = fileInput.files[0];
+
+				reader.onload = function(e){
+					product = {
+						name : form.name.value,
+						boatId : form.boat.selectedOptions[0].value,
+						availableFor : $('#groupTrip').val(),
+						imageName : file.name
+					}
+					console.log(e.target.result);
+					Meteor.call('saveFile', e.target.result, file.name);
+					Products.insert(product);
+					Meteor.Router.to('/trips')
+					throwSuccess(product.name + ' saved');
+				}
+				
+				reader.readAsBinaryString(file);
 			}
 			
 				
