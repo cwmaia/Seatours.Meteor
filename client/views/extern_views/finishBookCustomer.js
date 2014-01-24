@@ -4,6 +4,20 @@ Template.finishBookCustomer.rendered = function(){
 	if(isCustomerNotLogged()){
 		$('#fullName').val(Session.get('fullCustomerNameCreation'));
 		$("#email").val(Session.get('emailCustomerCreation'));
+		books = CBasket.find({cartId: getCartId()}).fetch();
+		book = books[0];
+		customer = Customers.findOne(book.customerId);
+		$('#socialSecurityNumber').val(customer.socialSecurityNumber);
+		$('#title').val(customer.title);
+		$('#birthDate').val(customer.birthDate);
+		$('#telephoneCode').val(customer.telephoneCode);
+		$('#telephone').val(customer.telephone);
+		$('#adress').val(customer.adress);
+		$('#city').val(customer.city);
+		$('#state').val(customer.state);
+		$('#postcode').val(customer.postcode);
+		$('#country').val(customer.country);
+
 	}
 }
 
@@ -44,7 +58,7 @@ Template.finishBookCustomer.events({
 			}
 			Orders.insert({customerId: customerId, paid: false, dateOrder: new Date(), refNumber: refNumber});
 			
-			//Save Books
+			//Save Bookings
 			for (var i = 0; i < books.length; i++) {
 				delete books[i].cartId;
 				books[i].buyerId = customerId;
@@ -123,6 +137,7 @@ Template.finishBookCustomer.events({
 					}
 				})		
 			}else{
+				throwError("Some informations are wrong, please fix them. (Forgot something?)");
 				$('#pasagerInfo').submit(function(event){
 					event.preventDefault();
 				});

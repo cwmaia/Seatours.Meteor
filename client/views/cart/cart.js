@@ -59,6 +59,10 @@ Template.cart.total = function(){
 
 }
 
+Template.items.dateNoTimeZone = function(date){ 
+	return date.toLocaleDateString();
+}
+
 Template.cart.totalCustomer = function(){
 	var carts = CBasket.find({cartId : getCartId()}).fetch();
 	var total = 0;
@@ -164,6 +168,7 @@ var calcTotalItems = function(){
 }
 
 var sendMail = function(book, result, customer){
+
 	var prices = '';
 	for (var i = 0; i < book.prices.length; i++) {
 		prices += book.prices[i].prices + " - " + book.prices[i].persons + " X " + book.prices[i].perUnit + " = " +  book.prices[i].sum + " ISK <br/>";
@@ -174,14 +179,11 @@ var sendMail = function(book, result, customer){
 		vehicle = book.vehicle.category +" - "+ book.vehicle.size+ "m = " + book.vehicle.totalCost + " ISK";
 	}
 
-	var qrcodeTag = "";
-	 Meteor.call("generateQRCodeGIF", result);
-
-    Session.set("qrCode", qrcodeTag);
+	Meteor.call("generateQRCodeGIF", result);
     Session.set("book", book);
+    Session.set("mailing", true);
     Session.set("customer", customer);
-
-	var html = Template.voucher();
+	var html = Template.voucher({book: book, customer: customer});
 	Meteor.call('sendEmailHTML', customer.email, "noreply@seatours.is", "Your Voucher at Seatours!", html);
 
 }

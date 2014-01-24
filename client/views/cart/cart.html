@@ -28,12 +28,12 @@
 			{{/if}}	
 		</tbody>
 		<tfoot>
-			<td>Sum</td>
+			<td>Total</td>
 			<td></td>
 			{{#if customer}}
-				<td>kr <spam id='total'>{{totalCustomer}}</span></td>
+				<td><spam id='total'>{{totalCustomer}}</span> ISK</td>
 			{{else}}
-				<td>kr <spam id='total'>{{total}}</span></td>
+				<td><spam id='total'>{{total}}</span> ISK</td>
 			{{/if}}
 		</tfoot>
 	</table>
@@ -45,8 +45,8 @@
 <template name="items">
 	<tr>
 		<input type='hidden' id='{{totalISK}}' class='unitPrice'>
-		<td style='width: 70%'>{{product.name}} - {{dateOfBooking}}</br> <b>From</b> {{trip.from}} {{#if hasTo}}<b>To</b> {{trip.to}}{{/if}} <br/><b>Hour</b> {{trip.hour}}</br></br>{{customerName customerId}}</br></br>{{#each prices}}{{price}} (kr {{perUnit}}) X {{persons}} = kr {{sum}}</br>{{/each}}</br>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m = kr {{vehicle.totalCost}}{{/if}}</td>
+		<td style='width: 70%'>{{product.name}} - {{dateNoTimeZone dateOfBooking}}</br> <b>From</b> {{trip.from}} {{#if hasTo}}<b>To</b> {{trip.to}}{{/if}} <br/><b>Hour</b> {{trip.hour}}</br></br>{{customerName customerId}}</br></br>{{#each prices}}{{price}} ( {{perUnit}} ISK) X {{persons}} = {{sum}} ISK</br>{{/each}}</br>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m =  {{vehicle.totalCost}} ISK{{/if}}</td>
 		{{#if notFinish}}<td style='width: 5%; text-align: center'><a class='remove btn btn-mini btn-danger' rel='{{_id}}'><i class='icon-remove'></i></a></td>{{/if}}
-		<td style='width: 10%; text-align: center'>kr <span id='{{_id}}' class='calcTotal'>{{totalISK}}</span><br/>{{#if customer}}{{discount}}% Off{{/if}}</td>
+		<td style='width: 10%; text-align: center'> <span id='{{_id}}' class='calcTotal'>{{totalISK}}</span><br/>{{#if customer}}{{discount}}% Off{{/if}}</td>
 	</tr>
 </template>

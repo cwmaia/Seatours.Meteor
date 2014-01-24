@@ -1469,7 +1469,7 @@ li [class*=" icon-"],
 }
 /** buttons */
 .btn {
-  display: inline-block;
+  display: table-cell;
   color: #FFF !important;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
   background-image: none !important;
