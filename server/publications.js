@@ -312,7 +312,7 @@ Meteor.methods({
     qr.addData(id);
     qr.make();
     var gif = qr.createGif(4);
-   // saveQRCode(gif,""+id)
+    //saveQRCode(gif,""+id)
   },
 
   getBookById: function(bookId){
