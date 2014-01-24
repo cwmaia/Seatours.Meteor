@@ -18,7 +18,7 @@
 							<div class='line-2'>
 								<div>
 									<label class="required">Trip: </label>
-										<select id="trip" required>
+										<select id="tripBlockDate" required>
 											<option value="">Select..</option>
 												{{#each trips}}
 											<option value="{{_id}}">{{from}} - {{to}} - {{hour}}</option>
@@ -29,17 +29,17 @@
 
 							<div>
 								<label class="required">Day: </label>
-								<input type='text' id="dayBlocked" disabled="disabled" name="dayBlocked" class="datePickerWYear size1-2">
+								<input type='text' id="dayBlocked" name="dayBlocked" class="datePickerWYear size1-2">
 							</div>
 
 
 							<label class="required">Reason: </label>
-							<textarea form="blockingDates" id="reason" disabled="disabled" rows="2" name="reason" style="resize: none;" />
+							<textarea form="blockingDates" id="reasonBlock" rows="2" name="reason" style="resize: none;" />
 
 							
 							</fieldset>
 
-							<input id="blockButton" type="submit" name="save" class="btn btn-danger btn-small" value="Block" disabled="disabled" />
+							<input id="blockButton" type="submit" name="save" class="btn btn-danger btn-small" value="Block" />
 					</div>
 
 					<div>
