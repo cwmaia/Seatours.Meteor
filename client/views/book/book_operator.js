@@ -1024,9 +1024,10 @@ Template.bookDetail.events({
 					'amount' : valueFees,
 					'detail' : "Cancelation Fee",
 					'vendor' : vendor,
-					'type' : 'Refound'
+					'type' : 'CancelationFine'
 			}
 			Transactions.insert(transaction);
+
 
 			var thisBookingTransactions = Transactions.find({'bookId' : id}).fetch();
 			var totalTransactions = 0;
@@ -1035,6 +1036,17 @@ Template.bookDetail.events({
 			};
 			Books.update(id, {$set : {bookStatus: 'Canceled'}});
 			
+			var transactionRefund = {
+					'bookId' : id,
+					'date' : dateToday,
+					'status' : 'Given',
+					'amount' :  parseInt(book.totalISK) + valueFees,
+					'detail' : "Refund provinent from a Cancelation",
+					'vendor' : vendor,
+					'type' : 'Refund'
+			}
+			Transactions.insert(transactionRefund);
+
 			throwInfo("Cancelation completed! Customer need to be refunded in "+totalTransactions+"ISK. *Cancelation fee already included");
 			
 	}
