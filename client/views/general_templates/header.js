@@ -124,6 +124,10 @@ Template.header.events({
 		$('.profile').show();
 		Template.externView.rendered();
 	},
+	'click .login-button' : function(event){
+		cleanExternView();
+		$("#loginArea").hide();
+	},
 
 	'click .testePOST' : function(){
 		orderId = localStorage.getItem('orderIDTeste')
