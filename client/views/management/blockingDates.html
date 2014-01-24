@@ -25,31 +25,25 @@
 												{{/each}}
 										</select>
 								</div>
-								<div>
-								<label class="required">Day: </label>
-									<input type='text' id="dayBlocked" disabled="disabled" name="dayBlocked" class="datePickerWYear size1-2">
-								</div>
 							</div>
 
-							<div class='line-2'>
-								<div>
-									<label class="required">Reason: </label>
-									<textarea form="blockingDates" id="reason" disabled="disabled" rows="2" name="reason" style="resize: none;" />
-								</div>
-							</div>							
-							
-							<div class='line-2'>
+							<div>
+								<label class="required">Day: </label>
+								<input type='text' id="dayBlocked" disabled="disabled" name="dayBlocked" class="datePickerWYear size1-2">
 							</div>
+
+
+							<label class="required">Reason: </label>
+							<textarea form="blockingDates" id="reason" disabled="disabled" rows="2" name="reason" style="resize: none;" />
+
 							
 							</fieldset>
 
 							<input id="blockButton" type="submit" name="save" class="btn btn-danger btn-small" value="Block" disabled="disabled" />
-					</fieldset>
 					</div>
 
 					<div>
-						<!-- Replace list -->
-						{{> usersList}}
+						{{> blockDatesList}}
 					</div>
 				</div>
 				
@@ -60,54 +54,33 @@
     </article>
 </template>
 
+<template name='blockDatesList'>
+	<fieldset>
+		<legend>Blocked Dates<span>&nbsp;&nbsp;</span><i class='icon-calendar'/></legend>
+		<table class='table table-striped table-bordered table-hover' id='blockedDateTable'>
+			<thead>
+				<tr>
+					<th>Blocked Date</th>
+					<th>Reason</th>
+					<th>Who Blocked</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each dates}}
+					<tr>
+						<td>{{blockedDay}} - {{trip tripId}}</td>
+						<td>{{reason}}</td>
+						<td>{{user}}</td>
+						<td>
+							<a class="btn btn-mini btn-danger removeDate" title="Remove" rel='{{_id}}'>
+							<i class="icon-trash bigger-120"></i></a>
+						</td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</fieldset>
+</template>
 
 
-
-
-<!--   OLD CODE , PLEASE DELETE WHAT WE DONT NEED 
-	
-<template name="blockingDates">
-
-	<form id="blockingDates" method="post" novalidate>
-		<div class="line-3">
-
-			<div>
-				<label class="required">Trip:</label>
-				<select id="trip" required>
-					<option value="">Select..</option>
-					{{#each trips}}
-						<option value="{{_id}}">{{from}} - {{to}} - {{hour}}</option>
-					{{/each}}
-				</select>
-
-				<label class="required">Day:</label>
-				<input type='text' id="dayBlocked" disabled="disabled" name="dayBlocked" class="datePickerWYear size1-3">
-
-				<label class="required">Reason:</label>
-				<textarea form="blockingDates" id="reason" disabled="disabled" rows="4" name="reason" style="resize: none;" />
-
-
-			</div>
-
-			<div>
-				<div id="listDates"> 
-					<fieldset>
-						<legend>Current Blocked dates<span>&nbsp;&nbsp;</span></legend>
-						<table class='table table-striped table-bordered table-hover' id='blockedDates'>
-							<tbody>
-								{{#each block}}
-									<tr>
-										<td>{{blockedDay}}</td>
-									</tr>
-								{{/each}}
-							</tbody>
-						</table>
-					</fieldset>
-				</div>
-			</div>
-
-		</div>
-
-		<input id="blockButton" type="submit" name="save" class="btn btn-success btn-small" value="Save" disabled="disabled" />
-	</form>
-</template> -->

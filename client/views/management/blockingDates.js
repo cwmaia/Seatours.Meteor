@@ -1,16 +1,16 @@
 var _trip = {};
 
+Template.blockDatesList.dates = function(){
+	return BlockingDates.find();
+}
+
+Template.blockDatesList.trip = function(id){
+	trip =  Trips.findOne({_id: id});
+	return trip.from +" "+ trip.to+" "+trip.hour;
+}
+
 Template.blockingDates.rendered = function() {
-	$(".datePickerWYear").datepicker().on(
-		'changeDate', function(ev){
-			$("#reason").removeAttr('disabled');
-			if (BlockingDates.findOne({'tripId' : $('#trip').val(), 'blockedDay' : $('#dayBlocked').val() , 'blocked' : true})){
-				$('#blockButton').val('Unblock');
-			}else{
-				$('#blockButton').val('Block');
-			}
-		});
-	$("#usersTable").dataTable();
+	$(".datePickerWYear").datepicker();
 }
 
 Template.blockingDates.helpers({
@@ -19,15 +19,13 @@ Template.blockingDates.helpers({
 	}
 });
 
-Template.blockingDates.block = function(){
-	if(Session.get("tripSelected")){
-		var todayDate = new Date();
-		var dateString = '0' + (todayDate.getMonth() + 1) + '/' + todayDate.getDate() + '/' + todayDate.getFullYear();
-		console.log(BlockingDates.find({'blockedDay': {$gte: dateString},'tripId' : $('#trip').val(), 'blocked' : true}).fetch());
-		return BlockingDates.find({'tripId' : $('#trip').val(), 'blocked' : true}).fetch();
+Template.blockDatesList.events({
+	'click .removeDate' : function(event){
+		var a = event.currentTarget;
+		BlockingDates.remove({_id: a.rel});
+		throwSuccess('Blocked Date Removed');
 	}
-	return null;
-}
+})
 
 Template.blockingDates.events({
 	'change #trip' : function(event){
@@ -45,23 +43,16 @@ Template.blockingDates.events({
 			'tripId' : $('#trip').val(),
 			'blockedDay' : $('#dayBlocked').val(),
 			'reason' : $('#reason').val(),
-			'blocked' : true
+			'user' : Meteor.user().profile.name
 		}
-		if (BlockingDates.findOne({'tripId' : $('#trip').val(), 'blockedDay' : $('#dayBlocked').val() , 'blocked' : true})){
-				var current = BlockingDates.findOne({'tripId' : $('#trip').val(), 'blockedDay' : $('#dayBlocked').val() , 'blocked' : true});
-				BlockingDates.update(current._id, {$set : {blocked : false}});
-		} else if (BlockingDates.findOne({'tripId' : $('#trip').val(), 'blockedDay' : $('#dayBlocked').val() , 'blocked' : false})){
-				var current = BlockingDates.findOne({'tripId' : $('#trip').val(), 'blockedDay' : $('#dayBlocked').val() , 'blocked' : false});
-				BlockingDates.update(current._id, {$set : {blocked : true}});
-		}else{
-			BlockingDates.insert(blockDate);
-		}
+		
+		BlockingDates.insert(blockDate);
+		
 		$("#dayBlocked").attr('disabled','disabled');
 		$("#reason").attr('disabled','disabled');
 		$("#blockButton").attr('disabled','disabled');
 		$("#dayBlocked").val('');
 		$("#reason").val('');
-		$("#blockButton").val('Save');
 
 		Session.set("tripSelected", false);
 	}

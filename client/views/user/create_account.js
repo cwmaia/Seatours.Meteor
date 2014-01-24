@@ -63,7 +63,7 @@ Template.createAccount.groups = function(){
 }
 
 Template.usersList.rendered = function(){
-	$("#usersTable").dataTable();
+	
 
 		
 }
