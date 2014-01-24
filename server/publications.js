@@ -7,7 +7,7 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
   Orders.update(order._id, {$set: {paid : true}});
 
   for (var i = 0; i < books.length; i++) {
-    Books.update(books[i]._id, {$set : {paid : true, bookStatus : "Created"}});
+    Books.update(books[i]._id, {$set : {paid : true, bookStatus : "Booked"}});
     var transaction = {
       'bookId' : books[i]._id,
       'date' : new Date(),

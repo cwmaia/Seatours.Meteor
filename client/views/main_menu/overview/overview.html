@@ -43,7 +43,7 @@
 								</thead>
 								<tbody>	
 								{{#each bookings productId _id}}
-									<tr id='{{_id}}' class='{{#if paid}} green {{else}} red {{/if}}'>
+									<tr id='{{_id}}' class='{{lineColor paid bookStatus}}'>
 										<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
 										<td>{{fullname customerId}}</td>
 										<td>{{vehicle.vehicleName}}</td>
@@ -54,7 +54,7 @@
 										<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
 										<td>
 											{{#if paid}}
-												<a href="" class="changeStatusBooking btn btn-mini btn-danger" title='Cancel Booking'>
+												<a href="" class="changeStatusBooking btn btn-mini btn-danger" rel="{{_id}}" title='Cancel Booking'>
 													<i class='icon-remove'></i>
 												</a>
 											{{else}}
