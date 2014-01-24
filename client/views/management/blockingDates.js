@@ -6,8 +6,8 @@ Template.blockDatesList.dates = function(){
 
 Template.blockDatesList.trip = function(id){
 	trip =  Trips.findOne({_id: id});
-	console.log(trip);
-	return trip.from +" "+ trip.to+" "+trip.hour;
+	
+	return trip.from +" "+ trip.to +" "+trip.hour;
 }
 
 Template.blockingDates.rendered = function() {

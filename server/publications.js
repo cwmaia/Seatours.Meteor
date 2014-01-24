@@ -155,10 +155,7 @@ Meteor.publish('transactions', function() {
 });
 
 Meteor.publish('groups', function() {
-  if(this.userId)
-      return Groups.find();
-  else
-      return null; 
+    return Groups.find();
 });
 
 Meteor.publish('postcodes', function() {

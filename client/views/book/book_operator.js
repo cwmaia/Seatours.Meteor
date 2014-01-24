@@ -656,7 +656,22 @@ Template.productItem.events({
 
 Template.bookOperator.helpers({
 	'product' : function(){
-		return Products.find();
+		showProducts = [];
+		group = Groups.findOne({"name": "Customers"});
+
+		products =  Products.find().fetch();
+
+		for (var i = 0; i < products.length; i++) {
+			if(products[i].availableFor == group._id){
+				showProducts.push(products[i]);
+			}else if(Meteor.user()){
+				if(products[i].availableFor == Meteor.user().profile.groupID)
+				showProducts.push(products[i]);
+			}
+		};
+		
+		return showProducts;
+
 	}
 })
 
@@ -1221,7 +1236,11 @@ Template.createBook.trips = function(){
 Template.createBook.helpers({
 	"prices" : function(){
 		if(Session.get("productId")){
-			return Prices.find({productId : Session.get("productId"), active : true, season: currentSeason()})
+			trip = Trips.findOne({_id : Session.get('tripId')});
+			if(trip.availableDays)
+				return Prices.find({productId : Session.get("productId"), active : true, season: 'both'})
+			else	
+				return Prices.find({productId : Session.get("productId"), active : true, season: currentSeason()})
 		}else{
 			throwError('Something Bad Happened, Try Again');
 			return [];

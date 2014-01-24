@@ -2,6 +2,7 @@
   "packages": {
     "router": {},
     "jqueryui": {},
-    "spin": {}
+    "spin": {},
+    "iron-router-progress": {}
   }
 }

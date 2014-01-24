@@ -8,6 +8,56 @@ Template.trips.events({
 	}
 });
 
+Template.editTrip.groups = function(){
+	return Groups.find();
+}
+
+Template.editTrip.groupProduct = function(id){
+	product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
+	if(product){
+		return product.availableFor == id;
+	}else{
+		return false;
+	}
+}
+
+Template.editTrip.groupName = function(id){
+	group =  Groups.findOne({_id : id});
+	if(group){
+		return group.name;
+	}
+	return "";
+}
+
+Template.editTrip.seasonName = function(season){
+	if(season == 'noSeason'){
+		return "Available on Dates";
+	}else{
+		return season;
+	}
+}
+
+Template.editTrip.datesBegin = function(season){
+	if(season == 'noSeason'){
+		return this.availableDays.start;
+	}else if(season == 'summer'){
+		return Settings.findOne({_id: 'summer'}).summerStartDate;
+	}else{
+		return Settings.findOne({_id: 'winter'}).winterStartDate;
+	}
+}
+
+Template.editTrip.datesEnd = function(season){
+	if(season == 'noSeason'){
+		return this.availableDays.end;
+	}else if(season == 'summer'){
+		return Settings.findOne({_id: 'winter'}).winterStartDate;
+	}else{
+		return Settings.findOne({_id: 'summer'}).summerStartDate;
+	}
+}
+
+
 
 /* 
 	Edit Trip
@@ -18,6 +68,8 @@ Template.editTrip.rendered = function() {
 		minuteStep: 1,
 		showMeridian: false
 	});
+	$("#dateRangeSelect").hide();
+	$(".datepicker").datepicker();
 }
 
 Template.editTrip.boats = function() {
@@ -59,17 +111,29 @@ Template.editTrip.events({
 		var form = event.currentTarget;
 
 		if(form.checkValidity()){
-			_product.name = form.name.value;
-			_product.boatId = form.boat.selectedOptions[0].value;
-			
-			if(_product._id){
-				Products.update(_product._id, {$set : {name : _product.name, boatId: _product.boatId}})
+
+			_product = Products.findOne(Session.get('tripId'));
+			if(_product){
+				_product.name = form.name.value;
+				_product.boatId = form.boat.selectedOptions[0].value;
+				_product.availableFor = $('#groupTrip').val();
+
+				Products.update(_product._id, {$set : {name : _product.name, boatId: _product.boatId, availableFor: $('#groupTrip').val()}});
+				Meteor.Router.to('/trips')
+			throwSuccess(_product.name + ' edited');
 			}else{
-				Products.insert(_product);
+				product = {
+					name : form.name.value,
+					boatId : form.boat.selectedOptions[0].value,
+					availableFor : $('#groupTrip').val()
+				}
+				Products.insert(product);
+				Meteor.Router.to('/trips')
+				throwSuccess(product.name + ' saved');
 			}
+			
 				
-			Meteor.Router.to('/trips')
-			throwSuccess(_product.name + ' saved');
+			
 		}
 	},
 
@@ -79,21 +143,39 @@ Template.editTrip.events({
 
 		if(form.checkValidity()){
 			product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
+
+			var season = '';
+			if(!form.season.value){
+				season = 'noSeason';
+			}else{
+				season = form.season.value;
+			}
+
 			if(product){
 				var trip = {
 				from 	: form.from.value,
 				to		: form.to.value,
 				hour 	: $('#hour')[0].value,
-				season  : form.season.value,
+				season  : season,
 				active  : true,
-				productId : product._id
+				productId : product._id,
 			}
 
-			Trips.insert(trip);
+			if(season == 'noSeason'){
+				trip.availableDays = {
+					start: $("#dateStart").val(), 
+					end: $("#dateEnd").val()
+				}
+			}
 
-			form.reset();
-
-			throwInfo('Trip added');
+			if(product){
+				Trips.insert(trip);
+				form.reset();
+				throwInfo('Trip added');
+			}else{
+				throwError('An error has ocurred, please refresh your browser and try again');
+			}
+			
 		}else{
 			throwInfo('Please Save the Product Before Add Trips!');
 		}
@@ -126,6 +208,22 @@ Template.editTrip.events({
 				throwInfo('Please Save the Product Before Add Trips!');
 
 			}	
+		}
+	},
+
+	'change #seasonsCheckbox' : function(){
+		if($("#seasonsCheckbox").is(':checked')){
+			$("#SeasonSelect").show('slide');
+			$("#season").attr('required', true);
+			$("#dateStart").removeAttr('required');
+			$("#dateEnd").removeAttr('required');
+			$("#dateRangeSelect").hide('slide');
+		}else{
+			$('#dateRangeSelect').show('slide');
+			$("#dateStart").attr('required', true);
+			$("#dateEnd").attr('required', true);
+			$("#season").removeAttr('required');
+			$("#SeasonSelect").hide('slide');
 		}
 	},
 
