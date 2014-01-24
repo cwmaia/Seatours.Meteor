@@ -59,6 +59,10 @@ Template.cart.total = function(){
 
 }
 
+Template.items.dateNoTimeZone = function(date){ 
+	return date.toLocaleDateString();
+}
+
 Template.cart.totalCustomer = function(){
 	var carts = CBasket.find({cartId : getCartId()}).fetch();
 	var total = 0;

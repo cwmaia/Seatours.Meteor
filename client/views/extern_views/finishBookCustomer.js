@@ -44,7 +44,7 @@ Template.finishBookCustomer.events({
 			}
 			Orders.insert({customerId: customerId, paid: false, dateOrder: new Date(), refNumber: refNumber});
 			
-			//Save Books
+			//Save Bookings
 			for (var i = 0; i < books.length; i++) {
 				delete books[i].cartId;
 				books[i].buyerId = customerId;
