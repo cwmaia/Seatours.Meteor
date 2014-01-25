@@ -26,6 +26,8 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
 
 })
 
+Accounts.config({sendVerificationEmail: true, forbidClientAccountCreation: false});
+
 Meteor.Router.add("/ReturnPageError", "POST", function(){
   console.log(this.request.body);
 })
@@ -241,7 +243,7 @@ Meteor.methods({
   },
 
   checkVerified : function(email){
-    user = Meteor.users.findOne({mainEmail : email});
+    user = Meteor.users.findOne({username : email});
     if(user){
        if(user.emails[0].verified){
         return true;
@@ -262,11 +264,9 @@ Meteor.methods({
     group = Groups.findOne({"name": "Customers"});
     var customerId = 0;
 
-    
-    user.profile = {'groupID': group._id, 'name' : userData.fullName, 'mainEmail' : user.email};
+    user.profile = {'groupID': group._id, 'name' : userData.fullName};
     
     var userId = Accounts.createUser(user);
-    Accounts.sendVerificationEmail(userId, user.email);
     
     customer = Customers.findOne({socialSecurityNumber : userData.socialSecurityNumber});
     

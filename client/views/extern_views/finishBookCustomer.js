@@ -97,10 +97,11 @@ Template.finishBookCustomer.events({
 					email : $('#email').val(),
 					password : $('#firstPasswordToEnter').val()
 				}
-
+				SpinnerInit();
 				Meteor.call('createExternalAccount', user, customerData, function(err, result){
 					if(err){
 						throwError("Email already registered!");
+						SpinnerStop();
 						return;
 					}else{
 						books = CBasket.find({cartId: getCartId()}).fetch();
@@ -118,7 +119,7 @@ Template.finishBookCustomer.events({
 							Meteor.call('insertBook', books[i]);
 							CBasket.remove({_id: books[i]._id});
 						};
-
+						SpinnerStop();
 						Meteor.loginWithPassword(user.username, user.password, function(err){
 					        if (err){
 					        	if(err.reason == 'Incorrect password')

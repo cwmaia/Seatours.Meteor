@@ -13,10 +13,11 @@ Template.login.events({
        if(result){
           login(user.username, user.password);
        }else{
-          if(!(user.username.indexOf("@") === -1)){
+          if(user.username.indexOf("@") === -1){
             login(user.username, user.password);
           }else{
-            throwError("User not Found!"); 
+            throwError("User not Found!");
+            SpinnerStop();
           }
        } 
     })
