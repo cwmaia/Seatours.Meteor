@@ -1,3 +1,13 @@
+Template.externalLogin.rendered = function(){
+	if(isCustomerNotLogged()){
+		books = CBasket.find({cartId: getCartId()}).fetch();
+		book = books[0];
+		customer = Customers.findOne(book.customerId);
+		$('#customerFullname').val(customer.fullName);
+		$("#customerEmail").val(customer.email);
+	}
+}
+
 Template.externalLogin.events({
 	'click .continueLogged' : function(event){
 		event.preventDefault();
