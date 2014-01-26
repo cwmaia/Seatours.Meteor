@@ -9,7 +9,7 @@ Template.trips.events({
 });
 
 Template.editTrip.groups = function(){
-	return Groups.find();
+	return Groups.find({type : 'external'});
 }
 
 Template.editTrip.boatFind = function(id){

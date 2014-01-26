@@ -6,17 +6,20 @@ var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
 var admId = '';
 var vendorsId = '';
 var customersId = '';
+var specialId = '';
 
 
 if(Groups.find().count() == 0){
 	admId = Groups.insert({
 		'name' : 'Administrators',
-		'description' : 'Lords of the Universe'
+		'description' : 'Lords of the Universe',
+		'type' : 'internal'
 	});
 
 	vendorsId = Groups.insert({
 		'name' : 'Vendors',
 		'description' : 'Vendors',
+		'type' : 'internal',
 		'permissions' : [
 			'bookOperator',
 			'bookDetail',
@@ -29,6 +32,7 @@ if(Groups.find().count() == 0){
 	Groups.insert({
 		'name' : 'Agencies',
 		'description' : 'Travel Agencies',
+		'type' : 'external',
 		'permissions' : [
 			'bookOperator',
 			'bookDetail',
@@ -41,6 +45,20 @@ if(Groups.find().count() == 0){
 	customersId = Groups.insert({
 		'name' : 'Customers',
 		'description' : 'Extern Customers',
+		'type' : 'external',
+		'discount' : 0,
+		'permissions' : [
+			'bookOperator',
+			'createBook',
+			'myVoucher'
+			]
+	})
+
+	specialId = Groups.insert({
+		'name' : 'Special Customers',
+		'description' : 'Extern Customers',
+		'type' : 'external',
+		'discount' : 5,
 		'permissions' : [
 			'bookOperator',
 			'createBook',
@@ -561,7 +579,7 @@ if(Customers.find().count() == 0){
 		'email' : "roberto@me.com",
 		"telephoneCode" : "+55",
 		"telephone" : "(84) 4004-0001",
-		"adress" : "New Adress",
+		"address" : "New Adress",
 		"city" : "Yes it changed",
 		"state" : "Another State",
 		"postcode" : "99551",
@@ -576,11 +594,35 @@ if(Customers.find().count() == 0){
 		'email' : "roberto@me.com",
 		"telephoneCode" : "+55",
 		"telephone" : "(84) 4004-0001",
-		"adress" : "New Adress",
+		"address" : "New Adress",
 		"city" : "Yes it changed",
 		"state" : "Another State",
 		"postcode" : "99551",
 		"country" : "Brazil",
+		"groupId" : customersId,
+		"lastUsedCar" : {
+			"vehicleName" : "Mitsubishi Eclipse",
+			"categories" : "Small Car",
+			"size" : 4.5,
+			"totalCost" : 4080,
+			"vehiclePlate" : "ALLIN00"
+		}
+	});
+
+	Customers.insert({
+		"title" : "Mr",
+		"socialSecurityNumber" :  "111111-3333",
+		"fullName" :  "Special Jarvis Hallais",
+		"birthDate" : "10/10/1992",
+		'email' : "roberto@me.com",
+		"telephoneCode" : "+55",
+		"telephone" : "(84) 4004-0001",
+		"address" : "New Adress",
+		"city" : "Yes it changed",
+		"state" : "Another State",
+		"postcode" : "99551",
+		"country" : "Brazil",
+		"groupId" : specialId,
 		"lastUsedCar" : {
 			"vehicleName" : "Mitsubishi Eclipse",
 			"categories" : "Small Car",

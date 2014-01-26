@@ -284,13 +284,6 @@ Meteor.methods({
     Groups.insert(group);
   },
 
-  saveCustomerBooks : function(books){
-    for (var i = 0; i < books.length; i++) {
-        books.temp = true;
-        Book.insert(books[i]);
-    };
-
-  },
 
   saveFile: function(blob, name, path, encoding) {
     var fs = Npm.require('fs'), encoding ='binary';

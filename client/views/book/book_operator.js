@@ -1263,7 +1263,7 @@ Template.createBook.rendered = function(){
     	$('#email').val(customer.email);
     	$('#telephoneCode').val(customer.telephoneCode);
     	$('#telephone').val(customer.telephone);
-    	$('#adress').val(customer.adress);
+    	$('#adress').val(customer.address);
     	$('#city').val(customer.city);
     	$('#state').val(customer.state);
     	$('#postcode').val(customer.postcode);
@@ -1409,7 +1409,7 @@ Template.generalPassagerInfo.events({
 	    	$('#email').val(currentCustomer.email);
 	    	$('#telephoneCode').val(currentCustomer.telephoneCode);
 	    	$('#telephone').val(currentCustomer.telephone);
-	    	$('#adress').val(currentCustomer.adress);
+	    	$('#adress').val(currentCustomer.address);
 	    	$('#city').val(currentCustomer.city);
 	    	$('#state').val(currentCustomer.state);
 	    	$('#postcode').val(currentCustomer.postcode);
@@ -1464,7 +1464,7 @@ Template.generalPassagerInfo.events({
 	    	$('#email').val(currentCustomer.email);
 	    	$('#telephoneCode').val(currentCustomer.telephoneCode);
 	    	$('#telephone').val(currentCustomer.telephone);
-	    	$('#adress').val(currentCustomer.adress);
+	    	$('#adress').val(currentCustomer.address);
 	    	$('#city').val(currentCustomer.city);
 	    	$('#state').val(currentCustomer.state);
 	    	$('#postcode').val(currentCustomer.postcode);
@@ -1492,6 +1492,8 @@ Template.generalPassagerInfo.events({
 		var form = document.getElementById('pasagerInfo');
 		if(form.checkValidity()){
 			event.preventDefault();
+			group = Groups.findOne({"name": "Customers"});
+
 			var customerData = {
 				'socialSecurityNumber' :  $('#socialSecurityNumber').val(),
 				'fullName' :  $('#fullName').val(),
@@ -1500,11 +1502,12 @@ Template.generalPassagerInfo.events({
 		    	'email' : $('#email').val(),
 		    	'telephoneCode' : $('#telephoneCode').val(),
 		    	'telephone' : $('#telephone').val(),
-		    	'adress' : $('#adress').val(),
+		    	'address' : $('#adress').val(),
 		    	'city' : $('#city').val(),
 		    	'state' : $('#state').val(),
 		    	'postcode' : $('#postcode').val(),
-		    	'country' : $('#country').val()
+		    	'country' : $('#country').val(),
+		    	'groupId' : group._id
 			}
 
 			var user = {
@@ -1541,6 +1544,8 @@ Template.generalPassagerInfo.events({
 			});
 		}
 	}
+
+	
 
 
 })
@@ -1747,6 +1752,8 @@ var createBook = function(){
 		'vehiclePlate' : $('#vehiclePlate').val()
 	}
 
+	group = Groups.findOne({"name": "Customers"});
+
 	var customer = {
 		"title" : $('#title').val(),
 		"socialSecurityNumber" :  $('#socialSecurityNumber').val(),
@@ -1755,12 +1762,13 @@ var createBook = function(){
 		'email' : $('#email').val(),
 		"telephoneCode" : $('#telephoneCode').val(),
 		"telephone" : $("#telephone").val(),
-		"adress" : $("#adress").val(),
+		"address" : $("#adress").val(),
 		"city" : $("#city").val(),
 		"state" : $('#state').val(),
 		"postcode" : $("#postcode").val(),
 		"country" : $("#country").val(),
-		"lastUsedCar" : vehicle
+		"lastUsedCar" : vehicle,
+		"groupId" : group._id
 	}
 
 	var date = new Date();

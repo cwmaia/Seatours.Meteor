@@ -15,6 +15,7 @@ Meteor.Router.add({
 			Template.externView.rendered();
 		}
 	},
+	'/customers'    : 'customersAndExternals',
 	'/overview' 	: 'overview',
 	'/guest' 		: 'userMenu',
 	'/adm'   		: 'mainMenu',
