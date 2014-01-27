@@ -9,6 +9,10 @@ Template.cart.hasItems = function(){
 	return false;
 }
 
+Template.items.hasDiscount = function(){
+	return this.discount > 0;
+}
+
 Template.items.hasTo = function(){
 	return this.trip.to;
 }
@@ -29,7 +33,7 @@ Template.items.hasVehicle = function(){
 	return this.vehicle.category;
 }
 
-Template.items.discount = function(){
+Template.items.discountOnline = function(){
 	return Settings.findOne({_id: "onlineDiscount"}).onlineDiscount;
 }
 

@@ -1,4 +1,3 @@
-var SaveCustomer = true;
 var SaveVehicle = false;
 var CustomerSelected = false;
 var ExtraSlot = '';
@@ -969,6 +968,7 @@ var formBook = function(){
 		throwError('Maximum capacity of passengers reached!');	
 	}
 	else if(!isCustomer()){
+		Session.set('SaveCustomer', true);
 		Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');
 	}
 		
@@ -1247,7 +1247,6 @@ Template.createBook.helpers({
 })
 
 Template.createBook.rendered = function(){
-	SaveCustomer = true;
 	$("#statusDialog").hide();
 	$('#pasagerInfo').on('submit', function(event){
 		event.preventDefault();
@@ -1414,6 +1413,7 @@ Template.generalPassagerInfo.events({
 	    	$('#state').val(currentCustomer.state);
 	    	$('#postcode').val(currentCustomer.postcode);
 	    	$('#country').val(currentCustomer.country);
+	    	$('#groupId').val(currentCustomer.groupId);	
 	    	//Vehicle
 	    	$('#vehicle').val(currentCustomer.lastUsedCar.vehicleName);
 	    	$('#categories').val(currentCustomer.lastUsedCar.categoryId);
@@ -1427,7 +1427,7 @@ Template.generalPassagerInfo.events({
 			Session.set('currentSizeCar', currentCustomer.lastUsedCar.size);
 			checkIfCarsFits(currentCustomer.lastUsedCar.size);
 			changeSizes();
-			SaveCustomer = false;
+			Session.set('SaveCustomer', false);
    		}else{
    			$('#fullName').val('');
 			$('#customerId').val('');
@@ -1447,7 +1447,8 @@ Template.generalPassagerInfo.events({
 	    	$('#size').val('');
 	    	$('#totalVehicle').val('');
 	    	$('#vehiclePlate').val('');
-	    	SaveCustomer = true;
+	    	$('#groupId').val('');	
+	    	SSession.set('SaveCustomer', true);
    		}
 	},
 
@@ -1469,6 +1470,7 @@ Template.generalPassagerInfo.events({
 	    	$('#state').val(currentCustomer.state);
 	    	$('#postcode').val(currentCustomer.postcode);
 	    	$('#country').val(currentCustomer.country);	
+	    	$('#groupId').val(currentCustomer.groupId);	
 		}else{
 			$("#usingData").val('false');
 			$('#fullName').val('');
@@ -1484,6 +1486,7 @@ Template.generalPassagerInfo.events({
 	    	$('#state').val('');
 	    	$('#postcode').val('');
 	    	$('#country').val('');
+	    	$('#groupId').val('');	
 		}
 	},
 
@@ -1795,10 +1798,6 @@ var createBook = function(){
 	}
 	book.vehicle = vehicle;
 
-	
-
-
-
 	if(ExtraSlot){
 		book.vehicle.extraSlot = ExtraSlot;
 	}else{
@@ -1812,6 +1811,7 @@ var createBook = function(){
 
 		var discount = Settings.findOne({_id: 'onlineDiscount'}).onlineDiscount;
 		book.totalISK = parseInt((book.totalISK - ((book.totalISK * discount) / 100 )).toFixed());
+		book.discount = discount;
 
 		if(getCartId()){
 				book.cartId = getCartId();
@@ -1822,6 +1822,11 @@ var createBook = function(){
 			book.cartId = name;
 		}
 	}else{
+
+		
+
+		
+
 		if(getCartIdOperator()){
 				book.cartId = getCartIdOperator();
 		}else{
@@ -1835,10 +1840,17 @@ var createBook = function(){
 			book.totalISK = parseInt((book.totalISK + operatorFee).toFixed());
 		}
 
-		if(SaveCustomer){
+		if(Session.get('SaveCustomer')){
 			var resultId = Customers.insert(customer);
 			book.customerId = resultId;
+			book.discount = 0;
 		}else{
+			//Descount
+			group = Groups.findOne({_id : $('#groupId').val()});
+			if(group && group.discount > 0){
+				book.totalISK = parseInt((book.totalISK - ((book.totalISK * group.discount) / 100 )).toFixed());
+				book.discount = group.discount;
+			}
 			book.customerId = $('#customerId').val();
 			if(Customers.findOne({'_id': book.customerId}).lastUsedCar.vehiclePlate != $('#vehiclePlate').val()){
 				Customers.update(book.customerId, {$set: {
