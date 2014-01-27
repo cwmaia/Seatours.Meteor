@@ -63,17 +63,12 @@ Meteor.publish('products', function() {
 
 Meteor.publish('books', function() { 
   if(this.userId){
-     user = Meteor.users.findOne({_id : this.userId});
-     group = Groups.findOne({name : 'Customers'});
-     if(user.profile.groupID == group._id){
-        if(user.profile.customerId){
-          return Books.find({buyerId : user.profile.customerId});
-        }else{
-          return null;
-        }
-     }else{
-        return Books.find();
-     }
+    user = Meteor.users.findOne({_id : this.userId});
+    if(user.profile.groupID){
+      return Books.find();
+    }else{
+      return Books.find({buyerId : user.profile.customerId});
+    }
   }else{
     return Books.find({}, {fields: {dateOfBooking: 1, 'trip._id': 1, 'bookStatus' : 1, 'vehicle.extraSlot' : 1, 'product._id' : 1, 'vehicle.size' : 1}});
   }
@@ -261,10 +256,9 @@ Meteor.methods({
   },
 
   createExternalAccount: function(user, userData){
-    group = Groups.findOne({"name": "Customers"});
     var customerId = 0;
 
-    user.profile = {'groupID': group._id, 'name' : userData.fullName};
+    user.profile = {name : userData.fullName};
     
     var userId = Accounts.createUser(user);
     
@@ -347,13 +341,3 @@ Meteor.methods({
   }
 
 });
-
-function cleanPath(str) {
-  if (str) {
-    return str.replace(/\.\./g,'').replace(/\/+/g,'').
-      replace(/^\/+/,'').replace(/\/+$/,'');
-  }
-}
-function cleanName(str) {
-  return str.replace(/\.\./g,'').replace(/\//g,'');
-}

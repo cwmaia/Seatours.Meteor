@@ -108,6 +108,10 @@ Template.editTrip.helpers({
 			return Prices.find({productId : product._id});
 		else
 			return [];
+	},
+
+	isNew : function(){
+		return Session.get('tripId') == 'new';
 	}
 });
 
@@ -140,8 +144,18 @@ Template.editTrip.events({
 					Meteor.call('saveFile', e.target.result, file.name);
 					Meteor.Router.to('/trips')
 				}
-
-				reader.readAsBinaryString(file);
+				if(file){
+					reader.readAsBinaryString(file);
+				}else{
+					_product.name = form.name.value;
+					_product.boatId = form.boat.selectedOptions[0].value;
+					_product.availableFor = $('#groupTrip').val();
+					
+					Products.update(_product._id, {$set : {name : _product.name, boatId: _product.boatId, availableFor: $('#groupTrip').val()}});
+					throwSuccess(_product.name + ' edited');
+					Meteor.Router.to('/trips')
+				}
+				
 				
 			}else{
 				var reader = new FileReader();

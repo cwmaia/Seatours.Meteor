@@ -652,22 +652,41 @@ Template.productItem.events({
 
 Template.bookOperator.helpers({
 	'product' : function(){
-		showProducts = [];
-		group = Groups.findOne({"name": "Customers"});
 
-		products =  Products.find().fetch();
-
-		for (var i = 0; i < products.length; i++) {
-			if(products[i].availableFor == group._id){
-				showProducts.push(products[i]);
-			}else if(Meteor.user()){
-				if(products[i].availableFor == Meteor.user().profile.groupID)
-				showProducts.push(products[i]);
+		if(Meteor.user()){
+			group = Groups.findOne({_id: Meteor.user().profile.groupID});
+			if(group){
+				if(group.type = 'internal'){
+					return Products.find();
+				}
+			}else{
+				showProducts = [];
+				products =  Products.find().fetch();
+				for (var i = 0; i < products.length; i++) {
+					group = Groups.findOne({_id : products[i].availableFor});
+					if(group && group.name == 'Customers'){
+						showProducts.push(products[i]);
+					}else if(Meteor.user()){
+						if(products[i].availableFor == getGroupId(Meteor.user().profile.customerId))
+						showProducts.push(products[i]);
+					}
+				};
+	
+				return showProducts;
 			}
-		};
-		
-		return showProducts;
+		}else{
+			showProducts = [];
 
+			products =  Products.find().fetch();
+			for (var i = 0; i < products.length; i++) {
+				group = Groups.findOne({_id : products[i].availableFor});
+					if(group && group.name == 'Customers'){
+						showProducts.push(products[i]);
+					}
+			};
+
+			return showProducts;
+		}
 	}
 })
 
@@ -704,6 +723,19 @@ currentSeason = function(){
 		}else{
 			return "winter";
 		}
+	}
+}
+
+getGroupId = function(customerId){
+	customer = Customers.findOne({_id : customerId});
+	if(customerId){
+		group = Groups.findOne({_id : customer.groupId});
+		if(group)
+			return group._id;
+		else
+			return 0;
+	}else{
+		return 0;
 	}
 }
 
@@ -834,6 +866,23 @@ Template.createBook.dateSelected = function(){
 
 Template.generalPassagerInfo.dateSelected = function(){
 	return !Session.get('dateSelected') && !Session.get('creatingUser') && !Session.get("finishBooking");
+}
+
+Template.generalPassagerInfo.groups = function(){
+	return Groups.find({type : "external"});
+}
+
+Template.generalPassagerInfo.groupCustomer = function(id){
+	customer = Customers.findOne({_id : Session.get("customerId")});
+	if(customer){
+		return customer.groupId == id;
+	}else{
+		return false;
+	}
+}
+
+Template.generalPassagerInfo.isEditingCustomer = function(){
+	return Session.get('customerId');
 }
 
 carsUpTo5 = function(){

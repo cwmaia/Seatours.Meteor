@@ -27,10 +27,11 @@ Template.header.loggedAsUser = function(){
 isCustomer = function(){
 	if(Meteor.user()){
 		try{
-			if(Groups.findOne({'_id': Meteor.user().profile.groupID}).name == "Customers"){
-  			return true;
-  		}
-      		return false;
+			if(Meteor.user().profile.groupID){
+				return false;
+			}else{
+				return true;
+			}
 		}catch(err){
 			console.log(err.message);
 			return false;
@@ -43,10 +44,11 @@ isCustomer = function(){
 isOperator = function(){
 	if(Meteor.user()){
 		try{
-			if(Groups.findOne({'_id': Meteor.user().profile.groupID}).name == "Vendors"){
-  			return true;
-  		}
-      		return false;
+			if(Meteor.user().profile.groupID){
+				return true;
+			}else{
+				return false;
+			}
 		}catch(err){
 			console.log(err.message);
 			return false;
@@ -59,10 +61,11 @@ isOperator = function(){
 isCustomerLogged = function(){
 	if(Meteor.user()){
 		try{
-			if(Groups.findOne({'_id': Meteor.user().profile.groupID}).name == "Customers"){
-  			return true;
-  		}
-      		return false;
+			if(Meteor.user().profile.groupID){
+				return false;
+			}else{
+				return true;
+			}
 		}catch(err){
 			console.log(err.message);
 			return false;
