@@ -94,14 +94,14 @@ Template.finishBookCustomer.events({
 				}
 
 				var user = {
-					username : $('#email').val(),
+					username : form.username.value,
 					email : $('#email').val(),
 					password : $('#firstPasswordToEnter').val()
 				}
 				SpinnerInit();
 				Meteor.call('createExternalAccount', user, customerData, function(err, result){
 					if(err){
-						throwError("Email already registered!");
+						throwError(err.reason);
 						SpinnerStop();
 						return;
 					}else{

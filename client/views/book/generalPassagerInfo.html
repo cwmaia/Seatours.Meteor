@@ -76,7 +76,12 @@
 	        {{/if}}
 
 	        {{#if isCreatingExternalUser}}
-	        <div class="line-3 input-append">
+	        <div class="line-3">
+	        	<div>
+	        		 <label class="required">Username: </label>
+		            <input type="text" id="username" name="username" placeholder="Password" required>
+	        	</div>
+
 		        <div>
 		            <label class="required">Password: </label>
 		            <input type="password" id="firstPasswordToEnter" name="firstPasswordToEnter" placeholder="Password" required>

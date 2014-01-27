@@ -1563,13 +1563,13 @@ Template.generalPassagerInfo.events({
 			}
 
 			var user = {
-				username : $('#email').val(),
+				username : form.username.value,
 				email : $('#email').val(),
 				password : $('#firstPasswordToEnter').val()
 			}
 			Meteor.call('createExternalAccount', user, customerData, function(err, result){
 				if(err){
-					throwError("Email already registered!");
+					throwError(err.reason);
 				}else{
 					SpinnerInit();
 					Meteor.loginWithPassword(user.username, user.password, function(err){
@@ -1855,8 +1855,13 @@ var createBook = function(){
 
 	if(isCustomer()){
 
-		var resultId = Customers.insert(customer);
-		book.customerId = resultId;
+		if(Session.get('SaveCustomer')){
+			var resultId = Customers.insert(customer);
+			book.customerId = resultId;
+		}else{
+			book.customerId = $("#customerId").val();
+		}
+		
 
 		var discount = Settings.findOne({_id: 'onlineDiscount'}).onlineDiscount;
 		book.totalISK = parseInt((book.totalISK - ((book.totalISK * discount) / 100 )).toFixed());
