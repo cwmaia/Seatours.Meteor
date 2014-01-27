@@ -646,7 +646,7 @@ if(Meteor.users.find().count() == 0){
 	Accounts.createUser({
 	  'username'  : 'carlos',
 	  'email'     : 'maia@me.com',
-	  'profile'	  : {name : 'Carlos'},
+	  'profile'	  : {'groupID' : vendorsId, name : 'Carlos'},
 	  'password'  : '1234' //encrypted automatically 
 	});
 	Accounts.createUser({

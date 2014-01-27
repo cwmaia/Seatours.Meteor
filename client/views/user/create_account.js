@@ -51,7 +51,7 @@ Template.createAccount.events({
 })
 
 Template.usersList.users = function(){
-	return Meteor.users.find().fetch();
+	return Meteor.users.find({'profile.groupID' : {$exists : true}}).fetch();
 }
 
 Template.usersList.getGroup = function(groupID){
@@ -59,7 +59,7 @@ Template.usersList.getGroup = function(groupID){
 }
 
 Template.createAccount.groups = function(){
-	return Groups.find();
+	return Groups.find({type : 'internal'});
 }
 
 Template.usersList.rendered = function(){
