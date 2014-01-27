@@ -33,6 +33,7 @@ if(Groups.find().count() == 0){
 		'name' : 'Agencies',
 		'description' : 'Travel Agencies',
 		'type' : 'external',
+		'discount' : 0,
 		'permissions' : [
 			'bookOperator',
 			'bookDetail',

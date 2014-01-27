@@ -35,6 +35,7 @@ Template.createGroups.events({
 		var description = $('#description').val();
 		var type = $('#groupTypeCreate').val();
 
+
 		var group = {
 			name : name,
 			description : description,
@@ -42,9 +43,17 @@ Template.createGroups.events({
 			type : type
 		}
 
+		if(type == 'external'){
+			group.discount = 0;
+		}
+
 		try{
 			Meteor.call('createGroup', group);
 			throwSuccess('Group Created!');
+			$('#groupName').val('');
+			$('#description').val('');
+			$('#groupTypeCreate').val('');
+
 		}catch(err){
 			console.log(err);
 		}
