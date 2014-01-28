@@ -1,18 +1,30 @@
 var Book = {};
 
 Template.voucher.book = function(){
-    Book = Books.findOne({_id: Session.get('bookId')});
-    return Book;
+  if(Books.findOne({_id : Session.get('bookId')})){
+      var book = Books.findOne({_id : Session.get('bookId')});
+  }else{
+    var book = Session.get("book");
+  }
+  return book;
 }
 
 Template.voucher.getRefNumber = function(){
-    Book = Books.findOne({_id: Session.get('bookId')});
-    return Book.refNumber;
+  if(Books.findOne({_id : Session.get('bookId')})){
+    var book = Books.findOne({_id : Session.get('bookId')});
+  }else{
+    var book = Session.get("book");
+  }
+  return book.refNumber;
 }
 
 Template.voucher.date = function(){
-    Book = Books.findOne({_id: Session.get('bookId')});
-    return Book.dateOfBooking.toDateString();
+  if(Books.findOne({_id : Session.get('bookId')})){
+    var book = Books.findOne({_id : Session.get('bookId')});
+  }else{
+    var book = Session.get("book");
+  }
+  return book.dateOfBooking.toDateString();
 }
 
 Template.voucher.customer = function(){
@@ -20,16 +32,25 @@ Template.voucher.customer = function(){
     return Session.get('customer');
   }else{
     var customer;
-    Book = Books.findOne({_id: Session.get('bookId')});
-    customer = Customers.findOne({_id: Book.customerId});
+    if(Books.findOne({_id : Session.get('bookId')})){
+      var book = Books.findOne({_id : Session.get('bookId')});
+    }else{
+      var book = Session.get("book");
+    }
+    customer = Customers.findOne({_id: book.customerId});
     return customer;  
   }
 	
 }
 
 var showAlertDiv = function(){
-  var bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
-  var book = Books.findOne({_id : Session.get('bookId')});
+  if(Books.findOne({_id : Session.get('bookId')})){
+    var bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
+    var book = Books.findOne({_id : Session.get('bookId')});
+  }else{
+    var book = Session.get("book");
+    var bookTransactions = Transactions.find({bookId : book._id}).fetch();
+  }
   var totalISK = book.totalISK;
   for (var i = bookTransactions.length - 1; i >= 0; i--) {
     if(bookTransactions[i].type == 'Refund'){
@@ -47,7 +68,13 @@ var showAlertDiv = function(){
 }
 
 Template.voucher.calcTotal = function(totalISK){
-  var bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
+  if(Books.findOne({_id : Session.get('bookId')})){
+    var bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
+    var book = Books.findOne({_id : Session.get('bookId')});
+  }else{
+    var book = Session.get("book");
+    var bookTransactions = Transactions.find({bookId : book._id}).fetch();
+  }
   for (var i = bookTransactions.length - 1; i >= 0; i--) {
     if(bookTransactions[i].type == 'Refund'){
       totalISK = totalISK + bookTransactions[i].amount;
@@ -70,7 +97,14 @@ Template.voucher.hasVehicles = function(){
 }
 
 Template.voucher.transactions = function(){
-  return Transactions.find({bookId : Session.get('bookId')});
+  if(Books.findOne({_id : Session.get('bookId')})){
+    var bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
+    var book = Books.findOne({_id : Session.get('bookId')});
+  }else{
+    var book = Session.get("book");
+    var bookTransactions = Transactions.find({bookId : book._id}).fetch();
+  }
+  return bookTransactions;
 }
 
 Template.voucher.format = function(date){
