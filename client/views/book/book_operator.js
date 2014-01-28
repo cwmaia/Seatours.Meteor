@@ -11,7 +11,7 @@ var VehicleSelected = false;
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
 
 var updateDataPieChart = function(){
-	totalSpace = 150 + 24 + 30;
+	totalSpace = 0;
 	var dates = getSelectedAndNextDay();
 	var trip = Trips.findOne(Session.get('tripId'));
 	var count5m = 0;
@@ -68,6 +68,37 @@ var updateDataPieChart = function(){
 		metersForExtraSlots += parseInt(booksSlot2[i].vehicle.size);
 	};
 
+
+	product = Products.findOne(Session.get('productId'));
+	boat = Boats.findOne(product.boatId);
+	status5mAnterior = boat.status[0].qtdCarsUpTo_5;
+	max5MetersCar = 0;
+	max6MetersCar = 0;
+	extraSpace1 = 0;
+	extraSpace2 = 0;
+
+	for (var i = 0; i < boat.status.length; i++) {
+		if(status5mAnterior == boat.status[i].qtdCarsUpTo_5){
+			if(count5m < (boat.status[i].qtdCarsUpTo_5 + 1)){
+				max5MetersCar = boat.status[i].qtdCarsUpTo_5;      
+				max6MetersCar = boat.status[i].qtdCarsUpTo_6;
+				extraSpace1 = boat.status[i].bigSlotOne;
+				extraSpace2 = boat.status[i].bigSlotTwo;
+			}
+		}else{
+			if(count5m >= status5mAnterior && count5m < (boat.status[i].qtdCarsUpTo_5)){
+				max5MetersCar = boat.status[i].qtdCarsUpTo_5; 
+				max6MetersCar = boat.status[i].qtdCarsUpTo_6;
+				extraSpace1 = boat.status[i].bigSlotOne;
+				extraSpace2 = boat.status[i].bigSlotTwo;
+			}
+		}
+
+		status5mAnterior = boat.status[i].qtdCarsUpTo_5;
+	};
+	
+	totalSpace = ((max5MetersCar * 5) + (max6MetersCar * 6) + extraSpace1 + extraSpace2);
+
 	percentage5m = ((count5m * 5 * 100) / totalSpace).toFixed(2);
 	percentage6m = ((count6m * 6 * 100) / totalSpace).toFixed(2);
 	percentageLargeCars = ((metersForExtraSlots * 100) / totalSpace).toFixed(2);
@@ -117,25 +148,27 @@ var getExtraSlotsSpace = function(trip){
 		}
 	};
 
-	if(count5m < 25){
-		extraSpace1 = 24;
-		extraSpace2 = 24;
-	}
+	product = Products.findOne(Session.get('productId'));
+	boat = Boats.findOne(product.boatId);
+	status5mAnterior = boat.status[0].qtdCarsUpTo_5;
 
-	if(count5m >= 25 && count5m < 27){
-		extraSpace1 = 24;
-		extraSpace2 = 19;
-	}
+	for (var i = 0; i < boat.status.length; i++) {
+		if(status5mAnterior == boat.status[i].qtdCarsUpTo_5){
+			if(count5m < (boat.status[i].qtdCarsUpTo_5 + 1)){
+				extraSpace1 = boat.status[i].bigSlotOne;
+				extraSpace2 = boat.status[i].bigSlotTwo;
+			}
+		}else{
+			if(count5m >= status5mAnterior && count5m < (boat.status[i].qtdCarsUpTo_5)){
+				extraSpace1 = boat.status[i].bigSlotOne;
+				extraSpace2 = boat.status[i].bigSlotTwo;
+			}
+		}
 
-	if(count5m >= 27 && count5m < 28){
-		extraSpace1 = 19;
-		extraSpace2 = 19;
-	}
+		status5mAnterior = boat.status[i].qtdCarsUpTo_5;
+	};
 
-	if(count5m > 28 && count5m < 30){
-		extraSpace1 = 19;
-		extraSpace2 = 15;
-	}
+
 
 	extraSpace = {
 		extraSpace1 : extraSpace1,
@@ -220,6 +253,7 @@ var doorMaxCapacity = function (trip){
 	var count6m = 0;
 	var count5m = 0;
 	var max5mCars = 0;
+	var max6mCars = 0;
 
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
@@ -264,37 +298,25 @@ var doorMaxCapacity = function (trip){
 	extraSpace = getExtraSlotsSpace(trip);
 
 	sumExtraSpace = parseInt(extraSpace.extraSpace1 + extraSpace.extraSpace2);
+	
+	product = Products.findOne(Session.get('productId'));
+	boat = Boats.findOne(product.boatId);
+	
 
-	if(sumExtraSpace <= 48){
-		CanAdd2Motocycle = true;
-		max5mCars = 24;
-	}
-
-	if(sumExtraSpace <= 43){
-		CanAdd2Motocycle = false;
-		max5mCars = 25;
-	}
-
-	if(sumExtraSpace <= 38){
-		CanAdd2Motocycle = false;
-		max5mCars = 27;
-	}
-
-	if(sumExtraSpace <= 33){
-		CanAdd2Motocycle = false;
-		max5mCars = 28;
-	}
-
-	if(sumExtraSpace <= 30){
-		CanAdd2Motocycle = false;
-		max5mCars = 30;
-	}
+	for (var i = 0; i < boat.status.length; i++) {
+		totalSlots = parseInt(boat.status[i].bigSlotOne + boat.status[i].bigSlotTwo);
+		if(sumExtraSpace <= totalSlots){
+			CanAdd2Motocycle = boat.status[i].AddExtraMotos;
+			max5mCars = boat.status[i].qtdCarsUpTo_5;
+			max6mCars = boat.status[i].qtdCarsUpTo_6;
+		}
+	};
 
 	if(count5m == max5mCars){
 		return true;
 	}
 
-	if(count6m == 4){
+	if(count6m == max6mCars){
 		return true;
 	}
 
@@ -461,25 +483,23 @@ var countExtraSpace = function(){
 
 	spaceAlocated = parseInt(spaceAlocatedSlot1 + spaceAlocatedSlot2 + spaceAlocatedSlot3 + spaceAlocatedSlot4);
 
-	if(spaceAlocated == 48){
-		max5slots = 24;
-	}
+	product = Products.findOne(Session.get('productId'));
+	boat = Boats.findOne(product.boatId);
+	
+	totalSlots = parseInt(boat.status[0].bigSlotOne + boat.status[0].bigSlotTwo);
 
-	if(spaceAlocated >= 43 && spaceAlocated < 48){
-		max5slots = 25;
-	}
-
-	if(spaceAlocated >= 38 && spaceAlocated < 43){
-		max5slots = 27;
-	}
-
-	if(spaceAlocated >= 33 && spaceAlocated < 38){
-		max5slots = 28;
-	}
-
-	if(spaceAlocated >= 30 && spaceAlocated < 33){
-		max5slots = 30;
-	}
+	for (var i = 0; i < boat.status.length; i++) {
+		if(totalSlots == parseInt(boat.status[i].bigSlotOne + boat.status[i].bigSlotTwo)){
+			if(spaceAlocated == parseInt(boat.status[i].bigSlotOne + boat.status[i].bigSlotTwo)){
+				max5slots = boat.status[i].qtdCarsUpTo_5;
+			}
+		}else{
+			if(spaceAlocated >= parseInt(boat.status[i].bigSlotOne + boat.status[i].bigSlotTwo) && spaceAlocated < totalSlots){
+				max5slots = boat.status[i].qtdCarsUpTo_5;
+			}
+		}
+		totalSlots = parseInt(boat.status[i].bigSlotOne + boat.status[i].bigSlotTwo);
+	};
 
 	$("#max5slots").text('Max Qtd: '+parseInt(max5slots));
 	$("#spaceAlocatedSlot1").text(spaceAlocatedSlot1);
