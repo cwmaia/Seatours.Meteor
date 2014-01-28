@@ -15,20 +15,30 @@
 				<div id="users" class="tab-pane in active">
 					<fieldset id='fieldsetGroup'>
 						<legend>Group Data<span>&nbsp;&nbsp;</span><i class='icon-group'/></legend>
-						<div>
+						<div class='line-2'>
 							<div>
 								<label>Name: </label>
 								<input type='text' required id='groupName'>
 							</div>
 							<div>
-								<label>Description: </label>
-								<textarea cols='4' rows='10' required id='description'/>
+								<label>Type: </label>
+								<select id='groupTypeCreate' required>
+									<option selected value=''>Select...</option>
+									<option value='internal'>Internal</option>
+									<option value='external'>External</option>
+								</select>
 							</div>
+							
 						</div>
 
-						<button class='btn btn-success create-account-button' id='addGroups'>
+						<div>
+							<label>Description: </label>
+							<textarea cols='4' rows='10' required id='description'/>
+						</div>
+
+						<button class='btn btn-success' id='addGroups'>
                 			<i class="icon-group"></i>
-                			Create
+                			Create Group
             			</button>
 					</fieldset>	
 				</div>
@@ -93,6 +103,7 @@
 				<tr>
 					<th>Name</th>
 					<th>Description</th>
+					<th>Type</th>
 					<th>Actions</th>
 				</tr>
 			</thead>
@@ -101,12 +112,13 @@
 					<tr>
 						<td>{{name}}</td>
 						<td>{{description}}</td>
+						<td>{{type}}</td>
 						<td>
 							{{#if isNotAdmGroup name}}
 								<a class="btn btn-mini btn-info editPermissions" title="Permissions" rel='{{_id}}'><i class="icon-unlock bigger-120"></i></a>
 							{{/if}}
 						</td>
-					</tr>
+					</tr> 
 				{{/each}}
 			</tbody>
 		</table>

@@ -35,6 +35,7 @@
 	            	<label class="control-label required">Full Name: </label>
 	                <input type="text" name='firstName' id='fullName' class="tooltip-error" data-trigger="focus" placeholder="Full Name"required>
 	                <input type="hidden" id='customerId'>
+	                <input type="hidden" id='groupId'>
 	            </div>
 		    </div>
 	        
@@ -62,8 +63,25 @@
 		        </div>
 	        </div>
 
+	        {{#if isEditingCustomer}}
+	        	<div>
+					<label>Customer Group: </label>
+					<select id='groupCustomer' required>
+						<option value=''>Select...</option>
+						{{#each groups}}
+							<option value='{{_id}}' {{#if groupCustomer _id}} selected='true' {{/if}}>{{name}}</option>
+						{{/each}}
+					</select>
+				</div>
+	        {{/if}}
+
 	        {{#if isCreatingExternalUser}}
-	        <div class="line-3 input-append">
+	        <div class="line-3">
+	        	<div>
+	        		 <label class="required">Username: </label>
+		            <input type="text" id="username" name="username" placeholder="Password" required>
+	        	</div>
+
 		        <div>
 		            <label class="required">Password: </label>
 		            <input type="password" id="firstPasswordToEnter" name="firstPasswordToEnter" placeholder="Password" required>

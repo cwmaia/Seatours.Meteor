@@ -26,6 +26,8 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
 
 })
 
+Accounts.config({sendVerificationEmail: true, forbidClientAccountCreation: false});
+
 Meteor.Router.add("/ReturnPageError", "POST", function(){
   console.log(this.request.body);
 })
@@ -61,17 +63,12 @@ Meteor.publish('products', function() {
 
 Meteor.publish('books', function() { 
   if(this.userId){
-     user = Meteor.users.findOne({_id : this.userId});
-     group = Groups.findOne({name : 'Customers'});
-     if(user.profile.groupID == group._id){
-        if(user.profile.customerId){
-          return Books.find({buyerId : user.profile.customerId});
-        }else{
-          return null;
-        }
-     }else{
-        return Books.find();
-     }
+    user = Meteor.users.findOne({_id : this.userId});
+    if(user.profile.groupID){
+      return Books.find();
+    }else{
+      return Books.find({buyerId : user.profile.customerId});
+    }
   }else{
     return Books.find({}, {fields: {dateOfBooking: 1, 'trip._id': 1, 'bookStatus' : 1, 'vehicle.extraSlot' : 1, 'product._id' : 1, 'vehicle.size' : 1}});
   }
@@ -240,16 +237,28 @@ Meteor.methods({
     });
   },
 
+  checkVerified : function(email){
+    user = Meteor.users.findOne({username : email});
+    if(user){
+       if(user.emails[0].verified){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
+   
+  },
+
   createAccount: function(user){
     Accounts.createUser(user);
   },
 
   createExternalAccount: function(user, userData){
-    group = Groups.findOne({"name": "Customers"});
     var customerId = 0;
 
-    
-    user.profile = {'groupID': group._id, 'name' : userData.fullName};
+    user.profile = {name : userData.fullName};
     
     var userId = Accounts.createUser(user);
     
@@ -269,13 +278,20 @@ Meteor.methods({
     Groups.insert(group);
   },
 
-  saveCustomerBooks : function(books){
-    for (var i = 0; i < books.length; i++) {
-        books.temp = true;
-        Book.insert(books[i]);
-    };
 
-  },
+  saveFile: function(blob, name, path, encoding) {
+    var fs = Npm.require('fs'), encoding ='binary';
+    var nameAndPath = '../../../../../public/images/' + name ;
+    var base64 = blob;
+    fs.writeFile(nameAndPath, base64, encoding, function(err) {
+      if (err) {
+          return err; 
+        }else{
+          return true;
+        } 
+    });
+    }, 
+ 
 
   insertBook : function(book){
     if(!book.refNumber){

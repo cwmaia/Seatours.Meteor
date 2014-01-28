@@ -16,18 +16,44 @@ Template.groupList.isNotAdmGroup = function (name) {
 Template.createGroups.events({
 	'click #addGroups' : function(event){
 
+		if(!$('#groupName').val()){
+			throwError('Please Inform a Group Name');
+			return;
+		}
+
+		if(!$('#description').val()){
+			throwError('Please Inform a Description');
+			return;
+		}
+
+		if(!$('#groupTypeCreate').val()){
+			throwError('Please Inform a Type');
+			return;
+		}
+
 		var name = $('#groupName').val();
 		var description = $('#description').val();
+		var type = $('#groupTypeCreate').val();
+
 
 		var group = {
 			name : name,
 			description : description,
-			permissions: []
+			permissions: [],
+			type : type
+		}
+
+		if(type == 'external'){
+			group.discount = 0;
 		}
 
 		try{
 			Meteor.call('createGroup', group);
 			throwSuccess('Group Created!');
+			$('#groupName').val('');
+			$('#description').val('');
+			$('#groupTypeCreate').val('');
+
 		}catch(err){
 			console.log(err);
 		}

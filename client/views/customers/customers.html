@@ -1,0 +1,114 @@
+<template name="customersAndExternals">
+	<div class="page-header">
+		<h1>
+		Customers & Externals
+		</h1>
+	</div><!-- /.page-header -->
+
+	<div class="tabbable" id='productTabs'>
+		<ul class="nav nav-tabs" id="myTab">
+			<li class="active">
+				<a data-toggle="tab" href="#customersList" sytle="z-index: 0;">
+					<i class="blue icon-group bigger-110"></i>
+					Customers
+				</a>
+			</li>
+			<li>
+				<a data-toggle="tab" href="#externalGroupsManagement" sytle="z-index: 0;">
+					<i class="blue icon-money bigger-110"></i>
+					Discounts
+				</a>
+			</li>
+		</ul>
+
+		<div class="tab-content">
+			<div id="customersList" class="tab-pane in active">
+				<fieldset id="tripField">
+				<legend>Customers
+					<span>&nbsp;&nbsp;</span>
+					<i class='icon-group'/>
+				</legend>
+
+				<table class="table table-striped table-bordered table-hover" id='customersTable'>
+					<thead>
+						<tr>
+							<th>Social Security Number</th>
+							<th>Name</th>
+							<th>Telephone</th>
+							<th>Address</th>
+							<th>Group</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						{{#each customer}}
+							<tr>
+								<td>{{socialSecurityNumber}}</td>
+								<td>{{fullName}}</td>
+								<td>{{telephone}}</td>
+								<td>{{address}} {{city}} {{state}} {{country}}</td>
+								<td>{{group groupId}}</td>
+								<td>
+									<a class="btn btn-mini btn-info editCustomer" rel='{{_id}}'><i class='icon-pencil'></i></a>
+								</td>
+							</tr>
+						{{/each}}	
+					</tbody>
+				</table>
+			</fieldset>
+			</div>
+
+			<div id="externalGroupsManagement" class="tab-pane in">
+				<fieldset id="priceField">
+				<legend>Discounts<span>&nbsp;&nbsp;</span><i class='icon-money'/></legend>
+				<div class='line-3'>
+					<div>
+						<label> Online Discount </label>
+					</div>
+
+					<div>
+						<div id='onlineDiscountSlider'></div>
+					</div>
+					<div>
+						<span>&nbsp;&nbsp;</span><span>&nbsp;&nbsp;</span><input type='text'  size='3' maxlength='3'readonly id='onlineDiscountValue'>%
+					</div>
+				</div>
+
+				{{#each externalGroup}}
+					<div class='line-3'>
+					<div>
+						<label> {{name}} </label>
+					</div>
+
+					<div>
+						<div id='onlineDiscountSlider-{{_id}}'></div>
+					</div>
+					<div>
+						<span>&nbsp;&nbsp;</span><span>&nbsp;&nbsp;</span><input type='text'  size='3' maxlength='3'readonly id='onlineDiscountValue{{_id}}'>%
+					</div>
+				</div>
+				{{/each}}
+
+				<button class='btn btn-success' id='saveDiscounts'>Update</button>
+					
+				</fieldset>
+			</div>
+		</div>
+	</div>
+	<div id="editCustomerModal">
+		  <div class="mask"> </div>
+		  <div class="modal" style='width: 800px'>
+		    <div class="modal-header">
+		      <button type="button" class="close cancel">&times;</button>
+		      <h3>Edit Customer</h3>
+		    </div>
+		   	<div class="modal-body">
+		    	{{> generalPassagerInfo}}
+		    </div>
+		    <div class="modal-footer">
+		    	<a class="btn btn-success updateCustomer">Update Customer</a>
+		    </div>
+	  </div>
+	</div>
+</template>

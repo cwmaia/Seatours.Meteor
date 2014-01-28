@@ -14,7 +14,7 @@
 		
 		{{#each trips}}
 			<li id="{{_id}}">
-				<img src="/images/{{name}}.jpg">
+				<img src="/images/{{imageName}}">
 
 				<h3>{{name}}</h3>
 			</li>	
@@ -54,6 +54,16 @@
 						<option value='{{_id}}' {{#if groupProduct _id}} selected='true' {{/if}}>{{name}}</option>
 					{{/each}}
 				</select>
+			</div>
+		</div>
+		<div class='line-2'>
+			<div>
+				<label class="required">Product Image:</label>
+				<input type="file" name="productImage" id="productImage" {{#if isNew}} required {{/if}}>
+			</div>
+
+			<div>
+				
 			</div>
 		</div>
 		<button id="saveProduct" class='btn btn-success btn-small' form="productForm">

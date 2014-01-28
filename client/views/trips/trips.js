@@ -9,7 +9,7 @@ Template.trips.events({
 });
 
 Template.editTrip.groups = function(){
-	return Groups.find();
+	return Groups.find({type : 'external'});
 }
 
 Template.editTrip.boatFind = function(id){
@@ -108,8 +108,13 @@ Template.editTrip.helpers({
 			return Prices.find({productId : product._id});
 		else
 			return [];
+	},
+
+	isNew : function(){
+		return Session.get('tripId') == 'new';
 	}
 });
+
 
 Template.editTrip.events({
 	'submit #productForm' : function(event) {
@@ -118,24 +123,61 @@ Template.editTrip.events({
 
 		if(form.checkValidity()){
 
+			
 			_product = Products.findOne(Session.get('tripId'));
 			if(_product){
-				_product.name = form.name.value;
-				_product.boatId = form.boat.selectedOptions[0].value;
-				_product.availableFor = $('#groupTrip').val();
 
-				Products.update(_product._id, {$set : {name : _product.name, boatId: _product.boatId, availableFor: $('#groupTrip').val()}});
-				Meteor.Router.to('/trips')
-			throwSuccess(_product.name + ' edited');
-			}else{
-				product = {
-					name : form.name.value,
-					boatId : form.boat.selectedOptions[0].value,
-					availableFor : $('#groupTrip').val()
+				var reader = new FileReader();
+
+				fileInput = form.productImage;
+				file = fileInput.files[0];
+
+				reader.onload = function(e){
+					_product.name = form.name.value;
+					_product.boatId = form.boat.selectedOptions[0].value;
+					_product.availableFor = $('#groupTrip').val();
+					_product.imageName = file.name;
+
+					
+					Products.update(_product._id, {$set : {name : _product.name, boatId: _product.boatId, availableFor: $('#groupTrip').val(), imageName: file.name}});
+					throwSuccess(_product.name + ' edited');
+					Meteor.call('saveFile', e.target.result, file.name);
+					Meteor.Router.to('/trips')
 				}
-				Products.insert(product);
-				Meteor.Router.to('/trips')
-				throwSuccess(product.name + ' saved');
+				if(file){
+					reader.readAsBinaryString(file);
+				}else{
+					_product.name = form.name.value;
+					_product.boatId = form.boat.selectedOptions[0].value;
+					_product.availableFor = $('#groupTrip').val();
+					
+					Products.update(_product._id, {$set : {name : _product.name, boatId: _product.boatId, availableFor: $('#groupTrip').val()}});
+					throwSuccess(_product.name + ' edited');
+					Meteor.Router.to('/trips')
+				}
+				
+				
+			}else{
+				var reader = new FileReader();
+
+				fileInput = form.productImage;
+				file = fileInput.files[0];
+
+				reader.onload = function(e){
+					product = {
+						name : form.name.value,
+						boatId : form.boat.selectedOptions[0].value,
+						availableFor : $('#groupTrip').val(),
+						imageName : file.name
+					}
+					
+					Products.insert(product);
+					Meteor.Router.to('/trips')
+					throwSuccess(product.name + ' saved');
+					Meteor.call('saveFile', e.target.result, file.name);
+				}
+				
+				reader.readAsBinaryString(file);
 			}
 			
 				

@@ -9,6 +9,13 @@ Template.cart.hasItems = function(){
 	return false;
 }
 
+Template.items.hasDiscount = function(){
+	if(this.discount)
+		return this.discount > 0;
+	else
+		return false;	
+}
+
 Template.items.hasTo = function(){
 	return this.trip.to;
 }
@@ -27,10 +34,6 @@ Template.cart.getCBasket = function(){
 
 Template.items.hasVehicle = function(){
 	return this.vehicle.category;
-}
-
-Template.items.discount = function(){
-	return Settings.findOne({_id: "onlineDiscount"}).onlineDiscount;
 }
 
 Template.cart.cbasketBooks = function(){

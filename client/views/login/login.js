@@ -9,17 +9,19 @@ Template.login.events({
 			password : $(event.target).find('[name=password]').val()
 		}
 
-		Meteor.loginWithPassword(user.username, user.password, function(err){
-        if (err){
-        	if(err.reason == 'Incorrect password')
-        		throwError("Incorrect Password!") 
-        	else
-        		throwError("User not Found!") 
-        	SpinnerStop();
-      	}else{
-      		Session.set('dateSelected', false);
-          	Session.set('showOverview', true);
-      }
-      });
+    login(user.username, user.password);
+      		
 	}
 });
+
+var login = function(username, password){
+  Meteor.loginWithPassword(username, password, function(err){
+        if (err){
+          throwError(err.reason);
+          SpinnerStop();
+        }else{
+          Session.set('dateSelected', false);
+          Session.set('showOverview', true);
+      }
+      });
+}

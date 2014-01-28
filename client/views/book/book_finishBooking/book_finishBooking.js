@@ -24,13 +24,13 @@ Template.finishBooking.events({
 		percentage = parseInt(percentage);
 
 		var book = Books.findOne({_id : Session.get('currentBooking')});
-		var amount = parseInt(book.totalISK * (percentage/100));
+		var amount = parseInt(book.totalISK * (percentage/100)).toFixed();
 
 
 
 		var transaction = {
 			'bookId' : Session.get('currentBooking'),
-			'date' : new Date(date),
+			'date' : new Date(),
 			'status' : 'Given',
 			'amount' : amount,
 			'detail' : percentage+"% of discount",
@@ -45,15 +45,17 @@ Template.finishBooking.events({
 		for (var i = thisBookingTransactions.length - 1; i >= 0; i--) {
 			totalTransactions = totalTransactions + thisBookingTransactions[i].amount;
 		};
+		newTotal = totalISK - amount
+		Books.update(book._id, {$set : {totalISK : newTotal}});
 		if( totalISK == totalTransactions){
 			$("#"+bookId+"_paymentStatus").text("Paid");
 			Books.update(bookId, {$set : {paid : true}});
 		}else if (totalISK > totalTransactions){
 			var pending = totalISK - totalTransactions;
-			$("#"+bookId+"_paymentStatus").text(pending + "ISK Pending");
+			$("#"+bookId+"_paymentStatus").text(pending + " ISK Pending");
 		}else{
 			var refund = totalTransactions - totalISK;
-			$("#"+bookId+"_paymentStatus").text(refund + "ISK to be refund");
+			$("#"+bookId+"_paymentStatus").text(refund + " ISK to be refund");
 		}
 
 		var note = {
@@ -142,10 +144,10 @@ Template.finishBooking.events({
 			Books.update(bookId, {$set : {paid : true}});
 		}else if (totalISK > totalTransactions){
 			var pending = totalISK - totalTransactions;
-			$("#"+bookId+"_paymentStatus").text(pending + "ISK Pending");
+			$("#"+bookId+"_paymentStatus").text(pending + " ISK Pending");
 		}else{
 			var refund = totalTransactions - totalISK;
-			$("#"+bookId+"_paymentStatus").text(refund + "ISK to be refunded");
+			$("#"+bookId+"_paymentStatus").text(refund + " ISK to be refunded");
 		}
 
 		$("#extraFeeDialog").hide();
@@ -208,10 +210,10 @@ Template.finishBooking.events({
 			Books.update(bookId, {$set : {paid : true}});
 		}else if (totalISK > totalTransactions){
 			var pending = totalISK - totalTransactions;
-			$("#"+bookId+"_paymentStatus").text(pending + "ISK Pending");
+			$("#"+bookId+"_paymentStatus").text(pending + " ISK Pending");
 		}else{
 			var refund = totalTransactions - totalISK;
-			$("#"+bookId+"_paymentStatus").text(refund + "ISK to be refunded");
+			$("#"+bookId+"_paymentStatus").text(refund + " ISK to be refunded");
 		}
 	}
 

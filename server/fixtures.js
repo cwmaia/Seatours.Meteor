@@ -6,17 +6,20 @@ var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
 var admId = '';
 var vendorsId = '';
 var customersId = '';
+var specialId = '';
 
 
 if(Groups.find().count() == 0){
 	admId = Groups.insert({
 		'name' : 'Administrators',
-		'description' : 'Lords of the Universe'
+		'description' : 'Lords of the Universe',
+		'type' : 'internal'
 	});
 
 	vendorsId = Groups.insert({
 		'name' : 'Vendors',
 		'description' : 'Vendors',
+		'type' : 'internal',
 		'permissions' : [
 			'bookOperator',
 			'bookDetail',
@@ -29,6 +32,8 @@ if(Groups.find().count() == 0){
 	Groups.insert({
 		'name' : 'Agencies',
 		'description' : 'Travel Agencies',
+		'type' : 'external',
+		'discount' : 0,
 		'permissions' : [
 			'bookOperator',
 			'bookDetail',
@@ -41,6 +46,20 @@ if(Groups.find().count() == 0){
 	customersId = Groups.insert({
 		'name' : 'Customers',
 		'description' : 'Extern Customers',
+		'type' : 'external',
+		'discount' : 0,
+		'permissions' : [
+			'bookOperator',
+			'createBook',
+			'myVoucher'
+			]
+	})
+
+	specialId = Groups.insert({
+		'name' : 'Special Customers',
+		'description' : 'Extern Customers',
+		'type' : 'external',
+		'discount' : 5,
 		'permissions' : [
 			'bookOperator',
 			'createBook',
@@ -95,7 +114,8 @@ if(Products.find().count() == 0){
 		"description" 	: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tempus neque vitae leo accumsan, ac rutrum urna bibendum. Integer vitae purus ac diam mattis vehicula. Duis tincidunt ultricies felis. In nec congue ligula, ut fermentum nulla. Aliquam elit quam, ultricies ac orci non, consectetur malesuada augue. Sed feugiat nisi ac accumsan vestibulum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam elementum nisi vel turpis dictum, quis accumsan augue porta.",
 		"activated" 	: true,
 		"boatId" : '1',
-		'availableFor' : customersId
+		'availableFor' : customersId,
+		'imageName' : "Baldur Ferry.jpg"
 	});
 
 	Trips.insert({
@@ -273,7 +293,9 @@ if(Products.find().count() == 0){
 		"description" 	: "Quisque volutpat suscipit interdum. Nam felis tellus, viverra eu quam ac, accumsan vestibulum quam. Phasellus luctus sem non nunc varius, vitae adipiscing augue gravida. Vestibulum libero velit, ultrices id tortor vitae, elementum congue ligula. Vestibulum in auctor urna, eget aliquam enim. Curabitur in tellus lacinia, consectetur nunc varius, posuere nisl. Mauris porta id eros eu imperdiet. Cras tristique laoreet erat vitae fermentum. Donec ornare lobortis iaculis. Sed sodales suscipit urna, sit amet laoreet dui rhoncus id. Etiam tempus nulla ut fringilla malesuada. Proin ac lorem eget leo ornare rhoncus vel et magna. Nam eu scelerisque nisl, ultricies blandit tellus. In vitae mauris at tortor porta egestas. Integer porta placerat purus, eget mattis nisi molestie vel.",
 		"activated" 	: true,
 		"boatId" : '1',
-		'availableFor' : customersId
+		'availableFor' : customersId,
+		'imageName' : "Viking Sushi Adventure.jpg"
+
 	});
 
 	Trips.insert({
@@ -339,7 +361,8 @@ if(Products.find().count() == 0){
 		"description" 	: "Morbi mi quam, hendrerit eget purus in, eleifend eleifend sapien. Proin imperdiet, ipsum viverra hendrerit eleifend, quam nisl vestibulum massa, vitae cursus magna quam vel tortor. Quisque tincidunt eget elit ac consectetur. Donec interdum, eros nec feugiat commodo, purus nibh malesuada sapien, sed consectetur arcu massa ullamcorper urna. Vivamus metus nibh, blandit vel facilisis in, vulputate eget urna. Nulla et aliquet ligula, sit amet tempus sem. Donec vel ligula posuere, ultricies lacus at, porttitor justo. Aenean hendrerit fermentum ipsum, sit amet malesuada purus interdum ac. Donec imperdiet diam congue euismod varius. Quisque volutpat ultrices risus non varius. Quisque malesuada enim ac diam pharetra mollis. Vestibulum tristique massa a odio eleifend, sit amet tincidunt nulla dignissim. Donec tempor, velit vitae dapibus commodo, risus ipsum vehicula nisi, sed vehicula tellus eros sit amet eros. Vestibulum ipsum ipsum, vestibulum vitae nunc quis, tempus ultricies sapien. Proin aliquam feugiat pellentesque.",			
 		"activated" 	: true,
 		"boatId" : '1',
-		'availableFor' : customersId
+		'availableFor' : customersId,
+		'imageName' : "Viking Sushi Short.jpg"
 	});
 
 	Trips.insert({
@@ -534,6 +557,7 @@ if(VehiclesCategory.find().count() == 0){
 }
 
 customerID = "";
+customerID2 = "";
 
 if(Customers.find().count() == 0){
 	Customers.insert({
@@ -557,7 +581,7 @@ if(Customers.find().count() == 0){
 		'email' : "roberto@me.com",
 		"telephoneCode" : "+55",
 		"telephone" : "(84) 4004-0001",
-		"adress" : "New Adress",
+		"address" : "New Adress",
 		"city" : "Yes it changed",
 		"state" : "Another State",
 		"postcode" : "99551",
@@ -572,11 +596,35 @@ if(Customers.find().count() == 0){
 		'email' : "roberto@me.com",
 		"telephoneCode" : "+55",
 		"telephone" : "(84) 4004-0001",
-		"adress" : "New Adress",
+		"address" : "New Adress",
 		"city" : "Yes it changed",
 		"state" : "Another State",
 		"postcode" : "99551",
 		"country" : "Brazil",
+		"groupId" : customersId,
+		"lastUsedCar" : {
+			"vehicleName" : "Mitsubishi Eclipse",
+			"categories" : "Small Car",
+			"size" : 4.5,
+			"totalCost" : 4080,
+			"vehiclePlate" : "ALLIN00"
+		}
+	});
+
+	customerID2 = Customers.insert({
+		"title" : "Mr",
+		"socialSecurityNumber" :  "111111-3333",
+		"fullName" :  "Special Jarvis Hallais",
+		"birthDate" : "10/10/1992",
+		'email' : "roberto@me.com",
+		"telephoneCode" : "+55",
+		"telephone" : "(84) 4004-0001",
+		"address" : "New Adress",
+		"city" : "Yes it changed",
+		"state" : "Another State",
+		"postcode" : "99551",
+		"country" : "Brazil",
+		"groupId" : specialId,
 		"lastUsedCar" : {
 			"vehicleName" : "Mitsubishi Eclipse",
 			"categories" : "Small Car",
@@ -599,16 +647,24 @@ if(Meteor.users.find().count() == 0){
 	Accounts.createUser({
 	  'username'  : 'carlos',
 	  'email'     : 'maia@me.com',
-	  'profile'	  : {'groupID' : vendorsId, 'name' : 'Gudrun'},
+	  'profile'	  : {'groupID' : vendorsId, name : 'Carlos'},
 	  'password'  : '1234' //encrypted automatically 
 	});
 	Accounts.createUser({
 	  'username'  : 'jarvis',
 	  'email'     : 'jarvis@me.com',
-	  'profile'	  : {'groupID' : customersId, 'name' : 'Jarvis', customerId: customerID},
+	  'profile'	  : {name : 'Jarvis', customerId: customerID},
+	  'password'  : '1234' //encrypted automatically 
+	});
+
+	Accounts.createUser({
+	  'username'  : 'jarvis2',
+	  'email'     : 'jarvis-2@me.com',
+	  'profile'	  : {name : 'Jarvis', customerId: customerID2},
 	  'password'  : '1234' //encrypted automatically 
 	});
 }
+
 
 // var countries = [{"id":1,"name":"Afghanistan"},{"id":2,"name":"Albania"},{"id":3,"name":"Algeria"},{"id":4,"name":"American Samoa"},{"id":5,"name":"Andorra"},{"id":6,"name":"Angola"},{"id":7,"name":"Anguilla"},{"id":8,"name":"Antigua and Barbuda"},{"id":9,"name":"Argentina"},{"id":10,"name":"Armenia"},{"id":11,"name":"Aruba"},{"id":12,"name":"Australia"},{"id":13,"name":"Austria"},{"id":14,"name":"Azerbaijan"},{"id":15,"name":"Bahamas"},{"id":16,"name":"Bahrain"},{"id":17,"name":"Bangladesh"},{"id":18,"name":"Barbados"},{"id":19,"name":"Belarus"},{"id":20,"name":"Belgium"},{"id":21,"name":"Belize"},{"id":22,"name":"Benin"},{"id":23,"name":"Bermuda"},{"id":24,"name":"Bhutan"},{"id":25,"name":"Bolivia"},{"id":26,"name":"Bosnia-Herzegovina"},{"id":27,"name":"Botswana"},{"id":28,"name":"Bouvet Island"},{"id":29,"name":"Brazil"},{"id":30,"name":"Brunei"},{"id":31,"name":"Bulgaria"},{"id":32,"name":"Burkina Faso"},{"id":33,"name":"Burundi"},{"id":34,"name":"Cambodia"},{"id":35,"name":"Cameroon"},{"id":36,"name":"Canada"},{"id":37,"name":"Cape Verde"},{"id":38,"name":"Cayman Islands"},{"id":39,"name":"Central African Republic"},{"id":40,"name":"Chad"},{"id":41,"name":"Chile"},{"id":42,"name":"China"},{"id":43,"name":"Christmas Island"},{"id":44,"name":"Cocos (Keeling) Islands"},{"id":45,"name":"Colombia"},{"id":46,"name":"Comoros"},{"id":47,"name":"Congo, Democratic Republic of the (Zaire)"},{"id":48,"name":"Congo, Republic of"},{"id":49,"name":"Cook Islands"},{"id":50,"name":"Costa Rica"},{"id":51,"name":"Croatia"},{"id":52,"name":"Cuba"},{"id":53,"name":"Cyprus"},{"id":54,"name":"Czech Republic"},{"id":55,"name":"Denmark"},{"id":56,"name":"Djibouti"},{"id":57,"name":"Dominica"},{"id":58,"name":"Dominican Republic"},{"id":59,"name":"Ecuador"},{"id":60,"name":"Egypt"},{"id":61,"name":"El Salvador"},{"id":62,"name":"Equatorial Guinea"},{"id":63,"name":"Eritrea"},{"id":64,"name":"Estonia"},{"id":65,"name":"Ethiopia"},{"id":66,"name":"Falkland Islands"},{"id":67,"name":"Faroe Islands"},{"id":68,"name":"Fiji"},{"id":69,"name":"Finland"},{"id":70,"name":"France"},{"id":71,"name":"French Guiana"},{"id":72,"name":"Gabon"},{"id":73,"name":"Gambia"},{"id":74,"name":"Georgia"},{"id":75,"name":"Germany"},{"id":76,"name":"Ghana"},{"id":77,"name":"Gibraltar"},{"id":78,"name":"Greece"},{"id":79,"name":"Greenland"},{"id":80,"name":"Grenada"},{"id":81,"name":"Guadeloupe (French)"},{"id":82,"name":"Guam (USA)"},{"id":83,"name":"Guatemala"},{"id":84,"name":"Guinea"},{"id":85,"name":"Guinea Bissau"},{"id":86,"name":"Guyana"},{"id":87,"name":"Haiti"},{"id":88,"name":"Holy See"},{"id":89,"name":"Honduras"},{"id":90,"name":"Hong Kong"},{"id":91,"name":"Hungary"},{"id":92,"name":"Iceland"},{"id":93,"name":"India"},{"id":94,"name":"Indonesia"},{"id":95,"name":"Iran"},{"id":96,"name":"Iraq"},{"id":97,"name":"Ireland"},{"id":98,"name":"Israel"},{"id":99,"name":"Italy"},{"id":100,"name":"Ivory Coast (Cote D`Ivoire)"},{"id":101,"name":"Jamaica"},{"id":102,"name":"Japan"},{"id":103,"name":"Jordan"},{"id":104,"name":"Kazakhstan"},{"id":105,"name":"Kenya"},{"id":106,"name":"Kiribati"},{"id":107,"name":"Kuwait"},{"id":108,"name":"Kyrgyzstan"},{"id":109,"name":"Laos"},{"id":110,"name":"Latvia"},{"id":111,"name":"Lebanon"},{"id":112,"name":"Lesotho"},{"id":113,"name":"Liberia"},{"id":114,"name":"Libya"},{"id":115,"name":"Liechtenstein"},{"id":116,"name":"Lithuania"},{"id":117,"name":"Luxembourg"},{"id":118,"name":"Macau"},{"id":119,"name":"Macedonia"},{"id":120,"name":"Madagascar"},{"id":121,"name":"Malawi"},{"id":122,"name":"Malaysia"},{"id":123,"name":"Maldives"},{"id":124,"name":"Mali"},{"id":125,"name":"Malta"},{"id":126,"name":"Marshall Islands"},{"id":127,"name":"Martinique (French)"},{"id":128,"name":"Mauritania"},{"id":129,"name":"Mauritius"},{"id":130,"name":"Mayotte"},{"id":131,"name":"Mexico"},{"id":132,"name":"Micronesia"},{"id":133,"name":"Moldova"},{"id":134,"name":"Monaco"},{"id":135,"name":"Mongolia"},{"id":136,"name":"Montenegro"},{"id":137,"name":"Montserrat"},{"id":138,"name":"Morocco"},{"id":139,"name":"Mozambique"},{"id":140,"name":"Myanmar"},{"id":141,"name":"Namibia"},{"id":142,"name":"Nauru"},{"id":143,"name":"Nepal"},{"id":144,"name":"Netherlands"},{"id":145,"name":"Netherlands Antilles"},{"id":146,"name":"New Caledonia (French)"},{"id":147,"name":"New Zealand"},{"id":148,"name":"Nicaragua"},{"id":149,"name":"Niger"},{"id":150,"name":"Nigeria"},{"id":151,"name":"Niue"},{"id":152,"name":"Norfolk Island"},{"id":153,"name":"North Korea"},{"id":154,"name":"Northern Mariana Islands"},{"id":155,"name":"Norway"},{"id":156,"name":"Oman"},{"id":157,"name":"Pakistan"},{"id":158,"name":"Palau"},{"id":159,"name":"Panama"},{"id":160,"name":"Papua New Guinea"},{"id":161,"name":"Paraguay"},{"id":162,"name":"Peru"},{"id":163,"name":"Philippines"},{"id":164,"name":"Pitcairn Island"},{"id":165,"name":"Poland"},{"id":166,"name":"Polynesia (French)"},{"id":167,"name":"Portugal"},{"id":168,"name":"Puerto Rico"},{"id":169,"name":"Qatar"},{"id":170,"name":"Reunion"},{"id":171,"name":"Romania"},{"id":172,"name":"Russia"},{"id":173,"name":"Rwanda"},{"id":174,"name":"Saint Helena"},{"id":175,"name":"Saint Kitts and Nevis"},{"id":176,"name":"Saint Lucia"},{"id":177,"name":"Saint Pierre and Miquelon"},{"id":178,"name":"Saint Vincent and Grenadines"},{"id":179,"name":"Samoa"},{"id":180,"name":"San Marino"},{"id":181,"name":"Sao Tome and Principe"},{"id":182,"name":"Saudi Arabia"},{"id":183,"name":"Senegal"},{"id":184,"name":"Serbia"},{"id":185,"name":"Seychelles"},{"id":186,"name":"Sierra Leone"},{"id":187,"name":"Singapore"},{"id":188,"name":"Slovakia"},{"id":189,"name":"Slovenia"},{"id":190,"name":"Solomon Islands"},{"id":191,"name":"Somalia"},{"id":192,"name":"South Africa"},{"id":193,"name":"South Georgia and South Sandwich Islands"},{"id":194,"name":"South Korea"},{"id":195,"name":"South Sudan"},{"id":196,"name":"Spain"},{"id":197,"name":"Sri Lanka"},{"id":198,"name":"Sudan"},{"id":199,"name":"Suriname"},{"id":200,"name":"Svalbard and Jan Mayen Islands"},{"id":201,"name":"Swaziland"},{"id":202,"name":"Sweden"},{"id":203,"name":"Switzerland"},{"id":204,"name":"Syria"},{"id":205,"name":"Taiwan"},{"id":206,"name":"Tajikistan"},{"id":207,"name":"Tanzania"},{"id":208,"name":"Thailand"},{"id":209,"name":"Timor-Leste (East Timor)"},{"id":210,"name":"Togo"},{"id":211,"name":"Tokelau"},{"id":212,"name":"Tonga"},{"id":213,"name":"Trinidad and Tobago"},{"id":214,"name":"Tunisia"},{"id":215,"name":"Turkey"},{"id":216,"name":"Turkmenistan"},{"id":217,"name":"Turks and Caicos Islands"},{"id":218,"name":"Tuvalu"},{"id":219,"name":"Uganda"},{"id":220,"name":"Ukraine"},{"id":221,"name":"United Arab Emirates"},{"id":222,"name":"United Kingdom"},{"id":223,"name":"United States"},{"id":224,"name":"Uruguay"},{"id":225,"name":"Uzbekistan"},{"id":226,"name":"Vanuatu"},{"id":227,"name":"Venezuela"},{"id":228,"name":"Vietnam"},{"id":229,"name":"Virgin Islands"},{"id":230,"name":"Wallis and Futuna Islands"},{"id":231,"name":"Yemen"},{"id":232,"name":"Zambia"},{"id":233,"name":"Zimbabwe"}];
 

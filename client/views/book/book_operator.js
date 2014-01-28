@@ -1,4 +1,3 @@
-var SaveCustomer = true;
 var SaveVehicle = false;
 var CustomerSelected = false;
 var ExtraSlot = '';
@@ -387,9 +386,7 @@ var checkSpaceExtra = function(size, trip){
 	freeSpaceSlot1 = parseInt(extraSpace.extraSpace1 - sumSpacesSlot1);
 	freeSpaceSlot2 = parseInt(extraSpace.extraSpace2 - sumSpacesSlot2);
 
-	console.log(size);
-	console.log(freeSpaceSlot1);
-	console.log(freeSpaceSlot2);
+
 	
 	if(size <= freeSpaceSlot1){
 		return extraSlots[1];
@@ -576,7 +573,6 @@ Template.productItem.rendered = function(){
 
 	$('.calendar').datepicker({
 		}).on('changeDate', function(ev){
-			console.log(ev);
 			date = new Date(ev.date);
 			with(date){
 				setDate(getDate());
@@ -656,22 +652,41 @@ Template.productItem.events({
 
 Template.bookOperator.helpers({
 	'product' : function(){
-		showProducts = [];
-		group = Groups.findOne({"name": "Customers"});
 
-		products =  Products.find().fetch();
-
-		for (var i = 0; i < products.length; i++) {
-			if(products[i].availableFor == group._id){
-				showProducts.push(products[i]);
-			}else if(Meteor.user()){
-				if(products[i].availableFor == Meteor.user().profile.groupID)
-				showProducts.push(products[i]);
+		if(Meteor.user()){
+			group = Groups.findOne({_id: Meteor.user().profile.groupID});
+			if(group){
+				if(group.type = 'internal'){
+					return Products.find();
+				}
+			}else{
+				showProducts = [];
+				products =  Products.find().fetch();
+				for (var i = 0; i < products.length; i++) {
+					group = Groups.findOne({_id : products[i].availableFor});
+					if(group && group.name == 'Customers'){
+						showProducts.push(products[i]);
+					}else if(Meteor.user()){
+						if(products[i].availableFor == getGroupId(Meteor.user().profile.customerId))
+						showProducts.push(products[i]);
+					}
+				};
+	
+				return showProducts;
 			}
-		};
-		
-		return showProducts;
+		}else{
+			showProducts = [];
 
+			products =  Products.find().fetch();
+			for (var i = 0; i < products.length; i++) {
+				group = Groups.findOne({_id : products[i].availableFor});
+					if(group && group.name == 'Customers'){
+						showProducts.push(products[i]);
+					}
+			};
+
+			return showProducts;
+		}
 	}
 })
 
@@ -708,6 +723,19 @@ currentSeason = function(){
 		}else{
 			return "winter";
 		}
+	}
+}
+
+getGroupId = function(customerId){
+	customer = Customers.findOne({_id : customerId});
+	if(customerId){
+		group = Groups.findOne({_id : customer.groupId});
+		if(group)
+			return group._id;
+		else
+			return 0;
+	}else{
+		return 0;
 	}
 }
 
@@ -838,6 +866,23 @@ Template.createBook.dateSelected = function(){
 
 Template.generalPassagerInfo.dateSelected = function(){
 	return !Session.get('dateSelected') && !Session.get('creatingUser') && !Session.get("finishBooking");
+}
+
+Template.generalPassagerInfo.groups = function(){
+	return Groups.find({type : "external"});
+}
+
+Template.generalPassagerInfo.groupCustomer = function(id){
+	customer = Customers.findOne({_id : Session.get("customerId")});
+	if(customer){
+		return customer.groupId == id;
+	}else{
+		return false;
+	}
+}
+
+Template.generalPassagerInfo.isEditingCustomer = function(){
+	return Session.get('customerId');
 }
 
 carsUpTo5 = function(){
@@ -972,6 +1017,7 @@ var formBook = function(){
 		throwError('Maximum capacity of passengers reached!');	
 	}
 	else if(!isCustomer()){
+		Session.set('SaveCustomer', true);
 		Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');
 	}
 		
@@ -1250,7 +1296,6 @@ Template.createBook.helpers({
 })
 
 Template.createBook.rendered = function(){
-	SaveCustomer = true;
 	$("#statusDialog").hide();
 	$('#pasagerInfo').on('submit', function(event){
 		event.preventDefault();
@@ -1266,7 +1311,7 @@ Template.createBook.rendered = function(){
     	$('#email').val(customer.email);
     	$('#telephoneCode').val(customer.telephoneCode);
     	$('#telephone').val(customer.telephone);
-    	$('#adress').val(customer.adress);
+    	$('#adress').val(customer.address);
     	$('#city').val(customer.city);
     	$('#state').val(customer.state);
     	$('#postcode').val(customer.postcode);
@@ -1412,11 +1457,12 @@ Template.generalPassagerInfo.events({
 	    	$('#email').val(currentCustomer.email);
 	    	$('#telephoneCode').val(currentCustomer.telephoneCode);
 	    	$('#telephone').val(currentCustomer.telephone);
-	    	$('#adress').val(currentCustomer.adress);
+	    	$('#adress').val(currentCustomer.address);
 	    	$('#city').val(currentCustomer.city);
 	    	$('#state').val(currentCustomer.state);
 	    	$('#postcode').val(currentCustomer.postcode);
 	    	$('#country').val(currentCustomer.country);
+	    	$('#groupId').val(currentCustomer.groupId);	
 	    	//Vehicle
 	    	$('#vehicle').val(currentCustomer.lastUsedCar.vehicleName);
 	    	$('#categories').val(currentCustomer.lastUsedCar.categoryId);
@@ -1430,7 +1476,7 @@ Template.generalPassagerInfo.events({
 			Session.set('currentSizeCar', currentCustomer.lastUsedCar.size);
 			checkIfCarsFits(currentCustomer.lastUsedCar.size);
 			changeSizes();
-			SaveCustomer = false;
+			Session.set('SaveCustomer', false);
    		}else{
    			$('#fullName').val('');
 			$('#customerId').val('');
@@ -1450,7 +1496,8 @@ Template.generalPassagerInfo.events({
 	    	$('#size').val('');
 	    	$('#totalVehicle').val('');
 	    	$('#vehiclePlate').val('');
-	    	SaveCustomer = true;
+	    	$('#groupId').val('');	
+	    	SSession.set('SaveCustomer', true);
    		}
 	},
 
@@ -1467,11 +1514,12 @@ Template.generalPassagerInfo.events({
 	    	$('#email').val(currentCustomer.email);
 	    	$('#telephoneCode').val(currentCustomer.telephoneCode);
 	    	$('#telephone').val(currentCustomer.telephone);
-	    	$('#adress').val(currentCustomer.adress);
+	    	$('#adress').val(currentCustomer.address);
 	    	$('#city').val(currentCustomer.city);
 	    	$('#state').val(currentCustomer.state);
 	    	$('#postcode').val(currentCustomer.postcode);
 	    	$('#country').val(currentCustomer.country);	
+	    	$('#groupId').val(currentCustomer.groupId);	
 		}else{
 			$("#usingData").val('false');
 			$('#fullName').val('');
@@ -1487,6 +1535,7 @@ Template.generalPassagerInfo.events({
 	    	$('#state').val('');
 	    	$('#postcode').val('');
 	    	$('#country').val('');
+	    	$('#groupId').val('');	
 		}
 	},
 
@@ -1495,6 +1544,8 @@ Template.generalPassagerInfo.events({
 		var form = document.getElementById('pasagerInfo');
 		if(form.checkValidity()){
 			event.preventDefault();
+			group = Groups.findOne({"name": "Customers"});
+
 			var customerData = {
 				'socialSecurityNumber' :  $('#socialSecurityNumber').val(),
 				'fullName' :  $('#fullName').val(),
@@ -1503,21 +1554,22 @@ Template.generalPassagerInfo.events({
 		    	'email' : $('#email').val(),
 		    	'telephoneCode' : $('#telephoneCode').val(),
 		    	'telephone' : $('#telephone').val(),
-		    	'adress' : $('#adress').val(),
+		    	'address' : $('#adress').val(),
 		    	'city' : $('#city').val(),
 		    	'state' : $('#state').val(),
 		    	'postcode' : $('#postcode').val(),
-		    	'country' : $('#country').val()
+		    	'country' : $('#country').val(),
+		    	'groupId' : group._id
 			}
 
 			var user = {
-				username : $('#email').val(),
+				username : form.username.value,
 				email : $('#email').val(),
 				password : $('#firstPasswordToEnter').val()
 			}
 			Meteor.call('createExternalAccount', user, customerData, function(err, result){
 				if(err){
-					throwError("Email already registered!");
+					throwError(err.reason);
 				}else{
 					SpinnerInit();
 					Meteor.loginWithPassword(user.username, user.password, function(err){
@@ -1544,6 +1596,8 @@ Template.generalPassagerInfo.events({
 			});
 		}
 	}
+
+	
 
 
 })
@@ -1750,6 +1804,8 @@ var createBook = function(){
 		'vehiclePlate' : $('#vehiclePlate').val()
 	}
 
+	group = Groups.findOne({"name": "Customers"});
+
 	var customer = {
 		"title" : $('#title').val(),
 		"socialSecurityNumber" :  $('#socialSecurityNumber').val(),
@@ -1758,12 +1814,13 @@ var createBook = function(){
 		'email' : $('#email').val(),
 		"telephoneCode" : $('#telephoneCode').val(),
 		"telephone" : $("#telephone").val(),
-		"adress" : $("#adress").val(),
+		"address" : $("#adress").val(),
 		"city" : $("#city").val(),
 		"state" : $('#state').val(),
 		"postcode" : $("#postcode").val(),
 		"country" : $("#country").val(),
-		"lastUsedCar" : vehicle
+		"lastUsedCar" : vehicle,
+		"groupId" : group._id
 	}
 
 	var date = new Date();
@@ -1790,10 +1847,6 @@ var createBook = function(){
 	}
 	book.vehicle = vehicle;
 
-	
-
-
-
 	if(ExtraSlot){
 		book.vehicle.extraSlot = ExtraSlot;
 	}else{
@@ -1802,11 +1855,17 @@ var createBook = function(){
 
 	if(isCustomer()){
 
-		var resultId = Customers.insert(customer);
-		book.customerId = resultId;
+		if(Session.get('SaveCustomer')){
+			var resultId = Customers.insert(customer);
+			book.customerId = resultId;
+		}else{
+			book.customerId = $("#customerId").val();
+		}
+		
 
 		var discount = Settings.findOne({_id: 'onlineDiscount'}).onlineDiscount;
 		book.totalISK = parseInt((book.totalISK - ((book.totalISK * discount) / 100 )).toFixed());
+		book.discount = discount;
 
 		if(getCartId()){
 				book.cartId = getCartId();
@@ -1817,6 +1876,11 @@ var createBook = function(){
 			book.cartId = name;
 		}
 	}else{
+
+		
+
+		
+
 		if(getCartIdOperator()){
 				book.cartId = getCartIdOperator();
 		}else{
@@ -1830,10 +1894,17 @@ var createBook = function(){
 			book.totalISK = parseInt((book.totalISK + operatorFee).toFixed());
 		}
 
-		if(SaveCustomer){
+		if(Session.get('SaveCustomer')){
 			var resultId = Customers.insert(customer);
 			book.customerId = resultId;
+			book.discount = 0;
 		}else{
+			//Descount
+			group = Groups.findOne({_id : $('#groupId').val()});
+			if(group && group.discount > 0){
+				book.totalISK = parseInt((book.totalISK - ((book.totalISK * group.discount) / 100 )).toFixed());
+				book.discount = group.discount;
+			}
 			book.customerId = $('#customerId').val();
 			if(Customers.findOne({'_id': book.customerId}).lastUsedCar.vehiclePlate != $('#vehiclePlate').val()){
 				Customers.update(book.customerId, {$set: {
@@ -2154,10 +2225,8 @@ function drawPieChartBoatSlots() {
 }
 
 var checkIfCarsFits = function(size){
-	console.log('aqui');
+
 	var trip = Trips.findOne(Session.get('tripId'));
-	console.log(trip);
-	console.log(size);
 	ExtraSlot = null;
 	CanSaveTheBook = true;
 	if(size <= 6){
@@ -2168,7 +2237,6 @@ var checkIfCarsFits = function(size){
 		//If the door has reached the max capacity, there is no space on the boat for the
 		//car based on his size
 		maxCapacity = doorMaxCapacity(trip);
-		console.log(showAlert);
 		if(showAlert){
 			var result = confirm("There is no space on the boat. Place on the Door?");
 			if(result){
@@ -2219,7 +2287,6 @@ var checkIfCarsFits = function(size){
 			result = true;
 		if(result){
 			fits = checkSpaceExtra(size, trip);
-			console.log(fits);
 			if(fits){
 				ExtraSlot = fits;
 				CanSaveTheBook = true;

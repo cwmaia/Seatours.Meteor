@@ -47,6 +47,6 @@
 		<input type='hidden' id='{{totalISK}}' class='unitPrice'>
 		<td style='width: 70%'>{{product.name}} - {{dateNoTimeZone dateOfBooking}}</br> <b>From</b> {{trip.from}} {{#if hasTo}}<b>To</b> {{trip.to}}{{/if}} <br/><b>Hour</b> {{trip.hour}}</br></br>{{customerName customerId}}</br></br>{{#each prices}}{{price}} ( {{perUnit}} ISK) X {{persons}} = {{sum}} ISK</br>{{/each}}</br>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m =  {{vehicle.totalCost}} ISK{{/if}}</td>
 		{{#if notFinish}}<td style='width: 5%; text-align: center'><a class='remove btn btn-mini btn-danger' rel='{{_id}}'><i class='icon-remove'></i></a></td>{{/if}}
-		<td style='width: 10%; text-align: center'> <span id='{{_id}}' class='calcTotal'>{{totalISK}}</span><br/>{{#if customer}}{{discount}}% Off{{/if}}</td>
+		<td style='width: 10%; text-align: center'> <span id='{{_id}}' class='calcTotal'>{{totalISK}}</span><br/>{{#if hasDiscount}}{{discount}}% Off{{/if}}</td>
 	</tr>
 </template>
