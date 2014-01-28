@@ -117,25 +117,27 @@ var getExtraSlotsSpace = function(trip){
 		}
 	};
 
-	if(count5m < 25){
-		extraSpace1 = 24;
-		extraSpace2 = 24;
-	}
+	product = Products.findOne(Session.get('productId'));
+	boat = Boats.findOne(product.boatId);
+	status5mAnterior = boat.status[0].qtdCarsUpTo_5;
 
-	if(count5m >= 25 && count5m < 27){
-		extraSpace1 = 24;
-		extraSpace2 = 19;
-	}
+	for (var i = 0; i < boat.status.length; i++) {
+		if(status5mAnterior == boat.status[i].qtdCarsUpTo_5){
+			if(count5m < (boat.status[i].qtdCarsUpTo_5 + 1)){
+				extraSpace1 = boat.status[i].bigSlotOne;
+				extraSpace2 = boat.status[i].bigSlotTwo;
+			}
+		}else{
+			if(count5m >= status5mAnterior && count5m < (boat.status[i].qtdCarsUpTo_5)){
+				extraSpace1 = boat.status[i].bigSlotOne;
+				extraSpace2 = boat.status[i].bigSlotTwo;
+			}
+		}
 
-	if(count5m >= 27 && count5m < 28){
-		extraSpace1 = 19;
-		extraSpace2 = 19;
-	}
+		status5mAnterior = boat.status[i].qtdCarsUpTo_5;
+	};
 
-	if(count5m > 28 && count5m < 30){
-		extraSpace1 = 19;
-		extraSpace2 = 15;
-	}
+
 
 	extraSpace = {
 		extraSpace1 : extraSpace1,
@@ -220,6 +222,7 @@ var doorMaxCapacity = function (trip){
 	var count6m = 0;
 	var count5m = 0;
 	var max5mCars = 0;
+	var max6mCars = 0;
 
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
@@ -264,37 +267,25 @@ var doorMaxCapacity = function (trip){
 	extraSpace = getExtraSlotsSpace(trip);
 
 	sumExtraSpace = parseInt(extraSpace.extraSpace1 + extraSpace.extraSpace2);
+	
+	product = Products.findOne(Session.get('productId'));
+	boat = Boats.findOne(product.boatId);
+	
 
-	if(sumExtraSpace <= 48){
-		CanAdd2Motocycle = true;
-		max5mCars = 24;
-	}
-
-	if(sumExtraSpace <= 43){
-		CanAdd2Motocycle = false;
-		max5mCars = 25;
-	}
-
-	if(sumExtraSpace <= 38){
-		CanAdd2Motocycle = false;
-		max5mCars = 27;
-	}
-
-	if(sumExtraSpace <= 33){
-		CanAdd2Motocycle = false;
-		max5mCars = 28;
-	}
-
-	if(sumExtraSpace <= 30){
-		CanAdd2Motocycle = false;
-		max5mCars = 30;
-	}
+	for (var i = 0; i < boat.status.length; i++) {
+		totalSlots = parseInt(boat.status[i].bigSlotOne + boat.status[i].bigSlotTwo);
+		if(sumExtraSpace <= totalSlots){
+			CanAdd2Motocycle = boat.status[i].AddExtraMotos;
+			max5mCars = boat.status[i].qtdCarsUpTo_5;
+			max6mCars = boat.status[i].qtdCarsUpTo_6;
+		}
+	};
 
 	if(count5m == max5mCars){
 		return true;
 	}
 
-	if(count6m == 4){
+	if(count6m == max6mCars){
 		return true;
 	}
 

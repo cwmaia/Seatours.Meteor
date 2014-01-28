@@ -78,31 +78,36 @@ if(Boats.find().count() == 0){
 			"qtdCarsUpTo_5" : 24,
 			"qtdCarsUpTo_6" : 4,
 			"bigSlotOne" : 24,
-			"bigSlotTwo" : 24
+			"bigSlotTwo" : 24,
+			"AddExtraMotos" : true
 		},
 		{
 			"qtdCarsUpTo_5" : 25,
 			"qtdCarsUpTo_6" : 4,
 			"bigSlotOne" : 24,
-			"bigSlotTwo" : 19
+			"bigSlotTwo" : 19,
+			"AddExtraMotos" : false
 		},
 		{
 			"qtdCarsUpTo_5" : 27,
 			"qtdCarsUpTo_6" : 4,
 			"bigSlotOne" : 19,
-			"bigSlotTwo" : 19
+			"bigSlotTwo" : 19,
+			"AddExtraMotos" : false
 		},
 		{
 			"qtdCarsUpTo_5" : 28,
 			"qtdCarsUpTo_6" : 4,
 			"bigSlotOne" : 19,
-			"bigSlotTwo" : 15
+			"bigSlotTwo" : 15,
+			"AddExtraMotos" : false
 		},
 		{
 			"qtdCarsUpTo_5" : 30,
 			"qtdCarsUpTo_6" : 4,
 			"bigSlotOne" : 15,
-			"bigSlotTwo" : 15
+			"bigSlotTwo" : 15,
+			"AddExtraMotos" : false
 		}
 	]
 	})

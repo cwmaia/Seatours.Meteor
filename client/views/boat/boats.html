@@ -45,6 +45,34 @@
 				<input type ="number" min="0" id="maxCapacity" name="maxCapacity" value="{{boat.maxCapacity}}" placeholder="Max capacity" required>
 			</div>
 		</div>
+		<fieldset>
+			<legend>Slots Status</legend>
+			<table class='table table-striped table-bordered table-hover' id='usersTable'>
+			<thead>
+				<tr>
+					<th>Maximum Cars up to 5m</th>
+					<th>Maximum Cars up to 6m</th>
+					<th>Meters Available on Extra Slot 1</th>
+					<th>Meters Available on Extra Slot 2</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each boat.status}}
+					<tr>
+						<td>{{qtdCarsUpTo_5}} Cars</td>
+						<td>{{qtdCarsUpTo_6}} Cars</td>
+						<td>{{bigSlotOne}} m</td>
+						<td>{{bigSlotTwo}} m</td>
+						<td>
+							<a class="btn btn-mini btn-danger removeStatus" title="Remove" rel='{{customer.email}}'>
+							<i class="icon-trash bigger-120"></i></a>
+						</td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
+		</fieldset>
 	</form>
 
 	<button class='btn btn-success btn-small' form="boatForm">
