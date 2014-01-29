@@ -62,7 +62,7 @@ Meteor.publish("cartItems", function () {
 });
 
 Meteor.publish('products', function() { 
-	   return Products.find();
+	   return Products.find({}, { sort : {name : 1}});
 });
 
 Meteor.publish('books', function() { 
@@ -109,7 +109,7 @@ Meteor.publish('boats', function() {
 });
 
 Meteor.publish('trips', function() {
-    return Trips.find();
+    return Trips.find({}, { sort : {hour : -1}});
 });
 
 Meteor.publish('vehicles', function() {
