@@ -50,12 +50,13 @@
 		<button class='btn btn-success btn-small' form="boatForm">
 			Save Boat
 		</button>	
-
+	</form>	
+	<div id='boatStatusDiv'>
 		<fieldset>
-		<div class="line-2">
+		<div class="line-3">
 			<div>
 				<label class="required">Max Cars up to 5 meters: </label>
-				<input type ="number"  id='max5mCars' required>
+				<input type ="number"  min="0" id='max5mCars' required>
 			</div>
 			<div>
 				<label class="required">Max Cars up to 6 meters: </label>
@@ -63,10 +64,10 @@
 			</div>
 		</div>
 
-		<div class="line-2">
+		<div class="line-3">
 			<div>
 				<label class="required">Meters Available on Extra Slot 1: </label>
-				<input type ="number" id="extraSlot1m" required>
+				<input type ="number" min="0" id="extraSlot1m" required>
 			</div>
 			<div>
 				<label class="required">Meters Available on Extra Slot 2: </label>
@@ -74,7 +75,7 @@
 			</div>
 		</div>
 
-		<button class='btn btn-success btn-small addStatus'>
+		<button class='btn btn-small btn-info addStatus'>
 			Add Status
 		</button>
 
@@ -98,7 +99,7 @@
 						<td>{{bigSlotOne}} m</td>
 						<td>{{bigSlotTwo}} m</td>
 						<td>
-							<a class="btn btn-mini btn-danger removeStatus" title="Remove" rel='{{customer.email}}'>
+							<a class="btn btn-mini btn-danger removeStatus" title="Remove" rel='{{_id}}'>
 							<i class="icon-trash bigger-120"></i></a>
 						</td>
 					</tr>
@@ -106,6 +107,6 @@
 			</tbody>
 		</table>
 		</fieldset>
-	</form>
+	</div>
 	
 </template>
