@@ -1,18 +1,30 @@
-var Book = {};
+var book = {};
 
 Template.voucher.book = function(){
-    Book = Books.findOne({_id: Session.get('bookId')});
-    return Book;
+  if(Books.findOne({_id : Session.get('bookId')})){
+    book = Books.findOne({_id : Session.get('bookId')});
+  }else{
+    book = Session.get("book");
+  }
+  return book;
 }
 
 Template.voucher.getRefNumber = function(){
-    Book = Books.findOne({_id: Session.get('bookId')});
-    return Book.refNumber;
+  if(Books.findOne({_id : Session.get('bookId')})){
+    book = Books.findOne({_id : Session.get('bookId')});
+  }else{
+    book = Session.get("book");
+  }
+  return book.refNumber;
 }
 
 Template.voucher.date = function(){
-    Book = Books.findOne({_id: Session.get('bookId')});
-    return Book.dateOfBooking.toDateString();
+  if(Books.findOne({_id : Session.get('bookId')})){
+    book = Books.findOne({_id : Session.get('bookId')});
+  }else{
+    book = Session.get("book");
+  }
+  return book.dateOfBooking.toDateString();
 }
 
 Template.voucher.customer = function(){
@@ -20,16 +32,25 @@ Template.voucher.customer = function(){
     return Session.get('customer');
   }else{
     var customer;
-    Book = Books.findOne({_id: Session.get('bookId')});
-    customer = Customers.findOne({_id: Book.customerId});
+    if(Books.findOne({_id : Session.get('bookId')})){
+      book = Books.findOne({_id : Session.get('bookId')});
+    }else{
+      book = Session.get("book");
+    }
+    customer = Customers.findOne({_id: book.customerId});
     return customer;  
   }
 	
 }
 
 var showAlertDiv = function(){
-  var bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
-  var book = Books.findOne({_id : Session.get('bookId')});
+  if(Books.findOne({_id : Session.get('bookId')})){
+    bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
+    book = Books.findOne({_id : Session.get('bookId')});
+  }else{
+    book = Session.get("book");
+    bookTransactions = Transactions.find({bookId : book._id}).fetch();
+  }
   var totalISK = book.totalISK;
   for (var i = bookTransactions.length - 1; i >= 0; i--) {
     if(bookTransactions[i].type == 'Refund'){
@@ -47,7 +68,13 @@ var showAlertDiv = function(){
 }
 
 Template.voucher.calcTotal = function(totalISK){
-  var bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
+  if(Books.findOne({_id : Session.get('bookId')})){
+    bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
+    book = Books.findOne({_id : Session.get('bookId')});
+  }else{
+    var book = Session.get("book");
+    var bookTransactions = Transactions.find({bookId : book._id}).fetch();
+  }
   for (var i = bookTransactions.length - 1; i >= 0; i--) {
     if(bookTransactions[i].type == 'Refund'){
       totalISK = totalISK + bookTransactions[i].amount;
@@ -62,7 +89,7 @@ Template.voucher.calcTotal = function(totalISK){
 
 
 Template.voucher.hasVehicles = function(){
-	if(Book.vehicle.category != ''){
+	if(book.vehicle.category != ''){
 		return true;
 	}else{
 		return false;
@@ -70,7 +97,14 @@ Template.voucher.hasVehicles = function(){
 }
 
 Template.voucher.transactions = function(){
-  return Transactions.find({bookId : Session.get('bookId')});
+  if(Books.findOne({_id : Session.get('bookId')})){
+    bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
+    book = Books.findOne({_id : Session.get('bookId')});
+  }else{
+    book = Session.get("book");
+    bookTransactions = Transactions.find({bookId : book._id}).fetch();
+  }
+  return bookTransactions;
 }
 
 Template.voucher.format = function(date){
@@ -80,9 +114,9 @@ Template.voucher.format = function(date){
 
 Template.voucher.qrCode = function(){
 	if(Session.get('mailing')){
-    Book = Session.get('book');
+    book = Session.get('book');
     var server = 'http://localhost:3000/'
-    var qrcodePath = 'images/qrcodes/'  + Book._id + '.gif';
+    var qrcodePath = 'images/qrcodes/'  + book._id + '.gif';
 
     Session.set("mailing", false);
     return server+qrcodePath;

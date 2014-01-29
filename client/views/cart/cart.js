@@ -184,9 +184,12 @@ var sendMail = function(book, result, customer){
 
 	Meteor.call("generateQRCodeGIF", result);
     Session.set("book", book);
+
     Session.set("mailing", true);
+    
     Session.set("customer", customer);
-	var html = Template.voucher({book: book, customer: customer});
+    
+	var html = Template.voucher();
 
 	Meteor.call('sendEmailHTML', customer.email, "noreply@seatours.is", "Your Voucher at Seatours!", html);
 
