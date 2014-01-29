@@ -139,10 +139,38 @@ Template.finishBookCustomer.events({
 					}
 				})		
 			}else{
-				throwError("Some informations are wrong, please fix them. (Forgot something?)");
 				$('#pasagerInfo').submit(function(event){
 					event.preventDefault();
 				});
+				if(!$("#title").val())
+					showPopover($("#title"), 'This value is required');
+				if(!$("#fullName").val())
+					showPopover($("#fullName"), 'This value is required');
+				if(!$("#birthDate").val())
+					showPopover($("#birthDate"), 'This value is required');
+				if(!$("#email").val())
+					showPopover($("#email"), 'Please provide a valid email');
+				if($("#email").val().indexOf("@") <= 0  ||  $("#email").val().lastIndexOf(".") < $("#email").val().indexOf("@") )
+					showPopover($("#email"), 'Please provide a valid email');
+				if(!$("#telephone").val())
+					showPopover($("#telephone"), 'This value is required');
+				if(!$("#username").val())
+					showPopover($("#username"), 'This value is required');
+				if(!$("#password").val())
+					showPopover($("#password"), 'This value is required');
+				if(!$("#confirmPassword").val())
+					showPopover($("#confirmPassword"), 'This value is required');
+				if($("#confirmPassword").val()!=$("#password").val())
+					showPopover($("#confirmPassword"), 'Must match your password');
+				if(!$("#adress").val())
+					showPopover($("#adress"), 'This value is required');
+				if(!$("#postcode").val())
+					showPopover($("#postcode"), 'This value is required');
+				if(!$("#city").val())
+					showPopover($("#city"), 'This value is required');
+				if(!$("#country").val())
+					showPopover($("#country"), 'This value is required');
+
 			}
 		}
 		
