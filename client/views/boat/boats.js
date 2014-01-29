@@ -24,6 +24,11 @@ Template.editBoat.boat = function() {
 	return _boat;
 }
 
+Template.editBoat.status = function() {
+	 _boat = Session.get('_boat') ? Session.get('_boat') : Boats.findOne(Session.get('boatId'));
+	return BoatStatus.find({boatId : _boat._id});
+}
+
 Template.editBoat.events({
 	"submit #slotForm" : function(event){
 		event.preventDefault();

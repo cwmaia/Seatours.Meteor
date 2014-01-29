@@ -32,6 +32,10 @@ Meteor.Router.add("/ReturnPageError", "POST", function(){
   console.log(this.request.body);
 })
 
+Meteor.publish('boatStatus', function(){
+  return BoatStatus.find();
+})
+
 Meteor.publish("directory", function () {
   if(this.userId)
       return Meteor.users.find({}, {fields: {emails: 1, username: 1, 'profile' : 1}});

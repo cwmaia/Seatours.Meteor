@@ -70,35 +70,35 @@ var updateDataPieChart = function(){
 
 
 	product = Products.findOne(Session.get('productId'));
-	boat = Boats.findOne(product.boatId);
-	status5mAnterior = boat.status[0].qtdCarsUpTo_5;
+	boatStatus = BoatStatus.find({boatId: product.boatId}).fetch();
+	status5mAnterior = boatStatus[0].qtdCarsUpTo_5;
+
 	max5MetersCar = 0;
 	max6MetersCar = 0;
 	extraSpace1 = 0;
 	extraSpace2 = 0;
 
-	for (var i = 0; i < boat.status.length; i++) {
-		if(status5mAnterior == boat.status[i].qtdCarsUpTo_5){
-			if(count5m < (boat.status[i].qtdCarsUpTo_5 + 1)){
-				max5MetersCar = boat.status[i].qtdCarsUpTo_5;      
-				max6MetersCar = boat.status[i].qtdCarsUpTo_6;
-				extraSpace1 = boat.status[i].bigSlotOne;
-				extraSpace2 = boat.status[i].bigSlotTwo;
+	for (var i = 0; i < boatStatus.length; i++) {
+		if(status5mAnterior == boatStatus[i].qtdCarsUpTo_5){
+			if(count5m < (boatStatus[i].qtdCarsUpTo_5 + 1)){
+				max5MetersCar = boatStatus[i].qtdCarsUpTo_5;      
+				max6MetersCar = boatStatus[i].qtdCarsUpTo_6;
+				extraSpace1 = boatStatus[i].bigSlotOne;
+				extraSpace2 = boatStatus[i].bigSlotTwo;
 			}
 		}else{
-			if(count5m >= status5mAnterior && count5m < (boat.status[i].qtdCarsUpTo_5)){
-				max5MetersCar = boat.status[i].qtdCarsUpTo_5; 
-				max6MetersCar = boat.status[i].qtdCarsUpTo_6;
-				extraSpace1 = boat.status[i].bigSlotOne;
-				extraSpace2 = boat.status[i].bigSlotTwo;
+			if(count5m >= status5mAnterior && count5m < (boatStatus[i].qtdCarsUpTo_5)){
+				max5MetersCar = boatStatus[i].qtdCarsUpTo_5; 
+				max6MetersCar = boatStatus[i].qtdCarsUpTo_6;
+				extraSpace1 = boatStatus[i].bigSlotOne;
+				extraSpace2 = boatStatus[i].bigSlotTwo;
 			}
 		}
 
-		status5mAnterior = boat.status[i].qtdCarsUpTo_5;
+		status5mAnterior = boatStatus[i].qtdCarsUpTo_5;
 	};
 	
 	totalSpace = ((max5MetersCar * 5) + (max6MetersCar * 6) + extraSpace1 + extraSpace2);
-
 	percentage5m = ((count5m * 5 * 100) / totalSpace).toFixed(2);
 	percentage6m = ((count6m * 6 * 100) / totalSpace).toFixed(2);
 	percentageLargeCars = ((metersForExtraSlots * 100) / totalSpace).toFixed(2);
@@ -149,23 +149,23 @@ var getExtraSlotsSpace = function(trip){
 	};
 
 	product = Products.findOne(Session.get('productId'));
-	boat = Boats.findOne(product.boatId);
-	status5mAnterior = boat.status[0].qtdCarsUpTo_5;
+	boatStatus = BoatStatus.findOne({boatId: product.boatId}).fetch();
+	status5mAnterior = boatStatus[0].qtdCarsUpTo_5;
 
-	for (var i = 0; i < boat.status.length; i++) {
-		if(status5mAnterior == boat.status[i].qtdCarsUpTo_5){
-			if(count5m < (boat.status[i].qtdCarsUpTo_5 + 1)){
-				extraSpace1 = boat.status[i].bigSlotOne;
-				extraSpace2 = boat.status[i].bigSlotTwo;
+	for (var i = 0; i < boatStatus.length; i++) {
+		if(status5mAnterior == boatStatus[i].qtdCarsUpTo_5){
+			if(count5m < (boatStatus[i].qtdCarsUpTo_5 + 1)){
+				extraSpace1 = boatStatus[i].bigSlotOne;
+				extraSpace2 = boatStatus[i].bigSlotTwo;
 			}
 		}else{
-			if(count5m >= status5mAnterior && count5m < (boat.status[i].qtdCarsUpTo_5)){
-				extraSpace1 = boat.status[i].bigSlotOne;
-				extraSpace2 = boat.status[i].bigSlotTwo;
+			if(count5m >= status5mAnterior && count5m < (boatStatus[i].qtdCarsUpTo_5)){
+				extraSpace1 = boatStatus[i].bigSlotOne;
+				extraSpace2 = boatStatus[i].bigSlotTwo;
 			}
 		}
 
-		status5mAnterior = boat.status[i].qtdCarsUpTo_5;
+		status5mAnterior = boatStatus[i].qtdCarsUpTo_5;
 	};
 
 
@@ -300,15 +300,15 @@ var doorMaxCapacity = function (trip){
 	sumExtraSpace = parseInt(extraSpace.extraSpace1 + extraSpace.extraSpace2);
 	
 	product = Products.findOne(Session.get('productId'));
-	boat = Boats.findOne(product.boatId);
+	boatStatus = BoatStatus.find({boatId : product.boatId}).fetch();
 	
 
-	for (var i = 0; i < boat.status.length; i++) {
-		totalSlots = parseInt(boat.status[i].bigSlotOne + boat.status[i].bigSlotTwo);
+	for (var i = 0; i < boatStatus.length; i++) {
+		totalSlots = parseInt(boatStatus[i].bigSlotOne + boatStatus[i].bigSlotTwo);
 		if(sumExtraSpace <= totalSlots){
-			CanAdd2Motocycle = boat.status[i].AddExtraMotos;
-			max5mCars = boat.status[i].qtdCarsUpTo_5;
-			max6mCars = boat.status[i].qtdCarsUpTo_6;
+			CanAdd2Motocycle = boatStatus[i].AddExtraMotos;
+			max5mCars = boatStatus[i].qtdCarsUpTo_5;
+			max6mCars = boatStatus[i].qtdCarsUpTo_6;
 		}
 	};
 
@@ -484,21 +484,21 @@ var countExtraSpace = function(){
 	spaceAlocated = parseInt(spaceAlocatedSlot1 + spaceAlocatedSlot2 + spaceAlocatedSlot3 + spaceAlocatedSlot4);
 
 	product = Products.findOne(Session.get('productId'));
-	boat = Boats.findOne(product.boatId);
+	boatStatus = BoatStatus.find({boatId: product.boatId}).fetch();
 	
-	totalSlots = parseInt(boat.status[0].bigSlotOne + boat.status[0].bigSlotTwo);
+	totalSlots = parseInt(boatStatus[0].bigSlotOne + boatStatus[0].bigSlotTwo);
 
-	for (var i = 0; i < boat.status.length; i++) {
-		if(totalSlots == parseInt(boat.status[i].bigSlotOne + boat.status[i].bigSlotTwo)){
-			if(spaceAlocated == parseInt(boat.status[i].bigSlotOne + boat.status[i].bigSlotTwo)){
-				max5slots = boat.status[i].qtdCarsUpTo_5;
+	for (var i = 0; i < boatStatus.length; i++) {
+		if(totalSlots == parseInt(boatStatus[i].bigSlotOne + boatStatus[i].bigSlotTwo)){
+			if(spaceAlocated == parseInt(boatStatus[i].bigSlotOne + boatStatus[i].bigSlotTwo)){
+				max5slots = boatStatus[i].qtdCarsUpTo_5;
 			}
 		}else{
-			if(spaceAlocated >= parseInt(boat.status[i].bigSlotOne + boat.status[i].bigSlotTwo) && spaceAlocated < totalSlots){
-				max5slots = boat.status[i].qtdCarsUpTo_5;
+			if(spaceAlocated >= parseInt(boatStatus[i].bigSlotOne + boatStatus[i].bigSlotTwo) && spaceAlocated < totalSlots){
+				max5slots = boatStatus[i].qtdCarsUpTo_5;
 			}
 		}
-		totalSlots = parseInt(boat.status[i].bigSlotOne + boat.status[i].bigSlotTwo);
+		totalSlots = parseInt(boatStatus[i].bigSlotOne + boatStatus[i].bigSlotTwo);
 	};
 
 	$("#max5slots").text('Max Qtd: '+parseInt(max5slots));

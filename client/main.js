@@ -18,6 +18,7 @@ Meteor.subscribe('settings');
 Meteor.subscribe('cbasket');
 Meteor.subscribe('blockingDates');
 Meteor.subscribe('orders');
+Meteor.subscribe('boatStatus');
 
 
 Template.redirect.helpers({

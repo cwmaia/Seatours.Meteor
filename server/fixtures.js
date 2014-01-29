@@ -70,47 +70,56 @@ if(Groups.find().count() == 0){
 
 if(Boats.find().count() == 0){
 	Boats.insert({
-	"_id" : "1",
-	"name" : "Baldur Ferry",
-	"maxCapacity" : 300,
-	'status' : [
-		{
-			"qtdCarsUpTo_5" : 24,
-			"qtdCarsUpTo_6" : 4,
-			"bigSlotOne" : 24,
-			"bigSlotTwo" : 24,
-			"AddExtraMotos" : true
-		},
-		{
-			"qtdCarsUpTo_5" : 25,
-			"qtdCarsUpTo_6" : 4,
-			"bigSlotOne" : 24,
-			"bigSlotTwo" : 19,
-			"AddExtraMotos" : false
-		},
-		{
-			"qtdCarsUpTo_5" : 27,
-			"qtdCarsUpTo_6" : 4,
-			"bigSlotOne" : 19,
-			"bigSlotTwo" : 19,
-			"AddExtraMotos" : false
-		},
-		{
-			"qtdCarsUpTo_5" : 28,
-			"qtdCarsUpTo_6" : 4,
-			"bigSlotOne" : 19,
-			"bigSlotTwo" : 15,
-			"AddExtraMotos" : false
-		},
-		{
-			"qtdCarsUpTo_5" : 30,
-			"qtdCarsUpTo_6" : 4,
-			"bigSlotOne" : 15,
-			"bigSlotTwo" : 15,
-			"AddExtraMotos" : false
-		}
-	]
-	})
+		"_id" : "1",
+		"name" : "Baldur Ferry",
+		"maxCapacity" : 300
+	});
+
+	BoatStatus.insert({
+		'boatId' : "1",
+		"qtdCarsUpTo_5" : 24,
+		"qtdCarsUpTo_6" : 4,
+		"bigSlotOne" : 24,
+		"bigSlotTwo" : 24,
+		"AddExtraMotos" : true
+	});
+
+	BoatStatus.insert({
+		'boatId' : "1",
+		"qtdCarsUpTo_5" : 25,
+		"qtdCarsUpTo_6" : 4,
+		"bigSlotOne" : 24,
+		"bigSlotTwo" : 19,
+		"AddExtraMotos" : false
+	});
+
+	BoatStatus.insert({
+		'boatId' : "1",
+		"qtdCarsUpTo_5" : 27,
+		"qtdCarsUpTo_6" : 4,
+		"bigSlotOne" : 19,
+		"bigSlotTwo" : 19,
+		"AddExtraMotos" : false
+	});
+
+	BoatStatus.insert({
+		'boatId' : "1",
+		"qtdCarsUpTo_5" : 28,
+		"qtdCarsUpTo_6" : 4,
+		"bigSlotOne" : 19,
+		"bigSlotTwo" : 15,
+		"AddExtraMotos" : false
+	});
+
+	BoatStatus.insert({
+		'boatId' : "1",
+		"qtdCarsUpTo_5" : 30,
+		"qtdCarsUpTo_6" : 4,
+		"bigSlotOne" : 15,
+		"bigSlotTwo" : 15,
+		"AddExtraMotos" : false
+	});
+
 }
 
 if(Products.find().count() == 0){

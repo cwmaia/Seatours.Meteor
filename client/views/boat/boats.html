@@ -45,7 +45,40 @@
 				<input type ="number" min="0" id="maxCapacity" name="maxCapacity" value="{{boat.maxCapacity}}" placeholder="Max capacity" required>
 			</div>
 		</div>
+
+
+		<button class='btn btn-success btn-small' form="boatForm">
+			Save Boat
+		</button>	
+
 		<fieldset>
+		<div class="line-2">
+			<div>
+				<label class="required">Max Cars up to 5 meters: </label>
+				<input type ="number"  id='max5mCars' required>
+			</div>
+			<div>
+				<label class="required">Max Cars up to 6 meters: </label>
+				<input type ="number" min="0" id="max6mCars" name="maxCapacity"  required>
+			</div>
+		</div>
+
+		<div class="line-2">
+			<div>
+				<label class="required">Meters Available on Extra Slot 1: </label>
+				<input type ="number" id="extraSlot1m" required>
+			</div>
+			<div>
+				<label class="required">Meters Available on Extra Slot 2: </label>
+				<input type ="number" min="0" id="extraSlot2m" name="maxCapacity"   required>
+			</div>
+		</div>
+
+		<button class='btn btn-success btn-small addStatus'>
+			Add Status
+		</button>
+
+
 			<legend>Slots Status</legend>
 			<table class='table table-striped table-bordered table-hover' id='usersTable'>
 			<thead>
@@ -58,7 +91,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{{#each boat.status}}
+				{{#each status}}
 					<tr>
 						<td>{{qtdCarsUpTo_5}} Cars</td>
 						<td>{{qtdCarsUpTo_6}} Cars</td>
@@ -74,8 +107,5 @@
 		</table>
 		</fieldset>
 	</form>
-
-	<button class='btn btn-success btn-small' form="boatForm">
-		Save Boat
-	</button>	
+	
 </template>
