@@ -50,7 +50,7 @@
 	{{/if}}
 
 	<div class='line-2'>
-		<div>
+		<div class='noStatus'>
 			<form>
 				<legend>Boat Status<span>&nbsp;&nbsp;</span><i class='icon-anchor'/></legend>
 				<div id="pieChart">
@@ -86,42 +86,42 @@
 							<tr>
 								<th></th>
 								<th></th>
-								<th></th>
-								<th></th>
+								<th class='noStatus'></th>
+								<th class='noStatus'></th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<td>#Adult</td>
 								<td><span id='numberOfAdults'></span></td>
-								<td>Cars up to 5m</td>
-								<td>{{qtdCarsUpTo5}} - <span id='max5slots'></span></td>
+								<td class='noStatus'>Cars up to 5m</td>
+								<td class='noStatus'>{{qtdCarsUpTo5}} - <span id='max5slots'></span></td>
 							</tr>
 							<tr>
 								<td>#Child</td>
 								<td><span id='numberOfChildrens'></span></td>
-								<td>Cars up to 6m</td>
-								<td>{{qtdCarsUpTo6}}</td>
+								<td class='noStatus'>Cars up to 6m</td>
+								<td class='noStatus'>{{qtdCarsUpTo6}}</td>
 							</tr>
 							<tr>
 								<td>#Infant</td>
 								<td><span id='numberOfInfants'></span></td>
-								<td>Current meters alocated on extra Slot 1</td>
-								<td><span id='spaceAlocatedSlot1'></span>m - <span id='spaceAlocatedSlot3'>m</span></td>
+								<td class='noStatus'>Current meters alocated on extra Slot 1</td>
+								<td class='noStatus'><span id='spaceAlocatedSlot1'></span>m - <span id='spaceAlocatedSlot3'>m</span></td>
 							</tr>	
 							<tr>
 								<td>#Senior</td>
 								<td><span id='numberOfSeniors'></span></td>
-								<td>Current meters alocated on extra Slot 2</td>
-								<td><span id='spaceAlocatedSlot2'></span>m - <span id='spaceAlocatedSlot4'>m</span></td>
+								<td class='noStatus'>Current meters alocated on extra Slot 2</td>
+								<td class='noStatus'><span id='spaceAlocatedSlot2'></span>m - <span id='spaceAlocatedSlot4'>m</span></td>
 							</tr>	
 							<tr>
 								<td>#School Discount</td>
 								<td><span id='numberOfSchoolDiscount'></span></td>	
-								<td>Current meters alocated on Extras Slot</td>
-								<td><span id='spaceAlocated'> - <span id='spaceAlocatedSlotCart'></span></span></td>
+								<td class='noStatus'>Current meters alocated on Extras Slot</td>
+								<td class='noStatus'><span id='spaceAlocated'> - <span id='spaceAlocatedSlotCart'></span></span></td>
 							</tr>
-							<tr>
+							<tr class='noStatus'>
 								<td>#Guides and Drivers</td>
 								<td><span id='numberOfGuideAndDrivers'></span></td>
 								<td></td>
@@ -228,7 +228,7 @@
 		{{> generalPassagerInfo}}
 	</div>
 
-	<div class="line">
+	<div class="line noStatus">
 		{{> bookingVehicles}}
 	</div>
 
@@ -242,7 +242,7 @@
 
 	    <em name="totalISK" class="price" id="totalISK">0</em>
 		</div>
-		<div>
+		<div class='noStatus'>
 
 		{{#if dateSelected}}
 		    <label>

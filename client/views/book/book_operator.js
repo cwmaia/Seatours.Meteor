@@ -828,8 +828,15 @@ Template.bookDetail.rendered = function() {
 	var oTable = $('#passengers').dataTable();
 	oTable.fnSort( [ [7,'asc'] ] );
 	$('#boatSlots').dataTable();
-	countExtraSpace();
-	drawPieChartBoatSlots();
+	product = Products.findOne(Session.get('productId'));
+	if(BoatStatus.findOne({boatId : product.boatId})){
+		countExtraSpace();
+		drawPieChartBoatSlots();
+		Session.set("haveStatus", true);
+	}else{
+		Session.set("haveStatus", false);
+		$(".noStatus").hide();
+	}
 	returnPersons();
 }
 
@@ -1340,7 +1347,13 @@ Template.createBook.rendered = function(){
 
 	$('#passengers').dataTable();
 	$('#boatSlots').dataTable();
-	countExtraSpace();
+
+	if(Session.get('haveStatus')){
+		countExtraSpace();
+	}else{
+		$(".noStatus").hide();
+	}
+		
 }
 
 Template.createBook.events({
