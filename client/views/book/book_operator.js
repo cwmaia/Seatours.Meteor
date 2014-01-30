@@ -844,7 +844,8 @@ Template.bookDetail.totalPassagers = function(id){
 	var persons = 0;
 	book = Books.findOne({_id : id});
 	for (var i = 0; i < book.prices.length; i++) {
-		persons = parseInt(persons + parseInt(book.prices[i].persons));
+		if(book.prices[i].price != "Operator Fee")
+			persons = parseInt(persons + parseInt(book.prices[i].persons));
 	};
 	return persons;
 }
@@ -1381,6 +1382,36 @@ Template.createBook.events({
 	}
 })
 
+checkMaxCapacity = function(total){
+	var dates = getSelectedAndNextDay();
+	var trip = Trips.findOne(Session.get('tripId'));
+	var product = Products.findOne(Session.get('productId'));
+	var boat = Boats.findOne({_id : product.boatId});
+
+	var persons = 0;
+	
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip._id' 	: trip._id,
+		'bookStatus'	: 'Booked'
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		for (var j = 0; j < books[i].prices.length; j++) {
+			if(book.prices[j].price != "Operator Fee")
+				persons = parseInt(parseInt(books[i].prices[j].persons) + persons);
+		};
+	};
+
+	if((persons + total) > boat.maxCapacity){
+		CanSaveTheBook = false;
+	}else{
+		CanSaveTheBook = true;
+	}	
+	
+}
+
 Template.productPrices.events({
 
 	"change input" : function(event){
@@ -1392,6 +1423,16 @@ Template.productPrices.events({
 		$('#'+this._id).val(totalParcial);
 		$('#'+this.unit).val(this.price+"|"+this.unit+"|"+totalPrice+"|"+totalParcial);
 
+		var total = 0; 
+		$('.unitPrice').filter(function(){
+			var split = $(this).val().split("|");
+			if(split[2]){
+				total = parseInt(total + parseInt(split[2]));
+			}
+		});
+
+
+		checkMaxCapacity(total);
 		calcTotal();
 	}
 })
