@@ -149,7 +149,7 @@ var getExtraSlotsSpace = function(trip){
 	};
 
 	product = Products.findOne(Session.get('productId'));
-	boatStatus = BoatStatus.findOne({boatId: product.boatId}).fetch();
+	boatStatus = BoatStatus.find({boatId: product.boatId}).fetch();
 	status5mAnterior = boatStatus[0].qtdCarsUpTo_5;
 
 	for (var i = 0; i < boatStatus.length; i++) {
@@ -473,41 +473,9 @@ var countExtraSpace = function(){
 		spaceAlocatedSlot2 += parseInt(booksSlot2[i].vehicle.size);
 	};
 
-	for (var i = booksSlot3.length - 1; i >= 0; i--) {
-		spaceAlocatedSlot3 += parseInt(booksSlot3[i].vehicle.size);
-	};
-
-	for (var i = booksSlot4.length - 1; i >= 0; i--) {
-		spaceAlocatedSlot4 += parseInt(booksSlot4[i].vehicle.size);
-	};
-
-	spaceAlocated = parseInt(spaceAlocatedSlot1 + spaceAlocatedSlot2 + spaceAlocatedSlot3 + spaceAlocatedSlot4);
-
-	product = Products.findOne(Session.get('productId'));
-	boatStatus = BoatStatus.find({boatId: product.boatId}).fetch();
-	
-	totalSlots = parseInt(boatStatus[0].bigSlotOne + boatStatus[0].bigSlotTwo);
-
-	for (var i = 0; i < boatStatus.length; i++) {
-		if(totalSlots == parseInt(boatStatus[i].bigSlotOne + boatStatus[i].bigSlotTwo)){
-			if(spaceAlocated == parseInt(boatStatus[i].bigSlotOne + boatStatus[i].bigSlotTwo)){
-				max5slots = boatStatus[i].qtdCarsUpTo_5;
-			}
-		}else{
-			if(spaceAlocated >= parseInt(boatStatus[i].bigSlotOne + boatStatus[i].bigSlotTwo) && spaceAlocated < totalSlots){
-				max5slots = boatStatus[i].qtdCarsUpTo_5;
-			}
-		}
-		totalSlots = parseInt(boatStatus[i].bigSlotOne + boatStatus[i].bigSlotTwo);
-	};
-
-	$("#max5slots").text('Max Qtd: '+parseInt(max5slots));
 	$("#spaceAlocatedSlot1").text(spaceAlocatedSlot1);
 	$("#spaceAlocatedSlot2").text(spaceAlocatedSlot2);
-	$("#spaceAlocatedSlot3").text(' On Cart: '+spaceAlocatedSlot3);
-	$("#spaceAlocatedSlot4").text(' On Cart: '+spaceAlocatedSlot4);
-	$("#spaceAlocated").text(parseInt(spaceAlocated - (spaceAlocatedSlot3 + spaceAlocatedSlot4)));
-	$("#spaceAlocatedCart").text(parseInt(spaceAlocatedSlot3 + spaceAlocatedSlot4));	
+
 }
 
 var checkHaveToOpenDoor = function(size, trip){	
@@ -515,6 +483,8 @@ var checkHaveToOpenDoor = function(size, trip){
 	var dates = getSelectedAndNextDay();
 	var count5m = 0;
 	var count6m = 0;
+	var max5mCars = 0;
+	var max6mCars = 0;
 
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
@@ -560,15 +530,37 @@ var checkHaveToOpenDoor = function(size, trip){
 		}
 	};
 
+	extraSpace = getExtraSlotsSpace(trip);
+
+	sumExtraSpace = parseInt(extraSpace.extraSpace1 + extraSpace.extraSpace2);
+	
+	product = Products.findOne(Session.get('productId'));
+	boatStatus = BoatStatus.find({boatId : product.boatId}).fetch();
+	boat = Boats.findOne({_id : product.boatId});
+	
+
+	for (var i = 0; i < boatStatus.length; i++) {
+		totalSlots = parseInt(boatStatus[i].bigSlotOne + boatStatus[i].bigSlotTwo);
+		if(sumExtraSpace <= totalSlots){
+			max5mCars = boatStatus[i].qtdCarsUpTo_5;
+			max6mCars = boatStatus[i].qtdCarsUpTo_6;
+		}
+	};
+
+	max5mCarsDoor = boat.max5mDoor;
+	max6mCarsDoor = boat.max6mDoor;
+
+	door5Limit = parseInt(max5mCars - max5mCarsDoor);
+	door6Limit = parseInt(max6mCars - max6mCarsDoor);
 
 	if(size <= 5){
-		if(count5m < 21){
+		if(count5m < door5Limit){
 			return false;
 		}
 	}
 
 	if(size > 5 && size <= 6){
-		if(count6m < 2){
+		if(count6m < door6Limit){
 			return false;
 		}
 	}

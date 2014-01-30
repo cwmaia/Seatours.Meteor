@@ -60,22 +60,22 @@ Template.editBoat.events({
 	"click .addStatus" : function(){
 
 		if($("#max5mCars").val() == ""){
-			throwError("Please Inform the Height of the Slot");
+			throwError("Please Inform the Max 5m cars on the boat");
 			return;
 		}
 
 		if($("#max6mCars").val() == ""){
-			throwError("Please Inform the Width of the Slot");
+			throwError("Please Inform the Max 6m cars on the boat");
 			return;
 		}
 
 		if($("#extraSlot1m").val() == ""){
-			throwError("Please Inform the Height of the Slot");
+			throwError("Please Inform the Max meters on the slot 1");
 			return;
 		}
 
 		if($("#extraSlot2m").val() == ""){
-			throwError("Please Inform the Width of the Slot");
+			throwError("Please Inform the Max meters on the slot 2");
 			return;
 		}
 
@@ -115,13 +115,22 @@ Template.editBoat.events({
 			if(_boat){
 				_boat.name = form.name.value;
 				_boat.maxCapacity = form.maxCapacity.value;
-				Boats.update(_boat._id, {$set : {maxCapacity: _boat.maxCapacity, name: _boat.name}});
+
+				max5mDoor = $('#max5mDoor').val() ? $('#max5mDoor').val() : 0;
+				max6mDoor = $('#max6mDoor').val() ? $('#max6mDoor').val() : 0;
+
+				Boats.update(_boat._id, {$set : {maxCapacity: _boat.maxCapacity, name: _boat.name, max5mDoor : max5mDoor, max6mDoor : max6mDoor}});
 				throwSuccess("The Boat has been updated");
 				Meteor.Router.to('/boats')
 			}else{
+				max5mDoor = $('#max5mDoor').val() ? $('#max5mDoor').val() : 0;
+				max6mDoor = $('#max6mDoor').val() ? $('#max6mDoor').val() : 0;
+
 				boat = {
 					name : form.name.value,
-					maxCapacity : form.maxCapacity.value
+					maxCapacity : form.maxCapacity.value,
+					max5mDoor : max5mDoor,
+					max6mDoor : max6mDoor
 				}
 				Boats.insert(boat);
 				throwSuccess("The Boat has been saved");

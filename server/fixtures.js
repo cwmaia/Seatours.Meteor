@@ -72,7 +72,9 @@ if(Boats.find().count() == 0){
 	Boats.insert({
 		"_id" : "1",
 		"name" : "Baldur Ferry",
-		"maxCapacity" : 300
+		"maxCapacity" : 300,
+		"max5mDoor" : 3,
+		"max6mDoor" : 2
 	});
 
 	BoatStatus.insert({
