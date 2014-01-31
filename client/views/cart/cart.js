@@ -5,8 +5,9 @@ Template.cart.cartBooks = function(){
 Template.cart.hasItems = function(){
 	if(CartItems.find({cartId : getCartIdOperator()}).count() > 0){
 		return true;
+	}else{
+		return false;
 	}
-	return false;
 }
 
 Template.items.hasDiscount = function(){
@@ -29,7 +30,13 @@ Template.items.customer = function(){
 }
 
 Template.cart.getCBasket = function(){
-	return CBasket.find({cartId : getCartId()});
+	if(CBasket.find({cartId : getCartId()})){
+		return true;
+	}else{
+
+		return false;
+	}
+	
 }
 
 Template.items.hasVehicle = function(){

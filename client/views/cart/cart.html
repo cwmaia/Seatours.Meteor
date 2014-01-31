@@ -37,7 +37,11 @@
 			{{/if}}
 		</tfoot>
 	</table>
-	<button style='float: right' class='btn btn-success checkout {{#if disableCheckout}} disabled {{/if}}'><i class='icon-shopping-cart'></i>Checkout</button>
+	{{#if disableCheckout}}
+	<button style='float: right' class='btn btn-success checkout' disabled><i class='icon-shopping-cart'></i>Checkout</button>
+	{{else}}
+	<button style='float: right' class='btn btn-success checkout'><i class='icon-shopping-cart'></i>Checkout</button>
+	{{/if}}
 </template>
 
 

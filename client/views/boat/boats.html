@@ -45,7 +45,52 @@
 				<input type ="number" min="0" id="maxCapacity" name="maxCapacity" value="{{boat.maxCapacity}}" placeholder="Max capacity" required>
 			</div>
 		</div>
+
+		<div class="line-3">
+			<div>
+				<label>Max cars with 5 meters on boat door: </label>
+				<input type ="number" min="0" id="max5mDoor"value="{{boat.max5mDoor}}">
+			</div>
+			<div>
+				<label>Max cars with 6 meters on boat door: </label>
+				<input type ="number" min="0" id="max6mDoor" value="{{boat.max6mDoor}}">
+			</div>
+		</div>
+
+
+		<button class='btn btn-success btn-small' form="boatForm">
+			Save Boat
+		</button>	
+	</form>	
+	<div id='boatStatusDiv'>
 		<fieldset>
+		<div class="line-3">
+			<div>
+				<label class="required">Max Cars up to 5 meters: </label>
+				<input type ="number"  min="0" id='max5mCars' required>
+			</div>
+			<div>
+				<label class="required">Max Cars up to 6 meters: </label>
+				<input type ="number" min="0" id="max6mCars"  required>
+			</div>
+		</div>
+
+		<div class="line-3">
+			<div>
+				<label class="required">Meters Available on Extra Slot 1: </label>
+				<input type ="number" min="0" id="extraSlot1m" required>
+			</div>
+			<div>
+				<label class="required">Meters Available on Extra Slot 2: </label>
+				<input type ="number" min="0" id="extraSlot2m"  required>
+			</div>
+		</div>
+
+		<button class='btn btn-small btn-info addStatus'>
+			Add Status
+		</button>
+
+
 			<legend>Slots Status</legend>
 			<table class='table table-striped table-bordered table-hover' id='usersTable'>
 			<thead>
@@ -58,14 +103,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				{{#each boat.status}}
+				{{#each status}}
 					<tr>
 						<td>{{qtdCarsUpTo_5}} Cars</td>
 						<td>{{qtdCarsUpTo_6}} Cars</td>
 						<td>{{bigSlotOne}} m</td>
 						<td>{{bigSlotTwo}} m</td>
 						<td>
-							<a class="btn btn-mini btn-danger removeStatus" title="Remove" rel='{{customer.email}}'>
+							<a class="btn btn-mini btn-danger removeStatus" title="Remove" rel='{{_id}}'>
 							<i class="icon-trash bigger-120"></i></a>
 						</td>
 					</tr>
@@ -73,9 +118,6 @@
 			</tbody>
 		</table>
 		</fieldset>
-	</form>
-
-	<button class='btn btn-success btn-small' form="boatForm">
-		Save Boat
-	</button>	
+	</div>
+	
 </template>

@@ -32,6 +32,10 @@ Meteor.Router.add("/ReturnPageError", "POST", function(){
   console.log(this.request.body);
 })
 
+Meteor.publish('boatStatus', function(){
+  return BoatStatus.find();
+})
+
 Meteor.publish("directory", function () {
   if(this.userId)
       return Meteor.users.find({}, {fields: {emails: 1, username: 1, 'profile' : 1}});
@@ -58,7 +62,7 @@ Meteor.publish("cartItems", function () {
 });
 
 Meteor.publish('products', function() { 
-	   return Products.find();
+	   return Products.find({}, { sort : {name : 1}});
 });
 
 Meteor.publish('books', function() { 
@@ -98,14 +102,11 @@ Meteor.publish('vehicles_category', function() {
 });
 
 Meteor.publish('boats', function() {
-  if(this.userId)
     return Boats.find();
-  else
-     return null; 
 });
 
 Meteor.publish('trips', function() {
-    return Trips.find();
+    return Trips.find({}, { sort : {hour : -1}});
 });
 
 Meteor.publish('vehicles', function() {

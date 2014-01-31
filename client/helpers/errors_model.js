@@ -21,6 +21,19 @@ clearSuccess = function() {
 	Success.remove({seen: 't'});
 }
 
+throwInfoCenter = function(message){
+	$.gritter.add({
+		// (string | mandatory) the heading of the notification
+		title: 'Info',
+		// (string | mandatory) the text inside the notification
+		text: message,
+		class_name: 'gritter-info gritter-center',
+		sticky: true
+	});
+
+	return false;
+}
+
 function showMessage (type, message) {
 	$.gritter.add({
 		// (string | mandatory) the heading of the notification
@@ -28,6 +41,6 @@ function showMessage (type, message) {
 		// (string | mandatory) the text inside the notification
 		text: message,
 		class_name: 'gritter-' + type,
-		time: '1500'
+		time: '3000'
 	});
 }

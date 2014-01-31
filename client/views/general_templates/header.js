@@ -7,6 +7,7 @@ Template.header.loggedIn = function(){
 
 Template.header.rendered = function(){
 	$("#loginArea").hide();
+	$("#sendPasswordMail").hide();
 }
 
 Template.header.totalItems = function(){
@@ -91,6 +92,13 @@ Template.header.events({
 		$('.profile').toggle();
 		Template.externView.rendered();
 	},
+
+	'click #forgetPassword' : function(event){
+		$("#loginArea").toggle();
+		$('.profile').toggle();
+		$("#sendPasswordMail").show();
+	},
+
 	'click #loginLink' : function(event){
 		event.preventDefault();
 		$("#loginArea").toggle();
@@ -132,15 +140,37 @@ Template.header.events({
 		$("#loginArea").hide();
 	},
 
-	'click .testePOST' : function(){
-		orderId = localStorage.getItem('orderIDTeste')
+	'click .close' : function(){
+		$("#sendPasswordMail").hide();
+	},
 
-		$.ajax({
-			type : "POST",
-			url : "http://localhost:3000/ReturnPageSuccess?orderId="+orderId,
-			data: {teste : "teste", lol : "lool"},
-			dataType: "JSON"
-		})
-	}
+	'submit #sendPassword' : function(event){
+		event.preventDefault();
+
+		form = event.target;
+
+		var options = {
+			email : form.emailToSendPassword.value
+		}
+
+		$("#sendPasswordMail").hide();
+		$.blockUI({message : 'Please Wait'});
+		Accounts.forgotPassword(options, function(err){
+			if(err){
+				console.log(err.reason);
+				throwError('Looks like our server is busy, try again in a few moments');
+				$.unblockUI();
+			}else{
+				$.unblockUI({
+					onUnblock : function(){ bootbox.alert("An email has been sent with instructions to reset your password")}
+				});
+			}
+			
+		});
+	},
+
+
+
+	
 
 });
