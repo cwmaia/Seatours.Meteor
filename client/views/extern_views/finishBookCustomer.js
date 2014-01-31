@@ -13,7 +13,7 @@ Template.finishBookCustomer.rendered = function(){
 		$('#birthDate').val(customer.birthDate);
 		$('#telephoneCode').val(customer.telephoneCode);
 		$('#telephone').val(customer.telephone);
-		$('#adress').val(customer.adress);
+		$('#adress').val(customer.address);
 		$('#city').val(customer.city);
 		$('#state').val(customer.state);
 		$('#postcode').val(customer.postcode);
@@ -86,7 +86,7 @@ Template.finishBookCustomer.events({
 			    	'email' : $('#email').val(),
 			    	'telephoneCode' : $('#telephoneCode').val(),
 			    	'telephone' : $('#telephone').val(),
-			    	'adress' : $('#adress').val(),
+			    	'address' : $('#adress').val(),
 			    	'city' : $('#city').val(),
 			    	'state' : $('#state').val(),
 			    	'postcode' : $('#postcode').val(),

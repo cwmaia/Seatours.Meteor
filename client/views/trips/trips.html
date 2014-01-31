@@ -7,14 +7,14 @@
 	
 	<ul class="listing" id="tripsSection">
 		<li id="new">
-			<img src="/images/trip.png" class="new">
+			<img src="/images/trip.png" class="new imgListsBoatTrip">
 
 			<h3>Add Trip</h3>
 		</li>
 		
 		{{#each trips}}
 			<li id="{{_id}}">
-				<img src="/images/{{imageName}}">
+				<img class="imgListsBoatTrip" src="/images/{{imageName}}">
 
 				<h3>{{name}}</h3>
 			</li>	
