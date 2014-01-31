@@ -38,6 +38,7 @@
 										<th class="sorting_disabled">Telephone</th>
 										<th>Total Passagers</th>
 										<th>Payment Status</th>
+										<th>Book Status</th>
 										<th class="sorting_disabled">Action</th>
 									</tr>
 								</thead>
@@ -52,7 +53,9 @@
 										<td>{{telephone customerId}}</td>
 										<td>{{totalPassagers _id}}</td>
 										<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
+										<td>{{bookStatus}}</td>
 										<td>
+										{{#if isBookCreated bookStatus}}	
 											{{#if paid}}
 												<a href="" class="changeStatusBooking btn btn-mini btn-danger" rel="{{_id}}" title='Cancel Booking'>
 													<i class='icon-remove'></i>
@@ -60,6 +63,7 @@
 											{{else}}
 												<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
 											{{/if}}
+										{{/if}}
 										</td>
 									</tr>
 								{{/each}}
