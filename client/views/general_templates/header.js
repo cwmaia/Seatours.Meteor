@@ -157,11 +157,15 @@ Template.header.events({
 		$.blockUI({message : 'Please Wait'});
 		Accounts.forgotPassword(options, function(err){
 			if(err){
-				throwError(err.reason);
+				console.log(err.reason);
+				throwError('Looks like our server is busy, try again in a few moments');
+				$.unblockUI();
+			}else{
+				$.unblockUI({
+					onUnblock : function(){ bootbox.alert("An email has been sent with instructions to reset your password")}
+				});
 			}
-			$.unblockUI({
-				onUnblock : function(){ bootbox.alert("An email has been sent with instructions to reset your password")}
-			});
+			
 		});
 	},
 
