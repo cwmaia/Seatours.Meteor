@@ -902,7 +902,7 @@ Template.generalPassagerInfo.groupCustomer = function(id){
 }
 
 Template.generalPassagerInfo.isEditingCustomer = function(){
-	return Session.get('customerId');
+	return Session.get('customerId') && !isCustomer();
 }
 
 carsUpTo5 = function(){
