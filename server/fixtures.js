@@ -668,7 +668,7 @@ if(Meteor.users.find().count() == 0){
 	});
 	Accounts.createUser({
 	  'username'  : 'jarvis',
-	  'email'     : 'jarvis@me.com',
+	  'email'     : 'jarbas.byakuya@gmail.com',
 	  'profile'	  : {name : 'Jarvis', customerId: customerID},
 	  'password'  : '1234' //encrypted automatically 
 	});

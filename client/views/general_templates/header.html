@@ -26,6 +26,7 @@
 							<span style="color: black; letter-spacing:-2px;">-------------------- O R --------------------</span>
 							<br />
 							<a id="createUser" class="orangeButton"> Create New User</a>
+							<a id="forgetPassword" class="orangeButton"> Forget my Password</a>
 						</div>
 					</div>
 
@@ -39,4 +40,22 @@
 
 		<div style='clear:both;'></div>
 	</header>
+	<div id="sendPasswordMail">
+		  <div class="mask"> </div>
+		  <div class="modal">
+		    <div class="modal-header">
+		      <button type="button" class="close cancel">&times;</button>
+		      <h3>Retrieve Password</h3>
+		    </div>
+		    <form id='sendPassword'>
+			   	<div class="modal-body">
+			    	<label>Email: </label>
+			    	<input type='email' name='emailToSendPassword' required>
+			    </div>
+			    <div class="modal-footer">
+			    	<input type='submit' class="btn btn-success" value='Retrieve'/>
+			    </div>
+			</form>
+	  </div>
+	</div>
 </template>
