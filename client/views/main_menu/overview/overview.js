@@ -181,7 +181,8 @@ Template.overview.totalPassagers = function(id){
 	var persons = 0;
 	book = Books.findOne({_id : id});
 	for (var i = 0; i < book.prices.length; i++) {
-		persons = parseInt(persons + parseInt(book.prices[i].persons));
+		if(book.prices[j].price != "Operator Fee")
+			persons = parseInt(persons + parseInt(book.prices[i].persons));
 	};
 	return persons;
 }

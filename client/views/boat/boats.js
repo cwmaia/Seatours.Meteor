@@ -132,6 +132,8 @@ Template.editBoat.events({
 					max5mDoor : max5mDoor,
 					max6mDoor : max6mDoor
 				}
+
+				console.log(boat);
 				Boats.insert(boat);
 				throwSuccess("The Boat has been saved");
 				Meteor.Router.to('/boats')

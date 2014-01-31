@@ -1250,6 +1250,14 @@ Template.productPrices.priced = function(price){
 	}
 }
 
+Template.productPrices.minValue = function(price){
+	if(price.toUpperCase() == 'ADULT'){
+		return 1;
+	}else{
+		return 0;
+	}
+}
+
 Template.productPrices.firstTime = function(){
 	return Session.get('firstTimePrice') ? true : false;
 }
@@ -1307,11 +1315,6 @@ Template.createBook.helpers({
 			throwError('Something Bad Happened, Try Again');
 			return [];
 		}
-	},
-
-	'slots' : function(){
-		var boatId = Products.findOne({_id: Session.get('productId')}).boatId;
-		return Boats.findOne({_id: boatId}).slots;
 	}
 })
 
@@ -1324,8 +1327,7 @@ Template.createBook.rendered = function(){
 		$(".addBook").attr('disabled', true);
 		$(".procedToCart").attr('disabled', true);
 		$("#divMessageCreateBook").show();
-	}
-	
+	}	
 	$("#statusDialog").hide();
 	$('#pasagerInfo').on('submit', function(event){
 		event.preventDefault();
@@ -1351,9 +1353,13 @@ Template.createBook.rendered = function(){
 	$('#passengers').dataTable();
 	$('#boatSlots').dataTable();
 
-	if(Session.get('haveStatus')){
+
+	product = Products.findOne(Session.get('productId'));
+	if(BoatStatus.findOne({boatId : product.boatId})){
 		countExtraSpace();
+		Session.set("haveStatus", true);
 	}else{
+		Session.set("haveStatus", false);
 		$(".noStatus").hide();
 	}
 		
@@ -2306,6 +2312,7 @@ var checkIfCarsFits = function(size){
 	var trip = Trips.findOne(Session.get('tripId'));
 	ExtraSlot = null;
 	CanSaveTheBook = true;
+
 	if(size <= 6){
 		//Check if all space on the boat for the cars has takken, if yes
 		//will ask to operator if him wants to open the door for place the cars
@@ -2315,72 +2322,115 @@ var checkIfCarsFits = function(size){
 		//car based on his size
 		maxCapacity = doorMaxCapacity(trip);
 		if(showAlert){
-			var result = confirm("There is no room for this car on the boat. However you can place is on the Door. Wishes to put it on boat door?");
-			if(result){
+			if(!isCustomer()){
+					bootbox.confirm("There is no room for this car on the boat. However you can place is on the Door. Wishes to put it on boat door?" , function(confirm){
+					if(confirm){
+						ExtraSlot = extraSlots[0];
+						CanSaveTheBook = true;
+						Template.createBook.rendered();
+					}else{
+						bootbox.confirm("There is no room for this car on the boat (on regular slots). However you can place is on a Extra Slot. Wishes to put it on extra slot?" , function(confirm){
+							if(confirm){
+								fits = checkSpaceExtra(size, trip);
+								if(fits){
+									ExtraSlot = fits;
+									CanSaveTheBook = true;
+									Template.createBook.rendered();
+								}else{
+									$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
+									bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
+									CanSaveTheBook = false;
+									Template.createBook.rendered();
+								}
+							}else{
+								$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
+								bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
+								CanSaveTheBook = false;
+								Template.createBook.rendered();
+							}
+						})
+					}
+				})
+			//Customer Path		
+			}else{
 				ExtraSlot = extraSlots[0];
 				CanSaveTheBook = true;
-			}else{
-				if(!isCustomer())
-					result = confirm("There is no room for this car on the boat (on regular slots). However you can place is on a Extra Slot. Wishes to put it on extra slot?");
-				else
-					result = true;
-				if(result){
-					fits = checkSpaceExtra(size, trip);
-					if(fits){
-						ExtraSlot = fits;
-						CanSaveTheBook = true;
-					}else{
-						$("#divMessageCreateBook").hide();
-						alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
-						CanSaveTheBook = false;
-						}
-				}else{
-					$("#divMessageCreateBook").hide();
-					alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
-					CanSaveTheBook = false;
-				}
 			}
 		}else if(size <= 2.5 && CanAdd2Motocycle){
 			ExtraSlot = extraSlots[0];
 			CanSaveTheBook = true;
+			Template.createBook.rendered();
 		}else if(maxCapacity){
-			if(!isCustomer())
-				result = confirm("The Door is already full, place the car on extra slots?");
-			else
-				result = true;
-			if(result){
+			if(!isCustomer()){
+				bootbox.confirm("The Door is already full, place the car on extra slots?" ,function(confirm){
+					if(confirm){
+						fits = checkSpaceExtra(size, trip);
+						if(fits){
+							ExtraSlot = fits;
+							CanSaveTheBook = true;
+							Template.createBook.rendered();
+						}else{
+							$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
+							bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
+							CanSaveTheBook = false;
+							Template.createBook.rendered();
+						}
+					}else{
+						$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
+						bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
+						CanSaveTheBook = false;
+						Template.createBook.rendered();
+					}
+				});
+				//Customer Path			
+			}else{
 				fits = checkSpaceExtra(size, trip);
 				if(fits){
-					$("#divMessageCreateBook").hide();
 					ExtraSlot = fits;
 					CanSaveTheBook = true;
 				}else{
-					alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
+					$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
+					bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
 					CanSaveTheBook = false;
+					Template.createBook.rendered();
 				}
 			}
 		}
 	}else if(size > 6){
-		if(!isCustomer())
-			result = confirm("There is no room for this car on the boat (on regular slots). However you can place is on a Extra Slot. Wishes to put it on extra slot?");
-		else
-			result = true;
-		if(result){
+		if(!isCustomer()){
+			bootbox.confirm("There is no room for this car on the boat (on regular slots). However you can place is on a Extra Slot. Wishes to put it on extra slot?" , function(confirm){
+				if(confirm){
+					fits = checkSpaceExtra(size, trip);
+					if(fits){
+						ExtraSlot = fits;
+						CanSaveTheBook = true;
+						Template.createBook.rendered();
+					}else{
+						$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
+						bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
+						CanSaveTheBook = false;
+					}
+				}else{
+					
+					$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
+					bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
+					CanSaveTheBook = false;
+					Template.createBook.rendered();
+				}
+			});
+				//Customer Path		
+		}else{
 			fits = checkSpaceExtra(size, trip);
-			if(fits){
-				$("#divMessageCreateBook").hide();
+			if(fits){	
 				ExtraSlot = fits;
 				CanSaveTheBook = true;
+				Template.createBook.rendered();
 			}else{
-				console.log('aqui');
 				$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
-				alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
+				bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
 				CanSaveTheBook = false;
+				Template.createBook.rendered();
 			}
-		}else{
-			$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
-			alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
-			CanSaveTheBook = false;
 		}
 	}
 }

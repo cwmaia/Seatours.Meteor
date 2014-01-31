@@ -160,9 +160,7 @@ Template.header.events({
 				throwError(err.reason);
 			}
 			$.unblockUI({
-				onUnblock : function(){ bootbox.dialog({
-					message : "<span class='bigger-110'>An email has been sent with instructions to reset your password</span>"
-				})}
+				onUnblock : function(){ bootbox.alert("An email has been sent with instructions to reset your password")}
 			});
 		});
 	},

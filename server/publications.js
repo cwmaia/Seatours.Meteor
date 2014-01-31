@@ -102,10 +102,7 @@ Meteor.publish('vehicles_category', function() {
 });
 
 Meteor.publish('boats', function() {
-  if(this.userId)
     return Boats.find();
-  else
-     return null; 
 });
 
 Meteor.publish('trips', function() {

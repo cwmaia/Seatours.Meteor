@@ -338,7 +338,7 @@
 	<input type='hidden' id='{{_id}}{{unit}}' class='unitPrice'>
 	<div>
 		<label>{{price}} ({{unit}} ISK)</label>
-		<input type='number' class="size1-4" min="0" value='{{priced price}}'>
+		<input type='number' class="size1-4" min="{{minValue price}}" value='{{priced price}}'>
 		<em class="calcTotal price" data-value="" id="{{_id}}">{{firstTimePricing price unit}}</em>
 	</div>
 </template>
