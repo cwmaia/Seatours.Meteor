@@ -92,6 +92,17 @@ select{
 	Classes
 */
 
+.imgListsBoatTrip{
+	max-width: 200px;
+	max-height: 150px;
+	min-width: 100px;
+	min-height: 75px;
+}
+.productImage{
+	max-width: 200px;
+	max-height: 200px;
+}
+
 .custom-colorize {
 	font-size: 15px;
 	position: relative;
