@@ -705,8 +705,8 @@ Template.bookOperator.helpers({
 currentSeason = function(){
 	var today = localStorage.getItem('date') ? new Date(localStorage.getItem('date')) : new Date();
 	//Check the closest month
-	var summerStartMonth = parseInt(Settings.findOne({_id : "summer"}).summerStartDate.split("/")[0])-1;
-	var winterStartMonth = parseInt(Settings.findOne({_id : "winter"}).winterStartDate.split("/")[0])-1;
+	var summerStartMonth = parseInt(Settings.findOne({_id : "summer"}) ? Settings.findOne({_id : "summer"}).summerStartDate.split("/")[0] : 0)-1;
+	var winterStartMonth = parseInt(Settings.findOne({_id : "winter"}) ? Settings.findOne({_id : "winter"}).winterStartDate.split("/")[0] : 0)-1;
 	var temp1 = Math.abs(summerStartMonth - today.getMonth());
 	var temp2 = Math.abs(winterStartMonth - today.getMonth());
 	var compareDate;
@@ -714,9 +714,9 @@ currentSeason = function(){
 	if (temp1 >= temp2){
 		//if month is equals or bigger its in the same year
 		if (today.getMonth() >= winterStartMonth){
-			compareDate = new Date(today.getFullYear(),parseInt(Settings.findOne({_id : "winter"}).winterStartDate.split("/")[0])-1,parseInt(Settings.findOne({_id : "winter"}).winterStartDate.split("/")[1]));
+			compareDate = new Date(today.getFullYear(),parseInt(winterStartMonth),parseInt(winterStartMonth+1));
 		}else{
-			compareDate = new Date(today.getFullYear()+1,parseInt(Settings.findOne({_id : "winter"}).winterStartDate.split("/")[0])-1,parseInt(Settings.findOne({_id : "winter"}).winterStartDate.split("/")[1]));
+			compareDate = new Date(today.getFullYear()+1,parseInt(winterStartMonth),parseInt(winterStartMonth+1));
 		}
 		if(today >= compareDate){
 			return "winter";
@@ -726,9 +726,9 @@ currentSeason = function(){
 	}else{
 		//same as for winter
 		if (today.getMonth() >= summerStartMonth){
-			compareDate = new Date(today.getFullYear(),parseInt(Settings.findOne({_id : "summer"}).summerStartDate.split("/")[0])-1,parseInt(Settings.findOne({_id : "summer"}).summerStartDate.split("/")[1]));
+			compareDate = new Date(today.getFullYear(),parseInt(summerStartMonth),parseInt(summerStartMonth+1));
 		}else{
-			compareDate = new Date(today.getFullYear()+1,parseInt(Settings.findOne({_id : "summer"}).summerStartDate.split("/")[0])-1,parseInt(Settings.findOne({_id : "summer"}).summerStartDate.split("/")[1]));
+			compareDate = new Date(today.getFullYear()+1,parseInt(summerStartMonth),parseInt(summerStartMonth+1));
 		}
 		if(today >= compareDate){
 			return "summer";
