@@ -202,6 +202,11 @@ Template.overview.lineColor = function(paid, bookStatus){
 	
 }
 
+Template.overview.rendered = function(){
+	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
+	$(".formattedAsMoney").maskMoney('mask');
+}
+
 
 Template.overview.events({
 	'click .quickPay' : function(event){

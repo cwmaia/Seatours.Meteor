@@ -92,11 +92,11 @@
 								{{#each trips _id}}
 									<tr>
 										<td>{{from}} - {{to}} - {{hour}}</td>
-										<td>{{total _id productId}} ISK</td>
-										<td>{{totalPaid _id productId}} ISK</td>
-										<td>{{totalNotPaid _id productId}} ISK</td>
-										<td>{{creditcard _id productId}} ISK</td>
-										<td>{{office _id productId}} ISK</td>
+										<td><input disabled style="margin-bottom:0px; width: 80px;" class="formattedAsMoney" value="{{total _id productId}}"> ISK</td>
+										<td><input disabled style="margin-bottom:0px; width: 80px;" class="formattedAsMoney" value="{{totalPaid _id productId}}"> ISK</td>
+										<td><input disabled style="margin-bottom:0px; width: 80px;" class="formattedAsMoney" value="{{totalNotPaid _id productId}}"> ISK</td>
+										<td><input disabled style="margin-bottom:0px; width: 80px;" class="formattedAsMoney" value="{{creditcard _id productId}}"> ISK</td>
+										<td><input disabled style="margin-bottom:0px; width: 80px;" class="formattedAsMoney" value="{{office _id productId}}"> ISK</td>
 									</tr>
 								{{/each}}
 								</tbody>
