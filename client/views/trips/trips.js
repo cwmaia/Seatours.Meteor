@@ -139,7 +139,15 @@ Template.editTrip.events({
 					_product.imageName = file.name;
 
 					
-					Products.update(_product._id, {$set : {name : _product.name, boatId: _product.boatId, availableFor: $('#groupTrip').val(), imageName: file.name}});
+					Products.update(_product._id, {$set : {
+						name : _product.name, 
+						boatId: _product.boatId, 
+						availableFor: $('#groupTrip').val(), 
+						imageName: file.name, 
+						active : $("#activeProduct").is(":checked"), 
+						featured : $('#featuredProduct').is(':checked')
+					}});
+
 					throwSuccess(_product.name + ' edited');
 					Meteor.call('saveFile', e.target.result, file.name);
 					Meteor.Router.to('/trips')
@@ -151,7 +159,14 @@ Template.editTrip.events({
 					_product.boatId = form.boat.selectedOptions[0].value;
 					_product.availableFor = $('#groupTrip').val();
 					
-					Products.update(_product._id, {$set : {name : _product.name, boatId: _product.boatId, availableFor: $('#groupTrip').val()}});
+					Products.update(_product._id, {$set : {
+						name : _product.name, 
+						boatId: _product.boatId, 
+						availableFor: $('#groupTrip').val(), 
+						active : $("#activeProduct").is(":checked"), 
+						featured : $('#featuredProduct').is(':checked')
+					}});
+
 					throwSuccess(_product.name + ' edited');
 					Meteor.Router.to('/trips')
 				}
@@ -168,7 +183,9 @@ Template.editTrip.events({
 						name : form.name.value,
 						boatId : form.boat.selectedOptions[0].value,
 						availableFor : $('#groupTrip').val(),
-						imageName : file.name
+						imageName : file.name,
+						active : $("#activeProduct").is(":checked"), 
+						featured : $('#featuredProduct').is(':checked')
 					}
 					
 					Products.insert(product);

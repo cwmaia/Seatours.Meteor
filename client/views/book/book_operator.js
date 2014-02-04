@@ -669,11 +669,11 @@ Template.bookOperator.helpers({
 			group = Groups.findOne({_id: Meteor.user().profile.groupID});
 			if(group){
 				if(group.type = 'internal'){
-					return Products.find();
+					return Products.find({active : true, featured : false});
 				}
 			}else{
 				showProducts = [];
-				products =  Products.find().fetch();
+				products =  Products.find({active : true, featured : false}).fetch();
 				for (var i = 0; i < products.length; i++) {
 					group = Groups.findOne({_id : products[i].availableFor});
 					if(group && group.name == 'Customers'){
@@ -689,7 +689,7 @@ Template.bookOperator.helpers({
 		}else{
 			showProducts = [];
 
-			products =  Products.find().fetch();
+			products =  Products.find({active : true, featured : false}).fetch();
 			for (var i = 0; i < products.length; i++) {
 				group = Groups.findOne({_id : products[i].availableFor});
 					if(group && group.name == 'Customers'){
