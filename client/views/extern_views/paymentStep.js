@@ -45,6 +45,11 @@ Template.paymentStep.orderId = function(){
 	return Session.get('orderId');
 }
 
+Template.paymentStep.rendered = function(){
+	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
+  	$(".formattedAsMoney").maskMoney('mask');
+}
+
 Template.paymentStep.events({
 	'click #proccedToPayment' : function(){
 		event.preventDefault();

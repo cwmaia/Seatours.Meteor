@@ -1436,7 +1436,7 @@ Template.productPrices.events({
 	"change input" : function(event){
 		Session.set('firstTimePrice', false);
 		var totalParcial = event.currentTarget.value * this.unit;
-		$('#'+this._id).text(totalParcial);
+		$('#'+this._id).val(totalParcial);
 		var totalPrice = event.currentTarget.value;
 		$('#'+this._id).val(totalParcial);
 		$('#'+this._id+this.unit).val(this.price+"|"+this.unit+"|"+totalPrice+"|"+totalParcial);
@@ -1791,12 +1791,12 @@ Template.categoryVehicleBook.events({
 		var category = VehiclesCategory.findOne({_id: id});
 		if(category){
 			$("#baseVehicle").val(parseInt(category.basePrice));
-			$("#totalVehicle").text(parseInt(category.basePrice));
+			$("#totalVehicle").val(parseInt(category.basePrice));
 			Session.set('categoryId', id);
 			checkIfCarsFits(category.baseSize);
 		}else{
 			$("#baseVehicle").val(0);
-			$("#totalVehicle").text(0);
+			$("#totalVehicle").val(0);
 			Session.set('categoryId', null);
 		}
 		
@@ -1832,24 +1832,29 @@ calcVehiclePrice = function(value){
 		if(sum < 0 && category.onReduce){
 			multFactor = sum * (-1);
 			totalToBeReduced = multFactor * category.step;
-			$("#totalVehicle").text(parseInt(base - totalToBeReduced));
+			$("#totalVehicle").val(parseInt(base - totalToBeReduced));
 		}else if(sum > 0){
 			totalToBeAdded = sum * category.step;
-			$("#totalVehicle").text(parseInt(base + totalToBeAdded));
+			$("#totalVehicle").val(parseInt(base + totalToBeAdded));
 		}else{
-			$("#totalVehicle").text(parseInt(base));
+			$("#totalVehicle").val(parseInt(base));
 		}
 	}
 }
 
 calcTotal = function(){
 	var total = 0;
-	$('.calcTotal').filter(function(){
-		if($(this).text() != "")
-		total += parseInt($(this).text());
-	})
 
-	$('#totalISK').text(total);
+	for (var i = $('.calcTotal').length - 1; i >= 0; i--) {
+		console.log($('.calcTotal')[i].children[0]);
+		if($('.calcTotal')[i].children[0].value != "")
+			total += parseInt(($('.calcTotal')[i].children[0].value).replace(".",""));
+	};
+	
+	$('#totalISK').val(total);
+	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
+  	$(".formattedAsMoney").maskMoney('mask');
+
 }
 
 loadTypeAheadPostCodes = function(){
@@ -1883,7 +1888,7 @@ var createBook = function(){
 		"category" : $("#categories").val(),
 		"categoryId" : Session.get("categoryId"),
 		"size" : $("#size").val(),
-		"totalCost" : $("#totalVehicle").text(),
+		"totalCost" : $("#totalVehicle").val().replace(".",""),
 		'vehiclePlate' : $('#vehiclePlate').val()
 	}
 
@@ -1923,7 +1928,7 @@ var createBook = function(){
 			'to' 	: trip.to,
 			'hour' 	: trip.hour
 		},
-		"totalISK" : parseInt($("#totalISK").text()),
+		"totalISK" : parseInt($("#totalISK").val().replace(".","")),
 		'dateOfBooking' : date,
 		'bookStatus' : 'Booked',
 		'product' : (isCustomer()) ? Products.findOne(Session.get('productId')) : Product,

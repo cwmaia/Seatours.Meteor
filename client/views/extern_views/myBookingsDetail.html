@@ -24,7 +24,7 @@
 							<td>{{refNumber}}</td>
 							<td>{{date dateOfBooking}}</td>
 							<td>{{trip.from}} - {{trip.to}} - {{trip.hour}}</td>
-							<td>{{totalISK}} ISK</td>
+							<td><input disabled style="margin-bottom:0px; width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{totalISK}}" /> ISK</td>
 							<td>{{#if paid}} Yes {{else}} No {{/if}}</td>
 							<td>{{bookStatus}}</td>
 							<td>

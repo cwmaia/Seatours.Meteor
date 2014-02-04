@@ -239,7 +239,7 @@
 	    	Total
 	    </label>
 
-	    <em name="totalISK" class="price" id="totalISK">0</em>
+	    <em name="totalISK" style="color: #87b87f !important; font-weight: bold; font-size: 140%; " class="price" ><input style="color: #87b87f !important; font-size: 110%; font-style: italic; width:100px;" class="formattedAsMoney" id='totalISK' disabled /> ISK</em>
 		</div>
 		<div class='noStatus'>
 
@@ -336,9 +336,12 @@
 <template name="productPrices">
 	<input type='hidden' id='{{_id}}{{unit}}' class='unitPrice'>
 	<div>
-		<label>{{price}} ({{unit}} ISK)</label>
+		<label>{{price}} (<input disabled style="width: 40px; font-weight: bold;" class='formattedAsMoney' value='{{unit}}'></input> ISK)</label>
 		<input type='number' class="size1-4" min="{{minValue price}}" value='{{priced price}}'>
-		<em class="calcTotal price" data-value="" id="{{_id}}">{{firstTimePricing price unit}}</em>
+		<em class="calcTotal price" data-value="" ><input disabled id="{{_id}}" style="width: 70px;
+color: #777 !important;
+font-style: italic;
+font-size: 112%;" class='formattedAsMoney' value='{{firstTimePricing price unit}}'></em>
 	</div>
 </template>
 
@@ -370,7 +373,7 @@
 			</div>
 			{{> categoryVehicleBook}}
 			<div class='line'>
-				<em type="text" id="totalVehicle" class='calcTotal price vehiclePrice'>0</em>
+				<em type="text" class='calcTotal price vehiclePrice'><input id="totalVehicle" disabled style="width: 75px; color: #777 !important; font-size: 111%; font-style: italic;" class="formattedAsMoney" /></em>
 			</div>
 		</fieldset>
 		{{#if TODO}}

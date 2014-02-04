@@ -136,8 +136,8 @@ Template.voucher.qrCode = function(){
 }
 
 Template.voucher.rendered = function(){
-  $(".calcISK").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
-  $(".calcISK").maskMoney('mask');
+  $(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
+  $(".formattedAsMoney").maskMoney('mask');
   if(!showAlertDiv()){
     $('#alertNotPaid').hide();
   }

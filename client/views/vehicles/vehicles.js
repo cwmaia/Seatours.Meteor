@@ -10,6 +10,11 @@ Template.categoryVehicle.sizes = function() {
 	return Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}).size : [];
 }
 
+Template.categoryVehicle.rendered = function(){
+	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
+	$(".formattedAsMoney").maskMoney('mask');
+}
+
 Template.categoryVehicle.events({
 	'change #categories' : function(event){
 		var id = event.target.selectedOptions[0].id;

@@ -200,7 +200,7 @@
 							background-image: linear-gradient(to bottom, #f8f8f8, #ececec);
 							background-repeat: repeat-x;">
 					<th>Items</th>
-					<th style="min-width: 144px;">Total</th>
+					<th style="min-width: 110px;">Total</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -211,11 +211,11 @@
 								vertical-align: top;
 								border-top: 1px solid #dddddd;">
 						{{#each prices}}
-							{{price}} - {{persons}} x {{perUnit}} = {{sum}} ISK <br />
+							{{price}} - {{persons}} x <input disabled style="margin-bottom:0px; width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{perUnit}}"> = <input disabled style="margin-bottom:0px; width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{sum}}"> ISK <br />
 						{{/each}}
 						<br />
 						{{#if hasVehicles}}
-							{{vehicle.category}} - {{vehicle.size}}m = {{vehicle.totalCost}} ISK
+							{{vehicle.category}} - {{vehicle.size}}m = <input disabled style="margin-bottom:0px; width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{vehicle.totalCost}}"> ISK
 						{{/if}}
 					</td>
 					<td style="padding: 8px;
@@ -225,13 +225,13 @@
 								border-top: 1px solid #dddddd;">
 								Total
 								<br/>
-								<input class='calcISK' value="{{totalISK}}" style="
-											   max-width: 120px; min-width: 120px; border: none;background-color: #f9f9f9;color: black; text-align: right; margin-top: -3px;" disabled='true'> ISK</input>
+								<input class='calcISK formattedAsMoney' value="{{totalISK}}" style="
+											   max-width: 80px; min-width: 80px; border: none;background-color: rgba(0,0,0,0) !important;color: black; text-align: right; margin-top: -3px;" disabled='true'> ISK</input>
 								<br/>			   
 								To be Paid
 								<br/>		   
-								<input class='calcISK' value="{{calcTotal totalISK}}" style="
-											   max-width: 120px; min-width: 120px; border: none;background-color: #f9f9f9;color: black; text-align: right; margin-top: -3px;" disabled='true'> ISK</input>
+								<input class='calcISK formattedAsMoney' value="{{calcTotal totalISK}}" style="
+											   max-width:80px; min-width: 80px; border: none;background-color: rgba(0,0,0,0) !important;color: black; text-align: right; margin-top: -3px;" disabled='true'> ISK</input>
 					</td>
 				</tr>
 			</tbody>

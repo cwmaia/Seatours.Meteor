@@ -293,6 +293,13 @@ select{
 /*
 	Booking page
 */
+	.formattedAsMoney{
+		border: none;
+		background-color: rgba(0,0,0,0) !important;
+		color: #393939 !important;
+		text-align: right;
+		margin-top: -4px;
+	}
 
 	#bookings li h3{
 		float: left;
@@ -328,11 +335,6 @@ select{
 	margin-left: 2%;
 }
 
-#totalVehicle{
-	float: left;
-	margin-top: 2.8%;
-	margin-left: 0;
-}
 
 #totalISK:after,
 .calcTotal:after{

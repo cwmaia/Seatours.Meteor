@@ -10,6 +10,11 @@ Template.cart.hasItems = function(){
 	}
 }
 
+Template.cart.rendered = function(){
+	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
+  	$(".formattedAsMoney").maskMoney('mask');
+}
+
 Template.items.hasDiscount = function(){
 	if(this.discount)
 		return this.discount > 0;

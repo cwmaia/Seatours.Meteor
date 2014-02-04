@@ -182,6 +182,8 @@ Template.bookReport.rendered = function(){
 	$('.calendar').datepicker();
 	$('#filterResultB').dataTable();
 	$('#filterResultF').dataTable();
+	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
+  	$(".formattedAsMoney").maskMoney('mask');
 }
 
 Template.bookingsReport.fullname = function(id){
