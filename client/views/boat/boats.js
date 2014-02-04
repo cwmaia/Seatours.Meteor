@@ -27,8 +27,10 @@ Template.editBoat.boat = function() {
 Template.editBoat.rendered = function(){
 	if(Boats.findOne(Session.get('boatId'))){
 		$("#boatStatusDiv").show();
+		$(".removeBoat").show();
 	}else{
 		$("#boatStatusDiv").hide();
+		$(".removeBoat").hide();
 	} 
 }
 
@@ -54,6 +56,33 @@ Template.editBoat.events({
 		}else{
 			throwInfo("Remove status cancelled!");
 		}
+		
+	},
+
+	"click .removeBoat" : function(event){
+		event.preventDefault();
+		if(Session.get('boatId') && Session.get('boatId') != 'new'){
+			products = Products.find({active : true}).fetch();
+			for (var i = 0; i < products.length; i++) {
+				if(products[i].boatId == Session.get('boatId')){
+					bootbox.alert("This boat is linked to "+ products[i].name +" product, please desactive the product before remove the boat");
+					return;
+				}
+			};
+
+			bootbox.confirm("This boat will be removed, are you sure?", function(confirm){
+				if(confirm){
+					Boats.remove(Session.get("boatId"));
+					throwSuccess("The Boat has been removed");
+					Meteor.Router.to('/boats');
+				}else{
+					return;
+				}
+			});
+			
+		}
+
+		return;
 		
 	},
 
@@ -119,7 +148,13 @@ Template.editBoat.events({
 				max5mDoor = $('#max5mDoor').val() ? $('#max5mDoor').val() : 0;
 				max6mDoor = $('#max6mDoor').val() ? $('#max6mDoor').val() : 0;
 
-				Boats.update(_boat._id, {$set : {maxCapacity: _boat.maxCapacity, name: _boat.name, max5mDoor : max5mDoor, max6mDoor : max6mDoor}});
+				Boats.update(_boat._id, {$set : {
+					maxCapacity: _boat.maxCapacity, 
+					name: _boat.name, 
+					max5mDoor : max5mDoor, 
+					max6mDoor : max6mDoor				
+				}});
+
 				throwSuccess("The Boat has been updated");
 				Meteor.Router.to('/boats')
 			}else{
@@ -133,7 +168,7 @@ Template.editBoat.events({
 					max6mDoor : max6mDoor
 				}
 
-				console.log(boat);
+
 				Boats.insert(boat);
 				throwSuccess("The Boat has been saved");
 				Meteor.Router.to('/boats')

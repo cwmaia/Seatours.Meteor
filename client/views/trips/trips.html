@@ -38,7 +38,7 @@
 
 			<div>
 				<label class="required">Boat:</label>
-				<select name="boat" id="boat" required>
+				<select name="boat" id="boat" {{#if product.boatId}} disabled {{else}} required {{/if}}>
 					<option value="">Select..</option>
 
 					{{#each boats}}

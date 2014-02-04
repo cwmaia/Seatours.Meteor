@@ -134,14 +134,12 @@ Template.editTrip.events({
 
 				reader.onload = function(e){
 					_product.name = form.name.value;
-					_product.boatId = form.boat.selectedOptions[0].value;
 					_product.availableFor = $('#groupTrip').val();
 					_product.imageName = file.name;
 
 					
 					Products.update(_product._id, {$set : {
 						name : _product.name, 
-						boatId: _product.boatId, 
 						availableFor: $('#groupTrip').val(), 
 						imageName: file.name, 
 						active : $("#activeProduct").is(":checked"), 
@@ -156,12 +154,10 @@ Template.editTrip.events({
 					reader.readAsBinaryString(file);
 				}else{
 					_product.name = form.name.value;
-					_product.boatId = form.boat.selectedOptions[0].value;
 					_product.availableFor = $('#groupTrip').val();
 					
 					Products.update(_product._id, {$set : {
 						name : _product.name, 
-						boatId: _product.boatId, 
 						availableFor: $('#groupTrip').val(), 
 						active : $("#activeProduct").is(":checked"), 
 						featured : $('#featuredProduct').is(':checked')
