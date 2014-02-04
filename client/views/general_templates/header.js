@@ -105,6 +105,7 @@ Template.header.events({
 		$('.profile').toggle();
 	},
 	'click .logoff' : function(event){
+		Meteor.Router.to('/');
 		event.preventDefault();
 		cleanExternView();
 		Meteor.logout();

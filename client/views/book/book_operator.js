@@ -1579,8 +1579,9 @@ Template.generalPassagerInfo.events({
 	    	$('#size').val('');
 	    	$('#totalVehicle').val('');
 	    	$('#vehiclePlate').val('');
-	    	$('#groupId').val('');	
-	    	SSession.set('SaveCustomer', true);
+	    	$('#groupId').val('');
+	    	calcTotal();	
+	    	Session.set('SaveCustomer', true);
    		}
 	},
 

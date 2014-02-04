@@ -20,6 +20,7 @@ var login = function(username, password){
           throwError(err.reason);
           SpinnerStop();
         }else{
+          Meteor.Router.to('/');
           Session.set('dateSelected', false);
           Session.set('showOverview', true);
       }

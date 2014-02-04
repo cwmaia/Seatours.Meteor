@@ -64,7 +64,7 @@ Template.finishBookCustomer.events({
 				delete books[i].cartId;
 				books[i].buyerId = customerId;
 				books[i].orderId = refNumber;
-				books[i].bookStatus = "Waiting Payment";
+				books[i].bookStatus = "Waiting Payment (credit card)";
 				Meteor.call('insertBook', books[i]);
 				CBasket.remove({_id: books[i]._id});
 			};
@@ -116,7 +116,7 @@ Template.finishBookCustomer.events({
 							delete books[i].cartId;
 							books[i].buyerId = result;
 							books[i].orderId = refNumber;
-							books[i].bookStatus = "Waiting Payment";
+							books[i].bookStatus = "Waiting Payment (credit card)";
 							Meteor.call('insertBook', books[i]);
 							CBasket.remove({_id: books[i]._id});
 						};
