@@ -63,26 +63,60 @@
 		<thead>
 			<tr>
 				<th>Name</th>
-				<th>Sizes</th>
 				<th title='Price of the Base Size'>Base Price</th>
 				<th>Base Size</th>
 				<th title="Value added for each meters more than Base Size">Step</th>
 				<th title="Discounted for each meter less than Base Size?">Step on Reduce</th>
+				<th title="Actions">Action</th>
 			</tr>
 		</thead>
 		<tbody>
 			{{#each categories}}
 				<tr>
-					<th>{{category}}</th>
-					<th>{{size}}</th>
-					<th><input disabled style="margin-bottom:0px; width: 60px; color: #393939; font-weight:bold;" class="formattedAsMoney" value="{{basePrice}}"> ISK</th>
-					<th>{{baseSize}}m</th>
-					<th><input disabled style="margin-bottom:0px; width: 60px; color: #393939; font-weight:bold;" class="formattedAsMoney" value="{{step}}"> ISK</th>
-					<th>{{#if onReduce}} Yes {{else}} No {{/if}}</th>
+					<td>{{category}}</td>
+					<td><input disabled style="margin-bottom:0px; width: 60px; color: #393939; font-weight:bold;" class="formattedAsMoney" value="{{basePrice}}"> ISK</td>
+					<td>{{baseSize}}m</td>
+					<td><input disabled style="margin-bottom:0px; width: 60px; color: #393939; font-weight:bold;" class="formattedAsMoney" value="{{step}}"> ISK</td>
+					<td>{{#if onReduce}} Yes {{else}} No {{/if}}</td>
+					<td>
+						<a class='btn btn-mini btn-info editPriceCategory' rel='{{_id}}'><i class='icon-pencil'></i></a>
+					</td>
 				</tr>
 			{{/each}}
 		</tbody>
 	</table>
+	<div id="editPricesCategory">
+		  <div class="mask"> </div>
+		  <div class="modal">
+		    <div class="modal-header">
+		      <button type="button" class="close cancel">&times;</button>
+		      <h3>Edit Cateegory</h3>
+		    </div>
+		    <form id='formEditCategory'>
+			   	<div class="modal-body">
+			   		<div class='line-2'>
+			   			<div>
+					    	<label>Base Price: </label>
+					    	<input type='email' name='basePriceCategory' class='formattedAsMoney' required>
+					    </div>
+				    	<div>
+					    	<label>Step: </label>
+					    	<input type='email' name='stepCategory' class='formattedAsMoney' required>
+					    </div>
+			    	</div>
+
+			    	<label>
+			    		Step On Reduce
+			    		<input name='stepOnReduce' type="checkbox" class="ace ace-switch ace-switch-6">
+			    		<span class='lbl'></span>
+			    	</label>
+			    </div>
+			    <div class="modal-footer">
+			    	<input type='submit' class="btn btn-success" value='Save'/>
+			    </div>
+			</form>
+	  </div>
+	</div>
 </template>
 
 <template name="category">
