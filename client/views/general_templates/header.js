@@ -88,21 +88,46 @@ Template.header.events({
 		event.preventDefault();
 		cleanExternView();
 		Session.set("creatingUser", true);
-		$("#loginArea").toggle();
-		$('.profile').toggle();
+		if($("#loginArea").is(":visible")){
+			$("#loginArea").hide();
+		}else{
+			$("#loginArea").show();
+		}
+		if($('.profile').is(":visible")){
+			$('.profile').hide();
+		}else{
+			$('.profile').show();
+		}
 		Template.externView.rendered();
 	},
 
 	'click #forgetPassword' : function(event){
-		$("#loginArea").toggle();
-		$('.profile').toggle();
+		if($("#loginArea").is(":visible")){
+			$("#loginArea").hide();
+		}else{
+			$("#loginArea").show();
+		}
+		if($('.profile').is(":visible")){
+			$('.profile').hide();
+		}else{
+			$('.profile').show();
+		}
 		$("#sendPasswordMail").show();
 	},
 
 	'click #loginLink' : function(event){
 		event.preventDefault();
-		$("#loginArea").toggle();
-		$('.profile').toggle();
+		
+		if($('.profile').is(":visible")){
+			$('.profile').hide();
+		}else{
+			$('.profile').show();
+		}
+		if($("#loginArea").is(":visible")){
+			$("#loginArea").hide();
+		}else{
+			$("#loginArea").show();
+		}
 	},
 	'click .logoff' : function(event){
 		event.preventDefault();
