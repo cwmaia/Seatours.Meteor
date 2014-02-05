@@ -28,6 +28,10 @@ Template.paymentStep.basket = function(){
 	return html;
 }
 
+Template.paymentStep.baseURL = function(){
+	return window.location.host;
+}
+
 Template.paymentStep.customerName = function(){
 	return Meteor.user().profile.name;
 }

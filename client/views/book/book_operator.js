@@ -573,7 +573,7 @@ var checkHaveToOpenDoor = function(size, trip){
 //Template Book Operator
 Template.bookOperator.rendered = function() {
 	var nowTemp = new Date();
-	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate() -1, 0, 0, 0, 0);
 	localStorage.setItem('date', now);
 	$('#currentSeason').text(currentSeason());
 };
@@ -581,13 +581,13 @@ Template.bookOperator.rendered = function() {
 
 Template.productItem.rendered = function(){	
 	var nowTemp = new Date();
-	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate() -1, 0, 0, 0, 0);
 
 	$('.calendar').datepicker({
 		}).on('changeDate', function(ev){
 			date = new Date(ev.date);
 			with(date){
-				setDate(getDate());
+				setDate(getDate() + 1);
 				setHours(0);
 				setMinutes(0);
 				setSeconds(0);
@@ -669,11 +669,11 @@ Template.bookOperator.helpers({
 			group = Groups.findOne({_id: Meteor.user().profile.groupID});
 			if(group){
 				if(group.type = 'internal'){
-					return Products.find();
+					return Products.find({active : true, featured : false});
 				}
 			}else{
 				showProducts = [];
-				products =  Products.find().fetch();
+				products =  Products.find({active : true, featured : false}).fetch();
 				for (var i = 0; i < products.length; i++) {
 					group = Groups.findOne({_id : products[i].availableFor});
 					if(group && group.name == 'Customers'){
@@ -689,7 +689,7 @@ Template.bookOperator.helpers({
 		}else{
 			showProducts = [];
 
-			products =  Products.find().fetch();
+			products =  Products.find({active : true, featured : false}).fetch();
 			for (var i = 0; i < products.length; i++) {
 				group = Groups.findOne({_id : products[i].availableFor});
 					if(group && group.name == 'Customers'){
@@ -1581,8 +1581,9 @@ Template.generalPassagerInfo.events({
 	    	$('#size').val('');
 	    	$('#totalVehicle').val('');
 	    	$('#vehiclePlate').val('');
-	    	$('#groupId').val('');	
-	    	SSession.set('SaveCustomer', true);
+	    	$('#groupId').val('');
+	    	calcTotal();	
+	    	Session.set('SaveCustomer', true);
    		}
 	},
 

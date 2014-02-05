@@ -29,8 +29,9 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
 Accounts.config({sendVerificationEmail: true, forbidClientAccountCreation: false});
 
 Meteor.Router.add("/ReturnPageError", "POST", function(){
-  console.log(this.request.body);
+  return "<script>window.location='http://localhost:3000/errorBorgun</script>";
 })
+
 
 Meteor.publish('boatStatus', function(){
   return BoatStatus.find();

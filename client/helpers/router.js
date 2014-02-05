@@ -15,6 +15,19 @@ Meteor.Router.add({
 			Template.externView.rendered();
 		}
 	},
+	'/cancelOrder'   : {
+		to : "redirect",
+		and : function(){
+			bootbox.alert("You canceled the payment, to try again go to <b>My Orders</b> and select your order to pay");		
+		}
+	},
+
+	'/errorBorgun'   : {
+		to : "redirect",
+		and : function(){
+			bootbox.alert("An error occurred with the External Payment System, please try again in a few moments");		
+		}
+	},
 	'/customers'    : 'customersAndExternals',
 	'/overview' 	: 'overview',
 	'/guest' 		: 'userMenu',

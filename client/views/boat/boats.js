@@ -5,6 +5,10 @@ Template.boats.boats = function() {
 Template.boats.redered = function(){
 }
 
+Template.editBoat.isNew = function(){
+	return Session.get('boatId') == 'new';
+}
+
 Template.boats.events({
 	'click li' : function() {
 		Meteor.Router.to("/boats/" + event.currentTarget.id);
@@ -27,8 +31,10 @@ Template.editBoat.boat = function() {
 Template.editBoat.rendered = function(){
 	if(Boats.findOne(Session.get('boatId'))){
 		$("#boatStatusDiv").show();
+		$(".removeBoat").show();
 	}else{
 		$("#boatStatusDiv").hide();
+		$(".removeBoat").hide();
 	} 
 }
 
@@ -54,6 +60,33 @@ Template.editBoat.events({
 		}else{
 			throwInfo("Remove status cancelled!");
 		}
+		
+	},
+
+	"click .removeBoat" : function(event){
+		event.preventDefault();
+		if(Session.get('boatId') && Session.get('boatId') != 'new'){
+			products = Products.find({active : true}).fetch();
+			for (var i = 0; i < products.length; i++) {
+				if(products[i].boatId == Session.get('boatId')){
+					bootbox.alert("This boat is linked to "+ products[i].name +" product, please desactive the product before remove the boat");
+					return;
+				}
+			};
+
+			bootbox.confirm("This boat will be removed, are you sure?", function(confirm){
+				if(confirm){
+					Boats.remove(Session.get("boatId"));
+					throwSuccess("The Boat has been removed");
+					Meteor.Router.to('/boats');
+				}else{
+					return;
+				}
+			});
+			
+		}
+
+		return;
 		
 	},
 
@@ -91,7 +124,7 @@ Template.editBoat.events({
 				"AddExtraMotos" : false
 			}
 
-			BoatStatus.insert(boatStatus);
+			BoatStatus.insert(boatStatus); 
 
 			throwSuccess("Status Added");
 
@@ -113,30 +146,80 @@ Template.editBoat.events({
 			
 			_boat = Boats.findOne(Session.get('boatId'));
 			if(_boat){
-				_boat.name = form.name.value;
-				_boat.maxCapacity = form.maxCapacity.value;
 
-				max5mDoor = $('#max5mDoor').val() ? $('#max5mDoor').val() : 0;
-				max6mDoor = $('#max6mDoor').val() ? $('#max6mDoor').val() : 0;
+				var reader = new FileReader();
 
-				Boats.update(_boat._id, {$set : {maxCapacity: _boat.maxCapacity, name: _boat.name, max5mDoor : max5mDoor, max6mDoor : max6mDoor}});
-				throwSuccess("The Boat has been updated");
-				Meteor.Router.to('/boats')
-			}else{
-				max5mDoor = $('#max5mDoor').val() ? $('#max5mDoor').val() : 0;
-				max6mDoor = $('#max6mDoor').val() ? $('#max6mDoor').val() : 0;
+				fileInput = form.boatImage;
+				file = fileInput.files[0];
 
-				boat = {
-					name : form.name.value,
-					maxCapacity : form.maxCapacity.value,
-					max5mDoor : max5mDoor,
-					max6mDoor : max6mDoor
+				reader.onload = function(e){
+					_boat.name = form.name.value;
+					_boat.maxCapacity = form.maxCapacity.value;
+
+					max5mDoor = $('#max5mDoor').val() ? $('#max5mDoor').val() : 0;
+					max6mDoor = $('#max6mDoor').val() ? $('#max6mDoor').val() : 0;
+
+					Boats.update(_boat._id, {$set : {
+						maxCapacity: _boat.maxCapacity, 
+						name: _boat.name, 
+						max5mDoor : max5mDoor, 
+						max6mDoor : max6mDoor,
+						boatImage : file.name			
+					}});
+
+					throwSuccess("The Boat has been updated");
+					Meteor.Router.to('/boats')
+					Meteor.call('saveFile', e.target.result, file.name);
 				}
 
-				console.log(boat);
-				Boats.insert(boat);
-				throwSuccess("The Boat has been saved");
-				Meteor.Router.to('/boats')
+				if(file){
+					reader.readAsBinaryString(file);
+				}else{
+
+					_boat.name = form.name.value;
+					_boat.maxCapacity = form.maxCapacity.value;
+
+					max5mDoor = $('#max5mDoor').val() ? $('#max5mDoor').val() : 0;
+					max6mDoor = $('#max6mDoor').val() ? $('#max6mDoor').val() : 0;
+
+					Boats.update(_boat._id, {$set : {
+						maxCapacity: _boat.maxCapacity, 
+						name: _boat.name, 
+						max5mDoor : max5mDoor, 
+						max6mDoor : max6mDoor			
+					}});
+
+					throwSuccess("The Boat has been updated");
+					Meteor.Router.to('/boats')
+				}
+				
+			}else{
+				var reader = new FileReader();
+
+				fileInput = form.boatImage;
+				file = fileInput.files[0];
+
+				reader.onload = function(e){
+					max5mDoor = $('#max5mDoor').val() ? $('#max5mDoor').val() : 0;
+					max6mDoor = $('#max6mDoor').val() ? $('#max6mDoor').val() : 0;
+
+					boat = {
+						name : form.name.value,
+						maxCapacity : form.maxCapacity.value,
+						max5mDoor : max5mDoor,
+						max6mDoor : max6mDoor,
+						boatImage : file.name
+					}
+
+
+					Boats.insert(boat);
+					throwSuccess("The Boat has been saved");
+					Meteor.Router.to('/boats')
+					Meteor.call('saveFile', e.target.result, file.name);
+				}
+
+				reader.readAsBinaryString(file);
+				
 			}
 		}
 	}

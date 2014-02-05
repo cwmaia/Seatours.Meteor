@@ -41,12 +41,12 @@
 			<input type="hidden" id='fullNameBorgun' name="buyername"/><br> 
 			<input type="hidden" id='emailBorgun' name="buyeremail"/><br>
 			{{/if}} 
-			<input type="hidden" id="hehehe" size=100 name="returnurlsuccess" 
-	 		value="http://localhost:3000/ReturnPageSuccess" /><br>
+			<input type="hidden" size=100 name="returnurlsuccess" 
+	 		value="http://{{baseURL}}/ReturnPageSuccess" /><br>
 			<input type="hidden" size=100 name="returnurlcancel" 
-			value="http://somedomain.is/ReturnPageCancel.aspx" /><br> 
+			value="http://{{baseURL}}/cancelOrder" /><br> 
 			<input type="hidden" size=100 name="returnurlerror" 
-			value="http://localhost:3000/ReturnPageError" /><br>
+			value="http://{{baseURL}}/ReturnPageError" /><br>
 			{{{basket}}}
 			<input type="hidden" class="amountBorgun" name="amount" value="{{totalCustomer}}" /><br> 
 			<input type="hidden" name=" pagetype " value="0" /><br> 

@@ -38,7 +38,7 @@
 
 			<div>
 				<label class="required">Boat:</label>
-				<select name="boat" id="boat" required>
+				<select name="boat" id="boat" {{#if product.boatId}} disabled {{else}} required {{/if}}>
 					<option value="">Select..</option>
 
 					{{#each boats}}
@@ -56,14 +56,26 @@
 				</select>
 			</div>
 		</div>
-		<div class='line-2'>
+		<div class='line-3'>
 			<div>
 				<label class="required">Product Image:</label>
 				<input type="file" name="productImage" id="productImage" {{#if isNew}} required {{/if}}>
 			</div>
 
 			<div>
-				
+				<label>
+		    		Featured
+		    		<input id="featuredProduct" type="checkbox" {{#if product.featured}} checked {{/if}} class="ace ace-switch ace-switch-6">
+		    		<span class='lbl'></span>
+		    	</label>
+			</div>
+
+			<div>
+				<label>
+		    		Active
+		    		<input id="activeProduct" type="checkbox" {{#if product.active}} checked {{/if}} class="ace ace-switch ace-switch-6">
+		    		<span class='lbl'></span>
+		    	</label>
 			</div>
 		</div>
 		<button id="saveProduct" class='btn btn-success btn-small' form="productForm">

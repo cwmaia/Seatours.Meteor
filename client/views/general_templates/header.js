@@ -130,6 +130,7 @@ Template.header.events({
 		}
 	},
 	'click .logoff' : function(event){
+		Meteor.Router.to('/');
 		event.preventDefault();
 		cleanExternView();
 		Meteor.logout();
