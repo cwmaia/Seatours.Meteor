@@ -74,7 +74,8 @@ if(Boats.find().count() == 0){
 		"name" : "Baldur Ferry",
 		"maxCapacity" : 300,
 		"max5mDoor" : 3,
-		"max6mDoor" : 2
+		"max6mDoor" : 2,
+		"boatImage" : "Baldur Ferry.jpg"
 	});
 
 	BoatStatus.insert({
