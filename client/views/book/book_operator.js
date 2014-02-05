@@ -1531,59 +1531,61 @@ Template.generalButtons.events({
 
 Template.generalPassagerInfo.events({
 	'blur #socialSecurityNumber' : function(){
-		socialNumber = $("#socialSecurityNumber").val();
-		currentCustomer = Customers.findOne({socialSecurityNumber : socialNumber});
-		if(currentCustomer)
-		{
-			$('#fullName').val(currentCustomer.fullName);
-			$('#customerId').val(currentCustomer._id);
-			$('#title').val(currentCustomer.title)
-	    	$('#birthDate').val(currentCustomer.birthDate);
-	    	$('#email').val(currentCustomer.email);
-	    	$('#telephoneCode').val(currentCustomer.telephoneCode);
-	    	$('#telephone').val(currentCustomer.telephone);
-	    	$('#adress').val(currentCustomer.address);
-	    	$('#city').val(currentCustomer.city);
-	    	$('#state').val(currentCustomer.state);
-	    	$('#postcode').val(currentCustomer.postcode);
-	    	$('#country').val(currentCustomer.country);
-	    	$('#groupId').val(currentCustomer.groupId);	
-	    	//Vehicle
-	    	$('#vehicle').val(currentCustomer.lastUsedCar.vehicleName);
-	    	$('#categories').val(currentCustomer.lastUsedCar.categoryId);
-	    	$('#totalVehicle').val(currentCustomer.lastUsedCar.totalCost);
-	    	$('#vehiclePlate').val(currentCustomer.lastUsedCar.vehiclePlate);
-	    	$("#categories option").filter(function(){
-				return $(this).text() == currentCustomer.lastUsedCar.category;
-			}).attr('selected', true);
+		if(!isCustomer()){
+			socialNumber = $("#socialSecurityNumber").val();
+			currentCustomer = Customers.findOne({socialSecurityNumber : socialNumber});
+			if(currentCustomer)
+			{
+				$('#fullName').val(currentCustomer.fullName);
+				$('#customerId').val(currentCustomer._id);
+				$('#title').val(currentCustomer.title)
+		    	$('#birthDate').val(currentCustomer.birthDate);
+		    	$('#email').val(currentCustomer.email);
+		    	$('#telephoneCode').val(currentCustomer.telephoneCode);
+		    	$('#telephone').val(currentCustomer.telephone);
+		    	$('#adress').val(currentCustomer.address);
+		    	$('#city').val(currentCustomer.city);
+		    	$('#state').val(currentCustomer.state);
+		    	$('#postcode').val(currentCustomer.postcode);
+		    	$('#country').val(currentCustomer.country);
+		    	$('#groupId').val(currentCustomer.groupId);	
+		    	//Vehicle
+		    	$('#vehicle').val(currentCustomer.lastUsedCar.vehicleName);
+		    	$('#categories').val(currentCustomer.lastUsedCar.categoryId);
+		    	$('#totalVehicle').val(currentCustomer.lastUsedCar.totalCost);
+		    	$('#vehiclePlate').val(currentCustomer.lastUsedCar.vehiclePlate);
+		    	$("#categories option").filter(function(){
+					return $(this).text() == currentCustomer.lastUsedCar.category;
+				}).attr('selected', true);
 
-			Session.set('categoryId', currentCustomer.lastUsedCar.categoryId);
-			Session.set('currentSizeCar', currentCustomer.lastUsedCar.size);
-			checkIfCarsFits(currentCustomer.lastUsedCar.size);
-			changeSizes();
-			Session.set('SaveCustomer', false);
-   		}else{
-   			$('#fullName').val('');
-			$('#customerId').val('');
-			$('#title').val('')
-	    	$('#birthDate').val('');
-	    	$('#email').val('');
-	    	$('#telephoneCode').val('');
-	    	$('#telephone').val('');
-	    	$('#adress').val('');
-	    	$('#city').val();
-	    	$('#state').val('');
-	    	$('#postcode').val('');
-	    	$('#country').val('');
-	    	//Vehicle
-	    	$('#vehicle').val('');
-	    	$('#categories').val('');
-	    	$('#size').val('');
-	    	$('#totalVehicle').val('');
-	    	$('#vehiclePlate').val('');
-	    	$('#groupId').val('');
-	    	calcTotal();	
-	    	Session.set('SaveCustomer', true);
+				Session.set('categoryId', currentCustomer.lastUsedCar.categoryId);
+				Session.set('currentSizeCar', currentCustomer.lastUsedCar.size);
+				checkIfCarsFits(currentCustomer.lastUsedCar.size);
+				changeSizes();
+				Session.set('SaveCustomer', false);
+	   		}else{
+	   			$('#fullName').val('');
+				$('#customerId').val('');
+				$('#title').val('')
+		    	$('#birthDate').val('');
+		    	$('#email').val('');
+		    	$('#telephoneCode').val('');
+		    	$('#telephone').val('');
+		    	$('#adress').val('');
+		    	$('#city').val();
+		    	$('#state').val('');
+		    	$('#postcode').val('');
+		    	$('#country').val('');
+		    	//Vehicle
+		    	$('#vehicle').val('');
+		    	$('#categories').val('');
+		    	$('#size').val('');
+		    	$('#totalVehicle').val('');
+		    	$('#vehiclePlate').val('');
+		    	$('#groupId').val('');
+		    	calcTotal();	
+		    	Session.set('SaveCustomer', true);
+	   		}
    		}
 	},
 
@@ -1713,10 +1715,10 @@ Template.bookingVehicles.helpers({
 Template.generalPassagerInfo.rendered = function() {
 	$('.datepicker').datepicker({
 		changeMonth : true,
-      	changeYear 	: true
+      	changeYear 	: true,
+      	format : "dd/mm/yyyy"
 	});
 	$('#socialSecurityNumber').mask('999999-9999');
-	$('#telephone').mask('(999) 99999999');
 	$('#birthDate').mask('99/99/9999');
 	loadTypeAheadPostCodes();
 }
