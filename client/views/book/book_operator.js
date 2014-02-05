@@ -1719,7 +1719,6 @@ Template.generalPassagerInfo.rendered = function() {
       	format : "dd/mm/yyyy"
 	});
 	$('#socialSecurityNumber').mask('999999-9999');
-	$('#telephone').mask('(999) 99999999');
 	$('#birthDate').mask('99/99/9999');
 	loadTypeAheadPostCodes();
 }
