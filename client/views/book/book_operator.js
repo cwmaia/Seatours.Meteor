@@ -705,8 +705,10 @@ Template.bookOperator.helpers({
 currentSeason = function(){
 	var today = localStorage.getItem('date') ? new Date(localStorage.getItem('date')) : new Date();
 	//Check the closest month
-	var summerStartMonth = parseInt(Settings.findOne({_id : "summer"}) ? Settings.findOne({_id : "summer"}).summerStartDate.split("/")[0] : 0)-1;
-	var winterStartMonth = parseInt(Settings.findOne({_id : "winter"}) ? Settings.findOne({_id : "winter"}).winterStartDate.split("/")[0] : 0)-1;
+	var settingsSummerDate = Settings.findOne({_id : "summer"});
+	var settingsWinterDate = Settings.findOne({_id : "winter"});
+	var summerStartMonth = parseInt(settingsSummerDate ? settingsSummerDate.summerStartDate.split("/")[0] : 0)-1;
+	var winterStartMonth = parseInt(settingsWinterDate ? settingsWinterDate.winterStartDate.split("/")[0] : 0)-1;
 	var temp1 = Math.abs(summerStartMonth - today.getMonth());
 	var temp2 = Math.abs(winterStartMonth - today.getMonth());
 	var compareDate;
