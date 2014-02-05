@@ -161,6 +161,15 @@ Template.header.events({
 		$('.profile').show();
 		Template.externView.rendered();
 	},
+
+	'click .homeBtn' : function(event){
+		event.preventDefault();
+		cleanExternView();
+		$("#loginArea").hide();
+		$('.profile').show();
+		Template.externView.rendered();
+	},
+
 	'click .login-button' : function(event){
 		cleanExternView();
 		$("#loginArea").hide();
