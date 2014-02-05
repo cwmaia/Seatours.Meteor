@@ -324,7 +324,7 @@ if(Products.find().count() == 0){
 		'season' : "noSeason",
 		'active' : true,
 		'productId' : result,
-		'availableDays' : {start: '05/13/2014', end: '10/15/2014'}
+		'availableDays' : {start: '13/05/2014', end: '15/10/2014'}
 	}),
 
 	Prices.insert({
@@ -392,7 +392,7 @@ if(Products.find().count() == 0){
 		'season' : "noSeason",
 		'active' : true,
 		'productId' : result,
-		'availableDays' : {start: '06/15/2014', end: '08/20/2014'}
+		'availableDays' : {start: '15/06/2014', end: '20/08/2014'}
 	}),
 
 	Trips.insert({
@@ -402,7 +402,7 @@ if(Products.find().count() == 0){
 		'season' : "noSeason",
 		'active' : true,
 		'productId' : result,
-		'availableDays' : {start: '05/17/2014', end: '08/20/2014'}
+		'availableDays' : {start: '17/05/2014', end: '20/08/2014'}
 	}),
 
 	Prices.insert({
@@ -1676,9 +1676,9 @@ if(PostCodes.find().count() == 0){
 	//////////////////////////////////////////////////
 	// Settings
 
-	Settings.insert({'summerStartDate' : '06/01',
+	Settings.insert({'summerStartDate' : '01/06',
 					 '_id' : 'summer'});
-	Settings.insert({'winterStartDate' : '09/01',
+	Settings.insert({'winterStartDate' : '01/09',
 					 '_id' : 'winter'});
 	Settings.insert({'onlineDiscount' : 10,
 					 '_id' : 'onlineDiscount'});

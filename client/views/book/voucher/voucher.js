@@ -109,7 +109,7 @@ Template.voucher.transactions = function(){
 
 Template.voucher.format = function(date){
   var _date = new Date(""+date);
-  return _date.toLocaleDateString();
+  return _date.toUTCString().slice(5,17);
 }
 
 Template.voucher.qrCode = function(){

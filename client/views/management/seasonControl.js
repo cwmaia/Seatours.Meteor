@@ -1,6 +1,6 @@
 Template.seasonControl.rendered = function(){
 	$('.datePickerWYear').datepicker({
-		format : 'mm/dd'
+		format : 'dd/mm'
 	});
 }
 

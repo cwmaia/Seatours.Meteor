@@ -179,7 +179,9 @@ Template.financialReport.helpers({
 })
 
 Template.bookReport.rendered = function(){
-	$('.calendar').datepicker();
+	$('.calendar').datepicker({
+		format : "dd/mm/yyyy"
+	});
 	$('#filterResultB').dataTable();
 	$('#filterResultF').dataTable();
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});

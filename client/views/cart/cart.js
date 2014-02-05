@@ -75,7 +75,7 @@ Template.cart.total = function(){
 }
 
 Template.items.dateNoTimeZone = function(date){ 
-	return date.toLocaleDateString();
+	return date.toUTCString().slice(5,17);;
 }
 
 Template.cart.totalCustomer = function(){

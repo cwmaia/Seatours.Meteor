@@ -584,6 +584,7 @@ Template.productItem.rendered = function(){
 	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate() -1, 0, 0, 0, 0);
 
 	$('.calendar').datepicker({
+			format : "dd/mm/yyyy"
 		}).on('changeDate', function(ev){
 			date = new Date(ev.date);
 			with(date){
@@ -1151,7 +1152,7 @@ Template.bookDetail.helpers({
 
 	date: function() {
 		date = new Date(localStorage.getItem('date'));
-		return date.toLocaleDateString();
+		return date.toUTCString().slice(5,17);
 	},
 
 	bookings : function(){
@@ -1218,7 +1219,7 @@ Template.createBook.currentSeason = function(){
 }
 
 Template.createBook.dateOfBooking = function(){
-	return new Date(localStorage.getItem('date')).toLocaleDateString();
+	return new Date(localStorage.getItem('date')).toUTCString().slice(5,17);
 }
 
 Template.createBook.booked = function(from,to){

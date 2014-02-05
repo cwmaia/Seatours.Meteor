@@ -3,7 +3,7 @@ Template.overview.products = function(){
 }
 
 Template.overview.date = function(){
-	return new Date().toLocaleDateString();
+	return new Date().toUTCString().slice(5,17);
 }
 
 Template.overview.trips = function(productId){
