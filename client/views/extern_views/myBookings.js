@@ -19,6 +19,7 @@ Template.myBookings.events({
 		var a = event.currentTarget;
 		event.preventDefault();
 		cleanExternView();
+		Session.set("checkOrder", null);
 		Session.set("orderId", a.rel);
 		Session.set("paymentStep", true);
 		Template.externView.rendered();

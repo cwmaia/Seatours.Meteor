@@ -1407,30 +1407,46 @@ checkMaxCapacity = function(total){
 	var product = Products.findOne(Session.get('productId'));
 	var boat = Boats.findOne({_id : product.boatId});
 
-	var persons = 0;
-	
-	books = Books.find({
-		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
-		'product._id' 	: Session.get('productId'),
-		'trip._id' 	: trip._id,
-		'bookStatus'	: 'Booked'
-	}).fetch();
+	if(isCustomer()){
+		Meteor.call('filterBookings', dates, Session.get("productId"), trip._id, 'Booked', function(err, result){
+			if(err){
 
-	for (var i = 0; i < books.length; i++) {
-		for (var j = 0; j < books[i].prices.length; j++) {
-			if(book.prices[j].price != "Operator Fee")
-				persons = parseInt(parseInt(books[i].prices[j].persons) + persons);
-		};
-	};
-
-	if((persons + total) > boat.maxCapacity){
-		$("#divMessageCreateBook").show();
-		$("#messageCreateBook").text("There are too many passagers, we got only "+parseInt(boat.maxCapacity - persons)+" free sits, sorry but this booking can't be made!");
-		CanSaveTheBook = false;
+			}else{
+				callbackCheckMaxCapacity(result);
+			}
+		})
 	}else{
-		$("#divMessageCreateBook").hide();
-		CanSaveTheBook = true;
-	}	
+		books = Books.find({
+			dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+			'product._id' 	: Session.get('productId'),
+			'trip._id' 	: trip._id,
+			'bookStatus'	: 'Booked'
+		}).fetch();
+		callbackCheckMaxCapacity(books);
+	}
+
+	function callbackCheckMaxCapacity(books){
+		var persons = 0;
+		for (var i = 0; i < books.length; i++) {
+			for (var j = 0; j < books[i].prices.length; j++) {
+				if(books[i].prices[j].price != "Operator Fee")
+					persons = parseInt(parseInt(books[i].prices[j].persons) + persons);
+			};
+		};
+
+		if((persons + total) > boat.maxCapacity){
+			$("#divMessageCreateBook").show();
+			$("#messageCreateBook").text("There are too many passagers, we got only "+parseInt(boat.maxCapacity - persons)+" free sits, sorry but this booking can't be made!");
+			CanSaveTheBook = false;
+			Template.createBook.rendered();
+			return false;
+		}else{
+			$("#divMessageCreateBook").hide();
+			CanSaveTheBook = true;
+			Template.createBook.rendered();
+			return true;
+		}	
+	}
 	
 }
 
@@ -1852,7 +1868,6 @@ calcTotal = function(){
 	var total = 0;
 
 	for (var i = $('.calcTotal').length - 1; i >= 0; i--) {
-		console.log($('.calcTotal')[i].children[0]);
 		if($('.calcTotal')[i].children[0].value != "")
 			total += parseInt(($('.calcTotal')[i].children[0].value).replace(".",""));
 	};
@@ -2318,7 +2333,7 @@ function drawPieChartBoatSlots() {
     drawPieChart('pieChart', formatData(updateDataPieChart()).pieChart );
 }
 
-var checkIfCarsFits = function(size){
+checkIfCarsFits = function(size){
 
 	var trip = Trips.findOne(Session.get('tripId'));
 	ExtraSlot = null;
@@ -2366,6 +2381,7 @@ var checkIfCarsFits = function(size){
 			}else{
 				ExtraSlot = extraSlots[0];
 				CanSaveTheBook = true;
+				return true;
 			}
 		}else if(size <= 2.5 && CanAdd2Motocycle){
 			ExtraSlot = extraSlots[0];
@@ -2399,11 +2415,13 @@ var checkIfCarsFits = function(size){
 				if(fits){
 					ExtraSlot = fits;
 					CanSaveTheBook = true;
+					return true;
 				}else{
 					$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
 					bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
 					CanSaveTheBook = false;
 					Template.createBook.rendered();
+					return false;
 				}
 			}
 		}
@@ -2421,8 +2439,7 @@ var checkIfCarsFits = function(size){
 						bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
 						CanSaveTheBook = false;
 					}
-				}else{
-					
+				}else{	
 					$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
 					bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
 					CanSaveTheBook = false;
@@ -2436,11 +2453,15 @@ var checkIfCarsFits = function(size){
 				ExtraSlot = fits;
 				CanSaveTheBook = true;
 				Template.createBook.rendered();
+				return true;
 			}else{
-				$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
-				bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
-				CanSaveTheBook = false;
-				Template.createBook.rendered();
+				if(!Session.get('checkOrder')){
+					$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
+					bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
+					CanSaveTheBook = false;
+					Template.createBook.rendered();
+				}
+				return false;
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 Template.mainMenu.events({
 	'click .logout' : function(){
-		Meteor.Router.to('/');
 		Meteor.logout();
+		Meteor.Router.to('/');
 		SpinnerInit();
 	},
 
