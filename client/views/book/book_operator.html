@@ -238,6 +238,15 @@
 			{{> productPrices}}
 		{{/each}}
 	</div>
+	<span><em>Please note:</em> <br>
+			Senior : 67 years and older<br>
+		{{#if isSummer}}
+			Child : 0 to 15 years old <br>
+			Infant : 16 to 20 years old <br>
+		{{else}}
+			Child : 0 to 11 years old <br>
+			Infant : 12 to 15 years old <br>
+		{{/if}}
 
 	<div class="line">
 		{{> generalPassagerInfo}}
@@ -350,15 +359,17 @@
 
 
 <template name="productPrices">
-	<input type='hidden' id='{{_id}}{{unit}}' class='unitPrice'>
-	<div>
-		<label>{{price}} (<input disabled style="width: 40px; font-weight: bold;" class='formattedAsMoney' value='{{unit}}'></input> ISK)</label>
-		<input type='number' class="size1-4" min="{{minValue price}}" value='{{priced price}}'>
-		<em class="calcTotal price" data-value="" ><input disabled id="{{_id}}" style="width: 70px;
-color: #777 !important;
-font-style: italic;
-font-size: 112%;" class='formattedAsMoney' value='{{firstTimePricing price unit}}'></em>
-	</div>
+	{{#if checkForAvailability _id}}
+		<input type='hidden' id='{{_id}}{{unit}}' class='unitPrice'>
+		<div>
+			<label>{{price}} (<input disabled style="width: 40px; font-weight: bold;" class='formattedAsMoney' value='{{unit}}'></input> ISK)</label>
+			<input type='number' class="size1-4" min="{{minValue price}}" value='{{priced price}}'>
+			<em class="calcTotal price" data-value="" ><input disabled id="{{_id}}" style="width: 70px;
+	color: #777 !important;
+	font-style: italic;
+	font-size: 112%;" class='formattedAsMoney' value='{{firstTimePricing price unit}}'></em>
+		</div>
+	{{/if}}
 </template>
 
 <template name="bookingVehicles">

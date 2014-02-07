@@ -792,8 +792,8 @@ currentSeason = function(){
 	//Check the closest month
 	var settingsSummerDate = Settings.findOne({_id : "summer"});
 	var settingsWinterDate = Settings.findOne({_id : "winter"});
-	var summerStartMonth = parseInt(settingsSummerDate ? settingsSummerDate.summerStartDate.split("/")[0] : 0)-1;
-	var winterStartMonth = parseInt(settingsWinterDate ? settingsWinterDate.winterStartDate.split("/")[0] : 0)-1;
+	var summerStartMonth = parseInt(settingsSummerDate ? settingsSummerDate.summerStartDate.split("/")[1] : 0)-1;
+	var winterStartMonth = parseInt(settingsWinterDate ? settingsWinterDate.winterStartDate.split("/")[1] : 0)-1;
 	var temp1 = Math.abs(summerStartMonth - today.getMonth());
 	var temp2 = Math.abs(winterStartMonth - today.getMonth());
 	var compareDate;
@@ -969,6 +969,13 @@ Template.createBook.qtdCarsUpTo5 = function(){
 
 Template.createBook.dateSelected = function(){
 	return !Session.get('dateSelected');
+}
+
+Template.createBook.isSummer = function(){
+	if(currentSeason() == "summer"){
+		return true;
+	}
+	return false;
 }
 
 Template.generalPassagerInfo.dateSelected = function(){
@@ -1363,6 +1370,13 @@ Template.productPrices.priced = function(price){
 	}else{
 		return 0;
 	}
+}
+
+Template.productPrices.checkForAvailability = function(id){
+	if(isCustomer() && !Prices.findOne({'_id' : id}).availableForGuest){
+		return false;
+	}
+	return true;
 }
 
 Template.productPrices.minValue = function(price){

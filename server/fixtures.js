@@ -213,7 +213,8 @@ if(Products.find().count() == 0){
 		"unit"	: 4080,
 		'active' : true,
 		'season' : 'summer',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
@@ -221,7 +222,8 @@ if(Products.find().count() == 0){
 		"unit"	: 2040,
 		'active' : true,
 		'season' : 'summer',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
@@ -229,7 +231,8 @@ if(Products.find().count() == 0){
 		"unit"	: 0,
 		'active' : true,
 		'season' : 'summer',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
@@ -237,7 +240,8 @@ if(Products.find().count() == 0){
 		"unit"	: 3264,
 		'active' : true,
 		'season' : 'summer',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
@@ -245,7 +249,8 @@ if(Products.find().count() == 0){
 		"unit"	: 2040,
 		'active' : true,
 		'season' : 'summer',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : false
 	})
 
 	Prices.insert({
@@ -253,7 +258,8 @@ if(Products.find().count() == 0){
 		"unit"	: 0,
 		'active' : true,
 		'season' : 'summer',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : false
 	})
 
 	//Winter Prices
@@ -263,7 +269,8 @@ if(Products.find().count() == 0){
 		"unit"	: 4080,
 		'active' : true,
 		'season' : 'winter',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
@@ -271,7 +278,8 @@ if(Products.find().count() == 0){
 		"unit"	: 2040,
 		'active' : true,
 		'season' : 'winter',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
@@ -279,7 +287,8 @@ if(Products.find().count() == 0){
 		"unit"	: 0,
 		'active' : true,
 		'season' : 'winter',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
@@ -287,7 +296,8 @@ if(Products.find().count() == 0){
 		"unit"	: 3264,
 		'active' : true,
 		'season' : 'winter',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
@@ -295,7 +305,8 @@ if(Products.find().count() == 0){
 		"unit"	: 2040,
 		'active' : true,
 		'season' : 'winter',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : false
 	})
 
 	Prices.insert({
@@ -303,7 +314,8 @@ if(Products.find().count() == 0){
 		"unit"	: 0,
 		'active' : true,
 		'season' : 'winter',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : false
 	})
 
 	result = Products.insert({
@@ -332,23 +344,26 @@ if(Products.find().count() == 0){
 		"unit"	: 4080,
 		'active' : true,
 		'season' : 'both',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
-		"price" 	: "Child (12 - 14)",
+		"price" 	: "Child",
 		"unit"	: 2040,
 		'active' : true,
 		'season' : 'both',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
-		"price" 	: "Infant (0 - 11)",
+		"price" 	: "Infant",
 		"unit"	: 0,
 		'active' : true,
 		'season' : 'both',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
@@ -356,7 +371,8 @@ if(Products.find().count() == 0){
 		"unit"	: 3264,
 		'active' : true,
 		'season' : 'both',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
@@ -364,7 +380,8 @@ if(Products.find().count() == 0){
 		"unit"	: 2040,
 		'active' : true,
 		'season' : 'both',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : false
 	})
 
 	Prices.insert({
@@ -372,7 +389,8 @@ if(Products.find().count() == 0){
 		"unit"	: 0,
 		'active' : true,
 		'season' : 'both',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : false
 	})
 
 	result = Products.insert({
@@ -410,23 +428,26 @@ if(Products.find().count() == 0){
 		"unit"	: 4080,
 		'active' : true,
 		'season' : 'both',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
-		"price" 	: "Child (12 - 14)",
+		"price" 	: "Child",
 		"unit"	: 2040,
 		'active' : true,
 		'season' : 'both',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
-		"price" 	: "Infant (0 - 11)",
+		"price" 	: "Infant",
 		"unit"	: 0,
 		'active' : true,
 		'season' : 'both',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
@@ -434,7 +455,8 @@ if(Products.find().count() == 0){
 		"unit"	: 3264,
 		'active' : true,
 		'season' : 'both',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : true
 	})
 
 	Prices.insert({
@@ -442,7 +464,8 @@ if(Products.find().count() == 0){
 		"unit"	: 2040,
 		'active' : true,
 		'season' : 'both',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : false
 	})
 
 	Prices.insert({
@@ -450,7 +473,8 @@ if(Products.find().count() == 0){
 		"unit"	: 0,
 		'active' : true,
 		'season' : 'both',
-		'productId' : result
+		'productId' : result,
+		'availableForGuest' : false
 	})
 
 	
