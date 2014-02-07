@@ -792,8 +792,8 @@ currentSeason = function(){
 	//Check the closest month
 	var settingsSummerDate = Settings.findOne({_id : "summer"});
 	var settingsWinterDate = Settings.findOne({_id : "winter"});
-	var summerStartMonth = parseInt(settingsSummerDate ? settingsSummerDate.summerStartDate.split("/")[0] : 0)-1;
-	var winterStartMonth = parseInt(settingsWinterDate ? settingsWinterDate.winterStartDate.split("/")[0] : 0)-1;
+	var summerStartMonth = parseInt(settingsSummerDate ? settingsSummerDate.summerStartDate.split("/")[1] : 0)-1;
+	var winterStartMonth = parseInt(settingsWinterDate ? settingsWinterDate.winterStartDate.split("/")[1] : 0)-1;
 	var temp1 = Math.abs(summerStartMonth - today.getMonth());
 	var temp2 = Math.abs(winterStartMonth - today.getMonth());
 	var compareDate;
