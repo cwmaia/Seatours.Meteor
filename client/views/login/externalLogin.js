@@ -1,6 +1,6 @@
 Template.externalLogin.rendered = function(){
 	if(isCustomerNotLogged()){
-		books = CBasket.find({cartId: getCartId()}).fetch();
+		books = CartItems.find({cartId: getCartId()}).fetch();
 		book = books[0];
 		customer = Customers.findOne(book.customerId);
 		$('#customerFullname').val(customer.fullName);

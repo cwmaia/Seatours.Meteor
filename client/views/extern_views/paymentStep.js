@@ -42,7 +42,7 @@ Template.paymentStep.customerEmail = function(){
 }
 
 Template.paymentStep.getCBasket = function(){
-	return CBasket.find({cartId : getCartId()});
+	return CartItems.find({cartId : getCartId()});
 }
 
 Template.paymentStep.orderId = function(){

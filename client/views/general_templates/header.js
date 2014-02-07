@@ -11,7 +11,7 @@ Template.header.rendered = function(){
 }
 
 Template.header.totalItems = function(){
-	return CBasket.find({cartId : getCartId()}).count();
+	return CartItems.find({cartId : getCartId()}).count();
 }
 
 Template.header.loginName = function(){

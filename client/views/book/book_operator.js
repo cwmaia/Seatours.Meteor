@@ -1407,46 +1407,36 @@ checkMaxCapacity = function(total){
 	var product = Products.findOne(Session.get('productId'));
 	var boat = Boats.findOne({_id : product.boatId});
 
-	if(isCustomer()){
-		Meteor.call('filterBookings', dates, Session.get("productId"), trip._id, 'Booked', function(err, result){
-			if(err){
+	var persons = 0;
+	
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip._id' 	: trip._id,
+		'bookStatus'	: 'Booked'
+	}).fetch();
 
-			}else{
-				callbackCheckMaxCapacity(result);
-			}
-		})
-	}else{
-		books = Books.find({
-			dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
-			'product._id' 	: Session.get('productId'),
-			'trip._id' 	: trip._id,
-			'bookStatus'	: 'Booked'
-		}).fetch();
-		callbackCheckMaxCapacity(books);
-	}
+	console.log(books);
 
-	function callbackCheckMaxCapacity(books){
-		var persons = 0;
-		for (var i = 0; i < books.length; i++) {
-			for (var j = 0; j < books[i].prices.length; j++) {
-				if(books[i].prices[j].price != "Operator Fee")
-					persons = parseInt(parseInt(books[i].prices[j].persons) + persons);
-			};
+	for (var i = 0; i < books.length; i++) {
+		for (var j = 0; j < books[i].prices.length; j++) {
+			if(books[i].prices[j].price != "Operator Fee")
+				persons = parseInt(parseInt(books[i].prices[j].persons) + persons);
 		};
+	};
 
-		if((persons + total) > boat.maxCapacity){
-			$("#divMessageCreateBook").show();
-			$("#messageCreateBook").text("There are too many passagers, we got only "+parseInt(boat.maxCapacity - persons)+" free sits, sorry but this booking can't be made!");
-			CanSaveTheBook = false;
-			Template.createBook.rendered();
-			return false;
-		}else{
-			$("#divMessageCreateBook").hide();
-			CanSaveTheBook = true;
-			Template.createBook.rendered();
-			return true;
-		}	
-	}
+	if((persons + total) > boat.maxCapacity){
+		$("#divMessageCreateBook").show();
+		$("#messageCreateBook").text("There are too many passagers, we got only "+parseInt(boat.maxCapacity - persons)+" free sits, sorry but this booking can't be made!");
+		CanSaveTheBook = false;
+		Template.createBook.rendered();
+		return false;
+	}else{
+		$("#divMessageCreateBook").hide();
+		CanSaveTheBook = true;
+		Template.createBook.rendered();
+		return true;
+	}	
 	
 }
 

@@ -3,7 +3,7 @@
 Template.finishBookCustomer.rendered = function(){
 	if(isCustomerNotLogged()){
 		
-		books = CBasket.find({cartId: getCartId()}).fetch();
+		books = CartItems.find({cartId: getCartId()}).fetch();
 		book = books[0];
 		customer = Customers.findOne(book.customerId);
 		$('#fullName').val(customer.fullName);
@@ -50,7 +50,7 @@ Template.finishBookCustomer.customerAddress = function(){
 Template.finishBookCustomer.events({
 		'click #finishBuyBookingCustomer' : function(){
 		if(isCustomerLogged()){
-			books = CBasket.find({cartId: getCartId()}).fetch();
+			books = CartItems.find({cartId: getCartId()}).fetch();
 
 			customerId = Meteor.user().profile.customerId;
 			refNumber = new Date().getTime().toString().substr(1);
@@ -66,7 +66,7 @@ Template.finishBookCustomer.events({
 				books[i].orderId = refNumber;
 				books[i].bookStatus = "Waiting Payment (credit card)";
 				Meteor.call('insertBook', books[i]);
-				CBasket.remove({_id: books[i]._id});
+				CartItems.remove({_id: books[i]._id});
 			};
 
 			cleanExternView();
@@ -105,7 +105,7 @@ Template.finishBookCustomer.events({
 						SpinnerStop();
 						return;
 					}else{
-						books = CBasket.find({cartId: getCartId()}).fetch();
+						books = CartItems.find({cartId: getCartId()}).fetch();
 						refNumber = new Date().getTime().toString().substr(1);
 						while(Orders.findOne({refNumber : refNumber})){
 							refNumber = new Date().getTime().toString().substr(1);
@@ -118,7 +118,7 @@ Template.finishBookCustomer.events({
 							books[i].orderId = refNumber;
 							books[i].bookStatus = "Waiting Payment (credit card)";
 							Meteor.call('insertBook', books[i]);
-							CBasket.remove({_id: books[i]._id});
+							CartItems.remove({_id: books[i]._id});
 						};
 						SpinnerStop();
 						Meteor.loginWithPassword(user.username, user.password, function(err){

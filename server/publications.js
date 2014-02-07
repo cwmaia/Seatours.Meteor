@@ -72,7 +72,7 @@ Meteor.publish('books', function() {
     if(user.profile.groupID){
       return Books.find();
     }else{
-      return Books.find({buyerId : user.profile.customerId});
+      return Books.find();
     }
   }else{
     return Books.find({}, {fields: {dateOfBooking: 1, 'trip._id': 1, 'bookStatus' : 1, 'vehicle.extraSlot' : 1, 'product._id' : 1, 'vehicle.size' : 1, prices : 1}});
@@ -280,7 +280,7 @@ Meteor.methods({
     Groups.insert(group);
   },
 
-  getBookingsOrder : function(dates, productId, tripId, bookStatus){
+  checkRestrictions : function(dates, productId, tripId, bookStatus){
     books = Books.find({
       dateOfBooking   : {$gte: dates.selectedDay, $lt: dates.nextDay},
       'product._id'   : productId,

@@ -35,7 +35,7 @@ Template.items.customer = function(){
 }
 
 Template.cart.getCBasket = function(){
-	if(CBasket.find({cartId : getCartId()})){
+	if(CartItems.find({cartId : getCartId()})){
 		return true;
 	}else{
 
@@ -49,7 +49,7 @@ Template.items.hasVehicle = function(){
 }
 
 Template.cart.cbasketBooks = function(){
-	return CBasket.find({cartId : getCartId()});
+	return CartItems.find({cartId : getCartId()});
 }
 
 Template.cart.customer = function(){
@@ -79,7 +79,7 @@ Template.items.dateNoTimeZone = function(date){
 }
 
 Template.cart.totalCustomer = function(){
-	var carts = CBasket.find({cartId : getCartId()}).fetch();
+	var carts = CartItems.find({cartId : getCartId()}).fetch();
 	var total = 0;
 	for (var i = 0; i < carts.length; i++) {
 		total += parseInt(carts[i].totalISK);
@@ -97,7 +97,7 @@ Template.items.customerName = function(customerId){
 Template.cart.disableCheckout = function(){
 	if(!isCustomer() && CartItems.find().count() > 0){
 		return false;
-	}else if(isCustomer() && CBasket.find().count() > 0){
+	}else if(isCustomer() && CartItems.find().count() > 0){
 		return false;
 	}else{
 		return true;
@@ -159,7 +159,7 @@ Template.items.events({
 	'click .remove' : function(event){
 		var link = event.currentTarget;
 		if(isCustomer())
-			CBasket.remove(link.rel);
+			CartItems.remove(link.rel);
 		else	
 			CartItems.remove(link.rel);
 
