@@ -38,6 +38,57 @@ Template.overview.bookings = function(productId, tripId){
 	}, { sort : {paid : -1, bookStatus: 1}});
 }
 
+Template.overview.totalMetersCars = function(productId, tripId){
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId
+	}).fetch();
+
+	total = 0;
+
+	for (var i = 0; i < books.length; i++) {
+		if(books[i].vehicle.size){
+			total = parseInt(total + parseInt(books[i].vehicle.size));
+		}
+	};
+
+	return total;
+}
+
+Template.overview.totalPersons = function(productId, tripId){
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId
+	}).fetch();
+
+	total = 0;
+
+	for (var i = 0; i < books.length; i++) {
+		for (var j = 0; j < books[i].prices.length; j++) {
+			if(books[i].prices[j].price != "Operator Fee")
+				total = parseInt(total + parseInt(books[i].prices[j].persons));
+		};	
+	};
+
+	return total;
+}
+
 Template.overview.fullname = function(id){
 	return Customers.findOne({_id: id}).fullName;
 }

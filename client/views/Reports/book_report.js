@@ -20,7 +20,6 @@ Template.financialReport.helpers({
 	},
 
 	trips : function(){
-		console.log('here');
 		products = Session.get("productsFinancial")
 		if(products){
 			var tripsReturn = [];
@@ -219,13 +218,18 @@ Template.bookingsReport.events({
 		var bookStatus = $('#bookStatus').val();
 		var paymentStatus = $('#paymentStatus').val();
 
+		var arrayFrom = from.split('/');
+		var fromConverted = arrayFrom[1] + "/" +arrayFrom[0] + "/" +arrayFrom[2];
+		var arrayTo = to.split('/');
+		var toConverted = arrayTo[1] + "/" +arrayTo[0] + "/" +arrayTo[2];
+
 		if(!from || !to){
 			throwError('Dates are Needed!');
 			return;
 		}
 
-		var dateFrom = new Date(from);
-		var dateTo = new Date(to);
+		var dateFrom = new Date(fromConverted);
+		var dateTo = new Date(toConverted);
 		with(dateTo){
 			setDate(getDate() + 1);
 		}
@@ -254,8 +258,10 @@ Template.financialReport.events({
 		var from = $('#fromF').val();
 		var to = $('#toF').val();
 
-		console.log(from);
-		console.log(to);
+		var arrayFrom = from.split('/');
+		var fromConverted = arrayFrom[1] + "/" +arrayFrom[0] + "/" +arrayFrom[2];
+		var arrayTo = to.split('/');
+		var toConverted = arrayTo[1] + "/" +arrayTo[0] + "/" +arrayTo[2];
 
 		if(!from || !to){
 			throwError('Dates are Needed!');
@@ -282,7 +288,7 @@ Template.financialReport.events({
 })
 
 var getFinancialDates = function(){
-	var fromSession = Session.get('filterFromData');
+		var fromSession = Session.get('filterFromData');
 		var toSession = Session.get('filterToData');
 
 		var from = new Date(fromSession);

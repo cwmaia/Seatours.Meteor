@@ -870,6 +870,7 @@ Template.bookOperator.events({
 			else{
 				Session.set('productId', productId);
 				Session.set('dateSelected', true);
+				Session.set('SaveCustomer', true);
 				formBook();
 			}
 				
@@ -952,7 +953,8 @@ Template.bookDetail.totalPersons = function(){
 
 	for (var i = 0; i < books.length; i++) {
 		for (var j = 0; j < books[i].prices.length; j++) {
-			persons = parseInt(persons + parseInt(books[i].prices[j].persons));
+			if(books[i].prices[j].price != "Operator Fee")
+				persons = parseInt(persons + parseInt(books[i].prices[j].persons));
 		};
 	};
 
@@ -1688,7 +1690,6 @@ Template.generalPassagerInfo.events({
 		    	$("#categories option").filter(function(){
 					return $(this).text() == currentCustomer.lastUsedCar.category;
 				}).attr('selected', true);
-
 				Session.set('categoryId', currentCustomer.lastUsedCar.categoryId);
 				Session.set('currentSizeCar', currentCustomer.lastUsedCar.size);
 				checkIfCarsFits(currentCustomer.lastUsedCar.size);
@@ -1718,6 +1719,7 @@ Template.generalPassagerInfo.events({
 		    	Session.set('SaveCustomer', true);
 	   		}
    		}
+   		
 	},
 
 	'change #myOwnData' : function(event){
