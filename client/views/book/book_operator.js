@@ -887,6 +887,13 @@ Template.createBook.dateSelected = function(){
 	return !Session.get('dateSelected');
 }
 
+Template.createBook.isSummer = function(){
+	if(currentSeason() == "summer"){
+		return true;
+	}
+	return false;
+}
+
 Template.generalPassagerInfo.dateSelected = function(){
 	return !Session.get('dateSelected') && !Session.get('creatingUser') && !Session.get("finishBooking");
 }

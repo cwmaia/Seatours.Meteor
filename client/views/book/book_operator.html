@@ -221,6 +221,15 @@
 		{{#each prices}}
 			{{> productPrices}}
 		{{/each}}
+		<span><em>Please note:</em> <br>
+			Senior : 67 years and older<br>
+		{{#if isSummer}}
+			Child : 0 to 15 years old <br>
+			Infant : 16 to 20 years old <br>
+		{{else}}
+			Child : 0 to 11 years old <br>
+			Infant : 12 to 15 years old <br>
+		{{/if}}
 	</div>
 
 	<div class="line">
