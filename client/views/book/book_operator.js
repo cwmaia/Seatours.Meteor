@@ -172,6 +172,18 @@ var getExtraSlotsSpace = function(trip){
 		count5m = count5m + Math.ceil(books[i].vehicle.size / 5);
 	};
 
+	books = CartItems.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip._id' 	: trip._id,
+		'bookStatus'	: 'Booked',
+		'vehicle.extraSlot' : extraSlots[3]
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		count5m = count5m + Math.ceil(books[i].vehicle.size / 5);
+	};
+
 	product = Products.findOne(Session.get('productId'));
 	boatStatus = BoatStatus.find({boatId: product.boatId}).fetch();
 	status5mAnterior = boatStatus[0].qtdCarsUpTo_5;
@@ -320,6 +332,18 @@ var doorMaxCapacity = function (trip){
 	};
 
 	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip._id' 	: trip._id,
+		'bookStatus'	: 'Booked',
+		'vehicle.extraSlot' : extraSlots[3]
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		count5m = count5m + Math.ceil(books[i].vehicle.size / 5);
+	};
+
+	books = CartItems.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
@@ -567,6 +591,18 @@ var checkHaveToOpenDoor = function(size, trip){
 	};
 
 	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip._id' 	: trip._id,
+		'bookStatus'	: 'Booked',
+		'vehicle.extraSlot' : extraSlots[3]
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		count5m = count5m + Math.ceil(books[i].vehicle.size / 5);
+	};
+
+	books = CartItems.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
 		'trip._id' 	: trip._id,
@@ -2400,13 +2436,13 @@ checkIfCarsFits = function(size){
 		maxCapacity = doorMaxCapacity(trip);
 		if(showAlert){
 			if(!isCustomer()){
-					bootbox.confirm("There is no room for this car on the boat. However you can place is on the Door. Wishes to put it on boat door?" , function(confirm){
+					bootbox.confirm("There is no room for this car on the boat. However you can place it on the Door. Wishes to put it on boat door?" , function(confirm){
 					if(confirm){
 						ExtraSlot = extraSlots[0];
 						CanSaveTheBook = true;
 						Template.createBook.rendered();
 					}else{
-						bootbox.confirm("There is no room for this car on the boat (on regular slots). However you can place is on a Extra Slot. Wishes to put it on extra slot?" , function(confirm){
+						bootbox.confirm("There is no room for this car on the boat (on regular slots). However you can place it on a Extra Slot. Wishes to put it on extra slot?" , function(confirm){
 							if(confirm){
 								fits = checkSpaceExtra(size, trip);
 								if(fits){
@@ -2478,7 +2514,7 @@ checkIfCarsFits = function(size){
 		}
 	}else if(size > 6){
 		if(!isCustomer()){
-			bootbox.confirm("There is no room for this car on the boat (on regular slots). However you can place is on a Extra Slot. Wishes to put it on extra slot?" , function(confirm){
+			bootbox.confirm("There is no room for this car on the boat (on regular slots). However you can place it on a Extra Slot. Wishes to put it on extra slot?" , function(confirm){
 				if(confirm){
 					fits = checkSpaceExtra(size, trip);
 					if(fits){
