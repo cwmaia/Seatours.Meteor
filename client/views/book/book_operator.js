@@ -8,7 +8,7 @@ var CanAdd2Motocycle = false;
 var VehicleSelected = false;
 
 
-var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2'];
+var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2', 'OVERRIDE'];
 
 var updateDataPieChart = function(){
 	totalSpace = 0;
@@ -33,6 +33,18 @@ var updateDataPieChart = function(){
 		if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
 			count6m++;
 		}
+	};
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip._id' 	: trip._id,
+		'bookStatus'	: 'Booked',
+		'vehicle.extraSlot' : extraSlots[3]
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		count5m = count5m + Math.ceil(books[i].vehicle.size / 5);
 	};
 	
 
@@ -146,6 +158,18 @@ var getExtraSlotsSpace = function(trip){
 		if(cartItems[i].vehicle.size <= 5){
 			count5m++;
 		}
+	};
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip._id' 	: trip._id,
+		'bookStatus'	: 'Booked',
+		'vehicle.extraSlot' : extraSlots[3]
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		count5m = count5m + Math.ceil(books[i].vehicle.size / 5);
 	};
 
 	product = Products.findOne(Session.get('productId'));
@@ -293,6 +317,18 @@ var doorMaxCapacity = function (trip){
 		if(cartItems[i].vehicle.size > 5 && cartItems[i].vehicle.size <= 6){
 			count6m++;
 		}
+	};
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip._id' 	: trip._id,
+		'bookStatus'	: 'Booked',
+		'vehicle.extraSlot' : extraSlots[3]
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		count5m = count5m + Math.ceil(books[i].vehicle.size / 5);
 	};
 
 	extraSpace = getExtraSlotsSpace(trip);
@@ -530,6 +566,18 @@ var checkHaveToOpenDoor = function(size, trip){
 		}
 	};
 
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip._id' 	: trip._id,
+		'bookStatus'	: 'Booked',
+		'vehicle.extraSlot' : extraSlots[3]
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		count5m = count5m + Math.ceil(books[i].vehicle.size / 5);
+	};
+
 	extraSpace = getExtraSlotsSpace(trip);
 
 	sumExtraSpace = parseInt(extraSpace.extraSpace1 + extraSpace.extraSpace2);
@@ -573,7 +621,7 @@ var checkHaveToOpenDoor = function(size, trip){
 //Template Book Operator
 Template.bookOperator.rendered = function() {
 	var nowTemp = new Date();
-	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate() -1, 0, 0, 0, 0);
+	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
 	localStorage.setItem('date', now);
 	$('#currentSeason').text(currentSeason());
 };
@@ -821,7 +869,7 @@ function setCalendarCapacity (calendar) {
 //Template Book Detail
 Template.bookDetail.rendered = function() {
 	var oTable = $('#passengers').dataTable();
-	oTable.fnSort( [ [7,'asc'] ] );
+	oTable.fnSort( [ [1,'asc'], [7,'asc'], [8,'asc'] ] );
 	$('#boatSlots').dataTable();
 	product = Products.findOne(Session.get('productId'));
 	if(BoatStatus.findOne({boatId : product.boatId})){
@@ -1084,6 +1132,7 @@ Template.bookDetail.events({
 	},
 
 	'click .changeStatusBooking' : function(event) {
+		if(confirm('Are you sure? Clicking this will make the Booking Cancelled')){
 		var id = $(event.currentTarget).closest('tr').attr('id'),
 		book = Books.findOne(id);
 		var vendor = Meteor.user().profile.name;
@@ -1132,7 +1181,20 @@ Template.bookDetail.events({
 			Transactions.insert(transactionRefund);
 
 			throwInfo("Cancelation completed! Customer need to be refunded in "+totalTransactions+"ISK. *Cancelation fee already included");
-			
+		}
+	},
+
+	'click .confirmBook' :function(event) {
+		event.preventDefault();
+		var id = event.currentTarget.rel;
+		book = Books.findOne({_id : id});
+		if(book.confirm){
+			Books.update(id, {$set : {confirm : false}});
+			throwInfo('Confirm Booking Removed!');
+		}else{
+			Books.update(id, {$set : {confirm : true}});
+			throwInfo('Booking Confirmed!');
+		}
 	}
 });
 
@@ -1415,8 +1477,6 @@ checkMaxCapacity = function(total){
 		'trip._id' 	: trip._id,
 		'bookStatus'	: 'Booked'
 	}).fetch();
-
-	console.log(books);
 
 	for (var i = 0; i < books.length; i++) {
 		for (var j = 0; j < books[i].prices.length; j++) {
@@ -1945,6 +2005,7 @@ var createBook = function(){
 		'product' : (isCustomer()) ? Products.findOne(Session.get('productId')) : Product,
 	}
 	book.vehicle = vehicle;
+	book.confirm = false;
 
 	if(ExtraSlot){
 		book.vehicle.extraSlot = ExtraSlot;
@@ -2095,7 +2156,7 @@ var createBook = function(){
 				Notes.insert(note);
 			}
 		}else{
-			CBasket.insert(book);
+			CartItems.insert(book);
 		}
 			
 	};	
@@ -2425,15 +2486,36 @@ checkIfCarsFits = function(size){
 						CanSaveTheBook = true;
 						Template.createBook.rendered();
 					}else{
-						$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
-						bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
-						CanSaveTheBook = false;
+						var slots = Math.ceil(size/5);
+
+						bootbox.confirm('There is no room even on extra slots, you can place this car on boat, however it will take '+ slots + ' five meters slots, Whishes to put in regular slots?', function(confirm){
+							if(confirm){
+								CanSaveTheBook = true;
+								ExtraSlot = extraSlots[3];
+								Template.createBook.rendered();
+							}else{
+								$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
+								bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
+								CanSaveTheBook = false;
+								Template.createBook.rendered();
+							}
+						});
 					}
 				}else{	
-					$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
-					bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
-					CanSaveTheBook = false;
-					Template.createBook.rendered();
+					var slots = Math.ceil(size/5);
+
+					bootbox.confirm('You can place this car on boat, however it will take '+ slots + ' five meters slots, Whishes to put in regular slots?', function(confirm){
+						if(confirm){
+							ExtraSlot = extraSlots[3];
+							CanSaveTheBook = true;
+							Template.createBook.rendered();
+						}else{
+							$("#messageCreateBook").text("There is no room for this car, sorry but this booking can't be made!");
+							bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
+							CanSaveTheBook = false;
+							Template.createBook.rendered();
+						}
+					});
 				}
 			});
 				//Customer Path		

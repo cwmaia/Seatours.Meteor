@@ -56,10 +56,7 @@ Meteor.publish("inquiries", function () {
 });
 
 Meteor.publish("cartItems", function () {
-  if(this.userId)
     return CartItems.find();
-  else
-     return null; 
 });
 
 Meteor.publish('products', function() { 

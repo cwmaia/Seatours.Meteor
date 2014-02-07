@@ -58,14 +58,14 @@ Template.cart.customer = function(){
 
 Template.cart.totalValue = function(){
 	var sum = 0;
-	var carts = CartItems.find().fetch();
+	var carts = CartItems.find({cartId : getCartId()}).fetch();
 	for (var i = 0; i < carts.length; i++) {
 		carts[i]
 	};
 }
 
 Template.cart.total = function(){
-	var carts = CartItems.find().fetch();
+	var carts = CartItems.find({cartId : getCartIdOperator()}).fetch();
 	var total = 0;
 	for (var i = 0; i < carts.length; i++) {
 		total += parseInt(carts[i].totalISK);
@@ -120,7 +120,7 @@ Template.cart.events({
 			$("#loginArea").hide();
 			Template.externView.rendered();
 		}else{
-			var books = CartItems.find().fetch();
+			var books = CartItems.find({cartId : getCartIdOperator()}).fetch();
 			var createdBooks = [];
 			for (var i = 0; i < books.length; i++) {
 				var customer = Customers.findOne({_id : books[i].customerId});
@@ -158,10 +158,8 @@ Template.items.events({
 	},
 	'click .remove' : function(event){
 		var link = event.currentTarget;
-		if(isCustomer())
-			CartItems.remove(link.rel);
-		else	
-			CartItems.remove(link.rel);
+
+		CartItems.remove(link.rel);
 
 		//Remove all notes
 		var notes = Notes.find({bookId: link.rel}).fetch();
