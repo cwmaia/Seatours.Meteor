@@ -1,7 +1,7 @@
 Template.mainMenu.events({
 	'click .logout' : function(){
-		Meteor.Router.to('/');
 		Meteor.logout();
+		Meteor.Router.to('/');
 		SpinnerInit();
 	},
 
@@ -20,6 +20,7 @@ Template.mainMenu.events({
 				setHours(0);
 				setMinutes(0);
 				setSeconds(0);
+				setMilliseconds(0);
 			}
 		localStorage.setItem('date', date);
 		Session.set('productId', product._id);
@@ -43,5 +44,5 @@ Template.mainMenu.rendered = function(){
 }
 
 Template.mainMenu.qtdItems = function(){
-	return CartItems.find().count();
+	return CartItems.find({cartId : getCartIdOperator()}).count();
 }

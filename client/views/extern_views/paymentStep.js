@@ -42,7 +42,7 @@ Template.paymentStep.customerEmail = function(){
 }
 
 Template.paymentStep.getCBasket = function(){
-	return CBasket.find({cartId : getCartId()});
+	return CartItems.find({cartId : getCartId()});
 }
 
 Template.paymentStep.orderId = function(){
@@ -57,10 +57,47 @@ Template.paymentStep.rendered = function(){
 Template.paymentStep.events({
 	'click #proccedToPayment' : function(){
 		event.preventDefault();
+		bookings = Books.find({orderId : Session.get('orderId')}).fetch();
+
+		Session.set("checkOrder", true);
+		for (var i = 0; i < bookings.length; i++) {
+
+			var date = bookings[i].dateOfBooking;
+
+			with(date){
+				setHours(0);
+				setMinutes(0);
+				setSeconds(0);
+				setMilliseconds(0);
+			}
+
+			localStorage.setItem('date', date);
+			Session.set('productId', bookings[i].product._id);
+			Session.set('tripId', bookings[i].trip._id);
+			if(bookings[i].vehicle.size){
+				if(!checkIfCarsFits(bookings[i].vehicle.size)){
+					bootbox.alert("Sorry but we have no more room to your car on boat");
+					return;
+				}
+			}
+
+			persons = 0;
+
+			for (var j = 0; j < bookings[i].prices.length; j++) {
+				if(bookings[i].prices[j].price != "Operator Fee")
+					persons = parseInt(parseInt(bookings[i].prices[j].persons) + persons);
+			};
+
+			if(!checkMaxCapacity(persons)){
+				bootbox.alert("Sorry but we have no more free sits on the boat");
+				return;
+			}
+		};
+		
 		cleanExternView();
 		$("#loginArea").hide();
 		$('.profile').show();
-		
+		Session.set("checkOrder", null);
 		$("#sendToBorgun").submit();
 		Template.externView.rendered();
 	}

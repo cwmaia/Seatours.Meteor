@@ -56,10 +56,7 @@ Meteor.publish("inquiries", function () {
 });
 
 Meteor.publish("cartItems", function () {
-  if(this.userId)
     return CartItems.find();
-  else
-     return null; 
 });
 
 Meteor.publish('products', function() { 
@@ -72,10 +69,10 @@ Meteor.publish('books', function() {
     if(user.profile.groupID){
       return Books.find();
     }else{
-      return Books.find({buyerId : user.profile.customerId});
+      return Books.find();
     }
   }else{
-    return Books.find({}, {fields: {dateOfBooking: 1, 'trip._id': 1, 'bookStatus' : 1, 'vehicle.extraSlot' : 1, 'product._id' : 1, 'vehicle.size' : 1}});
+    return Books.find({}, {fields: {dateOfBooking: 1, 'trip._id': 1, 'bookStatus' : 1, 'vehicle.extraSlot' : 1, 'product._id' : 1, 'vehicle.size' : 1, prices : 1}});
   }
 });
 
@@ -278,6 +275,17 @@ Meteor.methods({
 
   createGroup : function(group){
     Groups.insert(group);
+  },
+
+  checkRestrictions : function(dates, productId, tripId, bookStatus){
+    books = Books.find({
+      dateOfBooking   : {$gte: dates.selectedDay, $lt: dates.nextDay},
+      'product._id'   : productId,
+      'trip._id'  : tripId,
+      'bookStatus'  : bookStatus
+    }).fetch();
+
+    return books;
   },
 
 
