@@ -155,6 +155,7 @@
 						<th class="sorting_disabled">Payment Status</th>
 						<th class="sorting_disabled">Book Status</th>
 						<th class="sorting_disabled">Confirm</th>
+						<th class="sorting_disabled">Invoices Sent</th>
 						<th class="sorting_disabled" style="min-width: 80px;">Action</th>
 					</tr>
 				</thead>
@@ -175,6 +176,13 @@
 								<a class="confirmBook" rel="{{_id}}"><i class='icon-check'></i></a>
 							{{else}}
 								<a class="confirmBook" rel="{{_id}}"><i class='icon-check-empty'></i></a>
+							{{/if}}
+						</td>
+						<td>
+							{{#if invoicesSent}}
+								<a class="invoicesSent" rel="{{_id}}"><i class='icon-check'></i></a>
+							{{else}}
+								<a class="invoicesSent" rel="{{_id}}"><i class='icon-check-empty'></i></a>
 							{{/if}}
 						</td>
 						<td >

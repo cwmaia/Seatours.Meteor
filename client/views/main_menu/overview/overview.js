@@ -311,6 +311,19 @@ Template.overview.events({
 			Books.update(id, {$set : {confirm : true}});
 			throwInfo('Booking Confirmed!');
 		}
+	},
+
+	'click .invoicesSent' :function(event) {
+		event.preventDefault();
+		var id = event.currentTarget.rel;
+		book = Books.findOne({_id : id});
+		if(book.invoicesSent){
+			Books.update(id, {$set : {invoicesSent : false}});
+			throwInfo('Invoices Sent Removed!');
+		}else{
+			Books.update(id, {$set : {invoicesSent : true}});
+			throwInfo('Invoices Sent');
+		}
 	}
 });
 
