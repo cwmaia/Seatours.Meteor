@@ -222,6 +222,11 @@
 									<option value='both'>Both</option>
 								</select>
 							</div>
+							<div>
+								<label>Available for guest site? </label>
+								<input id="guestPriceCheckbox" type="checkbox" checked='checked' class="ace ace-switch ace-switch-6">
+			    				<span class='lbl'></span>
+							</div>
 					</div>
 
 					<input type='submit' id="addPrice" class='btn btn-info btn-small' value="Add Price">
@@ -233,6 +238,7 @@
 							<th>Price</th>
 							<th>Per Unit (ISK)</th>
 							<th>Season</th>
+							<th>Available for guests</th>
 							<td>Active</td>
 						</tr>
 					</thead>
@@ -259,6 +265,14 @@
 		</td>
 		<td>
 			{{season}}
+		</td>
+		<td>
+			{{#if availableForGuest}}
+				<a class="guestAvailable" rel="{{_id}}"><i class='icon-check'></i></a>
+			{{else}}
+				<a class="guestAvailable" rel="{{_id}}"><i class='icon-check-empty'></i></a>
+			{{/if}}
+		</td>
 		</td>
 		<td>
 			{{#if active}}

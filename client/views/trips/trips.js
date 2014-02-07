@@ -256,6 +256,7 @@ Template.editTrip.events({
 					price 	: form.price.value,
 					unit	: form.unit.value,
 					season  : form.season.value,
+					availableForGuest : $("#guestPriceCheckbox").is(":checked"),
 					productId : product._id,
 					active : true
 				};
@@ -311,6 +312,18 @@ Template.editTrip.events({
 		}else{
 			Prices.update(id, {$set : {active : true}});
 			throwInfo('Price Activated');
+		}
+	},
+	'click .guestAvailable' :function(event) {
+		event.preventDefault();
+		var id = event.currentTarget.rel;
+		trip = Prices.findOne({_id : id});
+		if(trip.active){
+			Prices.update(id, {$set : {availableForGuest : false}});
+			throwInfo("Guests now can't book with this price!");
+		}else{
+			Prices.update(id, {$set : {availableForGuest : true}});
+			throwInfo("Guests now can book with this price!");
 		}
 	}
 });

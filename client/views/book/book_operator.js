@@ -1260,6 +1260,13 @@ Template.productPrices.priced = function(price){
 	}
 }
 
+Template.productPrices.checkForAvailability = function(id){
+	if(isCustomer() && !Prices.findOne({'_id' : id}).availableForGuest){
+		return false;
+	}
+	return true;
+}
+
 Template.productPrices.minValue = function(price){
 	if(price.toUpperCase() == 'ADULT'){
 		return 1;
