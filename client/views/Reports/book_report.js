@@ -70,33 +70,9 @@ Template.financialReport.helpers({
 		for (var i = 0; i < books.length; i++) {
 			transactions = Transactions.find({bookId : books[i]._id}).fetch();
 			for (var j = 0; j < transactions.length; j++) {
-				total += parseInt(transactions[j].amount);
+				if(transactions[j].type == "Credit Card" || transactions[j].type == "Cash Office")
+					total += parseInt(transactions[j].amount);
 			};
-		};
-
-		return total;
-	},
-
-	totalNotPaid : function(tripId, productId){
-		var total = 0;
-		dates = getFinancialDates();
-
-
-		books =  Books.find({
-			dateOfBooking 	: {$gte: dates.from, $lt: dates.to},
-			'product._id' 	: productId,
-			'trip._id' 	: tripId
-		}).fetch();
-
-		for (var i = 0; i < books.length; i++) {
-			transactions = Transactions.find({bookId : books[i]._id}).fetch();
-			for (var j = 0; j < transactions.length; j++) {
-				totalTransactions += parseInt(transactions[j].amount)
-			};
-			if(totalTransactions < books[i].totalISK){
-				total += books[i].totalISK - totalTransactions;
-			}
-			totalTransactions = 0;
 		};
 
 		return total;
@@ -117,7 +93,8 @@ Template.financialReport.helpers({
 		for (var i = 0; i < books.length; i++) {
 			transactions = Transactions.find({bookId : books[i]._id}).fetch();
 			for (var j = 0; j < transactions.length; j++) {
-				totalTransactions += parseInt(transactions[j].amount)
+				if(transactions[j].type == "Credit Card" || transactions[j].type == "Cash Office")
+					totalTransactions += parseInt(transactions[j].amount)
 			};
 			if(totalTransactions < books[i].totalISK){
 				total += books[i].totalISK - totalTransactions;
@@ -143,6 +120,29 @@ Template.financialReport.helpers({
 			transactions = Transactions.find({bookId : books[i]._id}).fetch();
 			for (var j = 0; j < transactions.length; j++) {
 				if(transactions[j].type == 'Credit Card'){
+					total += parseInt(transactions[j].amount)
+				}
+			};
+		};
+
+		return total;
+	},
+
+	refund : function(tripId, productId){
+		var total = 0;
+		dates = getFinancialDates();
+
+
+		books =  Books.find({
+			dateOfBooking 	: {$gte: dates.from, $lt: dates.to},
+			'product._id' 	: productId,
+			'trip._id' 	: tripId
+		}).fetch();
+
+		for (var i = 0; i < books.length; i++) {
+			transactions = Transactions.find({bookId : books[i]._id}).fetch();
+			for (var j = 0; j < transactions.length; j++) {
+				if(transactions[j].type == 'Refund'){
 					total += parseInt(transactions[j].amount)
 				}
 			};
@@ -281,8 +281,8 @@ Template.financialReport.events({
        		products = Products.find().fetch();
 
 	    Session.set('productsFinancial', products);
-	    Session.set('filterFromData', from);
-	    Session.set('filterToData', to);
+	    Session.set('filterFromData', fromConverted);
+	    Session.set('filterToData', toConverted);
 
 	}
 })

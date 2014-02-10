@@ -26,8 +26,6 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
 
 })
 
-Accounts.config({sendVerificationEmail: true, forbidClientAccountCreation: false});
-
 Meteor.Router.add("/ReturnPageError", "POST", function(){
   return "<script>window.location='http://localhost:3000/errorBorgun</script>";
 })
@@ -252,6 +250,10 @@ Meteor.methods({
 
   createAccount: function(user){
     Accounts.createUser(user);
+  },
+
+  removeAccount: function(id){
+    Meteor.users.remove(id);
   },
 
   createExternalAccount: function(user, userData){

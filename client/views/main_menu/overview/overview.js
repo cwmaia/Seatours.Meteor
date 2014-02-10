@@ -141,7 +141,8 @@ Template.overview.totalPaid = function(tripId, productId){
 	for (var i = 0; i < books.length; i++) {
 		transactions = Transactions.find({bookId : books[i]._id}).fetch();
 		for (var j = 0; j < transactions.length; j++) {
-			total += parseInt(transactions[j].amount);
+			if(transactions[j].type == "Credit Card" || transactions[j].type == "Cash Office")
+				total += parseInt(transactions[j].amount);
 		};
 	};
 
@@ -167,7 +168,7 @@ Template.overview.totalNotPaid = function(tripId, productId){
 	for (var i = 0; i < books.length; i++) {
 		transactions = Transactions.find({bookId : books[i]._id}).fetch();
 		for (var j = 0; j < transactions.length; j++) {
-			if(transactions[j].type != "Refound")
+			if(transactions[j].type == "Credit Card" || transactions[j].type == "Cash Office")
 				totalTransactions += parseInt(transactions[j].amount)
 		};
 		if(totalTransactions < books[i].totalISK){
@@ -198,6 +199,33 @@ Template.overview.creditcard = function(tripId, productId){
 		transactions = Transactions.find({bookId : books[i]._id}).fetch();
 		for (var j = 0; j < transactions.length; j++) {
 			if(transactions[j].type == 'Credit Card'){
+				total += parseInt(transactions[j].amount)
+			}
+		};
+	};
+
+	return total;
+}
+
+Template.overview.refund = function(tripId, productId){
+	var total = 0;
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books =  Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId,
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		transactions = Transactions.find({bookId : books[i]._id}).fetch();
+		for (var j = 0; j < transactions.length; j++) {
+			if(transactions[j].type == 'Refund'){
 				total += parseInt(transactions[j].amount)
 			}
 		};
@@ -324,7 +352,7 @@ Template.overview.events({
 							'amount' : valueFees,
 							'detail' : "Cancelation Fee",
 							'vendor' : vendor,
-							'type' : 'Refound'
+							'type' : 'CancelationFine'
 					}
 					Transactions.insert(transaction);
 
