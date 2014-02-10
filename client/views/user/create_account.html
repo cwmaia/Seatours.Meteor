@@ -89,15 +89,19 @@
 			</thead>
 			<tbody>
 				{{#each users}}
-					<tr>
+					<tr id="{{_id}}{{username}}">
 						<td>{{username}}</td>
 						{{#each emails}}
-							<td>{{address}}</td>
+						<td>{{address}}</td>
 						{{/each}}
 						<td>{{getGroup profile.groupID}}</td>
 						<td>
-							<a class="btn btn-mini btn-danger sendMail" title="Remove" rel='{{customer.email}}'>
-							<i class="icon-trash bigger-120"></i></a>
+							<a class="btn btn-mini btn-info forgotPassword" title="Forgot Password" rel='{{_id}}{{username}}'>
+							<i class="icon-unlock"></i></a>
+							{{#if isNotAdmGroup profile.groupID}}
+								<a class="btn btn-mini btn-danger removeAccount" title="Remove" rel='{{_id}}'>
+								<i class="icon-trash"></i></a>
+							{{/if}}		
 						</td>
 					</tr>
 				{{/each}}

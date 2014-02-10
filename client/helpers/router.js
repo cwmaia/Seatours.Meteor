@@ -113,18 +113,22 @@ Meteor.Router.filters({
 
 
 		var group = Groups.findOne({_id: Meteor.user().profile.groupID});
-
-		//adm has all access
-		if(group.name == 'Administrators')
-			return page;
-
-		for (var i = 0; i < group.permissions.length; i++) {
-			if(group.permissions[i] == page){
+		if(group){
+			//adm has all access
+			if(group.name == 'Administrators')
 				return page;
-			}
-		};
 
-		alert('You do not have the required permissions to access this page, please contact your administrator.');
+			for (var i = 0; i < group.permissions.length; i++) {
+				if(group.permissions[i] == page){
+					return page;
+				}
+			};
+
+			alert('You do not have the required permissions to access this page, please contact your administrator.');
+			return;
+		}
+
+		
 		return;
 
 

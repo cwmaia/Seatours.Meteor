@@ -38,6 +38,57 @@ Template.overview.bookings = function(productId, tripId){
 	}, { sort : {paid : -1, bookStatus: 1}});
 }
 
+Template.overview.totalMetersCars = function(productId, tripId){
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId
+	}).fetch();
+
+	total = 0;
+
+	for (var i = 0; i < books.length; i++) {
+		if(books[i].vehicle.size){
+			total = parseInt(total + parseInt(books[i].vehicle.size));
+		}
+	};
+
+	return total;
+}
+
+Template.overview.totalPersons = function(productId, tripId){
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId
+	}).fetch();
+
+	total = 0;
+
+	for (var i = 0; i < books.length; i++) {
+		for (var j = 0; j < books[i].prices.length; j++) {
+			if(books[i].prices[j].price != "Operator Fee")
+				total = parseInt(total + parseInt(books[i].prices[j].persons));
+		};	
+	};
+
+	return total;
+}
+
 Template.overview.fullname = function(id){
 	return Customers.findOne({_id: id}).fullName;
 }
@@ -90,7 +141,8 @@ Template.overview.totalPaid = function(tripId, productId){
 	for (var i = 0; i < books.length; i++) {
 		transactions = Transactions.find({bookId : books[i]._id}).fetch();
 		for (var j = 0; j < transactions.length; j++) {
-			total += parseInt(transactions[j].amount);
+			if(transactions[j].type == "Credit Card" || transactions[j].type == "Cash Office")
+				total += parseInt(transactions[j].amount);
 		};
 	};
 
@@ -116,7 +168,7 @@ Template.overview.totalNotPaid = function(tripId, productId){
 	for (var i = 0; i < books.length; i++) {
 		transactions = Transactions.find({bookId : books[i]._id}).fetch();
 		for (var j = 0; j < transactions.length; j++) {
-			if(transactions[j].type != "Refound")
+			if(transactions[j].type == "Credit Card" || transactions[j].type == "Cash Office")
 				totalTransactions += parseInt(transactions[j].amount)
 		};
 		if(totalTransactions < books[i].totalISK){
@@ -147,6 +199,33 @@ Template.overview.creditcard = function(tripId, productId){
 		transactions = Transactions.find({bookId : books[i]._id}).fetch();
 		for (var j = 0; j < transactions.length; j++) {
 			if(transactions[j].type == 'Credit Card'){
+				total += parseInt(transactions[j].amount)
+			}
+		};
+	};
+
+	return total;
+}
+
+Template.overview.refund = function(tripId, productId){
+	var total = 0;
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books =  Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId,
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		transactions = Transactions.find({bookId : books[i]._id}).fetch();
+		for (var j = 0; j < transactions.length; j++) {
+			if(transactions[j].type == 'Refund'){
 				total += parseInt(transactions[j].amount)
 			}
 		};
@@ -273,7 +352,7 @@ Template.overview.events({
 							'amount' : valueFees,
 							'detail' : "Cancelation Fee",
 							'vendor' : vendor,
-							'type' : 'Refound'
+							'type' : 'CancelationFine'
 					}
 					Transactions.insert(transaction);
 
@@ -310,6 +389,19 @@ Template.overview.events({
 		}else{
 			Books.update(id, {$set : {confirm : true}});
 			throwInfo('Booking Confirmed!');
+		}
+	},
+
+	'click .invoicesSent' :function(event) {
+		event.preventDefault();
+		var id = event.currentTarget.rel;
+		book = Books.findOne({_id : id});
+		if(book.invoicesSent){
+			Books.update(id, {$set : {invoicesSent : false}});
+			throwInfo('Invoices Sent Removed!');
+		}else{
+			Books.update(id, {$set : {invoicesSent : true}});
+			throwInfo('Invoices Sent');
 		}
 	}
 });

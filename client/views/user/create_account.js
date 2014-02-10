@@ -47,6 +47,49 @@ Template.createAccount.events({
 			$(this).val('');
 		})
 		
+	},
+
+	'click .forgotPassword' : function(event){
+
+		var a = event.currentTarget;
+
+		var options = {
+			email : $("#"+a.rel).children('td').eq(1).text()
+		}
+
+		$.blockUI({message : 'Please Wait'});
+		Accounts.forgotPassword(options, function(err){
+			if(err){
+				if(err.reason == 'User not found'){
+					throwError(err.reason);
+				}else{
+					throwError('Looks like our server is busy, try again in a few moments');
+				}				
+				$.unblockUI();
+			}else{
+				$.unblockUI({
+					onUnblock : function(){ bootbox.alert("An email has been sent with instructions to reset your password")}
+				});
+			}
+		});
+	},
+
+	'click .removeAccount' : function(event){
+
+		var a = event.currentTarget;
+
+		bootbox.confirm("Are you sure?", function(confirm){
+			if(confirm){
+				Meteor.call('removeAccount', a.rel, function(err, result){
+					if(err){
+						console.log(err.reason);
+						throwError('Looks like our server is busy, try again in a few moments');
+					}else{
+						throwSuccess("User removed");
+					}
+				})
+			}
+		})
 	}
 })
 
@@ -60,6 +103,15 @@ Template.usersList.getGroup = function(groupID){
 
 Template.createAccount.groups = function(){
 	return Groups.find({type : 'internal'});
+}
+
+Template.usersList.isNotAdmGroup = function(groupID){
+	group = Groups.findOne({_id: groupID});
+	if(group){
+		return !(group.name == "Administrators");
+	}else{
+		return false;
+	}
 }
 
 Template.usersList.rendered = function(){

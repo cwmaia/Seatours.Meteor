@@ -870,6 +870,7 @@ Template.bookOperator.events({
 			else{
 				Session.set('productId', productId);
 				Session.set('dateSelected', true);
+				Session.set('SaveCustomer', true);
 				formBook();
 			}
 				
@@ -952,7 +953,8 @@ Template.bookDetail.totalPersons = function(){
 
 	for (var i = 0; i < books.length; i++) {
 		for (var j = 0; j < books[i].prices.length; j++) {
-			persons = parseInt(persons + parseInt(books[i].prices[j].persons));
+			if(books[i].prices[j].price != "Operator Fee")
+				persons = parseInt(persons + parseInt(books[i].prices[j].persons));
 		};
 	};
 
@@ -1241,6 +1243,20 @@ Template.bookDetail.events({
 			Books.update(id, {$set : {confirm : true}});
 			throwInfo('Booking Confirmed!');
 		}
+	},
+
+	
+	'click .invoicesSent' :function(event) {
+		event.preventDefault();
+		var id = event.currentTarget.rel;
+		book = Books.findOne({_id : id});
+		if(book.invoicesSent){
+			Books.update(id, {$set : {invoicesSent : false}});
+			throwInfo('Invoices Sent Removed!');
+		}else{
+			Books.update(id, {$set : {invoicesSent : true}});
+			throwInfo('Invoices Sent');
+		}
 	}
 });
 
@@ -1494,24 +1510,25 @@ Template.createBook.events({
 
 	'click .searchApisIs' : function(){
 		plate = $("#vehiclePlate").val();
-		SpinnerInit();
+		$.blockUI({message : 'Looking for car... Please Wait'});
 		$.ajax({
 		  'url': 'http://apis.is/car',
 		  'type': 'GET',
 		  'dataType': 'json',
 		  'data': {'number': plate},
 		  'success': function(response) {
-		  	$("#vehicle").val("");
-		  	$("#vehiclecolor").val("");
-		  	$("#vehicle").val(response.results[0].type + " " + response.results[0].subType);
-			$("#vehiclecolor").val(response.results[0].color);
-			 SpinnerStop();
-			},
-			'error' : function(response){
-				throwError("Please provide a valid Liscense Plate");
-				SpinnerStop();
+		  	if(response.results[0]){
+		  		$("#vehicle").val("");
+			  	$("#vehiclecolor").val("");
+			  	$("#vehicle").val(response.results[0].type + " " + response.results[0].subType);
+				$("#vehiclecolor").val(response.results[0].color);
+				throwSuccess('Vehicle found!');
+		  	}else{
+		  		throwError('Vehicle not found, please provide a valid vehicle plate');
+		  	}
 			}
-		  
+		}).done(function(){
+			$.unblockUI();
 		});
 	}
 })
@@ -1677,7 +1694,6 @@ Template.generalPassagerInfo.events({
 		    	$("#categories option").filter(function(){
 					return $(this).text() == currentCustomer.lastUsedCar.category;
 				}).attr('selected', true);
-
 				Session.set('categoryId', currentCustomer.lastUsedCar.categoryId);
 				Session.set('currentSizeCar', currentCustomer.lastUsedCar.size);
 				checkIfCarsFits(currentCustomer.lastUsedCar.size);
@@ -1707,6 +1723,7 @@ Template.generalPassagerInfo.events({
 		    	Session.set('SaveCustomer', true);
 	   		}
    		}
+   		
 	},
 
 	'change #myOwnData' : function(event){
@@ -1803,6 +1820,17 @@ Template.generalPassagerInfo.events({
 				event.preventDefault();
 			});
 		}
+	},
+
+	'change #country' : function(event){
+		var value = event.target.selectedOptions[0].value;
+		$('#city').val("");
+		$('#postcode').val("");
+		if(value == 'Iceland'){
+			loadTypeAheadPostCodes(true);
+		}else{
+			loadTypeAheadPostCodes(false);
+		}
 	}
 
 	
@@ -1840,7 +1868,7 @@ Template.generalPassagerInfo.rendered = function() {
 	});
 	$('#socialSecurityNumber').mask('999999-9999');
 	$('#birthDate').mask('99/99/9999');
-	loadTypeAheadPostCodes();
+	loadTypeAheadPostCodes(true);
 }
 
 Template.categoryVehicleBook.helpers({
@@ -1981,29 +2009,34 @@ calcTotal = function(){
 
 }
 
-loadTypeAheadPostCodes = function(){
-	$('#postcode').typeahead('destroy');
-	var postCodes = [],
-	finalPostCodes,
-	postTags = PostCodes.find({}, {fields: {postcode: 1, city: 1}});
+loadTypeAheadPostCodes = function(flag){
+	if(flag){
+		$('#postcode').typeahead('destroy');
+		var postCodes = [],
+		finalPostCodes,
+		postTags = PostCodes.find({}, {fields: {postcode: 1, city: 1}});
 
-	postTags.forEach(function(tag){
-    	var datum = {
-    		'value' : tag.postcode,
-    		'id' : tag._id,
-    		'city' : tag.city
-    	}
-    	postCodes.push(datum);
-	});
+		postTags.forEach(function(tag){
+	    	var datum = {
+	    		'value' : tag.postcode,
+	    		'id' : tag._id,
+	    		'city' : tag.city
+	    	}
+	    	postCodes.push(datum);
+		});
 
-	finalPostCodes = _.uniq(postCodes);
+		finalPostCodes = _.uniq(postCodes);
 
-	$('#postcode').typeahead({
-		name : 'postcode',
-		local : finalPostCodes
-	}).bind('typeahead:selected', function (obj, datum) {
-    	$('#city').val(datum.city);
-	});
+		$('#postcode').typeahead({
+			name : 'postcode',
+			local : finalPostCodes
+		}).bind('typeahead:selected', function (obj, datum) {
+	    	$('#city').val(datum.city);
+		});
+	}else{
+		$('#postcode').typeahead('destroy');
+	}
+	
 }
 
 var createBook = function(){

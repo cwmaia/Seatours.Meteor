@@ -24,7 +24,9 @@
 					{{#each trips _id}}
 						<div class="divTable">
 							<div>
-								<h4>Resume: {{from}} - {{to}} - {{hour}}</h4>
+								<h4>Resume: {{from}} - {{to}} - {{hour}}</h4><br><hr>
+								<h5>Total Cars Meters: {{totalMetersCars productId _id}}m</h5>
+								<h5>Total Persons: {{totalPersons productId _id}}</h5>
 							</div>
 
 							<table class='table table-striped table-bordered table-hover overviewTable'>
@@ -40,6 +42,7 @@
 										<th class="sorting_disabled">Payment Status</th>
 										<th class="sorting_disabled">Book Status</th>
 										<th class="sorting_disabled">Confirm</th>
+										<th class="sorting_disabled">Invoices Sent</th>
 										<th class="sorting_disabled">Action</th>
 									</tr>
 								</thead>
@@ -60,6 +63,13 @@
 												<a class="confirmBook" rel="{{_id}}"><i class='icon-check'></i></a>
 											{{else}}
 												<a class="confirmBook" rel="{{_id}}"><i class='icon-check-empty'></i></a>
+											{{/if}}
+										</td>
+										<td>
+											{{#if invoicesSent}}
+												<a class="invoicesSent" rel="{{_id}}"><i class='icon-check'></i></a>
+											{{else}}
+												<a class="invoicesSent" rel="{{_id}}"><i class='icon-check-empty'></i></a>
 											{{/if}}
 										</td>
 										<td>
@@ -92,6 +102,7 @@
 										<th class="sorting_disabled">Total</th>
 										<th class="sorting_disabled">Total Paid</th>
 										<th class="sorting_disabled">Total Not Paid</th>
+										<th class="sorting_disabled">Refund</th>
 										<th class="sorting_disabled">Creditcard</th>
 										<th class="sorting_disabled">Office</th>
 									</tr>
@@ -103,6 +114,7 @@
 										<td><input disabled style="margin-bottom:0px; width: 80px;" class="formattedAsMoney" value="{{total _id productId}}"> ISK</td>
 										<td><input disabled style="margin-bottom:0px; width: 80px;" class="formattedAsMoney" value="{{totalPaid _id productId}}"> ISK</td>
 										<td><input disabled style="margin-bottom:0px; width: 80px;" class="formattedAsMoney" value="{{totalNotPaid _id productId}}"> ISK</td>
+										<td><input disabled style="margin-bottom:0px; width: 80px;" class="formattedAsMoney" value="{{refund _id productId}}"> ISK</td>
 										<td><input disabled style="margin-bottom:0px; width: 80px;" class="formattedAsMoney" value="{{creditcard _id productId}}"> ISK</td>
 										<td><input disabled style="margin-bottom:0px; width: 80px;" class="formattedAsMoney" value="{{office _id productId}}"> ISK</td>
 									</tr>

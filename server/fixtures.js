@@ -12,7 +12,7 @@ var specialId = '';
 if(Groups.find().count() == 0){
 	admId = Groups.insert({
 		'name' : 'Administrators',
-		'description' : 'Lords of the Universe',
+		'description' : 'Seatours Admin Group',
 		'type' : 'internal'
 	});
 
@@ -56,10 +56,10 @@ if(Groups.find().count() == 0){
 	})
 
 	specialId = Groups.insert({
-		'name' : 'Special Customers',
+		'name' : 'Special Offers',
 		'description' : 'Extern Customers',
 		'type' : 'external',
-		'discount' : 5,
+		'discount' : 0,
 		'permissions' : [
 			'bookOperator',
 			'createBook',
@@ -336,7 +336,7 @@ if(Products.find().count() == 0){
 		'season' : "noSeason",
 		'active' : true,
 		'productId' : result,
-		'availableDays' : {start: '13/05/2014', end: '15/10/2014'}
+		'availableDays' : {start: '05/13/2014', end: '10/15/2014'}
 	}),
 
 	Prices.insert({
@@ -410,7 +410,7 @@ if(Products.find().count() == 0){
 		'season' : "noSeason",
 		'active' : true,
 		'productId' : result,
-		'availableDays' : {start: '15/06/2014', end: '20/08/2014'}
+		'availableDays' : {start: '06/15/2014', end: '08/20/2014'}
 	}),
 
 	Trips.insert({
@@ -420,7 +420,7 @@ if(Products.find().count() == 0){
 		'season' : "noSeason",
 		'active' : true,
 		'productId' : result,
-		'availableDays' : {start: '17/05/2014', end: '20/08/2014'}
+		'availableDays' : {start: '05/17/2014', end: '08/20/2014'}
 	}),
 
 	Prices.insert({
@@ -604,107 +604,15 @@ customerID = "";
 customerID2 = "";
 
 if(Customers.find().count() == 0){
-	Customers.insert({
-		"title" : "Mr",
-		"fullName" :  "Carlos Maia",
-		"birthDate" : "10/10/1990",
-		'email' : "carlos@me.com",
-		"telephoneCode" : "+55",
-		"telephone" : "(11) 1111-1111",
-		"adress" : "Adress",
-		"city" : "City Name",
-		"state" : "Any State here",
-		"postcode" : "59000000",
-		"country" : "Brazil"
-	});
-
-	Customers.insert({
-		"title" : "Mr",
-		"fullName" :  "Roberto Hallais",
-		"birthDate" : "10/10/1992",
-		'email' : "roberto@me.com",
-		"telephoneCode" : "+55",
-		"telephone" : "(84) 4004-0001",
-		"address" : "New Adress",
-		"city" : "Yes it changed",
-		"state" : "Another State",
-		"postcode" : "99551",
-		"country" : "Brazil"
-	});
-
-	customerID = Customers.insert({
-		"title" : "Mr",
-		"socialSecurityNumber" :  "111111-1111",
-		"fullName" :  "Jarvis Hallais",
-		"birthDate" : "10/10/1992",
-		'email' : "roberto@me.com",
-		"telephoneCode" : "+55",
-		"telephone" : "(84) 4004-0001",
-		"address" : "New Adress",
-		"city" : "Yes it changed",
-		"state" : "Another State",
-		"postcode" : "99551",
-		"country" : "Brazil",
-		"groupId" : customersId,
-		"lastUsedCar" : {
-			"vehicleName" : "Mitsubishi Eclipse",
-			"categories" : "Small Car",
-			"size" : 4.5,
-			"totalCost" : 4080,
-			"vehiclePlate" : "ALLIN00"
-		}
-	});
-
-	customerID2 = Customers.insert({
-		"title" : "Mr",
-		"socialSecurityNumber" :  "111111-3333",
-		"fullName" :  "Special Jarvis Hallais",
-		"birthDate" : "10/10/1992",
-		'email' : "roberto@me.com",
-		"telephoneCode" : "+55",
-		"telephone" : "(84) 4004-0001",
-		"address" : "New Adress",
-		"city" : "Yes it changed",
-		"state" : "Another State",
-		"postcode" : "99551",
-		"country" : "Brazil",
-		"groupId" : specialId,
-		"lastUsedCar" : {
-			"vehicleName" : "Mitsubishi Eclipse",
-			"categories" : "Small Car",
-			"size" : 4.5,
-			"totalCost" : 4080,
-			"vehiclePlate" : "ALLIN00"
-		}
-	});
+	
 }
 
 
 if(Meteor.users.find().count() == 0){
 	Accounts.createUser({
 	  'username'  : 'gudrun',
-	  'email'     : 'gudrun@me.com',
-	  'profile'	  : {'groupID' : admId, 'name' : 'Gudrun'},
-	  'password'  : '1234' //encrypted automatically 
-	});
-
-	Accounts.createUser({
-	  'username'  : 'carlos',
-	  'email'     : 'maia@me.com',
-	  'profile'	  : {'groupID' : vendorsId, name : 'Carlos'},
-	  'password'  : '1234' //encrypted automatically 
-	});
-	Accounts.createUser({
-	  'username'  : 'jarvis',
 	  'email'     : 'jarbas.byakuya@gmail.com',
-	  'profile'	  : {name : 'Jarvis', customerId: customerID},
-	  'password'  : '1234' //encrypted automatically 
-	});
-
-	Accounts.createUser({
-	  'username'  : 'jarvis2',
-	  'email'     : 'jarvis-2@me.com',
-	  'profile'	  : {name : 'Jarvis', customerId: customerID2},
+	  'profile'	  : {'groupID' : admId, 'name' : 'Gudrun'},
 	  'password'  : '1234' //encrypted automatically 
 	});
 }

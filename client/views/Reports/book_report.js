@@ -20,7 +20,6 @@ Template.financialReport.helpers({
 	},
 
 	trips : function(){
-		console.log('here');
 		products = Session.get("productsFinancial")
 		if(products){
 			var tripsReturn = [];
@@ -71,33 +70,9 @@ Template.financialReport.helpers({
 		for (var i = 0; i < books.length; i++) {
 			transactions = Transactions.find({bookId : books[i]._id}).fetch();
 			for (var j = 0; j < transactions.length; j++) {
-				total += parseInt(transactions[j].amount);
+				if(transactions[j].type == "Credit Card" || transactions[j].type == "Cash Office")
+					total += parseInt(transactions[j].amount);
 			};
-		};
-
-		return total;
-	},
-
-	totalNotPaid : function(tripId, productId){
-		var total = 0;
-		dates = getFinancialDates();
-
-
-		books =  Books.find({
-			dateOfBooking 	: {$gte: dates.from, $lt: dates.to},
-			'product._id' 	: productId,
-			'trip._id' 	: tripId
-		}).fetch();
-
-		for (var i = 0; i < books.length; i++) {
-			transactions = Transactions.find({bookId : books[i]._id}).fetch();
-			for (var j = 0; j < transactions.length; j++) {
-				totalTransactions += parseInt(transactions[j].amount)
-			};
-			if(totalTransactions < books[i].totalISK){
-				total += books[i].totalISK - totalTransactions;
-			}
-			totalTransactions = 0;
 		};
 
 		return total;
@@ -118,7 +93,8 @@ Template.financialReport.helpers({
 		for (var i = 0; i < books.length; i++) {
 			transactions = Transactions.find({bookId : books[i]._id}).fetch();
 			for (var j = 0; j < transactions.length; j++) {
-				totalTransactions += parseInt(transactions[j].amount)
+				if(transactions[j].type == "Credit Card" || transactions[j].type == "Cash Office")
+					totalTransactions += parseInt(transactions[j].amount)
 			};
 			if(totalTransactions < books[i].totalISK){
 				total += books[i].totalISK - totalTransactions;
@@ -144,6 +120,29 @@ Template.financialReport.helpers({
 			transactions = Transactions.find({bookId : books[i]._id}).fetch();
 			for (var j = 0; j < transactions.length; j++) {
 				if(transactions[j].type == 'Credit Card'){
+					total += parseInt(transactions[j].amount)
+				}
+			};
+		};
+
+		return total;
+	},
+
+	refund : function(tripId, productId){
+		var total = 0;
+		dates = getFinancialDates();
+
+
+		books =  Books.find({
+			dateOfBooking 	: {$gte: dates.from, $lt: dates.to},
+			'product._id' 	: productId,
+			'trip._id' 	: tripId
+		}).fetch();
+
+		for (var i = 0; i < books.length; i++) {
+			transactions = Transactions.find({bookId : books[i]._id}).fetch();
+			for (var j = 0; j < transactions.length; j++) {
+				if(transactions[j].type == 'Refund'){
 					total += parseInt(transactions[j].amount)
 				}
 			};
@@ -219,13 +218,18 @@ Template.bookingsReport.events({
 		var bookStatus = $('#bookStatus').val();
 		var paymentStatus = $('#paymentStatus').val();
 
+		var arrayFrom = from.split('/');
+		var fromConverted = arrayFrom[1] + "/" +arrayFrom[0] + "/" +arrayFrom[2];
+		var arrayTo = to.split('/');
+		var toConverted = arrayTo[1] + "/" +arrayTo[0] + "/" +arrayTo[2];
+
 		if(!from || !to){
 			throwError('Dates are Needed!');
 			return;
 		}
 
-		var dateFrom = new Date(from);
-		var dateTo = new Date(to);
+		var dateFrom = new Date(fromConverted);
+		var dateTo = new Date(toConverted);
 		with(dateTo){
 			setDate(getDate() + 1);
 		}
@@ -254,8 +258,10 @@ Template.financialReport.events({
 		var from = $('#fromF').val();
 		var to = $('#toF').val();
 
-		console.log(from);
-		console.log(to);
+		var arrayFrom = from.split('/');
+		var fromConverted = arrayFrom[1] + "/" +arrayFrom[0] + "/" +arrayFrom[2];
+		var arrayTo = to.split('/');
+		var toConverted = arrayTo[1] + "/" +arrayTo[0] + "/" +arrayTo[2];
 
 		if(!from || !to){
 			throwError('Dates are Needed!');
@@ -275,14 +281,14 @@ Template.financialReport.events({
        		products = Products.find().fetch();
 
 	    Session.set('productsFinancial', products);
-	    Session.set('filterFromData', from);
-	    Session.set('filterToData', to);
+	    Session.set('filterFromData', fromConverted);
+	    Session.set('filterToData', toConverted);
 
 	}
 })
 
 var getFinancialDates = function(){
-	var fromSession = Session.get('filterFromData');
+		var fromSession = Session.get('filterFromData');
 		var toSession = Session.get('filterToData');
 
 		var from = new Date(fromSession);
