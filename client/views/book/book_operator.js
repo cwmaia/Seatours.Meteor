@@ -998,6 +998,9 @@ Template.generalPassagerInfo.groupCustomer = function(id){
 Template.generalPassagerInfo.isEditingCustomer = function(){
 	return Session.get('customerId') && !isCustomer();
 }
+Template.generalPassagerInfo.isCustomer = function(){
+	return isCustomer();
+}
 
 carsUpTo5 = function(){
 	var dates = getSelectedAndNextDay();

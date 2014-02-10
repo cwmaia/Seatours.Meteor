@@ -71,6 +71,19 @@ Template.paymentStep.events({
 				setMilliseconds(0);
 			}
 
+			var dateToday = new Date();
+			with(dateToday){
+				setHours(0);
+				setMinutes(0);
+				setSeconds(0);
+				setMilliseconds(0);
+			}
+
+			if(date < dateToday){
+				bootbox.alert("Sorry but at least one booking date is invalid");
+				return;
+			}
+
 			localStorage.setItem('date', date);
 			Session.set('productId', bookings[i].product._id);
 			Session.set('tripId', bookings[i].trip._id);
