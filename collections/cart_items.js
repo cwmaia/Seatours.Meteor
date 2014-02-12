@@ -2,10 +2,7 @@ CartItems = new Meteor.Collection('CartItems');
 
 CartItems.allow({
 	insert : function(){
-		if(CheckUser())
-			return true;
-		else
-			return false;
+		return true;
 	},
 
 	update : function(){
