@@ -236,7 +236,7 @@ if(Products.find().count() == 0){
 	})
 
 	Prices.insert({
-		"price" 	: "Senior",
+		"price" 	: "Senior/Disabled",
 		"unit"	: 3264,
 		'active' : true,
 		'season' : 'summer',
@@ -292,7 +292,7 @@ if(Products.find().count() == 0){
 	})
 
 	Prices.insert({
-		"price" 	: "Senior",
+		"price" 	: "Senior/Disabled",
 		"unit"	: 3264,
 		'active' : true,
 		'season' : 'winter',
@@ -367,7 +367,7 @@ if(Products.find().count() == 0){
 	})
 
 	Prices.insert({
-		"price" 	: "Senior",
+		"price" 	: "Senior/Disabled",
 		"unit"	: 3264,
 		'active' : true,
 		'season' : 'both',
@@ -451,7 +451,7 @@ if(Products.find().count() == 0){
 	})
 
 	Prices.insert({
-		"price" 	: "Senior",
+		"price" 	: "Senior/Disabled",
 		"unit"	: 3264,
 		'active' : true,
 		'season' : 'both',
