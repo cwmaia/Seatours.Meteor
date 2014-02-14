@@ -4,7 +4,7 @@
 			Login Area
 		</h1>
 	</div><!-- /.page-header -->
-	<div class='line-2'>
+	<div class='line-3'>
 		<div>
 			<div class='widget-box'>
 				<div class='widget-header'>
@@ -30,7 +30,7 @@
 		<div>
 			<div class='widget-box'>
 				<div class='widget-header'>
-					<h4>I would like to be a customer and book on Seatours<h4>
+					<h4>Not yet Seatours customer<h4>
 				</div>
 				<div class='widget-body'>
 					<div class='widget-main'>
@@ -38,10 +38,30 @@
 						<input type='text' id='customerFullname'/>
 						<span class='help-block'>Please provide your full name.</span>
 						<label>Email</label>
-						<input type='text' id='customerEmail'/>
+						<input type='text' id='customerEmail' class='customerEmail'/>
 					</div>
 					<div class='form-actions center'>
 						<button type='button' class='btn btn-sn btn-info continueCreate'>
+							Continue
+							<i class='icon-arrow-right icon-on-right bigger-110'></i>
+						</button>	
+					</div>	
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class='widget-box'>
+				<div class='widget-header'>
+					<h4>Just buy it!<h4>
+				</div>
+				<div class='widget-body'>
+					<div class='widget-main'>
+						<span>Even if you don't want to be a customer you still able to buy your ticket! We just need your email to send you the voucher. Please check if this is your email and press continue.</span> <br>
+						<label style="padding-top: 15px;">Email</label>
+						<input type='text' id='emailNoLogin' class='customerEmail'/>
+					</div>
+					<div class='form-actions center'>
+						<button type='button' class='btn btn-sn btn-info continueNoAcc'>
 							Continue
 							<i class='icon-arrow-right icon-on-right bigger-110'></i>
 						</button>	

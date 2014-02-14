@@ -4,7 +4,7 @@ Template.externalLogin.rendered = function(){
 		book = books[0];
 		customer = Customers.findOne(book.customerId);
 		$('#customerFullname').val(customer.fullName);
-		$("#customerEmail").val(customer.email);
+		$(".customerEmail").val(customer.email);
 	}
 }
 
@@ -61,6 +61,44 @@ Template.externalLogin.events({
 		Session.set('finishBooking', true);
 		$("#loginArea").hide();
 		Template.externView.rendered();
+	},
+	'click .continueNoAcc' : function(event){
+		event.preventDefault();
+
+		email = $("#emailNoLogin").val();
+
+		if(!email){
+			throwError("Please provide your email");
+			return;
+		}
+
+
+
+		books = CartItems.find({cartId: getCartId()}).fetch();
+
+		customerId = "NotACustomer"
+		refNumber = new Date().getTime().toString().substr(1);
+		while(Orders.findOne({refNumber : refNumber})){
+			refNumber = new Date().getTime().toString().substr(1);
+		}
+		Orders.insert({customerId: customerId, paid: false, dateOrder: new Date(), refNumber: refNumber});
+		
+		//Save Bookings
+		for (var i = 0; i < books.length; i++) {
+			delete books[i].cartId;
+			books[i].buyerId = customerId;
+			books[i].orderId = refNumber;
+			books[i].bookStatus = "Waiting Payment (credit card)";
+			Meteor.call('insertBook', books[i]);
+			CartItems.remove({_id: books[i]._id});
+		};
+
+		cleanExternView();
+		Session.set('paymentStep', true);
+		Session.set('orderId', refNumber);
+		$("#loginArea").hide();
+		Template.externView.rendered();
+		Session.set('emailNoLogin', email);
 	}
 
 })	

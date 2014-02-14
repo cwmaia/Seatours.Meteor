@@ -52,6 +52,9 @@ Template.paymentStep.orderId = function(){
 Template.paymentStep.rendered = function(){
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
   	$(".formattedAsMoney").maskMoney('mask');
+  	if(!Meteor.user()){
+  		$("#emailBorgun").attr('value',Session.get('emalNoLogin'));
+  	}
 }
 
 Template.paymentStep.events({
