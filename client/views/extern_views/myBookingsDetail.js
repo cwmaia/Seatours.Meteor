@@ -1,5 +1,7 @@
 Template.myBookingsDetail.rendered = function(){
-	$('#allBookingsDetail').dataTable();
+	$('#allBookingsDetail').dataTable({
+		"iDisplayLength": 50
+	});
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
   	$(".formattedAsMoney").maskMoney('mask');
 }

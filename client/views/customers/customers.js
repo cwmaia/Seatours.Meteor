@@ -101,7 +101,9 @@ var preLoadInfos = function(){
 
 Template.customersAndExternals.rendered = function(){
 	$("#editCustomerModal").hide();
-	$("#customersTable").dataTable();
+	$("#customersTable").dataTable({
+		"iDisplayLength": 50
+	});
 	var discount = Settings.findOne({_id: 'onlineDiscount'}).onlineDiscount;
 	$("#onlineDiscountSlider").slider({
       range: "min",

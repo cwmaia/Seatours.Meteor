@@ -181,8 +181,12 @@ Template.bookReport.rendered = function(){
 	$('.calendar').datepicker({
 		format : "dd/mm/yyyy"
 	});
-	$('#filterResultB').dataTable();
-	$('#filterResultF').dataTable();
+	$('#filterResultB').dataTable({
+		"iDisplayLength": 50
+	});
+	$('#filterResultF').dataTable({
+		"iDisplayLength": 50
+	});
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
   	$(".formattedAsMoney").maskMoney('mask');
 }

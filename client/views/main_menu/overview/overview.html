@@ -37,6 +37,7 @@
 										<th class="sorting_disabled">Vehicle</th>
 										<th class="sorting_disabled">Vehicle Plate</th>
 										<th class="sorting_disabled">Vehicle Category</th>
+										<th class="sorting_disabled">Metters</th>
 										<th class="sorting_disabled">Telephone</th>
 										<th class="sorting_disabled">Total Passagers</th>
 										<th class="sorting_disabled">Payment Status</th>
@@ -54,6 +55,7 @@
 										<td>{{vehicle.vehicleName}}</td>
 										<td>{{vehicle.vehiclePlate}}</td>
 										<td>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m{{/if}}</td>
+										<td>{{#if hasVehicle}}{{vehicle.size}}m{{/if}}</td>
 										<td>{{telephone customerId}}</td>
 										<td>{{totalPassagers _id}}</td>
 										<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>

@@ -5,7 +5,9 @@ Template.groupList.groups = function(){
 }
 
 Template.createGroups.rendered = function(){
-	$('#groupsTable').dataTable();
+	$('#groupsTable').dataTable({
+		"iDisplayLength": 50
+	});
 	$('#permissionModal').hide();
 }
 

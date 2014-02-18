@@ -1,5 +1,7 @@
 Template.myBookings.rendered = function(){
-	$('#allBookings').dataTable();
+	$('#allBookings').dataTable({
+		"iDisplayLength": 50
+	});
 }
 
 Template.myBookings.bookings = function(){

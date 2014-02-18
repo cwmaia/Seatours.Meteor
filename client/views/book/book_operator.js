@@ -905,7 +905,9 @@ function setCalendarCapacity (calendar) {
 ///////////////////////////////////////////
 //Template Book Detail
 Template.bookDetail.rendered = function() {
-	var oTable = $('#passengers').dataTable();
+	var oTable = $('#passengers').dataTable({
+		"iDisplayLength": 50
+	});
 	oTable.fnSort( [ [1,'asc'], [7,'asc'], [8,'asc'] ] );
 	$('#boatSlots').dataTable();
 	product = Products.findOne(Session.get('productId'));
@@ -1484,8 +1486,12 @@ Template.createBook.rendered = function(){
     	$('#country').val(customer.country);
 	}
 
-	$('#passengers').dataTable();
-	$('#boatSlots').dataTable();
+	$('#passengers').dataTable({
+		"iDisplayLength": 50
+	});
+	$('#boatSlots').dataTable({
+		"iDisplayLength": 50
+	});
 
 
 	product = Products.findOne(Session.get('productId'));

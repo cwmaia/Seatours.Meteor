@@ -18,7 +18,11 @@ Template.paymentStep.basket = function(){
 	var total = 0;
 	books = Books.find({orderId : Session.get('orderId')}).fetch();
 	for (var i = 0; i < books.length; i++) {
-		html += '<input type="hidden" name="itemdescription_'+[i]+'" value="Seatours Ticket: '+books[i].product.name + ' - From '+ books[i].trip.from + ' '+books[i].trip.to+' '+books[i].trip.hour+'" /><br>'; 
+		tripTo = "";
+		if(books[i].trip.to){
+			tripTo = books[i].trip.to;
+		}
+		html += '<input type="hidden" name="itemdescription_'+[i]+'" value="Seatours Ticket: '+books[i].product.name + ' - From '+ books[i].trip.from + ' '+ tripTo +' '+books[i].trip.hour+'" /><br>'; 
 		html += '<input type="hidden" name="itemcount_'+[i]+'" value="1" /><br>'; 
 		html += '<input type="hidden" class="amountBorgun" name="itemunitamount_'+[i]+'" value="'+100+'" /><br>'; 
 		html += '<input type="hidden" class="amountBorgun" name="itemamount_'+[i]+'" value="'+100+'" /><br>';
