@@ -23,6 +23,10 @@
   {{#if userLogged}}
     {{> mainMenu}}
   {{else}}
+    <div id='divMessageCreateBook' class="alert alert-warning">
+        <b style="color: #FF2400;">ATTENTION, PLEASE NOTE:</b>
+        <span>This system is under test</span>
+    </div>
     {{> externView}}
     {{> footer}}
   {{/if}}  
