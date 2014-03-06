@@ -419,6 +419,7 @@ select{
 
 .datepicker-dropdown{
 	max-width: 220px;
+	z-index: 11 !important;
 }
 
 .dataTables_filter{

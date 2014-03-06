@@ -285,6 +285,19 @@ Template.overview.lineColor = function(paid, bookStatus){
 Template.overview.rendered = function(){
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
 	$(".formattedAsMoney").maskMoney('mask');
+	$(".datePickerWYear").datepicker({
+		format : 'dd M yyyy'
+	}).on('changeDate', function(ev){
+			date = new Date(ev.date);
+			with(date){
+				setDate(getDate() + 1);
+				setHours(0);
+				setMinutes(0);
+				setSeconds(0);
+			}
+			localStorage.setItem('date', date);
+			location.reload();
+		});
 
 }
 
