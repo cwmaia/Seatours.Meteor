@@ -1475,7 +1475,12 @@ Template.createBook.rendered = function(){
     	$('#title').val(customer.title)
     	$('#socialSecurityNumber').val(customer.socialSecurityNumber);
     	$('#fullName').val(customer.fullName);
-    	$('#birthDate').val(customer.birthDate);
+    	splitBirth = currentCustomer.birthDate.split("-");
+    	console.log(splitBirth[1]);
+		$('#birthDaySelect').val(splitBirth[2]);
+		$('#birthMonthSelect').val(Number(splitBirth[1]));
+		$('#birthYearSelect').val(splitBirth[0]);
+		$('#birthdate').val(currentCustomer.birthDate);
     	$('#email').val(customer.email);
     	$('#telephoneCode').val(customer.telephoneCode);
     	$('#telephone').val(customer.telephone);
@@ -1682,7 +1687,11 @@ Template.generalPassagerInfo.events({
 				$('#fullName').val(currentCustomer.fullName);
 				$('#customerId').val(currentCustomer._id);
 				$('#title').val(currentCustomer.title)
-		    	$('#birthDate').val(currentCustomer.birthDate);
+		    	splitBirth = currentCustomer.birthDate.split("-");
+				$('#birthDaySelect').val(splitBirth[2]);
+				$('#birthMonthSelect').val(Number(splitBirth[1]));
+				$('#birthYearSelect').val(splitBirth[0]);
+				$('#birthdate').val(currentCustomer.birthDate);
 		    	$('#email').val(currentCustomer.email);
 		    	$('#telephoneCode').val(currentCustomer.telephoneCode);
 		    	$('#telephone').val(currentCustomer.telephone);
@@ -1708,8 +1717,11 @@ Template.generalPassagerInfo.events({
 	   		}else{
 	   			$('#fullName').val('');
 				$('#customerId').val('');
-				$('#title').val('')
-		    	$('#birthDate').val('');
+				$('#title').val('');
+				$('#birthDaySelect').val("");
+				$('#birthMonthSelect').val("");
+				$('#birthYearSelect').val("");
+		    	$('#birthdate').val('');
 		    	$('#email').val('');
 		    	$('#telephoneCode').val('');
 		    	$('#telephone').val('');
@@ -1740,7 +1752,12 @@ Template.generalPassagerInfo.events({
 			$('#customerId').val(Meteor.user().profile.customerId);
 			var currentCustomer = Customers.findOne({'_id' : Meteor.user().profile.customerId});
 			$('#title').val(currentCustomer.title)
-	    	$('#birthDate').val(currentCustomer.birthDate);
+			//SplitBirthDate 
+			splitBirth = currentCustomer.birthDate.split("-");
+			$('#birthDaySelect').val(splitBirth[2]);
+			$('#birthMonthSelect').val(Number(splitBirth[1]));
+			$('#birthYearSelect').val(splitBirth[0]);
+	    	$('#birthdate').val(currentCustomer.birthDate);
 	    	$('#socialSecurityNumber').val(currentCustomer.socialSecurityNumber);
 	    	$('#email').val(currentCustomer.email);
 	    	$('#telephoneCode').val(currentCustomer.telephoneCode);
@@ -1756,8 +1773,11 @@ Template.generalPassagerInfo.events({
 			$('#fullName').val('');
 			$('#socialSecurityNumber').val('');
 			$('#customerId').val('');
-			$('#title').val('')
-	    	$('#birthDate').val('');
+			$('#title').val('');
+			$('#birthDaySelect').val("");
+			$('#birthMonthSelect').val("");
+			$('#birthYearSelect').val("");
+	    	$('#birthdate').val('');
 	    	$('#email').val('');
 	    	$('#telephoneCode').val('');
 	    	$('#telephone').val('');
@@ -1781,7 +1801,7 @@ Template.generalPassagerInfo.events({
 				'socialSecurityNumber' :  $('#socialSecurityNumber').val(),
 				'fullName' :  $('#fullName').val(),
 				'title' : $('#title').val(),
-		    	'birthDate': $('#birthDate').val(),
+		    	'birthDate': $('#birthdate').val(),
 		    	'email' : $('#email').val(),
 		    	'telephoneCode' : $('#telephoneCode').val(),
 		    	'telephone' : $('#telephone').val(),
@@ -1873,8 +1893,8 @@ Template.generalPassagerInfo.rendered = function() {
       	format : "dd/mm/yyyy"
 	});
 	$('#socialSecurityNumber').mask('999999-9999');
-	$('#birthDate').mask('99/99/9999');
 	loadTypeAheadPostCodes(true);
+	$("#birthDayPick").birthdaypicker();
 }
 
 Template.categoryVehicleBook.helpers({
@@ -2061,7 +2081,7 @@ var createBook = function(){
 		"title" : $('#title').val(),
 		"socialSecurityNumber" :  $('#socialSecurityNumber').val(),
 		"fullName" :  $('#fullName').val(),
-		"birthDate" : $('#birthDate').val(),
+		"birthDate" : $('#birthdate').val(),
 		'email' : $('#email').val(),
 		"telephoneCode" : $('#telephoneCode').val(),
 		"telephone" : $("#telephone").val(),

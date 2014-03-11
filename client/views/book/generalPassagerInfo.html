@@ -43,11 +43,7 @@
 	        <div class="line-3 input-append">
 	        	<div>
 		            <label class="control-label {{#if isCustomer}} required{{/if}}">Birth Date: </label>
-		            <input type='text' id="birthDate" name="birthDate" class="datepicker size1-3" placeholder="dd/mm/yyyy" {{#if isCustomer}} required{{/if}}>
-		            
-		            <span class="add-on">
-						<i class="icon-calendar"></i>
-					</span>
+		            <div id="birthDayPick"></div>
 				</div>
 		        
 		        <div>

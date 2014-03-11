@@ -15,18 +15,7 @@
   font-weight: 100;
   font-size: 14px;
 
-  &:before {
-    position: absolute;
-    content: '';
-    
-    bottom: 133%;
-    left: 50%;
-    
-    width: 25%;
-    margin: 0 0 0 -12.5%;
-    
-    border-top: 1px dashed adjust-lightness( #333, 40 );;
-  }
+ 
 }
 
 .chart--subHeadline {
@@ -39,15 +28,6 @@
   background-color: #fff;
   width: 100%;
   
-  @media screen and (min-width: 700px) {
-    max-width: 700px;
-    
-    left : 50%;
-    top : 10%;
-    margin: 5em auto; 
-    
-    box-shadow: 0 2em 2em #333;
-  }
 }
 
 .charts--headline {
@@ -104,31 +84,6 @@
 
 .lineChart--svg {
   border: 1px solid #333;
-}
-
-.lineChart--xAxisTicks, .lineChart--xAxis, .lineChart--yAxisTicks {
-  .domain {
-    display: none;
-  }
-}
-
-.lineChart--xAxis {
-  .tick {
-    line {
-      display: none;
-    }
-  }
-}
-
-.lineChart--xAxisTicks, .lineChart--yAxisTicks {
-  .tick {
-    line {
-      fill: none;
-      stroke: adjust-lightness( #333, 50 );;
-      stroke-width: 1;
-      stroke-dasharray: 2,2;
-    }
-  }
 }
 
 .pieChart--center--innerCircle {
