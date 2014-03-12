@@ -33,7 +33,7 @@
 								<thead>
 									<tr>
 										<th class="sorting_disabled">ID</th>
-										<th class="sorting_disabled">Customer</th>
+										<th class="sorting_disabled">Customer / Notes</th>
 										<th class="sorting_disabled">Vehicle</th>
 										<th class="sorting_disabled">Vehicle Plate</th>
 										<th class="sorting_disabled">Vehicle Category</th>
@@ -51,10 +51,15 @@
 								{{#each bookings productId _id}}
 									<tr id='{{_id}}' class='{{lineColor paid bookStatus}}'>
 										<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
-										<td>{{fullname customerId}}</td>
+										<td>
+											{{fullname customerId}}
+											{{#each notes _id}}
+												<br/>{{note}}
+											{{/each}}
+										</td>
 										<td>{{vehicle.vehicleName}}</td>
 										<td>{{vehicle.vehiclePlate}}</td>
-										<td>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m{{/if}}</td>
+										<td>{{#if hasVehicle}}{{vehicle.category}}{{/if}}</td>
 										<td>{{#if hasVehicle}}{{vehicle.size}}m{{/if}}</td>
 										<td>{{telephone customerId}}</td>
 										<td>{{totalPassagers _id}}</td>

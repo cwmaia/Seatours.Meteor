@@ -919,7 +919,13 @@ Template.bookDetail.rendered = function() {
 		Session.set("haveStatus", false);
 		$(".noStatus").hide();
 	}
+
+	$("#svgBoatDialog").hide();
 	returnPersons();
+}
+
+Template.bookDetail.notes = function(bookId){
+	return Notes.find({bookId: bookId, type: "Customer Note"});
 }
 
 Template.bookDetail.fullname = function(id){
@@ -1150,6 +1156,14 @@ var MaxCapacity = 0;
 Template.bookDetail.events({
 	'click #newBooking' :function(event) {
 		formBook();
+	},
+
+	'click #seeBoatStatusSVG' : function(event){
+		$("#svgBoatDialog").show();
+	},
+
+	'click .close, click .cancel' : function(event){
+		$("#svgBoatDialog").hide();
 	},
 
 	'click .quickPay' : function(event){
@@ -1465,6 +1479,7 @@ Template.createBook.rendered = function(){
 		$("#divMessageCreateBook").show();
 	}	
 	$("#statusDialog").hide();
+
 	$('#pasagerInfo').on('submit', function(event){
 		event.preventDefault();
 	});

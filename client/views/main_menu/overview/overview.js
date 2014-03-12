@@ -23,6 +23,10 @@ Template.overview.isBookCreated = function(status) {
 	return status == 'Booked';
 }
 
+Template.overview.notes = function(bookId) {
+	return Notes.find({bookId: bookId, type: "Customer Note"});
+}
+
 Template.overview.bookings = function(productId, tripId){
 	var date = new Date(localStorage.getItem('date')),
 	currentDate = new Date(localStorage.getItem('date'));

@@ -123,7 +123,7 @@
 							<tr class='noStatus'>
 								<td>#Guides and Drivers</td>
 								<td><span id='numberOfGuideAndDrivers'></span></td>
-								<td></td>
+								<td><a id="seeBoatStatusSVG">See Status</a></td>
 								<td></td>
 							</tr>
 						</tbody>
@@ -132,6 +132,26 @@
 			</form>
 		</div>
 	</div>
+
+	<div id="svgBoatDialog">
+    		<div class="mask"> </div>
+			  <div class="modal" style="left: 45%; width: 760px">
+			    <div class="modal-header">
+			      <button type="button" class="cancel close">&times;</button>
+			      <h3>Current Boat Status</h3>
+			    </div>
+
+			    <div class="modal-body">
+			    	<div>
+						{{>baldurSVG}}
+					</div>
+			    </div>
+
+			    <div class="modal-footer">
+			    	<a href="#" class="btn cancel">Close</a>
+			    </div>
+			  </div>
+    	</div>
 	
 	<div>
 		<div class="divTable">
@@ -146,7 +166,7 @@
 				<thead>
 					<tr>
 						<th class="sorting_disabled">ID</th>
-						<th class="sorting_disabled">Customer</th>
+						<th class="sorting_disabled">Customer / Notes</th>
 						<th class="sorting_disabled">Vehicle</th>
 						<th class="sorting_disabled">Vehicle Plate</th>
 						<th class="sorting_disabled">Vehicle Category</th>
@@ -163,7 +183,11 @@
 				{{#each bookings}}
 					<tr id='{{_id}}' class='{{lineColor paid bookStatus}}'>
 						<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
-						<td>{{fullname customerId}}</td>
+						<td>{{fullname customerId}}
+							{{#each notes _id}}
+								</br>{{note}}
+							{{/each}}
+						</td>
 						<td>{{vehicle.vehicleName}}</td>
 						<td>{{vehicle.vehiclePlate}}</td>
 						<td>{{#if vehicle.size}}{{vehicle.category}} - {{vehicle.size}}m{{/if}}</td>
@@ -273,9 +297,7 @@
 		    	Current Boat Status
 		    </label>
     		<a id="boatStatus">See Status</a>
-    	{{/if}}
-
-    	
+    	{{/if}}		
 
     	<div id="statusDialog">
 		  <div class="mask"> </div>
