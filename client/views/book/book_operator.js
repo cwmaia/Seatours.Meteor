@@ -35,6 +35,11 @@ var updateDataPieChart = function(){
 		}
 	};
 
+	//Update Boat Status SVG
+	for (var i = 1; i <= count5m; i++) {
+		
+	};
+
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
@@ -902,6 +907,7 @@ function setCalendarCapacity (calendar) {
 			$(calendar).find('tbody a:eq(' + (j - 1) + ')').addClass('isFull')
 	}
 }
+
 ///////////////////////////////////////////
 //Template Book Detail
 Template.bookDetail.rendered = function() {

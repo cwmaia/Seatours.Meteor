@@ -95,13 +95,14 @@ Template.items.customerName = function(customerId){
 }
 
 Template.cart.disableCheckout = function(){
-	if(!isCustomer() && CartItems.find().count() > 0){
+	/*if(!isCustomer() && CartItems.find().count() > 0){
 		return false;
 	}else if(isCustomer() && CartItems.find().count() > 0){
 		return false;
 	}else{
 		return true;
-	}
+	}*/
+	return isCustomer();
 }
 
 Template.cart.events({
