@@ -36,8 +36,10 @@ var updateDataPieChart = function(){
 	};
 
 	//Update Boat Status SVG
-	for (var i = 1; i <= count5m; i++) {
-		
+	console.log(count5m);
+	for (var i = 0; i < count5m; i++) {
+		svgElement = document.getElementById("svg_"+i);
+		svgElement.setAttribute("fill", "#a59e9e");
 	};
 
 	books = Books.find({
