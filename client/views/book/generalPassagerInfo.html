@@ -9,7 +9,16 @@
 	    				<span class='lbl'></span>
 	    				<input id="usingData" type="hidden" value="false">
 	    		 
-	    			{{/if}}</legend>
+	    			{{/if}}
+	    			{{#if previous}}
+	    				<br />
+	    				<span style="font-size: 16px;">Use previous customer data:<span>
+	    				<input id="previousCustomerData" type="checkbox" class="ace ace-switch ace-switch-6">
+	    				<span class='lbl'></span>
+	    				<input id="previousData" type="hidden" value="false">
+	    			{{/if}}
+
+	    		</legend>
 	        
 	        <div class="line-3">
 	        	

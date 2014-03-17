@@ -1073,6 +1073,8 @@ Template.createBook.qtdCarsUpTo6 = function(){
 	return carsUpto6();
 }
 
+
+
 var returnPersons = function(){
 	var dates = getSelectedAndNextDay();
 	var trip = Trips.findOne(Session.get('tripId'));
@@ -1414,6 +1416,14 @@ Template.generalPassagerInfo.isCreateUserPage = function(){
 	return Session.get('creatingUser');
 }
 
+Template.generalPassagerInfo.previous = function(){
+	if(Session.get('previousCustomer')){
+		return true;
+	}
+	return false;
+
+}
+
 
 Template.productPrices.priced = function(price){
 	if(Session.get('isEditing')){
@@ -1659,6 +1669,7 @@ Template.generalButtons.events({
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
+				//asdfg
 				createBook();
 				throwSuccess("Book added on Cart");
 				if(isCustomer()){
@@ -1787,6 +1798,54 @@ Template.generalPassagerInfo.events({
 	   		}
    		}
    		
+	},
+
+	'change #previousCustomerData' : function(event){
+		event.preventDefault();
+		if($("#previousData").val() == 'false'){
+			$("#previousData").val('true');
+			var pCustomerData = Session.get("previousCustomer");
+
+			$('#fullName').val(pCustomerData.fullName);
+			$('#customerId').val(pCustomerData.customerId);
+			var currentCustomer = pCustomerData;
+			$('#title').val(currentCustomer.title)
+			//SplitBirthDate 
+			splitBirth = currentCustomer.birthDate.split("-");
+			$('#birthDaySelect').val(splitBirth[2]);
+			$('#birthMonthSelect').val(Number(splitBirth[1]));
+			$('#birthYearSelect').val(splitBirth[0]);
+	    	$('#birthdate').val(currentCustomer.birthDate);
+	    	$('#socialSecurityNumber').val(currentCustomer.socialSecurityNumber);
+	    	$('#email').val(currentCustomer.email);
+	    	$('#telephoneCode').val(currentCustomer.telephoneCode);
+	    	$('#telephone').val(currentCustomer.telephone);
+	    	$('#adress').val(currentCustomer.address);
+	    	$('#city').val(currentCustomer.city);
+	    	$('#state').val(currentCustomer.state);
+	    	$('#postcode').val(currentCustomer.postcode);
+	    	$('#country').val(currentCustomer.country);	
+	    	$('#groupId').val(currentCustomer.groupId);	
+		}else{
+			$("#previousData").val('false');
+			$('#fullName').val('');
+			$('#socialSecurityNumber').val('');
+			$('#customerId').val('');
+			$('#title').val('');
+			$('#birthDaySelect').val("");
+			$('#birthMonthSelect').val("");
+			$('#birthYearSelect').val("");
+	    	$('#birthdate').val('');
+	    	$('#email').val('');
+	    	$('#telephoneCode').val('');
+	    	$('#telephone').val('');
+	    	$('#adress').val('');
+	    	$('#city').val('');
+	    	$('#state').val('');
+	    	$('#postcode').val('');
+	    	$('#country').val('');
+	    	$('#groupId').val('');	
+		}
 	},
 
 	'change #myOwnData' : function(event){
@@ -2138,6 +2197,9 @@ var createBook = function(){
 		"lastUsedCar" : vehicle,
 		"groupId" : group._id
 	}
+	if(isOperator()){
+		Session.set("previousCustomer", customer);
+	}
 
 	var date = new Date();
 	var selectedDay = new Date(localStorage.getItem('date'));
@@ -2193,11 +2255,6 @@ var createBook = function(){
 			book.cartId = name;
 		}
 	}else{
-
-		
-
-		
-
 		if(getCartIdOperator()){
 				book.cartId = getCartIdOperator();
 		}else{
@@ -2216,13 +2273,14 @@ var createBook = function(){
 			book.customerId = resultId;
 			book.discount = 0;
 		}else{
-			//Descount
+			//Discount
 			group = Groups.findOne({_id : $('#groupId').val()});
 			if(group && group.discount > 0){
 				book.totalISK = parseInt((book.totalISK - ((book.totalISK * group.discount) / 100 )).toFixed());
 				book.discount = group.discount;
 			}
 			book.customerId = $('#customerId').val();
+
 			if(Customers.findOne({'_id': book.customerId}).lastUsedCar.vehiclePlate != $('#vehiclePlate').val()){
 				Customers.update(book.customerId, {$set: {
 					"lastUsedCar.category" : book.vehicle.category,
