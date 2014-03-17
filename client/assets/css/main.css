@@ -571,6 +571,12 @@ select{
 	text-transform: uppercase;
 }
 
+.borderedTripWeek{
+	border: 1px gray solid;
+	min-width: 21px;
+	text-align: center;
+}
+
 
 /*
 	Media Query

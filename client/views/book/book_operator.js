@@ -861,11 +861,35 @@ Template.bookOperator.events({
 		var productId = $(event.currentTarget).parents('li')[0].id,
         select = $('#trip_' + productId);
 
-        var blocking = BlockingDates.findOne({'blockedDay': '0'+(new Date(localStorage.getItem('date'))).toLocaleDateString() ,'tripId' : select.val()});
+        var blocking = BlockingDates.findOne({'type' : 'blockDate' ,'blockedDay': '0'+(new Date(localStorage.getItem('date'))).toLocaleDateString() ,'tripId' : select.val()});
         if(blocking){
 				throwError("Trips not available for this route. Please Select Another Day");
 				return;
 	    }
+
+	    var bwday = BlockingDates.findOne({'type' : 'blockWeekDay', 'tripId' : select.val()});
+	    if(bwday){
+	    	var blockWeekDayTable = bwday.availableWeekDays;
+		    if (!blockWeekDayTable[new Date(localStorage.getItem('date')).getDay()]){
+		    	throwError("Trips not available for this route. Please Select Another Day");
+				return;
+		    }
+		}
+	   	
+		var persons = 0;
+		book = Books.findOne({'trip._id' : select.val()});
+		for (var i = 0; i < book.prices.length; i++) {
+			if(book.prices[i].price != "Operator Fee")
+				persons = parseInt(persons + parseInt(book.prices[i].persons));
+		};
+	   
+		var pAvailability = BlockingDates.findOne({'type' : 'passagersAvailability', 'tripId' : select.val()});
+		if(pAvailability){
+			if(persons = pAvailability.passagersAvailability){
+			throwError("Trips no longer available for this route. Please Select Another Day");
+			return;
+			}
+		}
 
         if(select[0].checkValidity()){
 			Session.set('tripId',select.val());

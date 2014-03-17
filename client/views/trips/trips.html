@@ -128,8 +128,79 @@
 								</span>
 							</div>
 						</div>
+					
+					<label>
+						Weekdays Availability:
+						<fieldset>
+						<table class="borderedTripWeek">
+							<tr>
+								<td class="borderedTripWeek">Su</td>
+								<td class="borderedTripWeek">Mo</td>
+								<td class="borderedTripWeek">Tu</td>
+								<td class="borderedTripWeek">We</td>
+								<td class="borderedTripWeek">Th</td>
+								<td class="borderedTripWeek">Fr</td>
+								<td class="borderedTripWeek">Sa</td>
+							</tr>
+							<tr>
+								<td class="borderedTripWeek">
+									{{#if available 0}}
+										<a class="weekDayAvailability" rel="0"><i class='icon-check'></i></a>
+									{{else}}
+										<a class="weekDayAvailability" rel="0"><i class='icon-check-empty'></i></a>
+									{{/if}} 
+								</td>
+								<td class="borderedTripWeek">
+									{{#if available 1}}
+										<a class="weekDayAvailability" rel="1"><i class='icon-check'></i></a>
+									{{else}}
+										<a class="weekDayAvailability" rel="1"><i class='icon-check-empty'></i></a>
+									{{/if}} 
+								</td>
+								<td class="borderedTripWeek">
+									{{#if available 2}}
+										<a class="weekDayAvailability" rel="2"><i class='icon-check'></i></a>
+									{{else}}
+										<a class="weekDayAvailability" rel="2"><i class='icon-check-empty'></i></a>
+									{{/if}} 
+								</td>
+								<td class="borderedTripWeek">
+									{{#if available 3}}
+										<a class="weekDayAvailability" rel="3"><i class='icon-check'></i></a>
+									{{else}}
+										<a class="weekDayAvailability" rel="3"><i class='icon-check-empty'></i></a>
+									{{/if}} 
+								</td>
+								<td class="borderedTripWeek">
+									{{#if available 4}}
+										<a class="weekDayAvailability" rel="4"><i class='icon-check'></i></a>
+									{{else}}
+										<a class="weekDayAvailability" rel="4"><i class='icon-check-empty'></i></a>
+									{{/if}} 
+								</td>
+								<td class="borderedTripWeek">
+									{{#if available 5}}
+										<a class="weekDayAvailability" rel="5"><i class='icon-check'></i></a>
+									{{else}}
+										<a class="weekDayAvailability" rel="5"><i class='icon-check-empty'></i></a>
+									{{/if}} 
+								</td>
+								<td class="borderedTripWeek">
+									{{#if available 6}}
+										<a class="weekDayAvailability" rel="6"><i class='icon-check'></i></a>
+									{{else}}
+										<a class="weekDayAvailability" rel="6"><i class='icon-check-empty'></i></a>
+									{{/if}}
+								</td>
+							</tr>
+						</table>
+						</fieldset>
+					</label>
+					<div>
+						<label class="required">Passagers Availability:</label>
+						<input type="number" name="passagers" id="passagers" class="input-small" required/>
 					</div>
-
+					</div>
 					<label>
 			    		Available on Seasons:
 			    		<input id="seasonsCheckbox" type="checkbox" checked='checked' class="ace ace-switch ace-switch-6">

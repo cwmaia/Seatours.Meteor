@@ -58,7 +58,8 @@ Template.blockingDates.events({
 			'tripId' : $('#tripBlockDate').val(),
 			'blockedDay' : $('#dayBlocked').val(),
 			'reason' : $('#reasonBlock').val(),
-			'user' : Meteor.user().profile.name
+			'user' : Meteor.user().profile.name,
+			'type' : 'blockDate'
 		}
 		
 		BlockingDates.insert(blockDate);
