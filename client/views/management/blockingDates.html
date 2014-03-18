@@ -41,10 +41,13 @@
 
 							<input id="blockButton" type="submit" name="save" class="btn btn-danger btn-small" value="Block" />
 					</div>
-
+					<div>
+						{{> blockRules}}
+					<div>
 					<div>
 						{{> blockDatesList}}
 					</div>
+
 				</div>
 				
 			</div>
@@ -79,6 +82,74 @@
 					</tr>
 				{{/each}}
 			</tbody>
+		</table>
+	</fieldset>
+</template>
+
+<template name='blockRules'>
+	<fieldset>
+		<legend>Weekdays Availability</legend>
+		<table>
+			<tr>
+				<th class="borderedTripWeek">Su</th>
+				<th class="borderedTripWeek">Mo</th>
+				<th class="borderedTripWeek">Tu</th>
+				<th class="borderedTripWeek">We</th>
+				<th class="borderedTripWeek">Th</th>
+				<th class="borderedTripWeek">Fr</th>
+				<th class="borderedTripWeek">Sa</th>
+			</tr>
+			<tr>
+				<td class="borderedTripWeek">
+					{{#if available 0}}
+						<a class="weekDayAvailability" rel="0"><i class='icon-check'></i></a>
+					{{else}}
+						<a class="weekDayAvailability" rel="0"><i class='icon-check-empty'></i></a>
+					{{/if}} 
+				</td>
+				<td class="borderedTripWeek">
+					{{#if available 1}}
+						<a class="weekDayAvailability" rel="1"><i class='icon-check'></i></a>
+					{{else}}
+						<a class="weekDayAvailability" rel="1"><i class='icon-check-empty'></i></a>
+					{{/if}} 
+				</td>
+				<td class="borderedTripWeek">
+					{{#if available 2}}
+						<a class="weekDayAvailability" rel="2"><i class='icon-check'></i></a>
+					{{else}}
+						<a class="weekDayAvailability" rel="2"><i class='icon-check-empty'></i></a>
+					{{/if}} 
+				</td>
+				<td class="borderedTripWeek">
+					{{#if available 3}}
+						<a class="weekDayAvailability" rel="3"><i class='icon-check'></i></a>
+					{{else}}
+						<a class="weekDayAvailability" rel="3"><i class='icon-check-empty'></i></a>
+					{{/if}} 
+				</td>
+				<td class="borderedTripWeek">
+					{{#if available 4}}
+						<a class="weekDayAvailability" rel="4"><i class='icon-check'></i></a>
+					{{else}}
+						<a class="weekDayAvailability" rel="4"><i class='icon-check-empty'></i></a>
+					{{/if}} 
+				</td>
+				<td class="borderedTripWeek">
+					{{#if available 5}}
+						<a class="weekDayAvailability" rel="5"><i class='icon-check'></i></a>
+					{{else}}
+						<a class="weekDayAvailability" rel="5"><i class='icon-check-empty'></i></a>
+					{{/if}} 
+				</td>
+				<td class="borderedTripWeek">
+					{{#if available 6}}
+						<a class="weekDayAvailability" rel="6"><i class='icon-check'></i></a>
+					{{else}}
+						<a class="weekDayAvailability" rel="6"><i class='icon-check-empty'></i></a>
+					{{/if}}
+				</td>
+			</tr>
 		</table>
 	</fieldset>
 </template>

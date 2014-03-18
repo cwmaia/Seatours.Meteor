@@ -1,3 +1,5 @@
+var weekDaysAvailability = [true,true,true,true,true,false,false];
+
 Template.trips.trips = function(){ 
 	return Products.find();
 }
@@ -19,6 +21,11 @@ Template.editTrip.boatFind = function(id){
 	}else{
 		return false;
 	}
+}
+
+Template.editTrip.available = function(weekDay){
+	console.log("wat? "+weekDaysAvailability[weekDay]);
+	return weekDaysAvailability[weekDay];
 }
 
 Template.editTrip.groupProduct = function(id){
@@ -197,6 +204,11 @@ Template.editTrip.events({
 			
 		}
 	},
+	'click .weekDayAvailability' : function(event){
+		var weekDay = event.currentTarget.rel;
+		weekDaysAvailability[weekDay] = !weekDaysAvailability[weekDay];
+		Template.editTrip.available(weekDay);
+	},
 
 	'submit #tripForm' : function(event) {
 		event.preventDefault();
@@ -222,6 +234,7 @@ Template.editTrip.events({
 				productId : product._id,
 			}
 
+
 			if(season == 'noSeason'){
 				trip.availableDays = {
 					start: $("#dateStart").val(), 
@@ -229,13 +242,36 @@ Template.editTrip.events({
 				}
 			}
 
+			
+			var tripId;
 			if(product){
-				Trips.insert(trip);
+				tripId = Trips.insert(trip);
 				form.reset();
+				var tripSettings = {
+					'tripId' : tripId,
+					'availableWeekDays' : getWeekDaysAvailability(),
+					'user' : Meteor.user().profile.name,
+					'type' : 'blockWeekDay'
+				}
+				var tripSettings2 = {
+					'tripId' : tripId,
+					'passagersAvailability' : $("#passagers"),
+					'user' : Meteor.user().profile.name,
+					'type' : 'passagersAvailability'
+				}
+				BlockingDates.insert(tripSettings);
+				BlockingDates.insert(tripSettings2);
+
+
 				throwInfo('Trip added');
+
 			}else{
 				throwError('An error has ocurred, please refresh your browser and try again');
 			}
+
+
+
+			
 			
 		}else{
 			throwInfo('Please Save the Product Before Add Trips!');
