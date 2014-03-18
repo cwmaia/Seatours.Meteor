@@ -36,8 +36,9 @@ var updateDataPieChart = function(){
 	};
 
 	//Update Boat Status SVG
-	console.log(count5m);
-	for (var i = 0; i < count5m; i++) {
+	//All 6 meters cars is considered as 5 meters
+	var cars = count5m + count6m;
+	for (var i = 0; i < cars; i++) {
 		svgElement = document.getElementById("svg_"+i);
 		svgElement.setAttribute("fill", "#a59e9e");
 	};
