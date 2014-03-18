@@ -877,11 +877,12 @@ Template.bookOperator.events({
 		}
 	   	
 		var persons = 0;
-		book = Books.findOne({'trip._id' : select.val()});
-		for (var i = 0; i < book.prices.length; i++) {
-			if(book.prices[i].price != "Operator Fee")
-				persons = parseInt(persons + parseInt(book.prices[i].persons));
-		};
+		book = Books.find({'trip._id' : select.val()}).fetch();
+		for (var j = 0; j < book.length; j++){
+			for (var i = 0; i < book[j].prices.length; i++) {
+				if(book[j].prices[i].price != "Operator Fee")
+					persons = parseInt(persons + parseInt(book.prices[i].persons));
+		}};
 	   
 		var pAvailability = BlockingDates.findOne({'type' : 'passagersAvailability', 'tripId' : select.val()});
 		if(pAvailability){
