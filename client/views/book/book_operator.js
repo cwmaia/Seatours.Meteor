@@ -879,10 +879,13 @@ Template.bookOperator.events({
 		var persons = 0;
 		book = Books.find({'trip._id' : select.val()}).fetch();
 		for (var j = 0; j < book.length; j++){
-			for (var i = 0; i < book[j].prices.length; i++) {
-				if(book[j].prices[i].price != "Operator Fee")
-					persons = parseInt(persons + parseInt(book.prices[i].persons));
-		}};
+			if(book[j].prices[i]){
+				for (var i = 0; i < book[j].prices.length; i++) {
+					if(book[j].prices[i].price != "Operator Fee")
+						persons = parseInt(persons + parseInt(book.prices[i].persons));
+				}
+			}
+		};
 	   
 		var pAvailability = BlockingDates.findOne({'type' : 'passagersAvailability', 'tripId' : select.val()});
 		if(pAvailability){
@@ -1417,6 +1420,15 @@ Template.generalPassagerInfo.isCreateUserPage = function(){
 	return Session.get('creatingUser');
 }
 
+Template.generalButtons.isInquiry = function(){
+	console.log("Current Size: " + $('#size').val());
+	return $('#size').val() > 5;
+}
+
+Template.generalButtons.rendered = function(){
+	return true;
+}
+
 Template.generalPassagerInfo.previous = function(){
 	if(Session.get('previousCustomer')){
 		return true;
@@ -1670,7 +1682,6 @@ Template.generalButtons.events({
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
-				//asdfg
 				createBook();
 				throwSuccess("Book added on Cart");
 				if(isCustomer()){
@@ -1680,6 +1691,28 @@ Template.generalButtons.events({
 				}else{
 					Meteor.Router.to('/bookOperator');
 				}
+			}else{
+				$('#pasagerInfo').submit(function(event){
+					event.preventDefault();
+				});
+			}
+		}
+	},
+
+	'click .confirmInquiry' : function(event){
+		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
+			throwError('Please Inform the size of vehicle');
+		}else if(!CanSaveTheBook){
+			throwError("Sorry but the vehicle informed can't go on the boat");
+		}else{
+			var form = document.getElementById('pasagerInfo');
+			if(form.checkValidity()){
+				createBook();
+				throwSuccess("Inquiry Confirmed");
+				cleanExternView();
+				$("#loginArea").hide();
+				Template.externView.rendered();
+				
 			}else{
 				$('#pasagerInfo').submit(function(event){
 					event.preventDefault();
@@ -2096,7 +2129,6 @@ Template.categoryVehicleBook.events({
 		calcVehiclePrice(value);
 		checkIfCarsFits(value);
 		calcTotal();
-
 		Session.set("firstTime", false);
 	}
 })
@@ -2212,7 +2244,7 @@ var createBook = function(){
 
 	var trip = Trips.findOne(Session.get('tripId'));
 
-		book = {
+	book = {
 		"trip" : {
 			'_id'	: Session.get('tripId'),
 			'from' 	: trip.from,
@@ -2234,7 +2266,10 @@ var createBook = function(){
 	}
 
 	if(isCustomer()){
-
+		console.log(vehicle);
+		if (vehicle.size > 5 ){
+			book.pendingApproval = true;
+		}
 		if(Session.get('SaveCustomer')){
 			var resultId = Customers.insert(customer);
 			book.customerId = resultId;
@@ -2372,7 +2407,25 @@ var createBook = function(){
 				Notes.insert(note);
 			}
 		}else{
-			CartItems.insert(book);
+			if(book.pendingApproval){
+				book.bookStatus = "Pending Approval (6+ meters vehicle)"
+				customerId = "NotACustomer"
+				refNumber = new Date().getTime().toString().substr(1);
+				while(Orders.findOne({refNumber : refNumber})){
+					refNumber = new Date().getTime().toString().substr(1);
+				}
+				//Save Bookings
+				for (var i = 0; i < books.length; i++) {
+					delete books[i].cartId;
+					books[i].buyerId = customerId;
+					books[i].orderId = refNumber;
+					books[i].bookStatus = "Waiting Payment (credit card)";
+					Meteor.call('insertBook', books[i]);
+					CartItems.remove({_id: books[i]._id});
+				};
+			}else{
+				CartItems.insert(book);
+			}
 		}
 			
 	};	
@@ -2601,6 +2654,10 @@ function drawPieChartBoatSlots() {
 }
 
 checkIfCarsFits = function(size){
+	$("#bookButton").css("display", "block");
+	$("#proceedButton").css("display", "block");
+	$("#inquiryButton").css("display", "none");	
+	$("#divAlertSize").css("display", "none");	
 
 	var trip = Trips.findOne(Session.get('tripId'));
 	ExtraSlot = null;
@@ -2693,6 +2750,14 @@ checkIfCarsFits = function(size){
 			}
 		}
 	}else if(size > 6){
+  
+		if (isCustomer()){
+			$("#bookButton").css("display", "none");
+			$("#proceedButton").css("display", "none");
+			$("#divAlertSize").css("display", "block");
+			$("#inquiryButton").css("display", "block");
+		}
+
 		if(!isCustomer()){
 			bootbox.confirm("There is no room for this car on the boat (on regular slots). However you can place it on a Extra Slot. Wishes to put it on extra slot?" , function(confirm){
 				if(confirm){
