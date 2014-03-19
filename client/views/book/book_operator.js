@@ -1421,7 +1421,6 @@ Template.generalPassagerInfo.isCreateUserPage = function(){
 }
 
 Template.generalButtons.isInquiry = function(){
-	console.log("Current Size: " + $('#size').val());
 	return $('#size').val() > 5;
 }
 
@@ -1544,7 +1543,7 @@ Template.createBook.rendered = function(){
     	$('#socialSecurityNumber').val(customer.socialSecurityNumber);
     	$('#fullName').val(customer.fullName);
     	splitBirth = currentCustomer.birthDate.split("-");
-    	console.log(splitBirth[1]);
+    	
 		$('#birthDaySelect').val(splitBirth[2]);
 		$('#birthMonthSelect').val(Number(splitBirth[1]));
 		$('#birthYearSelect').val(splitBirth[0]);
@@ -2266,7 +2265,7 @@ var createBook = function(){
 	}
 
 	if(isCustomer()){
-		console.log(vehicle);
+		
 		if (vehicle.size > 5 ){
 			book.pendingApproval = true;
 		}
