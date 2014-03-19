@@ -280,7 +280,26 @@
 		{{> bookingVehicles}}
 	</div>
 
+	<div id="svgBoatDialogCreate">
+    		<div class="mask"> </div>
+			  <div class="modal" style="left: 45%; width: 760px">
+			    <div class="modal-header">
+			      <button type="button" class="cancel close">&times;</button>
+			      <h3>Current Boat Status</h3>
+			    </div>
 
+			    <div class="modal-body">
+			    	<div>
+						{{>baldurSVG}}
+					</div>
+			    </div>
+
+			    <div class="modal-footer">
+			    	<a href="#" class="btn cancel">Close</a>
+			    </div>
+			  </div>
+    	</div>
+		
 	
 	<div class='line'>
 		<div>
@@ -292,12 +311,13 @@
 		</div>
 		<div class='noStatus'>
 
-		{{#if dateSelected}}
-		    <label>
-		    	Current Boat Status
-		    </label>
-    		<a id="boatStatus">See Status</a>
-    	{{/if}}		
+    	{{#if dateSelected}}
+		<div>
+			<label>Slot:</label>
+			<input type="text" class='size1-2' name="vehiclePlate" id="slotNumber" readonly>
+			<a id="selectManualy">Select Manualy</a>
+		</div>
+		{{/if}}	
 
     	<div id="statusDialog">
 		  <div class="mask"> </div>
@@ -481,7 +501,6 @@
 		</fieldset>
 		</fieldset>
 		{{/if}}
-		
 	</div>
 </template>
 <template name="categoryVehicleBook">

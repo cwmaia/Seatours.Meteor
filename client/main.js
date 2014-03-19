@@ -28,7 +28,7 @@ Template.redirect.helpers({
 })
 
 
-Template.redirect.rendered = function(){	
+Template.redirect.rendered = function(){
 	$('input[attr=required]').popover({
 		trigger: 'manual',
 		placement: 'top'

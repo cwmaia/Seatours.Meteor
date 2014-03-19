@@ -10,6 +10,20 @@ var VehicleSelected = false;
 
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2', 'OVERRIDE'];
 
+var getFirstSlotAvailable = function(){
+	var slot = 0;
+	$("rect").filter(function(){
+		var a = document.getElementById($(this).attr('id'));
+		if(a.getAttribute("fill") == "#ffffff"){
+			slot = a.id.split("_")[1];
+			return;
+		}
+	})
+
+	return slot;
+
+}
+
 var updateDataPieChart = function(){
 	totalSpace = 0;
 	var dates = getSelectedAndNextDay();
@@ -36,8 +50,11 @@ var updateDataPieChart = function(){
 	};
 
 	//Update Boat Status SVG
-	for (var i = 1; i <= count5m; i++) {
-		
+	//All 6 meters cars is considered as 5 meters
+	var cars = count5m + count6m;
+	for (var i = 0; i < cars; i++) {
+		svgElement = document.getElementById("svg_"+i);
+		svgElement.setAttribute("fill", "#a59e9e");
 	};
 
 	books = Books.find({
@@ -953,7 +970,6 @@ Template.bookDetail.rendered = function() {
 		Session.set("haveStatus", false);
 		$(".noStatus").hide();
 	}
-
 	$("#svgBoatDialog").hide();
 	returnPersons();
 }
@@ -1531,6 +1547,7 @@ Template.createBook.rendered = function(){
 		$("#divMessageCreateBook").show();
 	}	
 	$("#statusDialog").hide();
+	$("#svgBoatDialogCreate").hide();
 
 	$('#pasagerInfo').on('submit', function(event){
 		event.preventDefault();
@@ -1543,7 +1560,6 @@ Template.createBook.rendered = function(){
     	$('#socialSecurityNumber').val(customer.socialSecurityNumber);
     	$('#fullName').val(customer.fullName);
     	splitBirth = currentCustomer.birthDate.split("-");
-    	
 		$('#birthDaySelect').val(splitBirth[2]);
 		$('#birthMonthSelect').val(Number(splitBirth[1]));
 		$('#birthYearSelect').val(splitBirth[0]);
@@ -1552,6 +1568,7 @@ Template.createBook.rendered = function(){
     	$('#telephoneCode').val(customer.telephoneCode);
     	$('#telephone').val(customer.telephone);
     	$('#adress').val(customer.address);
+    	$('#addressnumber').val(customer.addressnumber);
     	$('#city').val(customer.city);
     	$('#state').val(customer.state);
     	$('#postcode').val(customer.postcode);
@@ -1582,8 +1599,45 @@ Template.createBook.events({
 		$("#statusDialog").show();
 	},
 
+	'click rect' : function(event){
+		var id = event.target.id;
+		svgElement = document.getElementById(id);
+		var fill = svgElement.getAttribute("fill");
+		if(fill == "#ffffff"){
+			var text = $("#slotNumber").val();
+			if(text == ""){
+				text+=id.split("_")[1];
+			}else{
+				text+="-"+id.split("_")[1];
+			}
+			$("#slotNumber").val(text);
+			svgElement.setAttribute("fill", "#e9ae11");
+		}else{
+			var text = "";
+			var textSplit = $("#slotNumber").val().split("-");
+			console.log(textSplit);
+			for (var i = 0; i < textSplit.length; i++) {
+				if(textSplit[i] != id.split("_")[1]){
+					if(text == ""){
+						text += textSplit[i];
+					}else{
+						text += "-"+textSplit[i];
+					}
+				}
+			};
+			$("#slotNumber").val(text);
+			svgElement.setAttribute("fill", "#ffffff");
+		}
+		
+	},
+
+	'click #selectManualy' : function(){
+		$("#svgBoatDialogCreate").show();
+	},
+
 	'click .cancel, click .close' : function(){
 		$("#statusDialog").hide();
+		$("#svgBoatDialogCreate").hide();
 	},
 
 	'click .searchApisIs' : function(){
@@ -1678,7 +1732,12 @@ Template.generalButtons.events({
 			throwError('Please Inform the size of vehicle');
 		}else if(!CanSaveTheBook){
 			throwError("The Vehicle informed can't go on the boat");
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
+			throwError("Please Inform the Slots");
 		}else{
+			console.log($("#categories").val());
+			console.log($("#size").val());
+			console.log($("#slotNumber").val());
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
 				createBook();
@@ -1744,6 +1803,8 @@ Template.generalButtons.events({
 			throwError('Please Inform the size of vehicle');
 		}else if(!CanSaveTheBook){
 			throwError("The Vehicle informed can't go on the boat");
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
+			throwError("Please Inform the Slots");
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1785,6 +1846,7 @@ Template.generalPassagerInfo.events({
 		    	$('#telephoneCode').val(currentCustomer.telephoneCode);
 		    	$('#telephone').val(currentCustomer.telephone);
 		    	$('#adress').val(currentCustomer.address);
+		    	$('#addressnumber').val(customer.addressnumber);
 		    	$('#city').val(currentCustomer.city);
 		    	$('#state').val(currentCustomer.state);
 		    	$('#postcode').val(currentCustomer.postcode);
@@ -1815,6 +1877,7 @@ Template.generalPassagerInfo.events({
 		    	$('#telephoneCode').val('');
 		    	$('#telephone').val('');
 		    	$('#adress').val('');
+		    	$('#addressnumber').val('');
 		    	$('#city').val();
 		    	$('#state').val('');
 		    	$('#postcode').val('');
@@ -1838,7 +1901,6 @@ Template.generalPassagerInfo.events({
 		if($("#previousData").val() == 'false'){
 			$("#previousData").val('true');
 			var pCustomerData = Session.get("previousCustomer");
-
 			$('#fullName').val(pCustomerData.fullName);
 			$('#customerId').val(pCustomerData.customerId);
 			var currentCustomer = pCustomerData;
@@ -1854,6 +1916,7 @@ Template.generalPassagerInfo.events({
 	    	$('#telephoneCode').val(currentCustomer.telephoneCode);
 	    	$('#telephone').val(currentCustomer.telephone);
 	    	$('#adress').val(currentCustomer.address);
+	    	$('#addressnumber').val(customer.addressnumber);
 	    	$('#city').val(currentCustomer.city);
 	    	$('#state').val(currentCustomer.state);
 	    	$('#postcode').val(currentCustomer.postcode);
@@ -1873,6 +1936,7 @@ Template.generalPassagerInfo.events({
 	    	$('#telephoneCode').val('');
 	    	$('#telephone').val('');
 	    	$('#adress').val('');
+	    	$('#addressnumber').val('');
 	    	$('#city').val('');
 	    	$('#state').val('');
 	    	$('#postcode').val('');
@@ -1900,6 +1964,7 @@ Template.generalPassagerInfo.events({
 	    	$('#telephoneCode').val(currentCustomer.telephoneCode);
 	    	$('#telephone').val(currentCustomer.telephone);
 	    	$('#adress').val(currentCustomer.address);
+	    	$('#addressnumber').val(customer.addressnumber);
 	    	$('#city').val(currentCustomer.city);
 	    	$('#state').val(currentCustomer.state);
 	    	$('#postcode').val(currentCustomer.postcode);
@@ -1919,6 +1984,7 @@ Template.generalPassagerInfo.events({
 	    	$('#telephoneCode').val('');
 	    	$('#telephone').val('');
 	    	$('#adress').val('');
+	    	$('#addressnumber').val('');
 	    	$('#city').val('');
 	    	$('#state').val('');
 	    	$('#postcode').val('');
@@ -1943,6 +2009,7 @@ Template.generalPassagerInfo.events({
 		    	'telephoneCode' : $('#telephoneCode').val(),
 		    	'telephone' : $('#telephone').val(),
 		    	'address' : $('#adress').val(),
+		    	'addressnumber' : $('#addressnumber').val(),
 		    	'city' : $('#city').val(),
 		    	'state' : $('#state').val(),
 		    	'postcode' : $('#postcode').val(),
@@ -2110,12 +2177,20 @@ Template.categoryVehicleBook.events({
 			$("#totalVehicle").val(parseInt(category.basePrice));
 			Session.set('categoryId', id);
 			checkIfCarsFits(category.baseSize);
+			var loop = Math.ceil(category.baseSize/5);
+			if(loop == 1){
+				$("#slotNumber").val("");
+				svgElement = document.getElementById("svg_"+getFirstSlotAvailable());
+				svgElement.setAttribute("fill", "#e9ae11");
+				$("#slotNumber").val(getFirstSlotAvailable());
+			}else{
+				$("#slotNumber").val("");
+			}
 		}else{
 			$("#baseVehicle").val(0);
 			$("#totalVehicle").val(0);
 			Session.set('categoryId', null);
 		}
-		
 		calcTotal();
 		changeSizes();
 		Session.set("firstTime", false);
@@ -2127,6 +2202,15 @@ Template.categoryVehicleBook.events({
 		Session.set('currentSizeCar', value);
 		calcVehiclePrice(value);
 		checkIfCarsFits(value);
+		var loop = Math.ceil(value/5);
+		if(loop == 1){
+			$("#slotNumber").val("");
+			svgElement = document.getElementById("svg_"+getFirstSlotAvailable());
+			svgElement.setAttribute("fill", "#e9ae11");
+			$("#slotNumber").val(getFirstSlotAvailable());
+		}else{
+			$("#slotNumber").val("");
+		}
 		calcTotal();
 		Session.set("firstTime", false);
 	}
@@ -2222,6 +2306,7 @@ var createBook = function(){
 		"telephoneCode" : $('#telephoneCode').val(),
 		"telephone" : $("#telephone").val(),
 		"address" : $("#adress").val(),
+		'addressnumber' : $('#addressnumber').val(),
 		"city" : $("#city").val(),
 		"state" : $('#state').val(),
 		"postcode" : $("#postcode").val(),
@@ -2257,6 +2342,7 @@ var createBook = function(){
 	}
 	book.vehicle = vehicle;
 	book.confirm = false;
+	book.slot = $("#slotNumber").val();
 
 	if(ExtraSlot){
 		book.vehicle.extraSlot = ExtraSlot;
@@ -2291,7 +2377,7 @@ var createBook = function(){
 		}
 	}else{
 		if(getCartIdOperator()){
-				book.cartId = getCartIdOperator();
+			book.cartId = getCartIdOperator();
 		}else{
 			var d = new Date();
 			var name = new Date().getTime().toString();

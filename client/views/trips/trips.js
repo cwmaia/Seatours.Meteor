@@ -1,5 +1,3 @@
-var weekDaysAvailability = [true,true,true,true,true,false,false];
-
 Template.trips.trips = function(){ 
 	return Products.find();
 }
@@ -24,8 +22,15 @@ Template.editTrip.boatFind = function(id){
 }
 
 Template.editTrip.available = function(weekDay){
-	console.log("wat? "+weekDaysAvailability[weekDay]);
-	return weekDaysAvailability[weekDay];
+	console.log("wat? "+localStorage.getItem("weekDays").split(",")[weekDay]);
+	if(localStorage.getItem("weekDays").split(",")[weekDay] == "true"){
+		console.log("----aqui");
+		return true;
+	}else{
+		console.log("----false");
+		return false;
+	}
+	
 }
 
 Template.editTrip.groupProduct = function(id){
@@ -206,7 +211,16 @@ Template.editTrip.events({
 	},
 	'click .weekDayAvailability' : function(event){
 		var weekDay = event.currentTarget.rel;
-		weekDaysAvailability[weekDay] = !weekDaysAvailability[weekDay];
+		var arrayTeste = localStorage.getItem("weekDays").split(",");
+
+		if(localStorage.getItem("weekDays").split(",")[weekDay] == "true"){
+			arrayTeste[weekDay] = "false";
+		}else{
+			arrayTeste[weekDay] = "true";
+		}
+
+		
+		localStorage.setItem("weekDays", arrayTeste);
 		Template.editTrip.available(weekDay);
 	},
 
