@@ -29,6 +29,7 @@ Meteor.Router.add({
 		}
 	},
 	'/customers'    : 'customersAndExternals',
+	'/waitingList'  : 'waitingList',
 	'/overview' 	: 'overview',
 	'/guest' 		: 'userMenu',
 	'/adm'   		: 'mainMenu',

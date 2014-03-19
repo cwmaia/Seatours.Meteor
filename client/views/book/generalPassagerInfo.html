@@ -109,19 +109,26 @@
             		<label class="{{#if isCustomer}} required{{/if}}">Address: </label>
                 	<input type="text"  id='adress'name="adress" placeholder="Address" {{#if isCustomer}} required{{/if}}>
             	</div>
+
+            	<div>
+		            <label class="{{#if isCustomer}} required{{/if}}">Number: </label>
+	                <input type="text" id='addressnumber' name="number" placeholder="Number" {{#if isCustomer}} required{{/if}}>
+		        </div>
 		        
 		        <div>
 		            <label class="{{#if isCustomer}} required{{/if}}">Postcode: </label>
 	                <input type="text" id='postcode' name="postcode" placeholder="Postcode" {{#if isCustomer}} required{{/if}}>
 		        </div>
-                
+
+        	</div>
+
+	        <div class="line-3">
+
                 <div>
 	            	<label class="{{#if isCustomer}} required{{/if}}">City: </label>
 	                <input type="text"  id='city'name="city" placeholder="City" {{#if isCustomer}} required{{/if}}>
 	            </div>
-        	</div>
 
-	        <div class="line-3">
                 <div>
 	            	<label >County / State: </label>
 	                <input type="text"  id='state'name="county" placeholder="County / State" >
