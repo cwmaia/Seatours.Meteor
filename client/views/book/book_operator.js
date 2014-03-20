@@ -24,12 +24,38 @@ var getFirstSlotAvailable = function(){
 
 }
 
+var updateSVGFill = function(dates, tripId){
+	if(dates == null){
+		dates = getSelectedAndNextDay();
+		tripId = Trips.findOne(Session.get('tripId'))._id;
+	}
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip._id' 	: tripId,
+		'bookStatus'	: 'Booked'
+	}).fetch();
+
+	//Update Boat Status SVG
+	for (var i = books.length - 1; i >= 0; i--) {
+		var slot = books[i].slot.split("-");
+		for (var j = slot.length - 1; j >= 0; j--) {
+			var svgElement = document.getElementById("svg_"+slot[j]);
+			svgElement.setAttribute("fill", "#808080");
+		};
+	};
+
+}
+
 var updateDataPieChart = function(){
 	totalSpace = 0;
 	var dates = getSelectedAndNextDay();
 	var trip = Trips.findOne(Session.get('tripId'));
 	var count5m = 0;
 	var count6m = 0;
+
+	updateSVGFill(dates, trip._id);
 	
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
@@ -47,14 +73,6 @@ var updateDataPieChart = function(){
 		if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
 			count6m++;
 		}
-	};
-
-	//Update Boat Status SVG
-	//All 6 meters cars is considered as 5 meters
-	var cars = count5m + count6m;
-	for (var i = 0; i < cars; i++) {
-		svgElement = document.getElementById("svg_"+i);
-		svgElement.setAttribute("fill", "#a59e9e");
 	};
 
 	books = Books.find({
@@ -895,15 +913,13 @@ Template.bookOperator.events({
 	   	
 		var persons = 0;
 		book = Books.find({'trip._id' : select.val()}).fetch();
+		console.log(book);
 		for (var j = 0; j < book.length; j++){
 			if(book[j].prices[i]){
-				for (var i = 0; i < book[j].prices.length; i++) {
-					if(book[j].prices[i].price != "Operator Fee")
-						persons = parseInt(persons + parseInt(book.prices[i].persons));
-				}
-			}
-		};
-	   
+			for (var i = 0; i < book[j].prices.length; i++) {
+				if(book[j].prices[i].price != "Operator Fee")
+					persons = parseInt(persons + parseInt(book[j].prices[i].persons));
+		}};   
 		var pAvailability = BlockingDates.findOne({'type' : 'passagersAvailability', 'tripId' : select.val()});
 		if(pAvailability){
 			if(persons = pAvailability.passagersAvailability){
@@ -1211,6 +1227,10 @@ Template.bookDetail.events({
 	},
 
 	'click #seeBoatStatusSVG' : function(event){
+		$("rect").filter(function(){
+			var id = $(this).attr("id");
+			document.getElementById(id).setAttribute("stroke", "#000000");
+		})
 		$("#svgBoatDialog").show();
 	},
 
@@ -1545,7 +1565,8 @@ Template.createBook.rendered = function(){
 		$(".addBook").attr('disabled', true);
 		$(".procedToCart").attr('disabled', true);
 		$("#divMessageCreateBook").show();
-	}	
+	}
+	updateSVGFill();	
 	$("#statusDialog").hide();
 	$("#svgBoatDialogCreate").hide();
 
@@ -1560,10 +1581,9 @@ Template.createBook.rendered = function(){
     	$('#socialSecurityNumber').val(customer.socialSecurityNumber);
     	$('#fullName').val(customer.fullName);
     	splitBirth = currentCustomer.birthDate.split("-");
-		$('#birthDaySelect').val(splitBirth[2]);
+		$('#birthDaySelect').val(Number(splitBirth[2]));
 		$('#birthMonthSelect').val(Number(splitBirth[1]));
 		$('#birthYearSelect').val(splitBirth[0]);
-		$('#birthdate').val(currentCustomer.birthDate);
     	$('#email').val(customer.email);
     	$('#telephoneCode').val(customer.telephoneCode);
     	$('#telephone').val(customer.telephone);
@@ -1602,8 +1622,9 @@ Template.createBook.events({
 	'click rect' : function(event){
 		var id = event.target.id;
 		svgElement = document.getElementById(id);
+		var stroke = svgElement.getAttribute("stroke");
 		var fill = svgElement.getAttribute("fill");
-		if(fill == "#ffffff"){
+		if(stroke == "#000000" && fill != "#808080"){
 			var text = $("#slotNumber").val();
 			if(text == ""){
 				text+=id.split("_")[1];
@@ -1611,7 +1632,7 @@ Template.createBook.events({
 				text+="-"+id.split("_")[1];
 			}
 			$("#slotNumber").val(text);
-			svgElement.setAttribute("fill", "#e9ae11");
+			svgElement.setAttribute("stroke","#00d2ff");
 		}else{
 			var text = "";
 			var textSplit = $("#slotNumber").val().split("-");
@@ -1626,12 +1647,15 @@ Template.createBook.events({
 				}
 			};
 			$("#slotNumber").val(text);
-			svgElement.setAttribute("fill", "#ffffff");
+			svgElement.setAttribute("stroke","#000000");
 		}
 		
 	},
 
 	'click #selectManualy' : function(){
+		$("rect").filter(function(){
+			$(this).attr("stroke", "#000000");
+		})
 		$("#svgBoatDialogCreate").show();
 	},
 
@@ -1838,7 +1862,7 @@ Template.generalPassagerInfo.events({
 				$('#customerId').val(currentCustomer._id);
 				$('#title').val(currentCustomer.title)
 		    	splitBirth = currentCustomer.birthDate.split("-");
-				$('#birthDaySelect').val(splitBirth[2]);
+				$('#birthDaySelect').val(Number(splitBirth[2]));
 				$('#birthMonthSelect').val(Number(splitBirth[1]));
 				$('#birthYearSelect').val(splitBirth[0]);
 				$('#birthdate').val(currentCustomer.birthDate);
@@ -1846,7 +1870,7 @@ Template.generalPassagerInfo.events({
 		    	$('#telephoneCode').val(currentCustomer.telephoneCode);
 		    	$('#telephone').val(currentCustomer.telephone);
 		    	$('#adress').val(currentCustomer.address);
-		    	$('#addressnumber').val(customer.addressnumber);
+		    	$('#addressnumber').val(currentCustomer.addressnumber);
 		    	$('#city').val(currentCustomer.city);
 		    	$('#state').val(currentCustomer.state);
 		    	$('#postcode').val(currentCustomer.postcode);
@@ -1907,7 +1931,8 @@ Template.generalPassagerInfo.events({
 			$('#title').val(currentCustomer.title)
 			//SplitBirthDate 
 			splitBirth = currentCustomer.birthDate.split("-");
-			$('#birthDaySelect').val(splitBirth[2]);
+			console.log(splitBirth);
+			$('#birthDaySelect').val(Number(splitBirth[2]));
 			$('#birthMonthSelect').val(Number(splitBirth[1]));
 			$('#birthYearSelect').val(splitBirth[0]);
 	    	$('#birthdate').val(currentCustomer.birthDate);
@@ -1916,7 +1941,7 @@ Template.generalPassagerInfo.events({
 	    	$('#telephoneCode').val(currentCustomer.telephoneCode);
 	    	$('#telephone').val(currentCustomer.telephone);
 	    	$('#adress').val(currentCustomer.address);
-	    	$('#addressnumber').val(customer.addressnumber);
+	    	$('#addressnumber').val(currentCustomer.addressnumber);
 	    	$('#city').val(currentCustomer.city);
 	    	$('#state').val(currentCustomer.state);
 	    	$('#postcode').val(currentCustomer.postcode);
@@ -1955,7 +1980,7 @@ Template.generalPassagerInfo.events({
 			$('#title').val(currentCustomer.title)
 			//SplitBirthDate 
 			splitBirth = currentCustomer.birthDate.split("-");
-			$('#birthDaySelect').val(splitBirth[2]);
+			$('#birthDaySelect').val(Number(splitBirth[2]));
 			$('#birthMonthSelect').val(Number(splitBirth[1]));
 			$('#birthYearSelect').val(splitBirth[0]);
 	    	$('#birthdate').val(currentCustomer.birthDate);
@@ -1964,7 +1989,7 @@ Template.generalPassagerInfo.events({
 	    	$('#telephoneCode').val(currentCustomer.telephoneCode);
 	    	$('#telephone').val(currentCustomer.telephone);
 	    	$('#adress').val(currentCustomer.address);
-	    	$('#addressnumber').val(customer.addressnumber);
+	    	$('#addressnumber').val(currentCustomer.addressnumber);
 	    	$('#city').val(currentCustomer.city);
 	    	$('#state').val(currentCustomer.state);
 	    	$('#postcode').val(currentCustomer.postcode);
@@ -2180,9 +2205,10 @@ Template.categoryVehicleBook.events({
 			var loop = Math.ceil(category.baseSize/5);
 			if(loop == 1){
 				$("#slotNumber").val("");
-				svgElement = document.getElementById("svg_"+getFirstSlotAvailable());
-				svgElement.setAttribute("fill", "#e9ae11");
 				$("#slotNumber").val(getFirstSlotAvailable());
+				console.log(getFirstSlotAvailable());
+				svgElement = document.getElementById("svg_"+getFirstSlotAvailable());
+				svgElement.setAttribute("stroke","#00d2ff");
 			}else{
 				$("#slotNumber").val("");
 			}
@@ -2205,9 +2231,10 @@ Template.categoryVehicleBook.events({
 		var loop = Math.ceil(value/5);
 		if(loop == 1){
 			$("#slotNumber").val("");
-			svgElement = document.getElementById("svg_"+getFirstSlotAvailable());
-			svgElement.setAttribute("fill", "#e9ae11");
 			$("#slotNumber").val(getFirstSlotAvailable());
+			console.log(getFirstSlotAvailable());
+			svgElement = document.getElementById("svg_"+getFirstSlotAvailable());
+			svgElement.setAttribute("stroke","#00d2ff");
 		}else{
 			$("#slotNumber").val("");
 		}
