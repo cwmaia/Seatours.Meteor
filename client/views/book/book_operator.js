@@ -915,7 +915,6 @@ Template.bookOperator.events({
 		book = Books.find({'trip._id' : select.val()}).fetch();
 		console.log(book);
 		for (var j = 0; j < book.length; j++){
-			if(book[j].prices[i]){
 			for (var i = 0; i < book[j].prices.length; i++) {
 				if(book[j].prices[i].price != "Operator Fee")
 					persons = parseInt(persons + parseInt(book[j].prices[i].persons));
