@@ -2380,6 +2380,7 @@ var createBook = function(){
 		
 		if (vehicle.size > 5 ){
 			book.pendingApproval = true;
+			console.log("Here");
 		}
 		if(Session.get('SaveCustomer')){
 			var resultId = Customers.insert(customer);
@@ -2503,7 +2504,6 @@ var createBook = function(){
 			Notes.insert(note);
 		}
 	}else{
-
 		if(!isCustomer()){
 			temporaryID = CartItems.insert(book);
 			var note = $('#notes').val();
@@ -2520,20 +2520,16 @@ var createBook = function(){
 		}else{
 			if(book.pendingApproval){
 				book.bookStatus = "Pending Approval (6+ meters vehicle)"
-				customerId = "NotACustomer"
+				customerId = "Pending Customer"
 				refNumber = new Date().getTime().toString().substr(1);
 				while(Orders.findOne({refNumber : refNumber})){
 					refNumber = new Date().getTime().toString().substr(1);
 				}
-				//Save Bookings
-				for (var i = 0; i < books.length; i++) {
-					delete books[i].cartId;
-					books[i].buyerId = customerId;
-					books[i].orderId = refNumber;
-					books[i].bookStatus = "Waiting Payment (credit card)";
-					Meteor.call('insertBook', books[i]);
-					CartItems.remove({_id: books[i]._id});
-				};
+				book.buyerId = customerId;
+				book.orderId = refNumber;
+				Meteor.call('insertBook', book);
+				CartItems.remove({_id: book._id});
+				
 			}else{
 				CartItems.insert(book);
 			}
