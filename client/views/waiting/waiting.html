@@ -17,7 +17,7 @@
 										<th class="sorting_disabled">Total Passagers</th>
 										<th class="sorting_disabled">Payment Status</th>
 										<th class="sorting_disabled">Book Status</th>
-										<th class="sorting_disabled">Action</th>
+										<th class="sorting_disabled">Actions</th>
 									</tr>
 								</thead>
 								<tbody>	
@@ -34,18 +34,66 @@
 										<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
 										<td>{{bookStatus}}</td>
 										<td>
-										{{#if isBookCreated bookStatus}}	
-											{{#if paid}}
-												<a href="" class="changeStatusBooking btn btn-mini btn-danger" rel="{{_id}}" title='Cancel Booking'>
-													<i class='icon-remove'></i>
-												</a>
-											{{else}}
-												<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
+											{{#if notPaid _id}}
+												<a class="btn btn-mini btn-danger quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
+												<a class="btn btn-mini btn-info makePayment" rel="{{_id}}" title="Make Payment"><i class="icon-money bigger-120"></i></a>
 											{{/if}}
-										{{/if}}
+											{{#if notAllocated _id}}
+												<a class="btn btn-mini btn-warning allocate" rel="{{_id}}" title="Allocate"><i class="icon-cog bigger-120"></i></a>
+											{{else}}
+												<a class="btn btn-mini btn-success confirm" rel="{{_id}}" title="Confirm Booking"><i class="icon-ok bigger-120"></i></a>
+											{{/if}}
 										</td>
 									</tr>
 								{{/each}}
 								</tbody>
 							</table>
+
+
+							<div id="transactionDialog">
+		<div class="modal">
+		    <div class="modal-header">
+		      <button type="button" class="close cancel">&times;</button>
+		      <h3>Add Transaction</h3>
+		    </div>
+		    <form>
+			    <div class="modal-body">
+			    	<div class='line-2'>
+			    		<div>
+					    	<div>
+					    		<label>Vendor: </label>
+					    		<label style="font-weight: normal;">{{vendor}}</label>
+					    	</div>
+				    	</div>
+
+				    	<div>
+					    	<label>Type: </label>
+					    	<select id='type'>
+					    		<option>Cash Office</option>
+					    		<option>Cash</option>
+					    		<option>Debit Card</option>
+					    		<option>Credit Card</option>
+					    		<option>Checks</option>
+					    		<option>Refund</option>
+					    		<option>Goodwill</option>
+					    	</select>
+			    		</div>
+			    	</div>
+			    	<label> To be paid: <span id="toPay"></span>
+			    	</label>
+
+			    	<label>Amount: </label>
+			    	<input type='text' id='amount'/>
+
+			    	<label>Detail:</label>
+			    	<textarea rows='4' cols='10' id='detail'/>	
+			    </div>
+
+			    <div class="modal-footer">
+			    	<a class="btn btn-success saveTransaction">Save</a>
+		    		<a href="#" class="btn cancel">Cancel</a>
+			    </div>
+		    </form>
+	  </div>
+	</div>
 </template>
