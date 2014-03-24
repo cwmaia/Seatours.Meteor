@@ -380,9 +380,9 @@
     	</div>    	
 	</div>
 	<div class='line'>
-	    	<div id='divMessageCreateBook' class="alert alert-warning">
+	    	<div id='divAlertSize' style="display: none;" class="alert alert-warning">
 	       		<b style="color: #FF2400;">ATTENTION, PLEASE NOTE:</b>
-	       		<span id='messageCreateBook'></span>
+	       		<span id='messageCreateBook'>Bookings with 6+ meters cars need to be confirmed by the office we will be contacting you soon.</span>
 		    </div>
 		</div>
 	
@@ -393,8 +393,11 @@
     {{#if isEditing}}
     	<button class="btn btn-small btn-info saveEdit" type='submit' form='pasagerInfo'>Save Edits</button>
     {{else}}
-	    <button class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Add to Basket</button>
-	    <button class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Add to Basket & Checkout</button>
+    	<div class="line">
+		    <button id="bookButton" class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Add to Basket</button>
+		    <button id="proceedButton" class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Add to Basket & Checkout</button>
+		    <button id='inquiryButton' class="btn btn-small btn-info confirmInquiry" style='display: none;' type='submit' form='pasagerInfo'>Confirm Inquiry</button>
+		</div>
 	    <br/>
 	    <br/>
     {{/if}}
@@ -505,7 +508,7 @@
 	<div>
 		<label>Category:</label>
 		<select name="categories" id="categories">
-			<option value="" disabled='true'>Select..</option>
+			<option value="">Select..</option>
 				{{#each categories}}
 					{{#if categorized category}}
 						<option value="{{category}}" id="{{_id}}" selected='selected'>{{category}}</option>

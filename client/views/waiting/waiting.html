@@ -4,5 +4,48 @@
 		Waiting List
 		</h1>
 	</div><!-- /.page-header -->
-
+	<table class='table table-striped table-bordered table-hover overviewTable'>
+								<thead>
+									<tr>
+										<th class="sorting_disabled">ID</th>
+										<th class="sorting_disabled">Customer</th>
+										<th class="sorting_disabled">Vehicle</th>
+										<th class="sorting_disabled">Vehicle Plate</th>
+										<th class="sorting_disabled">Vehicle Category</th>
+										<th class="sorting_disabled">Meters</th>
+										<th class="sorting_disabled">Telephone</th>
+										<th class="sorting_disabled">Total Passagers</th>
+										<th class="sorting_disabled">Payment Status</th>
+										<th class="sorting_disabled">Book Status</th>
+										<th class="sorting_disabled">Action</th>
+									</tr>
+								</thead>
+								<tbody>	
+								{{#each bookings}}
+									<tr id='{{_id}}' class='{{lineColor paid bookStatus}}'>
+										<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
+										<td>{{customerName customerId}}</td>
+										<td>{{vehicle.vehicleName}}</td>
+										<td>{{vehicle.vehiclePlate}}</td>
+										<td>{{vehicle.category}}</td>
+										<td>{{vehicle.size}}</td>
+										<td>{{telephone customerId}}</td>
+										<td>{{totalPassagers _id}}</td>
+										<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
+										<td>{{bookStatus}}</td>
+										<td>
+										{{#if isBookCreated bookStatus}}	
+											{{#if paid}}
+												<a href="" class="changeStatusBooking btn btn-mini btn-danger" rel="{{_id}}" title='Cancel Booking'>
+													<i class='icon-remove'></i>
+												</a>
+											{{else}}
+												<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
+											{{/if}}
+										{{/if}}
+										</td>
+									</tr>
+								{{/each}}
+								</tbody>
+							</table>
 </template>

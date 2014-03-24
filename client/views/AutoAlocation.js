@@ -1,5 +1,5 @@
 var extraSlots = ['NO', 'EXTRASLOT1', 'EXTRASLOT2', 'OVERRIDE'];
-
+/*
 var getExtraSlotsSpace = function(trip){
 	var dates = getSelectedAndNextDay();
 	var extraSpace1 = 0;
@@ -703,4 +703,4 @@ checkMaxCapacity = function(total){
 		return true;
 	}	
 	
-}
+}*/

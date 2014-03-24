@@ -94,13 +94,7 @@ Template.paymentStep.events({
 			localStorage.setItem('date', date);
 			Session.set('productId', bookings[i].product._id);
 			Session.set('tripId', bookings[i].trip._id);
-			if(bookings[i].vehicle.size){
-				if(!checkIfCarsFits(bookings[i].vehicle.size)){
-					bootbox.alert("Sorry but we have no more room to your car on boat");
-					return;
-				}
-			}
-
+			
 			persons = 0;
 
 			for (var j = 0; j < bookings[i].prices.length; j++) {
