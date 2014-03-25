@@ -26,6 +26,21 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
 
 })
 
+var removeOldBookings = function(){
+  console.log("Checking Old Books...")
+  var date = new Date();
+  books = Books.find({pendingApproval: true}).fetch();
+  for (var i = books.length - 1; i >= 0; i--) {
+    var elapsedTime = date.getTime() - books[i].creationDate.getTime();
+    if(elapsedTime >= 86400000){
+      Books.update(books[i]._id, {$set: {bookStatus: "Canceled Due Time Limit", pendingApproval : false}});
+      console.log("Change Status/Pending Approval Notifier: "+ books[i]._id)
+    }
+  };
+}
+
+Meteor.setInterval(function(){removeOldBookings()}, 230000)
+
 Meteor.Router.add("/ReturnPageError", "POST", function(){
   return "<script>window.location='http://localhost:3000/errorBorgun</script>";
 })

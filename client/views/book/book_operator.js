@@ -1690,6 +1690,7 @@ var createBook = function(){
 		},
 		"totalISK" : parseInt($("#totalISK").val().replace(".","")),
 		'dateOfBooking' : date,
+		'creationDate': new Date(),
 		'bookStatus' : 'Booked',
 		'product' : (isCustomer()) ? Products.findOne(Session.get('productId')) : Product,
 	}
