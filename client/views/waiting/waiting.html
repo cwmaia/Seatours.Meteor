@@ -9,8 +9,8 @@
 			<tr>
 				<th class="sorting_disabled">ID</th>
 				<th>Date of Departure</th>
-				<th class="sorting_disabled">Trip</th>
 				<th class="sorting_disabled">Customer</th>
+				<th class="sorting_disabled">Trip</th>
 				<th class="sorting_disabled">Vehicle</th>
 				<th class="sorting_disabled">Vehicle Plate</th>
 				<th class="sorting_disabled">Vehicle Category</th>
@@ -39,14 +39,10 @@
 				<td>{{bookStatus}}</td>
 				<td>
 					{{#if notPaid _id}}
-						<a class="btn btn-mini btn-danger quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
+						<a class="btn btn-mini btn-warning quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
 						<a class="btn btn-mini btn-info makePayment" rel="{{_id}}" title="Make Payment"><i class="icon-money bigger-120"></i></a>
 					{{/if}}
-					{{#if notAllocated _id}}
-						<a class="btn btn-mini btn-warning allocate" rel="{{_id}}" title="Allocate"><i class="icon-cog bigger-120"></i></a>
-					{{else}}
-						<a class="btn btn-mini btn-success confirm" rel="{{_id}}" title="Confirm Booking"><i class="icon-ok bigger-120"></i></a>
-					{{/if}}
+					<a class="btn btn-mini btn-success confirm" rel="{{_id}}" title="Confirm Booking"><i class="icon-ok bigger-120"></i></a>
 				</td>
 			</tr>
 		{{/each}}

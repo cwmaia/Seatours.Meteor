@@ -25,6 +25,7 @@ var getFirstSlotAvailable = function(){
 	var slot = 0;
 	$("rect").filter(function(){
 		var a = document.getElementById($(this).attr('id'));
+		//get only white slots
 		if(a.getAttribute("fill") == "#ffffff"){
 			slot = a.id.split("_")[1];
 			return;
@@ -1068,6 +1069,8 @@ Template.generalButtons.events({
 			bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
+		}else if(getFirstSlotAvailable() == 0){
+			bootbox.alert("Sorry we have no more space available on the boat for your car, please select another day");
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){

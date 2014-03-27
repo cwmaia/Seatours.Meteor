@@ -1,6 +1,4 @@
 Template.waitingList.bookings = function(){
-	
-	console.log(Books.find({'pendingApproval': true}).fetch());
 	return Books.find({'pendingApproval': true});
 }
 
@@ -58,6 +56,7 @@ Template.waitingList.rendered = function(){
 		"iDisplayLength": 50
 	});
 	oTable.fnSort( [ [1,'asc'] ]);
+	$('[data-rel=popover]').popover({html:true});
 }
 
 Template.waitingList.vendor = function(){
@@ -93,8 +92,6 @@ var updateSVGFill = function(bookId){
 		selectedDay : selectedDay,
 		nextDay : nextDay
 	}
-
-	console.log(dates);
 
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
@@ -218,7 +215,6 @@ Template.waitingList.events({
 			var id = $(this).attr("id");
 			svgElement = document.getElementById(id);
 			svgElement.setAttribute("stroke", "#000000");
-			console.log(svgElement.className);
 			if(svgElement.className.animVal == "greenSlot"){
 				svgElement.setAttribute("fill", "#87b87f");
 			}else if(svgElement.className.animVal == "blueSlot"){
