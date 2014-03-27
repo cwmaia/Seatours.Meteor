@@ -1706,8 +1706,13 @@ var createBook = function(){
 			book.slot = getFirstSlotAvailable();
 		}
 		if(Session.get('SaveCustomer')){
-			var resultId = Customers.insert(customer);
-			book.customerId = resultId;
+			findCustomer = Customers.findOne({socialSecurityNumber : $('#socialSecurityNumber').val()});
+			if(findCustomer){
+				book.customerId = findCustomer._id;
+			}else{
+				var resultId = Customers.insert(customer);
+				book.customerId = resultId;
+			}
 		}else{
 			book.customerId = $("#customerId").val();
 		}

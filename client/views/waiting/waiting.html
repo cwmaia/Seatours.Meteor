@@ -4,53 +4,56 @@
 		Waiting List
 		</h1>
 	</div><!-- /.page-header -->
-	<table class='table table-striped table-bordered table-hover overviewTable'>
-								<thead>
-									<tr>
-										<th class="sorting_disabled">ID</th>
-										<th class="sorting_disabled">Customer</th>
-										<th class="sorting_disabled">Vehicle</th>
-										<th class="sorting_disabled">Vehicle Plate</th>
-										<th class="sorting_disabled">Vehicle Category</th>
-										<th class="sorting_disabled">Meters</th>
-										<th class="sorting_disabled">Telephone</th>
-										<th class="sorting_disabled">Total Passagers</th>
-										<th class="sorting_disabled">Payment Status</th>
-										<th class="sorting_disabled">Book Status</th>
-										<th class="sorting_disabled">Actions</th>
-									</tr>
-								</thead>
-								<tbody>	
-								{{#each bookings}}
-									<tr id='{{_id}}' class='{{lineColor paid bookStatus}}'>
-										<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
-										<td>{{customerName customerId}}</td>
-										<td>{{vehicle.vehicleName}}</td>
-										<td>{{vehicle.vehiclePlate}}</td>
-										<td>{{vehicle.category}}</td>
-										<td>{{vehicle.size}}</td>
-										<td>{{telephone customerId}}</td>
-										<td>{{totalPassagers _id}}</td>
-										<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
-										<td>{{bookStatus}}</td>
-										<td>
-											{{#if notPaid _id}}
-												<a class="btn btn-mini btn-danger quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
-												<a class="btn btn-mini btn-info makePayment" rel="{{_id}}" title="Make Payment"><i class="icon-money bigger-120"></i></a>
-											{{/if}}
-											{{#if notAllocated _id}}
-												<a class="btn btn-mini btn-warning allocate" rel="{{_id}}" title="Allocate"><i class="icon-cog bigger-120"></i></a>
-											{{else}}
-												<a class="btn btn-mini btn-success confirm" rel="{{_id}}" title="Confirm Booking"><i class="icon-ok bigger-120"></i></a>
-											{{/if}}
-										</td>
-									</tr>
-								{{/each}}
-								</tbody>
-							</table>
+	<table class='table table-striped table-bordered table-hover overviewTable' id ="waitingListTable">
+		<thead>
+			<tr>
+				<th class="sorting_disabled">ID</th>
+				<th>Date of Departure</th>
+				<th class="sorting_disabled">Trip</th>
+				<th class="sorting_disabled">Customer</th>
+				<th class="sorting_disabled">Vehicle</th>
+				<th class="sorting_disabled">Vehicle Plate</th>
+				<th class="sorting_disabled">Vehicle Category</th>
+				<th class="sorting_disabled">Meters</th>
+				<th class="sorting_disabled">Telephone</th>
+				<th class="sorting_disabled">Total Passagers</th>
+				<th class="sorting_disabled">Payment Status</th>
+				<th class="sorting_disabled">Book Status</th>
+				<th class="sorting_disabled">Actions</th>
+			</tr>
+		</thead>
+		<tbody>	
+		{{#each bookings}}
+			<tr id='{{_id}}' class='{{lineColor paid bookStatus}}'>
+				<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
+				<td>{{date dateOfBooking}}</td>
+				<td>{{customerName customerId}}</td>
+				<td>{{product.name}} - {{trip.from}} {{trip.to}} {{trip.hour}}</td>
+				<td>{{vehicle.vehicleName}}</td>
+				<td>{{vehicle.vehiclePlate}}</td>
+				<td>{{vehicle.category}}</td>
+				<td>{{vehicle.size}}</td>
+				<td>{{telephone customerId}}</td>
+				<td>{{totalPassagers _id}}</td>
+				<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
+				<td>{{bookStatus}}</td>
+				<td>
+					{{#if notPaid _id}}
+						<a class="btn btn-mini btn-danger quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
+						<a class="btn btn-mini btn-info makePayment" rel="{{_id}}" title="Make Payment"><i class="icon-money bigger-120"></i></a>
+					{{/if}}
+					{{#if notAllocated _id}}
+						<a class="btn btn-mini btn-warning allocate" rel="{{_id}}" title="Allocate"><i class="icon-cog bigger-120"></i></a>
+					{{else}}
+						<a class="btn btn-mini btn-success confirm" rel="{{_id}}" title="Confirm Booking"><i class="icon-ok bigger-120"></i></a>
+					{{/if}}
+				</td>
+			</tr>
+		{{/each}}
+		</tbody>
+	</table>
 
-
-							<div id="transactionDialog">
+	<div id="transactionDialog">
 		<div class="modal">
 		    <div class="modal-header">
 		      <button type="button" class="close cancel">&times;</button>
@@ -94,6 +97,24 @@
 		    		<a href="#" class="btn cancel">Cancel</a>
 			    </div>
 		    </form>
-	  </div>
+	  	</div>
+	</div>
+
+	<div id="aloccationSlot">
+		<div class="modal" style="left: 45%; width: 760px">
+		    <div class="modal-header">
+		      <button type="button" class="close cancel">&times;</button>
+		      <h3>Select the Slots:</h3>
+		    </div>
+		    <div class="modal-body">
+		    	{{>baldurSVG}}
+		    	<input type='hidden' id='slotAloccated'>
+		    	<input type='hidden' id='waitingBookId'>
+		    </div>	
+
+		    <div class="modal-footer">
+		    	<a class="btn btn-success alocateAndSave" style="float: right">Save</a>
+		    </div>
+	  	</div>
 	</div>
 </template>

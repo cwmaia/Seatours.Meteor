@@ -23,6 +23,10 @@ Template.waitingList.customerName = function(customerId){
 	return Customers.findOne({'_id' : customerId}).fullName;
 }
 
+Template.waitingList.date = function(date){
+	return date.toLocaleDateString("pt-BR");
+}
+
 Template.waitingList.totalPassagers = function(id){
 	var persons = 0;
 	book = Books.findOne({_id : id});
@@ -49,10 +53,65 @@ Template.waitingList.notAllocated = function(id){
 
 Template.waitingList.rendered = function(){
 	$("#transactionDialog").hide();
+	$("#aloccationSlot").hide();
+	var oTable = $('#waitingListTable').dataTable({
+		"iDisplayLength": 50
+	});
+	oTable.fnSort( [ [1,'asc'] ]);
 }
 
 Template.waitingList.vendor = function(){
 	return Meteor.user().profile.name;
+}
+
+var updateSVGFill = function(bookId){
+	
+	book = Books.findOne(bookId);
+
+	dateBase = book.dateOfBooking;
+
+	selectedDay = new Date();
+	nextDay = new Date();
+
+	with(selectedDay){
+		setDate(dateBase.getDate());
+		setHours(0);
+		setMinutes(0);
+		setSeconds(0);
+		setMilliseconds(0);
+	}
+
+	with(nextDay){
+		setDate(dateBase.getDate() + 1);
+		setHours(0);
+		setMinutes(0);
+		setSeconds(0);
+		setMilliseconds(0);
+	}
+
+	dates = {
+		selectedDay : selectedDay,
+		nextDay : nextDay
+	}
+
+	console.log(dates);
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip._id' 	: book.trip._id,
+		$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
+	}).fetch();
+
+	//Update Boat Status SVG
+	for (var i = books.length - 1; i >= 0; i--) {
+		var slot = books[i].slot.split("-");
+		for (var j = slot.length - 1; j >= 0; j--) {
+			var svgElement = document.getElementById("svg_"+slot[j]);
+			svgElement.setAttribute("fill", "#808080");
+		};
+	};
+
 }
 
 Template.waitingList.events({
@@ -155,13 +214,76 @@ Template.waitingList.events({
 			
 		},
 	'click .confirm' : function(){
+		$("rect").filter(function(){
+			var id = $(this).attr("id");
+			svgElement = document.getElementById(id);
+			svgElement.setAttribute("stroke", "#000000");
+			console.log(svgElement.className);
+			if(svgElement.className.animVal == "greenSlot"){
+				svgElement.setAttribute("fill", "#87b87f");
+			}else if(svgElement.className.animVal == "blueSlot"){
+				svgElement.setAttribute("fill", "#6fb3e0");
+			}else if(svgElement.className.animVal == "redSlot"){
+				svgElement.setAttribute("fill", "#d15b47");
+			}else if(svgElement.className.animVal == "orangeSlot"){
+				svgElement.setAttribute("fill", "#ffb752");
+			}else{
+				svgElement.setAttribute("fill", "#ffffff");
+			}
+		})
+
 		var a = event.currentTarget;
 		var bookId = a.rel;
-		var currentBooking = Books.findOne({'_id' : bookId});
-		Books.update(currentBooking._id, {$set : {'bookStatus' : "Booked"}});
-		Books.update(currentBooking._id, {$set : {'pendingApproval' : false}});
-		throwInfo('Booking Confirmed!');
-		Meteor.Router.to("/bookDetailResume/"+book._id);
+		updateSVGFill(bookId);
+		$("#waitingBookId").val(bookId);		
+		$("#aloccationSlot").show();
+	},
+
+	'click .alocateAndSave' : function(){
+		if($("#slotAloccated").val() == ""){
+			throwError("Please select an slot for this booking");
+		}else{
+			var currentBooking = Books.findOne($("#waitingBookId").val());
+			Books.update(currentBooking._id, {$set : {bookStatus: 'Booked', pendingApproval : false, slot : $("#slotAloccated").val()}});
+			throwInfo('Booking Confirmed!');
+			Meteor.Router.to("/bookDetailResume/"+book._id);
+		}
+	},
+
+	'click .close, click .cancel' : function(event){
+		$("#aloccationSlot").hide();
+	},
+
+	'click rect' : function(event){
+		var id = event.target.id;
+		svgElement = document.getElementById(id);
+		var stroke = svgElement.getAttribute("stroke");
+		var fill = svgElement.getAttribute("fill");
+		if(stroke == "#000000" && fill != "#808080"){
+			var text = $("#slotAloccated").val();
+			if(text == ""){
+				text+=id.split("_")[1];
+			}else{
+				text+="-"+id.split("_")[1];
+			}
+			$("#slotAloccated").val(text);
+			svgElement.setAttribute("stroke","#00d2ff");
+		}else{
+			var text = "";
+			var textSplit = $("#slotAloccated").val().split("-");
+			for (var i = 0; i < textSplit.length; i++) {
+				if(textSplit[i] != id.split("_")[1]){
+					if(text == ""){
+						text += textSplit[i];
+					}else{
+						text += "-"+textSplit[i];
+					}
+				}
+			};
+			$("#slotAloccated").val(text);
+			svgElement.setAttribute("stroke","#000000");
+		}
+		
 	}
 
 })
