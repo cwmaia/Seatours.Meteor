@@ -10,6 +10,7 @@
 			{{> productItem}}
 		{{/each}}
 	</ul>
+
 </template>
 
 <template name='productItem'>
@@ -58,7 +59,7 @@
 		            <filter id='pieChartInsetShadow'>
 		              <feOffset dx='0' dy='0'/>
 		              <feGaussianBlur stdDeviation='3' result='offset-blur' />
-		              <feComposite operator='out' in='SourceGraphic' in2='offset-blur' result='inverse' />
+		              <feComposite operator='out' in='SourceGraphic' in='offset-blur' result='inverse' />
 		              <feFlood flood-color='black' flood-opacity='1' result='color' />
 		              <feComposite operator='in' in='color' in2='inverse' result='shadow' />
 		              <feComposite operator='over' in='shadow' in2='SourceGraphic' />
@@ -243,17 +244,28 @@
 		</h1>
 	</div><!-- /.page-header -->
 
-	<div class="line">
-		<label class="required">Destination: </label>
-		<select id="destination">
-			{{#each trips}}
-				{{#if booked from to}}
-					<option value='{{_id}}' selected='selected'>{{from}} - {{to}} - {{hour}}</option>
-				{{else}}
-					<option value='{{_id}}'>{{from}} - {{to}} - {{hour}}</option>
-				{{/if}}	
-			{{/each}}
-		</select>
+	<div class="line-2">
+		<div>
+			<label class="required">Destination: </label>
+			<select id="destination">
+				{{#each trips}}
+					{{#if booked from to}}
+						<option value='{{_id}}' selected='selected'>{{from}} - {{to}} - {{hour}}</option>
+					{{else}}
+						<option value='{{_id}}'>{{from}} - {{to}} - {{hour}}</option>
+					{{/if}}	
+				{{/each}}
+			</select>
+		</div>
+
+		<div>
+			{{#if isEditing}}
+		    	<div>
+					<label class="required">Edit Date: </label>
+					<input type='text' id="dayOfBookingEdit" name="dayBlocked" class="size1-2">
+				</div>
+		    {{/if}}
+		</div>
 		
 	</div>
 

@@ -24,7 +24,7 @@ Template.bookDetailResume.events({
 		Session.set("customerId", book.customerId);
 		Session.set("productId", product._id);
 		Session.set("bookingDate", book.dateOfBooking);
-		Session.set('tripId',Trips.findOne({from : book.trip.from, to : book.trip.to})._id);
+		Session.set('tripId', book.trip._id);
 		Meteor.Router.to('/bookEdit');
 	}
 })
