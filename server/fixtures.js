@@ -133,7 +133,7 @@ if(Products.find().count() == 0){
 		"boatId" : '1',
 		'availableFor' : customersId,
 		'imageName' : "Baldur Ferry.jpg",
-		'featured' : false
+		'featured' : true
 	});
 
 	Trips.insert({

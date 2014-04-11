@@ -133,6 +133,10 @@ Template.bookOperator.rendered = function() {
 	$('#currentSeason').text(currentSeason());
 };
 
+Template.productItem.featured = function(id){
+	return Products.findOne({'_id' : id}).featured;
+}
+
 
 Template.productItem.rendered = function(){	
 	var nowTemp = new Date();
@@ -219,6 +223,44 @@ Template.productItem.events({
 })
 
 Template.bookOperator.helpers({
+	'featProduct' : function(){
+
+		if(Meteor.user()){
+			group = Groups.findOne({_id: Meteor.user().profile.groupID});
+			if(group){
+				if(group.type = 'internal'){
+					return Products.find({active : true, featured : true});
+				}
+			}else{
+				showProducts = [];
+				products =  Products.find({active : true, featured : true}).fetch();
+				for (var i = 0; i < products.length; i++) {
+					group = Groups.findOne({_id : products[i].availableFor});
+					if(group && group.name == 'Customers'){
+						showProducts.push(products[i]);
+					}else if(Meteor.user()){
+						if(products[i].availableFor == getGroupId(Meteor.user().profile.customerId))
+						showProducts.push(products[i]);
+					}
+				};
+	
+				return showProducts;
+			}
+		}else{
+			showProducts = [];
+
+			products =  Products.find({active : true, featured : true}).fetch();
+			for (var i = 0; i < products.length; i++) {
+				group = Groups.findOne({_id : products[i].availableFor});
+					if(group && group.name == 'Customers'){
+						showProducts.push(products[i]);
+					}
+			};
+
+			return showProducts;
+		}
+	},
+
 	'product' : function(){
 
 		if(Meteor.user()){
@@ -416,6 +458,10 @@ Template.bookDetail.rendered = function() {
 	}
 	$("#svgBoatDialog").hide();
 	returnPersons();
+}
+
+Template.bookDetail.ticketNotPrinted = function(id){
+	return !Books.findOne({_id : id}).ticketPrinted;
 }
 
 Template.bookDetail.notes = function(bookId){
@@ -625,6 +671,12 @@ Template.bookDetail.events({
 		}
 	},
 
+	'click .printTicket' : function(event){
+		event.preventDefault();
+		var currentBooking = Books.findOne({'_id' : event.currentTarget.rel});
+		Books.update(currentBooking._id, {$set : {'ticketPrinted' : true}});	
+	},
+
 	'click .changeStatusBooking' : function(event) {
 		if(confirm('Are you sure? Clicking this will make the Booking Cancelled')){
 		var id = $(event.currentTarget).closest('tr').attr('id'),
@@ -767,9 +819,11 @@ Template.bookDetail.helpers({
 		return Books.find({dateOfBooking: new Date(localStorage.getItem('date')), 'product._id': Session.get('productId'), bookStatus : "Booked"});
 	},
 
-	lineColor : function(paid, bookStatus){
-		if(paid && bookStatus == "Booked"){
+	lineColor : function(paid, bookStatus, ticketPrinted){
+		if(paid && bookStatus == "Booked" && !ticketPrinted){
 			return 'green';
+		}else if(paid && bookStatus == "Booked" && ticketPrinted){
+			return 'purple';
 		}else if(paid && bookStatus == 'Canceled'){
 			return 'orange';
 		}else{
@@ -1767,6 +1821,7 @@ var createBook = function(){
 		'dateOfBooking' : date,
 		'creationDate': new Date(),
 		'bookStatus' : 'Booked',
+		"ticketPrinted" : false,
 		'product' : (isCustomer()) ? Products.findOne(Session.get('productId')) : Product,
 	}
 	book.vehicle = vehicle;

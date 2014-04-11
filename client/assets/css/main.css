@@ -198,6 +198,15 @@ select{
 		box-shadow: 0 0 12px 3px #D0D1D1; /* #d14836 #668BE6;*/
 	}
 
+	.featured{
+		border: solid 1px rgb(255, 179, 40) !important;
+		background-color: rgba(247, 239, 225, 0.35) !important;
+	}
+
+	.featured:hover{
+		box-shadow: 0 0 12px 3px rgb(255, 179, 40) !important; /* #d14836 #668BE6;*/
+	}
+
 	.listing li,
 	.listing li > *{
 		float: left;
@@ -209,9 +218,14 @@ select{
 		height: 188px;*/
 	}
 
+	.listingh3{
+		padding: 0 0 0 0 !important;
+	}
+
 	.listing h3{
 		padding: 9% 0 0 7%;
 	}
+
 
 .error{
 	color: #e9322d;

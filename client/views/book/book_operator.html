@@ -5,6 +5,11 @@
 			<label>Current season: <span id='currentSeason'></span></label>
 		</h1>
 	</div><!-- /.page-header -->
+	<ul class="listing featuredList">
+		{{#each featProduct}}
+			{{> productItem}}
+		{{/each}}
+	</ul>
 	<ul class="listing" id="bookings">
 		{{#each product}}
 			{{> productItem}}
@@ -14,8 +19,10 @@
 </template>
 
 <template name='productItem'>
-	<li class="testando" id="{{_id}}">
-		<h3>{{name}}</h3>
+	<li class="testando {{#if featured _id}}featured{{/if}}" id="{{_id}}">
+		{{#if featured _id}}<span style=" color: rgb(255,170,40); margin-right: -21px; float: right; font-size: larger; -moz-transform: rotate(-180deg); -webkit-transform: rotate(45deg); transform: rotate(45deg); font-weight: bolder; text-decoration: underline;
+		"> Featured</span>{{/if}}
+		<h3 class='listingh3'>{{name}}</h3>
 
 		<div style="clear: both;"></div>
 			<img class='productImage' src="/images/{{imageName}}">
@@ -182,7 +189,7 @@
 				</thead>
 				<tbody>	
 				{{#each bookings}}
-					<tr id='{{_id}}' class='{{lineColor paid bookStatus}}'>
+					<tr id='{{_id}}' class='{{lineColor paid bookStatus ticketPrinted}}'>
 						<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
 						<td>{{fullname customerId}}
 							{{#each notes _id}}
@@ -216,6 +223,11 @@
 									<a href="" class="changeStatusBooking btn btn-mini btn-danger" title='Cancel Booking'>
 										<i class='icon-remove'></i>
 									</a>
+									{{#if ticketNotPrinted _id}}
+										<a href="" class="printTicket btn btn-mini btn-success" rel="{{_id}}" title='Print Ticket'>
+											<i class='icon-print'></i>
+										</a>
+									{{/if}}
 								{{else}}
 									<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
 								{{/if}}

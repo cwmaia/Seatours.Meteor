@@ -275,9 +275,15 @@ Template.overview.totalPassagers = function(id){
 	return persons;
 }
 
-Template.overview.lineColor = function(paid, bookStatus){
-	if(paid && bookStatus == "Booked"){
+Template.overview.ticketNotPrinted = function(id){
+	return !Books.findOne({_id : id}).ticketPrinted;
+}
+
+Template.overview.lineColor = function(paid, bookStatus, ticketPrinted){
+	if(paid && bookStatus == "Booked" && !ticketPrinted){
 		return 'green';
+	}else if(paid && bookStatus == "Booked" && ticketPrinted){
+		return 'purple';
 	}else if(paid && bookStatus == 'Canceled'){
 		return 'orange';
 	}else{
@@ -337,6 +343,12 @@ Template.overview.events({
 				}
 			});
 			
+		},
+
+		'click .printTicket' : function(event){
+			event.preventDefault();
+			var currentBooking = Books.findOne({'_id' : event.currentTarget.rel});
+			Books.update(currentBooking._id, {$set : {'ticketPrinted' : true}});	
 		},
 
 		'click .changeStatusBooking' : function(event) {
