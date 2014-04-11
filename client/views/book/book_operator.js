@@ -1183,6 +1183,15 @@ Template.generalButtons.events({
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
+
+
+
+				//LUCAS AQUI VC DEVE MOSTRAR UM ALERT BOX COM UM IF
+				//INFORMANDO SOBRE A MULTA (SE HOUVER MULTA)
+				//SE ELE ACEITAR VC PASSA PARA OS METODOS ABAIXO E CRIA A MULTA
+				//QUE NEM VC FEZ NO CANCELAR 
+				//SE NOPS VC N FAZ NADA
+				//
 				createBook();
 				throwSuccess("Book updated");
 				Session.set("isEditing", false);
