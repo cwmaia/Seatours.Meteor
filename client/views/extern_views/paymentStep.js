@@ -92,9 +92,7 @@ Template.paymentStep.events({
 			}
 
 			localStorage.setItem('date', date);
-			Session.set('productId', bookings[i].product._id);
-			Session.set('tripId', bookings[i].trip._id);
-			
+
 			persons = 0;
 
 			for (var j = 0; j < bookings[i].prices.length; j++) {
@@ -102,7 +100,7 @@ Template.paymentStep.events({
 					persons = parseInt(parseInt(bookings[i].prices[j].persons) + persons);
 			};
 
-			if(!checkMaxCapacity(persons)){
+			if(!checkMaxCapacity(persons, bookings[i].product._id, bookings[i].trip._id)){
 				bootbox.alert("Sorry but we have no more free sits on the boat");
 				return;
 			}

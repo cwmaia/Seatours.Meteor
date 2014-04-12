@@ -53,6 +53,7 @@ var resetSVG = function(){
 }
 
 var updateSVGFill = function(dates, tripId){
+	console.log("aqui");
 	if(dates == null){
 		dates = getSelectedAndNextDay();
 	}
@@ -140,7 +141,7 @@ Template.productItem.featured = function(id){
 
 Template.productItem.rendered = function(){	
 	var nowTemp = new Date();
-	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate() -1, 0, 0, 0, 0);
+	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
 
 	$('.calendar').datepicker({
 			format : "dd/mm/yyyy"
@@ -2225,18 +2226,32 @@ function drawPieChartBoatSlots() {
 
 
 
-checkMaxCapacity = function(total){
-	var dates = getSelectedAndNextDay();
-	var trip = Trips.findOne(Session.get('tripId'));
-	var product = Products.findOne(Session.get('productId'));
+checkMaxCapacity = function(total, productId, tripId){
+	var product;
+	var reRender = true;
+	if(productId == null){
+		product = Products.findOne(Session.get('productId'));
+	}else{
+		product = Products.findOne(productId);
+		reRender = false;
+	}
+
+	if(tripId == null){
+		tripId = Session.get('tripId');
+		reRender = false;
+	}
+
 	var boat = Boats.findOne({_id : product.boatId});
+	var dates = getSelectedAndNextDay();
+
+
 
 	var persons = 0;
 	
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
-		'trip._id' 	: trip._id,
+		'trip._id' 	: tripId,
 		$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
 	}).fetch();
 
@@ -2251,13 +2266,15 @@ checkMaxCapacity = function(total){
 		$("#divMessageCreateBook").show();
 		$("#messageCreateBook").text("There are too many passagers, we got only "+parseInt(boat.maxCapacity - persons)+" free sits, sorry but this booking can't be made!");
 		CanSaveTheBook = false;
-		Template.createBook.rendered();
 		return false;
 	}else{
 		$("#divMessageCreateBook").hide();
 		CanSaveTheBook = true;
-		Template.createBook.rendered();
 		return true;
+	}
+
+	if(reRender){
+		Template.createBook.rendered();
 	}	
 	
 }

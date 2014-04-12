@@ -6,7 +6,7 @@ Template.finishBookCustomer.rendered = function(){
 		books = CartItems.find({cartId: getCartId()}).fetch();
 		book = books[0];
 		customer = Customers.findOne(book.customerId);
-		console.log(customer)
+	
 		$('#fullName').val(customer.fullName);
 		$("#email").val(customer.email);
 		$('#socialSecurityNumber').val(customer.socialSecurityNumber);
