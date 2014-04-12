@@ -36,12 +36,15 @@ Template.createAccount.events({
 			return;
 		}
 		
-		try{
-			Meteor.call('createAccount', user);
-			throwSuccess('User Created!');
-		}catch(err){
-			console.log(err);
-		}
+	
+		Meteor.call('createAccount', user, function(err){
+			if(err){
+				throwError(err.reason);
+			}else{
+				throwSuccess('User Created!');
+			}
+		});
+	
 
 		$('#fieldsetGroup input').filter(function(){
 			$(this).val('');

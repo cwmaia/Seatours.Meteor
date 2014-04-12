@@ -15,6 +15,9 @@ Template.login.events({
 });
 
 var login = function(username, password){
+
+  console.log("aqui");
+
   Meteor.loginWithPassword(username, password, function(err){
         if (err){
           throwError(err.reason);

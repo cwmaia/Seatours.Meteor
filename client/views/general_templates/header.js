@@ -29,12 +29,15 @@ isCustomer = function(){
 	if(Meteor.user()){
 		try{
 			if(Meteor.user().profile.groupID){
-				return false;
+				group = Groups.findOne({name : 'Customers'});
+				if(Meteor.user().profile.groupID == group._id)
+					return true;
+				else
+					return false;
 			}else{
-				return true;
+				return false;
 			}
 		}catch(err){
-			console.log(err.message);
 			return false;
 		}
   		
@@ -46,12 +49,15 @@ isOperator = function(){
 	if(Meteor.user()){
 		try{
 			if(Meteor.user().profile.groupID){
-				return true;
+				group = Groups.findOne({name : 'Customers'});
+				if(Meteor.user().profile.groupID == group._id)
+					return false;
+				else
+					return true;
 			}else{
-				return false;
+				return true;
 			}
 		}catch(err){
-			console.log(err.message);
 			return false;
 		}
   		
@@ -63,12 +69,15 @@ isCustomerLogged = function(){
 	if(Meteor.user()){
 		try{
 			if(Meteor.user().profile.groupID){
-				return false;
+				group = Groups.findOne({name : 'Customers'});
+				if(Meteor.user().profile.groupID == group._id)
+					return true;
+				else
+					return false;
 			}else{
-				return true;
+				return false
 			}
 		}catch(err){
-			console.log(err.message);
 			return false;
 		}
   		
