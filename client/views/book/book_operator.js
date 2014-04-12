@@ -1192,6 +1192,10 @@ var checkForAdults = function(){
 		}
 	});
 
+	if(prices.length == 0){
+		return true;
+	} 
+
 	for (var i = prices.length - 1; i >= 0; i--) {
 		if(prices[i].price == "Adult" && prices[i].persons == 0){
 			return true;
