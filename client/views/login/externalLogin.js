@@ -3,8 +3,6 @@ Template.externalLogin.rendered = function(){
 		books = CartItems.find({cartId: getCartId()}).fetch();
 		book = books[0];
 		customer = Customers.findOne(book.customerId);
-		$('#customerFullname').val(customer.fullName);
-		$(".customerEmail").val(customer.email);
 	}
 }
 
