@@ -86,7 +86,6 @@ Template.externalLogin.events({
 		//Save Bookings
 		for (var i = 0; i < books.length; i++) {
 			delete books[i].cartId;
-			books[i].buyerId = customerId;
 			books[i].orderId = refNumber;
 			books[i].bookStatus = "Waiting Payment (credit card)";
 			Meteor.call('insertBook', books[i]);
