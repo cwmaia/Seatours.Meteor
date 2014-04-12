@@ -15,11 +15,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				{{#if getCBasket}}
-					{{#each cbasketBooks}}
-						{{>items}}
-					{{/each}}
-				{{/if}}
+				{{#each cbasketBooks}}
+					{{>items}}
+				{{/each}}
 			</tbody>
 			<tfoot>
 				<td>Total</td>

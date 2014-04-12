@@ -1,4 +1,6 @@
 Template.paymentStep.cbasketBooks = function(){
+	console.log("aqui");
+	console.log(Session.get('orderId'));
 	return Books.find({orderId : Session.get('orderId')});
 }
 
