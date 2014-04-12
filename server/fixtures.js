@@ -601,22 +601,6 @@ customerID = "";
 customerID2 = "";
 
 if(Customers.find().count() == 0){
-	Customers.insert({
-		"_id"			: "NotACustomer",
-		"address"		: "NoWhere",
-		"birthDate"		: "01/01/1900",
-		"city"			: "Reykjavík",
-		"country"		: "Iceland",
-		"email"			: "notanemail@seatours.com",
-		"fullName"		: "Guest",
-		"groupId"		: "",
-		"lastUsedCar"	: "",
-		"postcode"		: "123",
-		"socialSecurityNumber": "",
-		"state"			: "",
-		"telephone"		: "00000000",
-		"title"			: "",
-	});
 	
 }
 

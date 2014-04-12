@@ -103,7 +103,6 @@ Meteor.publish('orders', function() {
           return null;
         }
      }else{
-      console.log("aqui");
         return Orders.find();
      }
   }else{
@@ -287,6 +286,8 @@ Meteor.methods({
       customerId = Customers.insert(userData);
     else
       customerId = customer._id;
+
+    console.log(customerId);
 
     Meteor.users.update(userId, {$set :{ "profile.customerId" : customerId, "profile.groupID" : userData.groupId}})
 

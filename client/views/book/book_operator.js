@@ -1487,60 +1487,68 @@ Template.generalPassagerInfo.events({
 	'click .createUser' : function(event){
 		
 		var form = document.getElementById('pasagerInfo');
-		if(form.checkValidity()){
-			event.preventDefault();
-			group = Groups.findOne({"name": "Customers"});
 
-			var customerData = {
-				'socialSecurityNumber' :  $('#socialSecurityNumber').val(),
-				'fullName' :  $('#fullName').val(),
-				'title' : $('#title').val(),
-		    	'birthDate': $('#birthdate').val(),
-		    	'email' : $('#email').val(),
-		    	'telephoneCode' : $('#telephoneCode').val(),
-		    	'telephone' : $('#telephone').val(),
-		    	'address' : $('#adress').val(),
-		    	'addressnumber' : $('#addressnumber').val(),
-		    	'city' : $('#city').val(),
-		    	'state' : $('#state').val(),
-		    	'postcode' : $('#postcode').val(),
-		    	'country' : $('#country').val(),
-		    	'groupId' : group._id
-			}
-
-			var user = {
-				username : form.username.value,
-				email : $('#email').val(),
-				password : $('#firstPasswordToEnter').val()
-			}
-			Meteor.call('createExternalAccount', user, customerData, function(err, result){
-				if(err){
-					throwError(err.reason);
-				}else{
-					SpinnerInit();
-					Meteor.loginWithPassword(user.username, user.password, function(err){
-					        if (err){
-					        	if(err.reason == 'Incorrect password')
-					        		throwError("Incorrect Password!") 
-					        	else
-					        		throwError("User not Found!") 
-					        	SpinnerStop();
-					        }else{
-					        	throwSuccess("Successfuly registered!");
-					        	cleanExternView();
-								Session.set('myBookings', true);
-								$("#loginArea").hide();
-								Template.externView.rendered();
-					        }
-						});
-					
-				}
-			})
-		}else{
+		if($('#firstPasswordToEnter').val() != $("#confirmPassword").val()){
+			throwError("The Password doesn't match");
 			$('#pasagerInfo').submit(function(event){
 				event.preventDefault();
 			});
-		}
+		}else{
+			if(form.checkValidity()){
+				event.preventDefault();
+				group = Groups.findOne({"name": "Customers"});
+
+				var customerData = {
+					'socialSecurityNumber' :  $('#socialSecurityNumber').val(),
+					'fullName' :  $('#fullName').val(),
+					'title' : $('#title').val(),
+			    	'birthDate': $('#birthdate').val(),
+			    	'email' : $('#email').val(),
+			    	'telephoneCode' : $('#telephoneCode').val(),
+			    	'telephone' : $('#telephone').val(),
+			    	'address' : $('#adress').val(),
+			    	'addressnumber' : $('#addressnumber').val(),
+			    	'city' : $('#city').val(),
+			    	'state' : $('#state').val(),
+			    	'postcode' : $('#postcode').val(),
+			    	'country' : $('#country').val(),
+			    	'groupId' : group._id
+				}
+
+				var user = {
+					username : form.username.value,
+					email : $('#email').val(),
+					password : $('#firstPasswordToEnter').val()
+				}
+				Meteor.call('createExternalAccount', user, customerData, function(err, result){
+					if(err){
+						throwError(err.reason);
+					}else{
+						SpinnerInit();
+						Meteor.loginWithPassword(user.username, user.password, function(err){
+						        if (err){
+						        	if(err.reason == 'Incorrect password')
+						        		throwError("Incorrect Password!") 
+						        	else
+						        		throwError("User not Found!") 
+						        	SpinnerStop();
+						        }else{
+						        	throwSuccess("Successfuly registered!");
+						        	cleanExternView();
+									Session.set('myBookings', true);
+									$("#loginArea").hide();
+									Template.externView.rendered();
+						        }
+							});
+						
+					}
+				})
+			}else{
+				$('#pasagerInfo').submit(function(event){
+					event.preventDefault();
+				});
+			}
+		}		
 	},
 
 	'change #country' : function(event){
