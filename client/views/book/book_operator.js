@@ -1111,12 +1111,14 @@ Template.createBook.events({
 			$("text:contains('D')").show();
 		}
 
-		/*var textSplit = $("#slotNumber").val().split("-");
-		if(!textSplit[1] && $("#slotNumber").val() != ""){
-			console.log("aqui");
-			svgElement = document.getElementById("svg_"+getFirstSlotAvailable());
-			svgElement.setAttribute("stroke","#00d2ff");
-		}*/
+		var textSplit = $("#slotNumber").val().split("-");
+		if($("#slotNumber").val() != ""){
+			for (var i = textSplit.length - 1; i >= 0; i--) {
+				svgElement = document.getElementById("svg_"+textSplit[i]);
+				svgElement.setAttribute("stroke","#00d2ff");
+			};
+		}
+		
 		$("#svgBoatDialogCreate").show();
 	},
 

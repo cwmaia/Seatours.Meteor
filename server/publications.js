@@ -19,6 +19,8 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
     }
     Transactions.insert(transaction);
   };
+
+  console.log(books);
   
   //talvez escrever todo o html... eh... talve. tem que ver se funciona....
 
@@ -101,6 +103,7 @@ Meteor.publish('orders', function() {
           return null;
         }
      }else{
+      console.log("aqui");
         return Orders.find();
      }
   }else{
@@ -285,7 +288,7 @@ Meteor.methods({
     else
       customerId = customer._id;
 
-    Meteor.users.update(userId, {$set :{ "profile.customerId" : customerId}})
+    Meteor.users.update(userId, {$set :{ "profile.customerId" : customerId, "profile.groupID" : customer.groupId}})
 
     return customerId;
   },

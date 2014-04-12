@@ -76,12 +76,12 @@ Template.externalLogin.events({
 
 		books = CartItems.find({cartId: getCartId()}).fetch();
 
-		customerId = "NotACustomer"
+//		customerId = "NotACustomer"
 		refNumber = new Date().getTime().toString().substr(1);
 		while(Orders.findOne({refNumber : refNumber})){
 			refNumber = new Date().getTime().toString().substr(1);
 		}
-		Orders.insert({customerId: customerId, paid: false, dateOrder: new Date(), refNumber: refNumber});
+		Orders.insert({paid: false, dateOrder: new Date(), refNumber: refNumber});
 		
 		//Save Bookings
 		for (var i = 0; i < books.length; i++) {
