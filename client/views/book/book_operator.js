@@ -1297,6 +1297,8 @@ Template.generalButtons.events({
 			throwError("The Vehicle informed can't go on the boat");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
+		}else if(checkForAdults()){
+			bootbox.alert("A least one Adult is needed to create a booking!");	
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1597,7 +1599,9 @@ Template.generalPassagerInfo.rendered = function() {
 	});
 	$('#socialSecurityNumber').mask('999999-9999');
 	loadTypeAheadPostCodes(true);
-	$("#birthDayPick").birthdaypicker();
+	$("#birthDayPick").birthdaypicker({
+		"dateFormat" : "bigEndian"
+	});
 }
 
 Template.categoryVehicleBook.helpers({

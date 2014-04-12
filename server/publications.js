@@ -287,8 +287,6 @@ Meteor.methods({
     else
       customerId = customer._id;
 
-    console.log(customerId);
-
     Meteor.users.update(userId, {$set :{ "profile.customerId" : customerId, "profile.groupID" : userData.groupId}})
 
     return customerId;
