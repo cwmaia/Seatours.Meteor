@@ -1192,6 +1192,10 @@ var checkForAdults = function(){
 		}
 	});
 
+	if(prices.length == 0){
+		return true;
+	} 
+
 	for (var i = prices.length - 1; i >= 0; i--) {
 		if(prices[i].price == "Adult" && prices[i].persons == 0){
 			return true;
@@ -1297,6 +1301,8 @@ Template.generalButtons.events({
 			throwError("The Vehicle informed can't go on the boat");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
+		}else if(checkForAdults()){
+			bootbox.alert("A least one Adult is needed to create a booking!");	
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1487,60 +1493,67 @@ Template.generalPassagerInfo.events({
 	'click .createUser' : function(event){
 		
 		var form = document.getElementById('pasagerInfo');
-		if(form.checkValidity()){
-			event.preventDefault();
-			group = Groups.findOne({"name": "Customers"});
 
-			var customerData = {
-				'socialSecurityNumber' :  $('#socialSecurityNumber').val(),
-				'fullName' :  $('#fullName').val(),
-				'title' : $('#title').val(),
-		    	'birthDate': $('#birthdate').val(),
-		    	'email' : $('#email').val(),
-		    	'telephoneCode' : $('#telephoneCode').val(),
-		    	'telephone' : $('#telephone').val(),
-		    	'address' : $('#adress').val(),
-		    	'addressnumber' : $('#addressnumber').val(),
-		    	'city' : $('#city').val(),
-		    	'state' : $('#state').val(),
-		    	'postcode' : $('#postcode').val(),
-		    	'country' : $('#country').val(),
-		    	'groupId' : group._id
-			}
-
-			var user = {
-				username : form.username.value,
-				email : $('#email').val(),
-				password : $('#firstPasswordToEnter').val()
-			}
-			Meteor.call('createExternalAccount', user, customerData, function(err, result){
-				if(err){
-					throwError(err.reason);
-				}else{
-					SpinnerInit();
-					Meteor.loginWithPassword(user.username, user.password, function(err){
-					        if (err){
-					        	if(err.reason == 'Incorrect password')
-					        		throwError("Incorrect Password!") 
-					        	else
-					        		throwError("User not Found!") 
-					        	SpinnerStop();
-					        }else{
-					        	throwSuccess("Successfuly registered!");
-					        	cleanExternView();
-								Session.set('myBookings', true);
-								$("#loginArea").hide();
-								Template.externView.rendered();
-					        }
-						});
-					
-				}
-			})
-		}else{
+		if($('#firstPasswordToEnter').val() != $("#confirmPassword").val()){
+			throwError("The Password doesn't match");
 			$('#pasagerInfo').submit(function(event){
 				event.preventDefault();
 			});
-		}
+		}else{
+			if(form.checkValidity()){
+				event.preventDefault();
+				group = Groups.findOne({"name": "Customers"});
+
+				var customerData = {
+					'socialSecurityNumber' :  $('#socialSecurityNumber').val(),
+					'fullName' :  $('#fullName').val(),
+					'title' : $('#title').val(),
+			    	'birthDate': $('#birthdate').val(),
+			    	'email' : $('#email').val(),
+			    	'telephoneCode' : $('#telephoneCode').val(),
+			    	'telephone' : $('#telephone').val(),
+			    	'address' : $('#adress').val(),
+			    	'addressnumber' : $('#addressnumber').val(),
+			    	'city' : $('#city').val(),
+			    	'state' : $('#state').val(),
+			    	'postcode' : $('#postcode').val(),
+			    	'country' : $('#country').val(),
+			    	'groupId' : group._id
+				}
+
+				var user = {
+					username : form.username.value,
+					email : $('#email').val(),
+					password : $('#firstPasswordToEnter').val()
+				}
+				Meteor.call('createExternalAccount', user, customerData, function(err, result){
+					if(err){
+						throwError(err.reason);
+					}else{
+						SpinnerInit();
+						Meteor.loginWithPassword(user.username, user.password, function(err){
+						        if (err){
+						        	if(err.reason == 'Incorrect password')
+						        		throwError("Incorrect Password!") 
+						        	else
+						        		throwError("User not Found!") 
+						        	SpinnerStop();
+						        }else{
+						        	throwSuccess("Successfuly registered!");
+						        	cleanExternView();
+									$("#loginArea").hide();
+									Template.externView.rendered();
+						        }
+							});
+						
+					}
+				})
+			}else{
+				$('#pasagerInfo').submit(function(event){
+					event.preventDefault();
+				});
+			}
+		}		
 	},
 
 	'change #country' : function(event){
@@ -1589,7 +1602,9 @@ Template.generalPassagerInfo.rendered = function() {
 	});
 	$('#socialSecurityNumber').mask('999999-9999');
 	loadTypeAheadPostCodes(true);
-	$("#birthDayPick").birthdaypicker();
+	$("#birthDayPick").birthdaypicker({
+		"dateFormat" : "bigEndian"
+	});
 }
 
 Template.categoryVehicleBook.helpers({

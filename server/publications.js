@@ -103,7 +103,6 @@ Meteor.publish('orders', function() {
           return null;
         }
      }else{
-      console.log("aqui");
         return Orders.find();
      }
   }else{
