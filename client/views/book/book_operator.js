@@ -1537,7 +1537,6 @@ Template.generalPassagerInfo.events({
 						        }else{
 						        	throwSuccess("Successfuly registered!");
 						        	cleanExternView();
-									Session.set('myBookings', true);
 									$("#loginArea").hide();
 									Template.externView.rendered();
 						        }
