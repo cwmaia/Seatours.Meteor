@@ -34,17 +34,7 @@ Template.bookCustomerEmailResume.events({
 	},
 
 	'click .sendMail' : function(event){
-		var a = event.target;
-
-		html = buildEmail(book, book._id, customer);
-
-		Meteor.call('sendEmailHTML',
-			a.rel,
-			'noreply@seatours.com',
-			'Your Voucher at Seatours!',
-			'<html><head></head><body>Thanks for Booking with Seatours, here is your <b>voucher: </b>'+html+'<hr/>Safe Travels! Seatours Team!<body></html>');
-
-		throwSuccess('Mail Sent');
+		sendMail(book, book._id, customer);		
 	},
 	'click .editMail' : function(){
 		$('#editMailModal').show();
@@ -66,3 +56,29 @@ Template.bookCustomerEmailResume.events({
 		$('#editMailModal').hide();
 	}
 })
+
+var sendMail = function(book, result, customer){
+
+	var prices = '';
+	for (var i = 0; i < book.prices.length; i++) {
+		prices += book.prices[i].prices + " - " + book.prices[i].persons + " X " + book.prices[i].perUnit + " = " +  book.prices[i].sum + " ISK <br/>";
+	};
+
+	var vehicle = '';
+	if(book.vehicle.category != ''){
+		vehicle = book.vehicle.category +" - "+ book.vehicle.size+ "m = " + book.vehicle.totalCost + " ISK";
+	}
+
+	Meteor.call("generateQRCodeGIF", result);
+    Session.set("book", book);
+
+    Session.set("mailing", true);
+    
+    Session.set("customer", customer);
+    
+	var html = Template.voucher();
+
+	Meteor.call('sendEmailHTML', customer.email, "noreply@seatours.is", "Your Voucher at Seatours!", html);
+	throwSuccess('Mail Sent');
+
+}
