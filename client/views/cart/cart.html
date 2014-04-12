@@ -62,7 +62,8 @@
 			{{#each prices}}{{price}} ( <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{perUnit}}"> ISK) X {{persons}} =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{sum}}"> ISK</br>{{/each}}</br>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{vehicle.totalCost}}"> ISK{{/if}}
 		</td>
 		{{#if notFinish}}
-			<td style='width: 5%; text-align: center'><a class='remove btn btn-mini btn-danger' rel='{{_id}}'><i class='icon-remove'></i></a></td>
+			<td style='width: 5%; text-align: center'><a class='remove btn btn-mini btn-danger' rel='{{_id}}'><i class='icon-remove'></i></a>
+			<a class='editBook btn btn-mini btn-info' rel='{{_id}}'><i class='icon-edit'></i></a></td>
 		{{/if}}
 		<td style='width: 10%; text-align: center'> 
 			<span id='{{_id}}' class='calcTotal'>

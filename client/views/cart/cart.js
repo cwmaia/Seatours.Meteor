@@ -169,6 +169,20 @@ Template.items.events({
 		};
 
 		throwInfo('Item Removed');
+	},
+
+	'click .editBook' : function(event){
+		var link = event.currentTarget;
+		Session.set('isEditing', true);
+		Session.set("firstTime", true);
+		Session.set("firstTimePrice", true);
+		book = CartItems.findOne({_id: link.rel});
+		product = Products.findOne({_id: book.product._id});
+		Session.set("customerId", book.customerId);
+		Session.set("productId", product._id);
+		Session.set("bookingDate", book.dateOfBooking);
+		Session.set('tripId', book.trip._id);
+		Meteor.Router.to('/bookEdit');
 	}
 })
 

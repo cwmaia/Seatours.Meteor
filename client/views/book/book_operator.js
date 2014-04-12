@@ -53,7 +53,6 @@ var resetSVG = function(){
 }
 
 var updateSVGFill = function(dates, tripId){
-	console.log("aqui");
 	if(dates == null){
 		dates = getSelectedAndNextDay();
 	}
@@ -87,11 +86,13 @@ var updateSVGFill = function(dates, tripId){
 
 	//Update Boat Status SVG
 	for (var i = books.length - 1; i >= 0; i--) {
-		var slot = books[i].slot.split("-");
-		for (var j = slot.length - 1; j >= 0; j--) {
-			var svgElement = document.getElementById("svg_"+slot[j]);
-			svgElement.setAttribute("fill", "#808080");
-		};
+		if(books[i].slot){
+			var slot = books[i].slot.split("-");
+			for (var j = slot.length - 1; j >= 0; j--) {
+				var svgElement = document.getElementById("svg_"+slot[j]);
+				svgElement.setAttribute("fill", "#808080");
+			};
+		}
 	};
 
 }
@@ -1174,6 +1175,32 @@ Template.productPrices.events({
 	}
 })
 
+var checkForAdults = function(){
+	var prices = [];
+
+	$('.unitPrice').filter(function(){
+		var split = $(this).val().split("|");
+		if(split[2]){
+			var price = {
+			"price" : split[0],
+			"perUnit" : split[1],
+			"persons" : split[2],
+			"sum" : split[3]
+			}
+			
+			prices.push(price);
+		}
+	});
+
+	for (var i = prices.length - 1; i >= 0; i--) {
+		if(prices[i].price == "Adult" && prices[i].persons == 0){
+			return true;
+		}
+	};
+
+	return false;
+}
+
 Template.generalButtons.events({
 	//Events for identify 
 
@@ -1186,6 +1213,8 @@ Template.generalButtons.events({
 			throwError("Please Inform the Slots");
 		}else if(getFirstSlotAvailable() == 0){
 			bootbox.alert("Sorry we have no more space available on the boat for your car, please select another day");
+		}else if(checkForAdults()){
+			bootbox.alert("A least one Adult is needed to create a booking!");		
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){

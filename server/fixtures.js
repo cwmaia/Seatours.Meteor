@@ -32,7 +32,7 @@ if(Groups.find().count() == 0){
 	Groups.insert({
 		'name' : 'Agencies',
 		'description' : 'Travel Agencies',
-		'type' : 'external',
+		'type' : 'internal',
 		'discount' : 0,
 		'permissions' : [
 			'bookOperator',
