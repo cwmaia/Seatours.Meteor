@@ -307,6 +307,14 @@ Meteor.methods({
     return books;
   },
 
+  getOnlineDiscount : function(){
+    return Settings.findOne("onlineDiscount").onlineDiscount;
+  },
+
+  setOnlineDiscount : function(value){
+    Settings.update("onlineDiscount", {$set : {onlineDiscount : value}});
+  },
+
 
   saveFile: function(blob, name, path, encoding) {
     var fs = Npm.require('fs'), encoding ='binary';

@@ -2,6 +2,7 @@ var SaveVehicle = false;
 var CanSaveTheBook = true;
 var Product = {};
 var VehicleSelected = false;
+var loadBirthDate = true;
 
 var getSelectedAndNextDay = function(){
 	var selectedDay = new Date(localStorage.getItem('date'));
@@ -887,7 +888,7 @@ Template.generalButtons.rendered = function(){
 }
 
 Template.generalPassagerInfo.previous = function(){
-	if(Session.get('previousCustomer')){
+	if(Session.get('previousCustomer') && !Template.generalPassagerInfo.isEditingCustomer()){
 		return true;
 	}
 	return false;
@@ -1210,7 +1211,7 @@ Template.generalButtons.events({
 
 	'click .addBook' : function(event){
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
-			throwError('Please Inform the size of vehicle');
+			bootbox.alert('Please Inform the size of vehicle');
 		}else if(!CanSaveTheBook){
 			bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
@@ -1218,7 +1219,12 @@ Template.generalButtons.events({
 		}else if(getFirstSlotAvailable() == 0){
 			bootbox.alert("Sorry we have no more space available on the boat for your car, please select another day");
 		}else if(checkForAdults()){
-			bootbox.alert("A least one Adult is needed to create a booking!");		
+			bootbox.alert("A least one Adult is needed to create a booking!");
+		}else if($("#categories").val() != "" && $("#size").val() != ""){
+			if($("#vehiclePlate").val() == "")
+				bootbox.alert("Please inform the vehicle plate.");
+			if($("#vehicle").val() == "")	
+				bootbox.alert("Please inform the vehicle name");		
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1269,7 +1275,12 @@ Template.generalButtons.events({
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
-			throwError("Please Inform the Slots");	
+			throwError("Please Inform the Slots");
+		}else if($("#categories").val() != "" && $("#size").val() != ""){
+			if($("#vehiclePlate").val() == "")
+				bootbox.alert("Please inform the vehicle plate.");
+			if($("#vehicle").val() == "")	
+				bootbox.alert("Please inform the vehicle name");	
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1303,6 +1314,12 @@ Template.generalButtons.events({
 			throwError("Please Inform the Slots");
 		}else if(checkForAdults()){
 			bootbox.alert("A least one Adult is needed to create a booking!");	
+		}else if($("#categories").val() != "" && $("#size").val() != ""){
+			if($("#vehiclePlate").val() == ""){
+				bootbox.alert("Please inform the vehicle plate.");
+			}else if($("#vehicle").val() == ""){	
+				bootbox.alert("Please inform the vehicle name");	
+			}
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1602,10 +1619,13 @@ Template.generalPassagerInfo.rendered = function() {
 	});
 	$('#socialSecurityNumber').mask('999999-9999');
 	loadTypeAheadPostCodes(true);
+
 	$("#birthDayPick").birthdaypicker({
 		"dateFormat" : "bigEndian"
 	});
+	
 }
+	
 
 Template.categoryVehicleBook.helpers({
 	categories : function(){

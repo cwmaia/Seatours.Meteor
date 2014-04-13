@@ -33,15 +33,15 @@ Template.customersAndExternals.events({
 		for (var i = 0; i < groups.length; i++) {
 			Groups.update(groups[i]._id, {$set : {discount : $('#onlineDiscountValue'+groups[i]._id).val()}});
 		};
+
+		Meteor.call("setOnlineDiscount", $("#onlineDiscountValue").val());
 		throwSuccess("Updated Discounts!");
 		
 	},
 
 	'click .editCustomer' : function(event){
 		var a = event.currentTarget;
-		Session.set('customerId', a.rel);
-		Template.generalPassagerInfo.rendered();
-		preLoadInfos();
+		preLoadInfos(a.rel);
 		$("#editCustomerModal").show();
 	},
 
@@ -53,12 +53,17 @@ Template.customersAndExternals.events({
 		var form = document.getElementById('pasagerInfo');
 		if(form.checkValidity()){
 			event.preventDefault();
-			
-			Customers.update(Session.get('customerId'), {$set : {
+			var birthDate;
+
+			birthDate = $('#birthYearSelect').val();
+			birthDate += "-" + $('#birthMonthSelect').val();
+			birthDate += "-" + $('#birthDaySelect').val();
+
+			Customers.update($("#customerId").val(), {$set : {
 				socialSecurityNumber :  $('#socialSecurityNumber').val(),
 				fullName :  $('#fullName').val(),
 				title : $('#title').val(),
-		    	birthDate: $('#birthDate').val(),
+		  		birthDate : birthDate,
 		    	email : $('#email').val(),
 		    	telephoneCode : $('#telephoneCode').val(),
 		    	telephone : $('#telephone').val(),
@@ -70,20 +75,25 @@ Template.customersAndExternals.events({
 		    	groupId : $('#groupCustomer').val()			
 			}})
 
-			Session.set('customerId', null);
 			$("#editCustomerModal").hide();
 			throwSuccess("Customer Updated!");
 		}
 	}
 })
 
-var preLoadInfos = function(){
+var preLoadInfos = function(customerId){
 
-	currentCustomer = Customers.findOne({_id : Session.get('customerId')});
+	currentCustomer = Customers.findOne({_id : customerId});
 	if(currentCustomer){
+		$("#customerId").val(customerId);
 		$('#socialSecurityNumber').val(currentCustomer.socialSecurityNumber),
 		$('#fullName').val(currentCustomer.fullName),
 		$('#title').val(currentCustomer.title),
+		splitBirth = currentCustomer.birthDate.split("-");
+		console.log(splitBirth);
+		$('#birthDaySelect').val(Number(splitBirth[2]));
+		$('#birthMonthSelect').val(Number(splitBirth[1]));
+		$('#birthYearSelect').val(splitBirth[0]);
 		$('#birthDate').val(currentCustomer.birthDate),
 		$('#email').val(currentCustomer.email),
 		$('#telephone').val(currentCustomer.telephone),
@@ -99,12 +109,8 @@ var preLoadInfos = function(){
 				
 }
 
-Template.customersAndExternals.rendered = function(){
-	$("#editCustomerModal").hide();
-	$("#customersTable").dataTable({
-		"iDisplayLength": 50
-	});
-	var discount = Settings.findOne({_id: 'onlineDiscount'}).onlineDiscount;
+var setUp = function(value){
+	var discount = value;
 	$("#onlineDiscountSlider").slider({
       range: "min",
       min: 0,
@@ -133,4 +139,23 @@ Template.customersAndExternals.rendered = function(){
 	    });
 	    $( "#onlineDiscountValue"+id ).val( $( "#onlineDiscountSlider-"+id ).slider( "value" ) );
     };
+}
+
+Template.customersAndExternals.rendered = function(){
+
+	$("#editCustomerModal").hide();
+
+	$("#customersTable").dataTable({
+		"iDisplayLength": 50,
+		"bServerSide": false,
+   		"bDestroy": true
+	});
+
+	Meteor.call("getOnlineDiscount", function(err, result){
+		if(err){
+			console.log(err);
+		}else{
+			setUp(result);
+		}
+	})
 }
