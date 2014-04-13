@@ -310,7 +310,7 @@ Meteor.methods({
   getBooksToFill : function(dates, tripId, productId){
     books = Books.find({
       dateOfBooking   : {$gte: dates.selectedDay, $lt: dates.nextDay},
-      'product._id'   : Session.get('productId'),
+      'product._id'   : productId,
       'trip._id'  : tripId,
       $or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
     }).fetch();

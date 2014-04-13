@@ -62,11 +62,8 @@ var updateSVGFill = function(dates, tripId){
 		tripId = Trips.findOne(Session.get('tripId'))._id;
 	}
 
-
-
 	resetSVG();
 	books = [];
-
 
 	if(!Session.get("isEditing")){
 		books = Books.find({
@@ -117,6 +114,7 @@ var updateSVGFill = function(dates, tripId){
 }
 
 var fillWithServer = function(books){
+	resetSVG();
 	for (var i = books.length - 1; i >= 0; i--) {
 		if(books[i].slot){
 			var slot = books[i].slot.split("-");
@@ -132,8 +130,6 @@ var updateDataPieChart = function(){
 	totalSpace = 0;
 	var dates = getSelectedAndNextDay();
 	var trip = Trips.findOne(Session.get('tripId'));
-	var count5m = 0;
-	var count6m = 0;
 
 	updateSVGFill(dates, trip._id);
 	
@@ -144,17 +140,40 @@ var updateDataPieChart = function(){
 		$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
 	}).fetch();
 
-	for (var i = 0; i < books.length; i++) {
-		if(books[i].vehicle.size <= 5){
-			count5m++;
-		}
+	var regularSlots = 0;
+	var extraSlots = 0;
+	var doorSlots = 0;
+	var unallocated = 38;
 
-		if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
-			count6m++;
-		}
+	for (var i = 0; i < books.length; i++) {
+		slotArray = books[i].slot.split("-");
+		for (var j = slotArray.length - 1; j >= 0; j--) {
+			if(slotArray[j].indexOf("X") != -1){
+				extraSlots++;
+				unallocated--;
+			}else if(slotArray[j].indexOf("D") != -1){
+				doorSlots++;
+				unallocated--;
+			}else{
+				regularSlots++;
+				unallocated--;
+			}
+		};
 	};
+
+	$("#regularSlotsAlocated").text(regularSlots*5);
+	$("#doorSlotsAlocated").text(doorSlots*5);
+	$("#spaceAlocatedSlot").text(extraSlots*5);
+
+
+	percentages = {
+		regularSlots : regularSlots,
+		extraSlots : extraSlots,
+		doorSlots : doorSlots,
+		unallocated : unallocated
+	}
 	
-	return;
+	return percentages;
 }
 
 ///////////////////////////////////////////
@@ -196,7 +215,6 @@ Template.productItem.rendered = function(){
 
 Template.productItem.events({
 	'click .calendar' : function(event){
-		console.log("aqui");
 		var today = new Date(localStorage.getItem('date'));
 		var appendTrips = [];
 		var trips = Trips.find({productId: this._id, active : true}).fetch();
@@ -1423,7 +1441,6 @@ Template.generalButtons.events({
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehicle").val() == ""){	
 			bootbox.alert("Please inform the vehicle name");	
 		}else{
-			console.log("aqui passou");
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
 				createBook();
@@ -2174,27 +2191,27 @@ var formatData = function(percentages){
 	    pieChart  : [
 	      {
 	        color       : 'red',
-	        description : '5 meters cars',
+	        description : 'Regular Slots',
 	        title       : 'Small Cars (5m)',
-	        value       : parseFloat(12 / 100)
+	        value       : parseFloat(percentages.regularSlots / 38)
 	      },
 	      {
 	        color       : 'blue',
-	        description : '6 meters cars',
+	        description : 'Door Slots',
 	        title       : 'trains',
-	        value       : parseFloat(12 / 100)
+	        value       : parseFloat(percentages.doorSlots / 38)
 	      },
 	      {
 	        color       : 'green',
-	        description : 'Extra Slots Cars',
+	        description : 'Extra Slots',
 	        title       : 'trains',
-	        value       : parseFloat(12 / 100)
+	        value       : parseFloat(percentages.extraSlots / 38)
 	      },
 	      {
 	        color       : 'gray',
 	        description : 'Unallocated Space',
 	        title       : 'trains',
-	        value       : parseFloat(12 / 100)
+	        value       : parseFloat(percentages.unallocated / 38)
 	      }
 	    ]
   	};
