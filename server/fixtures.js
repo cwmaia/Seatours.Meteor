@@ -135,77 +135,131 @@ if(Products.find().count() == 0){
 		'featured' : true
 	});
 
-	Trips.insert({
+	var tripID1 = Trips.insert({
 		"from" 	: "Stykkishólmur",
 		"to"	: "",
 		"hour"  : "09:00",
 		'season' : "winter",
 		'active' : true,
 		'productId' : result
-	}),
+	});
 
-	Trips.insert({
+	BlockingDates.insert({
+					'tripId' : tripID1,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
+
+	var tripID2 = Trips.insert({
 		"from" 	: "Stykkishólmur",
 		"to"	: "",
 		"hour"  : "15:45",
 		'season' : "winter",
 		'active' : true,
 		'productId' : result
-	}),
+	});
+	BlockingDates.insert({
+					'tripId' : tripID2,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
 
-	Trips.insert({
+	var tripID3 = Trips.insert({
 		"from" 	: "Flatey",
 		"to"	: "Brjánslækur",
 		"hour"  : "10:30",
 		'season' : "summer",
 		'active' : true,
 		'productId' : result		
-	}),
+	});
 
-	Trips.insert({
+	BlockingDates.insert({
+					'tripId' : tripID3,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
+
+	var tripID4 = Trips.insert({
 		"from" 	: "Flatey",
 		"to"	: "Brjánslækur",
 		"hour"  : "17:15",
 		'season' : "summer",
 		'active' : true,
 		'productId' : result		
-	}),
+	});
 
-	Trips.insert({
+	BlockingDates.insert({
+					'tripId' : tripID4,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
+
+	var tripID5 = Trips.insert({
 		"from" 	: "Brjánslækur",
 		"to"	: "",
 		"hour"  : "12:15",
 		'season' : "summer",
 		'active' : true,
 		'productId' : result		
-	}),
+	});
 
-	Trips.insert({
+	BlockingDates.insert({
+					'tripId' : tripID5,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
+
+	var tripID6 = Trips.insert({
 		"from" 	: "Brjánslækur",
 		"to"	: "",
 		"hour"  : "19:00",
 		'season' : "summer",
 		'active' : true,
 		'productId' : result		
-	}),
+	});
+	BlockingDates.insert({
+					'tripId' : tripID6,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
 
-	Trips.insert({
+	var tripID7 = Trips.insert({
 		"from" 	: "Flatey",
 		"to"	: "Stykkishólmur",
 		"hour"  : "13:15",
 		'season' : "summer",
 		'active' : true,
 		'productId' : result		
-	}),
+	});
 
-	Trips.insert({
+	BlockingDates.insert({
+					'tripId' : tripID7,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
+
+	var tripID8 = Trips.insert({
 		"from" 	: "Flatey",
 		"to"	: "Stykkishólmur",
 		"hour"  : "20:00",
 		'season' : "summer",
 		'active' : true,
 		'productId' : result		
-	}),
+	});
+
+	BlockingDates.insert({
+					'tripId' : tripID8,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
 
 	Prices.insert({
 		"price" 	: "Adult",
@@ -327,15 +381,22 @@ if(Products.find().count() == 0){
 
 	});
 
-	Trips.insert({
+	var tripID9 = Trips.insert({
 		"from" 	: "Vikingsushi adventure",
 		"to"	: "",
-		"hour"  : "11:00",
+	 	"hour"  : "11:00",
 		'season' : "noSeason",
 		'active' : true,
 		'productId' : result,
 		'availableDays' : {start: '05/13/2014', end: '10/15/2014'}
-	}),
+	});
+
+	BlockingDates.insert({
+					'tripId' : tripID9,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
 
 	Prices.insert({
 		"price" 	: "Adult",
@@ -400,7 +461,7 @@ if(Products.find().count() == 0){
 		'featured' : false
 	});
 
-	Trips.insert({
+	var tripID10 = Trips.insert({
 		"from" 	: "Viking Sushi Short",
 		"to"	: "",
 		"hour"  : "13:40",
@@ -408,9 +469,15 @@ if(Products.find().count() == 0){
 		'active' : true,
 		'productId' : result,
 		'availableDays' : {start: '06/15/2014', end: '08/20/2014'}
-	}),
+	});
+	BlockingDates.insert({
+					'tripId' : tripID10,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
 
-	Trips.insert({
+	var tripID11 = Trips.insert({
 		"from" 	: "Viking Sushi Short",
 		"to"	: "",
 		"hour"  : "15:30",
@@ -418,7 +485,14 @@ if(Products.find().count() == 0){
 		'active' : true,
 		'productId' : result,
 		'availableDays' : {start: '05/17/2014', end: '08/20/2014'}
-	}),
+	});
+
+	BlockingDates.insert({
+					'tripId' : tripID11,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
 
 	Prices.insert({
 		"price" 	: "Adult",

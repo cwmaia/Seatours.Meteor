@@ -42,9 +42,6 @@
 							<input id="blockButton" type="submit" name="save" class="btn btn-danger btn-small" value="Block" />
 					</div>
 					<div>
-						{{> blockRules}}
-					<div>
-					<div>
 						{{> blockDatesList}}
 					</div>
 
@@ -72,7 +69,7 @@
 			<tbody>
 				{{#each dates}}
 					<tr>
-						<td>{{blockedDay}} - {{trip tripId}}</td>
+						<td>{{blockedDay}}</td>
 						<td>{{reason}}</td>
 						<td>{{user}}</td>
 						<td>

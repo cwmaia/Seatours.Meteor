@@ -22,18 +22,22 @@ Template.editTrip.boatFind = function(id){
 }
 
 Template.editTrip.available = function(weekDay){
-	if(localStorage.getItem("weekDays")){
-		if(localStorage.getItem("weekDays").split(",")[weekDay] == "true"){
-			return true;
-		}else{
-			return false;
-		}
+	if(localStorage.getItem("weekDays")[weekDay] == "true"){
+		return true;
 	}else{
 		return false;
 	}
-	
-	
 }
+
+Template.editTrip.availableDayTrip = function(weekDay, _id){
+	if(BlockingDates.findOne({'tripId' : _id, 'type' : 'blockWeekDay'}))
+	if(BlockingDates.findOne({'tripId' : _id, 'type' : 'blockWeekDay'}).availableWeekDays.split(',')[weekDay] == "true"){
+		return true;
+	}else{
+		return false;
+	}
+}
+
 
 Template.editTrip.groupProduct = function(id){
 	product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
@@ -91,6 +95,7 @@ Template.editTrip.rendered = function() {
 		minuteStep: 1,
 		showMeridian: false
 	});
+	localStorage.setItem("weekDays",[true,true,true,true,true,true,true]);
 	$("#dateRangeSelect").hide();
 	$(".datepicker").datepicker();
 	if(Products.findOne(Session.get('tripId'))){
@@ -265,13 +270,13 @@ Template.editTrip.events({
 				form.reset();
 				var tripSettings = {
 					'tripId' : tripId,
-					'availableWeekDays' : getWeekDaysAvailability(),
+					'availableWeekDays' : localStorage.getItem("weekDays"),
 					'user' : Meteor.user().profile.name,
 					'type' : 'blockWeekDay'
 				}
 				var tripSettings2 = {
 					'tripId' : tripId,
-					'passagersAvailability' : $("#passagers"),
+					'passagersAvailability' : $("#passagers").val(),
 					'user' : Meteor.user().profile.name,
 					'type' : 'passagersAvailability'
 				}

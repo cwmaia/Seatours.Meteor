@@ -1,7 +1,17 @@
 var _trip = {};
 
 Template.blockDatesList.dates = function(){
-	return BlockingDates.find();
+	blockedDates = BlockingDates.find({'type' : "blockDate", 'tripId' : Session.get('tripId')}).fetch();
+	next = 0;
+	returnBlockedDates = [];
+	for (var i = blockedDates.length - 1; i >= 0; i--) {
+		if(new Date(blockedDates[i].blockedDay) > new Date()){
+			returnBlockedDates[next] = blockedDates[i];
+			next++;
+		}
+	};
+
+	return returnBlockedDates;
 }
 
 Template.blockDatesList.trip = function(id){
@@ -29,9 +39,10 @@ Template.blockDatesList.events({
 })
 
 Template.blockingDates.events({
-	'change #trip' : function(event){
+	'change #tripBlockDate' : function(event){
 		event.preventDefault();
 		Session.set("tripSelected", true);
+		Session.set('tripId' , $('#tripBlockDate').val());
 		Template.blockingDates.rendered();
 	},
 	'change #reason' : function(){

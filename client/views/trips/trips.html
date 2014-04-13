@@ -241,6 +241,7 @@
 							<th>Season</th>
 							<th>Start Date</th>
 							<th>End Date</th>
+							<th>Week days availability</th>
 							<th>Active</th>
 						</tr>
 					</thead>
@@ -254,6 +255,29 @@
 								<td>{{seasonName season}}</td>
 								<td>{{datesBegin  season}}</td>
 								<td>{{datesEnd season}}</td>
+								<td>
+									{{#if availableDayTrip 0 _id}}
+									Su 
+									{{/if}}
+									{{#if availableDayTrip 1 _id}}
+									Mo 
+									{{/if}}
+									{{#if availableDayTrip 2 _id}}
+									Tu 
+									{{/if}}
+									{{#if availableDayTrip 3 _id}}
+									We 
+									{{/if}}
+									{{#if availableDayTrip 4 _id}}
+									Th 
+									{{/if}}
+									{{#if availableDayTrip 5 _id}}
+									Fr 
+									{{/if}}
+									{{#if availableDayTrip 6 _id}}
+									Sa 
+									{{/if}}
+								</td>
 								<td>
 									{{#if active}}
 										<a class="removeTrip" id="{{_id}}"><i class='icon-check'></i></a>
