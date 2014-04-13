@@ -44,6 +44,11 @@
 			{{> externalLogin}}
 		{{/if}}
 
+		{{#if listvouchers}}
+			→ <a class="listvouchers" href="#"><a class="externalLogin" href="#">Your Vouchers</a>
+			{{> listvouchers}}
+		{{/if}}
+
 		{{#if createUser}}
 			→ <a class="createUser" href="#">Create User</a>
 		<div class="page-header">

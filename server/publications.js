@@ -20,11 +20,11 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
     Transactions.insert(transaction);
   };
 
-  console.log(books);
+ 
   
   //talvez escrever todo o html... eh... talve. tem que ver se funciona....
 
-  return "<script>window.location='http://localhost:3000/myBookings/"+orderId+"'</script>";
+  return "<script>window.location='http://localhost:3000/listvouchers/"+orderId+"'</script>";
 
 })
 
@@ -87,7 +87,7 @@ Meteor.publish('books', function() {
       return Books.find();
     }
   }else{
-    return Books.find({}, {fields: {dateOfBooking: 1, 'trip._id': 1, 'trip.from': 1, 'trip.hour': 1, 'bookStatus' : 1, 'vehicle.totalCost' : 1, 'vehicle.category' : 1, 'slot' : 1, 'product._id' : 1, 'product.name':1, orderId : 1, totalISK:1,'vehicle.size' : 1, prices : 1}});
+    return Books.find({}, {fields: {refNumber : 1, dateOfBooking: 1, 'trip._id': 1, 'trip.from': 1, 'trip.hour': 1, 'bookStatus' : 1, 'vehicle.totalCost' : 1, 'vehicle.category' : 1, 'slot' : 1, 'product._id' : 1, 'product.name':1, orderId : 1, totalISK:1,'vehicle.size' : 1, prices : 1}});
   }
 });
 
@@ -321,6 +321,14 @@ Meteor.methods({
     });
     }, 
  
+  getAllBooksByOrder : function(orderId){
+    var books = Books.find({orderId : orderId}).fetch();
+    return books;
+  },
+
+  getCustomerById : function(customerId){
+    return Customers.findOne(customerId);
+  },
 
   insertBook : function(book){
     if(!book.refNumber){

@@ -181,12 +181,7 @@ Template.bookReport.rendered = function(){
 	$('.calendar').datepicker({
 		format : "dd/mm/yyyy"
 	});
-	$('#filterResultB').dataTable({
-		"iDisplayLength": 50
-	});
-	$('#filterResultF').dataTable({
-		"iDisplayLength": 50
-	});
+
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
   	$(".formattedAsMoney").maskMoney('mask');
 }
@@ -209,7 +204,7 @@ Template.bookingsReport.telephone = function(id){
 
 Template.bookingsReport.adress = function(id){
 	customer = Customers.findOne({_id: id})
-	var adress = customer.adress + ' - ' + customer.city + ' - ' + customer.state + ' - ' + customer.postcode + ' - ' + customer.country;
+	var adress = customer.address + ' - ' + customer.addressnumber + ' - ' + customer.city;
 	return adress;
 }
 

@@ -15,6 +15,17 @@ Meteor.Router.add({
 			Template.externView.rendered();
 		}
 	},
+	'/listvouchers/:orderId'   : {
+		to : "listvouchers",
+		and : function(orderId){
+			cleanExternView();
+			Session.set("orderId", orderId);
+			Session.set('hardCoded', true);
+			Session.set('listvouchers', true);
+			$("#loginArea").hide();
+			Template.externView.rendered();
+		}
+	},
 	'/cancelOrder'   : {
 		to : "redirect",
 		and : function(){

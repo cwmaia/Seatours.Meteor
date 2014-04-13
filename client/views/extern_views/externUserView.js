@@ -1,5 +1,5 @@
 Template.externView.selectDate = function(){
-	return !Session.get('dateSelected') && !Session.get('cbasket') && !Session.get('creatingUser') && !Session.get('myBookings') && !Session.get('myVoucher') && !Session.get("finishBooking") && !Session.get("externalLogin") && !Session.get("paymentStep") && !Session.get('myBookingsDetail');
+	return !Session.get('dateSelected') && !Session.get('cbasket') && !Session.get('creatingUser') && !Session.get('myBookings') && !Session.get('myVoucher') && !Session.get("finishBooking") && !Session.get("externalLogin") && !Session.get("paymentStep") && !Session.get('myBookingsDetail') && !Session.get('listvouchers');
 }
 
 Template.externView.createBook = function(){
@@ -38,6 +38,10 @@ Template.externView.paymentStep = function(){
 	return Session.get("paymentStep");
 }
 
+Template.externView.listvouchers = function(){
+	return Session.get("listvouchers");
+}
+
 
 
 Template.externView.rendered = function(){
@@ -53,6 +57,7 @@ cleanExternView = function(){
 	Session.set('finishBooking', false);
 	Session.set('externalLogin', false);
 	Session.set('paymentStep', false);
+	Session.set('listvouchers', false);
 }
 
 Template.externView.events({
