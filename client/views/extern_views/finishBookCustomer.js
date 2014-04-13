@@ -45,7 +45,7 @@ Template.finishBookCustomer.customerTelephone = function(){
 
 Template.finishBookCustomer.customerAddress = function(){
 	var currentCustomer = Customers.findOne({'_id' : Meteor.user().profile.customerId});
-	return currentCustomer.adress + ' ' + currentCustomer.city + ' ' + currentCustomer.state + ' ' + currentCustomer.postcode;
+	return currentCustomer.address + ' ' + currentCustomer.addressnumber + " " + currentCustomer.city + ' ' + currentCustomer.state + ' ' + currentCustomer.postcode;
 }
 
 Template.finishBookCustomer.events({
