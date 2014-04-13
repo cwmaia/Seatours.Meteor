@@ -67,6 +67,7 @@ var updateSVGFill = function(dates, tripId){
 	resetSVG();
 	books = [];
 
+
 	if(!Session.get("isEditing")){
 		books = Books.find({
 			dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
@@ -85,6 +86,8 @@ var updateSVGFill = function(dates, tripId){
 		}).fetch();
 	}
 
+
+
 	//Update Boat Status SVG
 	for (var i = books.length - 1; i >= 0; i--) {
 		if(books[i].slot){
@@ -96,6 +99,33 @@ var updateSVGFill = function(dates, tripId){
 		}
 	};
 
+	//on Some cases the find do not work on client side and this is sad.
+	//so try to get the books on server side
+	if(books.length == 0){
+		Meteor.call("getBooksToFill", dates, tripId, Session.get("productId"), function(err, result){
+			if(err){
+				console.log(err);
+			}else{
+				fillWithServer(result);
+			}
+		})
+	}
+
+
+	
+
+}
+
+var fillWithServer = function(books){
+	for (var i = books.length - 1; i >= 0; i--) {
+		if(books[i].slot){
+			var slot = books[i].slot.split("-");
+			for (var j = slot.length - 1; j >= 0; j--) {
+				var svgElement = document.getElementById("svg_"+slot[j]);
+				svgElement.setAttribute("fill", "#808080");
+			};
+		}
+	};
 }
 
 var updateDataPieChart = function(){
@@ -681,11 +711,29 @@ Template.bookDetail.events({
 			var id = $(this).attr("id");
 			document.getElementById(id).setAttribute("stroke", "#000000");
 		})
+
 		$("#svgBoatDialog").show();
 	},
 
 	'click .close, click .cancel' : function(event){
 		$("#svgBoatDialog").hide();
+	},
+
+	'click .editBookOperator' : function(event){
+
+		var a = event.currentTarget;
+
+		Session.set('isEditing', true);
+		Session.set("firstTime", true);
+		Session.set("firstTimePrice", true);
+		Session.set("bookId", a.rel);
+		book = Books.findOne({_id: a.rel});
+		product = Products.findOne({_id: book.product._id});
+		Session.set("customerId", book.customerId);
+		Session.set("productId", product._id);
+		Session.set("bookingDate", book.dateOfBooking);
+		Session.set('tripId', book.trip._id);
+		Meteor.Router.to('/bookEdit');
 	},
 
 	'click .quickPay' : function(event){
@@ -1041,6 +1089,7 @@ Template.createBook.rendered = function(){
 		event.preventDefault();
 	});
 	if(Session.get('isEditing')){
+
 		var customer = Customers.findOne({_id: Session.get("customerId")});
 		var book = Books.findOne(Session.get("bookId"));
     	$('#customerId').val(customer._id);
@@ -1060,6 +1109,9 @@ Template.createBook.rendered = function(){
     	$('#state').val(customer.state);
     	$('#postcode').val(customer.postcode);
     	$('#country').val(customer.country);
+    	$('#vehicle').val(book.vehicle.vehicleName);
+    	$('#vehiclePlate').val(book.vehicle.vehiclePlate);
+    	$('#slotNumber').val(book.slot);
 
     	$('#dayOfBookingEdit').datepicker({
 			changeMonth : true,
@@ -1126,8 +1178,18 @@ Template.createBook.events({
 	},
 
 	"click .enabledDoor" : function(){
-		$("rect[fill = '#87b87f']").show();
-		$("text:contains('D')").show();
+
+
+		if($("#showDoorButton").text() == "Show Door"){
+			$("rect[fill = '#87b87f']").show();
+			$("text:contains('D')").show();
+			$("#showDoorButton").text("Hide Door");
+		}else{
+			$("rect[fill = '#87b87f']").hide();
+			$("text:contains('D')").hide();
+			$("#showDoorButton").text("Show Door");
+		}
+		
 	},
 
 	'click #selectManualy' : function(){

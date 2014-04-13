@@ -87,7 +87,7 @@ Meteor.publish('books', function() {
       return Books.find();
     }
   }else{
-    return Books.find({}, {fields: {refNumber : 1, dateOfBooking: 1, 'trip._id': 1, 'trip.from': 1, 'trip.hour': 1, 'bookStatus' : 1, 'vehicle.totalCost' : 1, 'vehicle.category' : 1, 'slot' : 1, 'product._id' : 1, 'product.name':1, orderId : 1, totalISK:1,'vehicle.size' : 1, prices : 1}});
+    return Books.find({}, {fields: {paid : 1 ,refNumber : 1, dateOfBooking: 1, 'trip._id': 1, 'trip.from': 1, 'trip.hour': 1, 'bookStatus' : 1, 'vehicle.totalCost' : 1, 'vehicle.category' : 1, 'slot' : 1, 'product._id' : 1, 'product.name':1, orderId : 1, totalISK:1,'vehicle.size' : 1, prices : 1}});
   }
 });
 
@@ -302,6 +302,17 @@ Meteor.methods({
       'product._id'   : productId,
       'trip._id'  : tripId,
       'bookStatus'  : bookStatus
+    }).fetch();
+
+    return books;
+  },
+
+  getBooksToFill : function(dates, tripId, productId){
+    books = Books.find({
+      dateOfBooking   : {$gte: dates.selectedDay, $lt: dates.nextDay},
+      'product._id'   : Session.get('productId'),
+      'trip._id'  : tripId,
+      $or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
     }).fetch();
 
     return books;
