@@ -1,6 +1,6 @@
 <!-- JS inside book_operator.js-->
 <template name="generalPassagerInfo">
-	<form novalidate id='pasagerInfo' method="post">
+	<form novalidate id='pasagerInfo' method="post" onkeypress="return event.keyCode != 13;">
 		<fieldset>
 			<legend>Personal Info<span>&nbsp;&nbsp;</span><i class='icon-user'/> {{#if customerCreation}}
 	            	

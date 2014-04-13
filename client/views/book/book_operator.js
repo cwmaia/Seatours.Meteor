@@ -166,17 +166,38 @@ Template.productItem.rendered = function(){
 
 Template.productItem.events({
 	'click .calendar' : function(event){
+		console.log("aqui");
 		var today = new Date(localStorage.getItem('date'));
 		var appendTrips = [];
 		var trips = Trips.find({productId: this._id, active : true}).fetch();
 
+		var appendTripsHour = function(trip){
+			date = new Date(localStorage.getItem('date'));
+			currentDate = new Date();
+			hourSplit = trip.hour.split(":");
+			with(date){
+				setHours(hourSplit[0] - 1);
+				setMinutes(hourSplit[1]);
+			}
+
+			if(currentDate.getTime() <= date.getTime()){
+				return true;
+			}
+
+			return false;
+
+		}
+
+
 		for (var i = 0; i < trips.length; i++) {
 			if(trips[i].season == 'noSeason'){
 				if(today >= new Date(trips[i].availableDays.start) && today <= new Date(trips[i].availableDays.end)){
-					appendTrips.push(trips[i]);
+					if(appendTripsHour(trips[i]))
+						appendTrips.push(trips[i]);
 				}
 			}else if(trips[i].season == currentSeason()){
-				appendTrips.push(trips[i]);
+				if(appendTripsHour(trips[i]))
+					appendTrips.push(trips[i]);
 			}
 		};
 
@@ -196,14 +217,36 @@ Template.productItem.events({
 	'focus .trip' : function(event){
 		var today = new Date(localStorage.getItem('date'));
 		var appendTrips = [];
+
+		var appendTripsHour = function(trip){
+			date = new Date(localStorage.getItem('date'));
+			currentDate = new Date();
+			hourSplit = trip.hour.split(":");
+			with(date){
+				setHours(hourSplit[0] - 1);
+				setMinutes(hourSplit[1]);
+			}
+
+
+
+			if(currentDate.getTime() <= date.getTime()){
+				return true;
+			}
+
+			return false;
+
+		}
+
 		var trips = Trips.find({productId: this._id, active : true}).fetch();
 		for (var i = 0; i < trips.length; i++) {
 			if(trips[i].season == 'noSeason'){
 				if(today >= new Date(trips[i].availableDays.start) && today <= new Date(trips[i].availableDays.end)){
-					appendTrips.push(trips[i]);
+					if(appendTripsHour(trips[i]))
+						appendTrips.push(trips[i]);
 				}
 			}else if(trips[i].season == currentSeason()){
-				appendTrips.push(trips[i]);
+				if(appendTripsHour(trips[i]))
+					appendTrips.push(trips[i]);
 			}
 		};
 
@@ -1365,17 +1408,6 @@ Template.generalPassagerInfo.events({
 		    	$('#postcode').val(currentCustomer.postcode);
 		    	$('#country').val(currentCustomer.country);
 		    	$('#groupId').val(currentCustomer.groupId);	
-		    	//Vehicle
-		    	$('#vehicle').val(currentCustomer.lastUsedCar.vehicleName);
-		    	$('#categories').val(currentCustomer.lastUsedCar.categoryId);
-		    	$('#totalVehicle').val(currentCustomer.lastUsedCar.totalCost);
-		    	$('#vehiclePlate').val(currentCustomer.lastUsedCar.vehiclePlate);
-		    	$("#categories option").filter(function(){
-					return $(this).text() == currentCustomer.lastUsedCar.category;
-				}).attr('selected', true);
-				Session.set('categoryId', currentCustomer.lastUsedCar.categoryId);
-				Session.set('currentSizeCar', currentCustomer.lastUsedCar.size);
-				changeSizes();
 				Session.set('SaveCustomer', false);
 	   		}else{
 	   			$('#fullName').val('');
