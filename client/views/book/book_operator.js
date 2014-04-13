@@ -1220,11 +1220,10 @@ Template.generalButtons.events({
 			bootbox.alert("Sorry we have no more space available on the boat for your car, please select another day");
 		}else if(checkForAdults()){
 			bootbox.alert("A least one Adult is needed to create a booking!");
-		}else if($("#categories").val() != "" && $("#size").val() != ""){
-			if($("#vehiclePlate").val() == "")
-				bootbox.alert("Please inform the vehicle plate.");
-			if($("#vehicle").val() == "")	
-				bootbox.alert("Please inform the vehicle name");		
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehiclePlate").val() == ""){
+			bootbox.alert("Please inform the vehicle plate.");
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehicle").val() == ""){	
+			bootbox.alert("Please inform the vehicle name");		
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1314,13 +1313,12 @@ Template.generalButtons.events({
 			throwError("Please Inform the Slots");
 		}else if(checkForAdults()){
 			bootbox.alert("A least one Adult is needed to create a booking!");	
-		}else if($("#categories").val() != "" && $("#size").val() != ""){
-			if($("#vehiclePlate").val() == ""){
-				bootbox.alert("Please inform the vehicle plate.");
-			}else if($("#vehicle").val() == ""){	
-				bootbox.alert("Please inform the vehicle name");	
-			}
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehiclePlate").val() == ""){
+			bootbox.alert("Please inform the vehicle plate.");
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehicle").val() == ""){	
+			bootbox.alert("Please inform the vehicle name");	
 		}else{
+			console.log("aqui passou");
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
 				createBook();

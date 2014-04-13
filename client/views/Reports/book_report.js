@@ -182,6 +182,17 @@ Template.bookReport.rendered = function(){
 		format : "dd/mm/yyyy"
 	});
 
+	$("#filterResultB").dataTable({
+		"iDisplayLength": 50,
+		"bServerSide": false,
+   		"bDestroy": true
+	})
+	$("#filterResultF").dataTable({
+		"iDisplayLength": 50,
+		"bServerSide": false,
+   		"bDestroy": true
+	})
+
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
   	$(".formattedAsMoney").maskMoney('mask');
 }

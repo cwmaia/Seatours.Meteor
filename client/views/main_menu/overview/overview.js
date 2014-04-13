@@ -300,7 +300,7 @@ Template.overview.rendered = function(){
 	}).on('changeDate', function(ev){
 			date = new Date(ev.date);
 			with(date){
-				setDate(getDate() + 1);
+				setDate(getDate());
 				setHours(0);
 				setMinutes(0);
 				setSeconds(0);
