@@ -44,6 +44,7 @@
 										<th class="sorting_disabled">Book Status</th>
 										<th class="sorting_disabled">Confirm</th>
 										<th class="sorting_disabled">Invoices Sent</th>
+										<th class="sorting_disabled">Ticket Printed</th>
 										<th class="sorting_disabled" style="min-width: 60px;">Action</th>
 									</tr>
 								</thead>
@@ -80,16 +81,18 @@
 											{{/if}}
 										</td>
 										<td>
+											{{#if ticketNotPrinted _id}}
+													<a class="printTicket" rel="{{_id}}"><i class='icon-check-empty'></i></a>
+											{{else}}
+												<a class="printTicket" rel="{{_id}}"><i class='icon-check'></i></a>
+											{{/if}}
+										</td>
+										<td>
 										{{#if isBookCreated bookStatus}}	
 											{{#if paid}}
 												<a href="" class="changeStatusBooking btn btn-mini btn-danger" rel="{{_id}}" title='Cancel Booking'>
 													<i class='icon-remove'></i>
 												</a>
-												{{#if ticketNotPrinted _id}}
-													<a href="" class="printTicket btn btn-mini btn-success" rel="{{_id}}" title='Print Ticket'>
-														<i class='icon-print'></i>
-													</a>
-												{{/if}}
 											{{else}}
 												<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
 											{{/if}}

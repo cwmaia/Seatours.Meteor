@@ -11,7 +11,7 @@ Template.blockDatesList.trip = function(id){
 }
 
 Template.blockingDates.rendered = function() {
-	$(".datePickerWYear").datepicker();
+	$(".datePicker").datepicker();
 }
 
 Template.blockingDates.helpers({
