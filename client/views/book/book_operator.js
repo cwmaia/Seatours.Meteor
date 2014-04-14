@@ -154,7 +154,7 @@ var updateDataPieChart = function(){
 			}else if(slotArray[j].indexOf("D") != -1){
 				doorSlots++;
 				unallocated--;
-			}else{
+			}else if(slotArray[j] != ""){
 				regularSlots++;
 				unallocated--;
 			}
