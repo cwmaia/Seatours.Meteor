@@ -1,0 +1,39 @@
+<template name="listvouchers">
+	<div class="page-header">
+			<h1>
+				Your Bookings
+			</h1>
+	</div>
+	<fieldset>
+		<table class='table table-striped table-bordered table-hover' id='allBookingsDetail'>
+			<thead>
+				<tr>
+					<th>Ref Number</th>
+					<th>Date</th>
+					<th>Departure</th>
+					<th>Total</th>
+					<th>Paid</th>
+					<th>Status</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+				<tbody>
+					{{#each bookings}}
+						<tr>
+							<td>{{refNumber}}</td>
+							<td>{{date dateOfBooking}}</td>
+							<td>{{trip.from}} - {{trip.to}} - {{trip.hour}}</td>
+							<td><input disabled style="margin-bottom:0px; width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{totalISK}}" /> ISK</td>
+							<td>{{#if paid}} Yes {{else}} No {{/if}}</td>
+							<td>{{bookStatus}}</td>
+							<td>
+								<a class="myVoucher btn btn-mini btn-info" rel='{{_id}}' title='Voucher'>
+									<i class='icon-book'></i>
+								</a>
+							</td>
+						</tr>
+					{{/each}}
+				</tbody>
+		</table>
+	</fieldset>	
+</template>

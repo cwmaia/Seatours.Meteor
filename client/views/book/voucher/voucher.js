@@ -60,7 +60,7 @@ var showAlertDiv = function(){
     }
   };
 
-  if(totalISK > 0){
+  if(totalISK > 0 && !book.paid == true){
     return true;
   }else{
     return false;

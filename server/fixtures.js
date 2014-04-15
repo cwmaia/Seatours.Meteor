@@ -132,13 +132,14 @@ if(Products.find().count() == 0){
 		"boatId" : '1',
 		'availableFor' : customersId,
 		'imageName' : "Baldur Ferry.jpg",
-		'featured' : true
+		'featured' : true,
+		'disclaimer' : "Ferry Baldur daily crosses Breiðafjörður Bay. PLEASE NOTE – if your are travelling with a car and stopping in Flatey Island you need to book “Stykkisholmur-Brjanslækur” (or reverse), and mark in the checkbox that you will be stopping in Flatey." 
 	});
 
 	var tripID1 = Trips.insert({
 		"from" 	: "Stykkishólmur",
-		"to"	: "",
-		"hour"  : "09:00",
+		"to"	: "Brjanslækur",
+		"hour"  : "15:00",
 		'season' : "winter",
 		'active' : true,
 		'productId' : result
@@ -152,9 +153,9 @@ if(Products.find().count() == 0){
 				});
 
 	var tripID2 = Trips.insert({
-		"from" 	: "Stykkishólmur",
-		"to"	: "",
-		"hour"  : "15:45",
+		"from" 	: "Brjanslækur",
+		"to"	: "Stykkisholmur",
+		"hour"  : "18:00",
 		'season' : "winter",
 		'active' : true,
 		'productId' : result
@@ -166,10 +167,27 @@ if(Products.find().count() == 0){
 					'type' : 'blockWeekDay'
 				});
 
+
+	var tripID22 = Trips.insert({
+		"from" 	: "Stykkisholmur",
+		"to"	: "Brjanslækur",
+		"hour"  : "09:00",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	});
+
+	BlockingDates.insert({
+					'tripId' : tripID22,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
+
 	var tripID3 = Trips.insert({
-		"from" 	: "Flatey",
-		"to"	: "Brjánslækur",
-		"hour"  : "10:30",
+		"from" 	: "Stykkisholmur",
+		"to"	: "Flatey",
+		"hour"  : "09:00",
 		'season' : "summer",
 		'active' : true,
 		'productId' : result		
@@ -184,8 +202,8 @@ if(Products.find().count() == 0){
 
 	var tripID4 = Trips.insert({
 		"from" 	: "Flatey",
-		"to"	: "Brjánslækur",
-		"hour"  : "17:15",
+		"to"	: "Brjanslækur",
+		"hour"  : "10:35",
 		'season' : "summer",
 		'active' : true,
 		'productId' : result		
@@ -198,9 +216,10 @@ if(Products.find().count() == 0){
 					'type' : 'blockWeekDay'
 				});
 
+
 	var tripID5 = Trips.insert({
-		"from" 	: "Brjánslækur",
-		"to"	: "",
+		"from" 	: "Brjanslækur",
+		"to"	: "Flatey",
 		"hour"  : "12:15",
 		'season' : "summer",
 		'active' : true,
@@ -215,9 +234,9 @@ if(Products.find().count() == 0){
 				});
 
 	var tripID6 = Trips.insert({
-		"from" 	: "Brjánslækur",
-		"to"	: "",
-		"hour"  : "19:00",
+		"from" 	: "Brjanslækur",
+		"to"	: "Stykkisholmur",
+		"hour"  : "12:15",
 		'season' : "summer",
 		'active' : true,
 		'productId' : result		
@@ -231,7 +250,7 @@ if(Products.find().count() == 0){
 
 	var tripID7 = Trips.insert({
 		"from" 	: "Flatey",
-		"to"	: "Stykkishólmur",
+		"to"	: "Stykkisholmur",
 		"hour"  : "13:15",
 		'season' : "summer",
 		'active' : true,
@@ -245,9 +264,98 @@ if(Products.find().count() == 0){
 					'type' : 'blockWeekDay'
 				});
 
+	Prices.insert({
+		"price" 	: "Adult",
+		"unit"	: 4080,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result,
+		'availableForGuest' : true
+	});
+
 	var tripID8 = Trips.insert({
+		"from" 	: "Stykkisholmur",
+		"to"	: "Brjanslækur",
+		"hour"  : "15:45",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	});
+
+		BlockingDates.insert({
+					'tripId' : tripID8,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
+
+	var tripID9 = Trips.insert({
+		"from" 	: "Stykkisholmur",
+		"to"	: "Flatey",
+		"hour"  : "15:45",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	});
+
+	BlockingDates.insert({
+					'tripId' : tripID9,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
+
+	var tripID10 = Trips.insert({
 		"from" 	: "Flatey",
-		"to"	: "Stykkishólmur",
+		"to"	: "Brjanslækur",
+		"hour"  : "17:15",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	});
+
+	BlockingDates.insert({
+					'tripId' : tripID10,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
+
+	var tripID11 = Trips.insert({
+		"from" 	: "Brjanslækur",
+		"to"	: "Flatey",
+		"hour"  : "19:00",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	});
+
+	BlockingDates.insert({
+					'tripId' : tripID11,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
+
+	var tripID12 = Trips.insert({
+		"from" 	: "Brjanslækur",
+		"to"	: "Stykkisholmur",
+		"hour"  : "19:00",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	});
+
+	BlockingDates.insert({
+					'tripId' : tripID12,
+					'availableWeekDays' : "true,true,true,true,true,true,true",
+					'user' : "default",
+					'type' : 'blockWeekDay'
+				});
+
+	var tripID13 = Trips.insert({
+		"from" 	: "Flatey",
+		"to"	: "Stykkisholmur",
 		"hour"  : "20:00",
 		'season' : "summer",
 		'active' : true,
@@ -255,7 +363,7 @@ if(Products.find().count() == 0){
 	});
 
 	BlockingDates.insert({
-					'tripId' : tripID8,
+					'tripId' : tripID13,
 					'availableWeekDays' : "true,true,true,true,true,true,true",
 					'user' : "default",
 					'type' : 'blockWeekDay'
@@ -381,7 +489,7 @@ if(Products.find().count() == 0){
 
 	});
 
-	var tripID9 = Trips.insert({
+	var tripID14 = Trips.insert({
 		"from" 	: "Vikingsushi adventure",
 		"to"	: "",
 	 	"hour"  : "11:00",
@@ -392,7 +500,7 @@ if(Products.find().count() == 0){
 	});
 
 	BlockingDates.insert({
-					'tripId' : tripID9,
+					'tripId' : tripID14,
 					'availableWeekDays' : "true,true,true,true,true,true,true",
 					'user' : "default",
 					'type' : 'blockWeekDay'
@@ -461,7 +569,7 @@ if(Products.find().count() == 0){
 		'featured' : false
 	});
 
-	var tripID10 = Trips.insert({
+	var tripID15 = Trips.insert({
 		"from" 	: "Viking Sushi Short",
 		"to"	: "",
 		"hour"  : "13:40",
@@ -471,13 +579,13 @@ if(Products.find().count() == 0){
 		'availableDays' : {start: '06/15/2014', end: '08/20/2014'}
 	});
 	BlockingDates.insert({
-					'tripId' : tripID10,
+					'tripId' : tripID15,
 					'availableWeekDays' : "true,true,true,true,true,true,true",
 					'user' : "default",
 					'type' : 'blockWeekDay'
 				});
 
-	var tripID11 = Trips.insert({
+	var tripID16 = Trips.insert({
 		"from" 	: "Viking Sushi Short",
 		"to"	: "",
 		"hour"  : "15:30",
@@ -488,7 +596,7 @@ if(Products.find().count() == 0){
 	});
 
 	BlockingDates.insert({
-					'tripId' : tripID11,
+					'tripId' : tripID16,
 					'availableWeekDays' : "true,true,true,true,true,true,true",
 					'user' : "default",
 					'type' : 'blockWeekDay'
@@ -681,10 +789,10 @@ if(Customers.find().count() == 0){
 
 if(Meteor.users.find().count() == 0){
 	Accounts.createUser({
-	  'username'  : 'gudrun',
-	  'email'     : 'jarbas.byakuya@gmail.com',
-	  'profile'	  : {'groupID' : admId, 'name' : 'Gudrun'},
-	  'password'  : '1234' //encrypted automatically 
+	  'username'  : 'skrifstofa',
+	  'email'     : 'admin@seatours.com',
+	  'profile'	  : {'groupID' : admId, 'name' : 'Skrifstofa'},
+	  'password'  : '9876' //encrypted automatically 
 	});
 }
 
@@ -1679,9 +1787,9 @@ if(PostCodes.find().count() == 0){
 	//////////////////////////////////////////////////
 	// Settings
 
-	Settings.insert({'summerStartDate' : '01/06',
+	Settings.insert({'summerStartDate' : '06/06',
 					 '_id' : 'summer'});
-	Settings.insert({'winterStartDate' : '01/09',
+	Settings.insert({'winterStartDate' : '25/08',
 					 '_id' : 'winter'});
 	Settings.insert({'onlineDiscount' : 10,
 					 '_id' : 'onlineDiscount'});

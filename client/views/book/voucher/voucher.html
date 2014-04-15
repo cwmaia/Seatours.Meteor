@@ -171,10 +171,6 @@
 				<span style="font-weight: bold; text-shadow: 2px 1px 1px white; font-size: 14px;">Date: </span>
 				<span style="font-weight: lighter; margin: 0 0 10px;">{{date}}</span>
 			</section>
-			<section style="float: left; width: 35%;">
-				<span style="font-weight: bold; text-shadow: 2px 1px 1px white; font-size: 14px;">Departure Place: </span>
-				<span style="font-weight: lighter; margin: 0 0 10px;">{{destination}}</span>
-			</section>
 		</div>
 		<div style="clear:both;">
 		</div>
@@ -258,54 +254,58 @@
 							background-image: -o-linear-gradient(top, #f8f8f8, #ececec);
 							background-image: linear-gradient(to bottom, #f8f8f8, #ececec);
 							background-repeat: repeat-x;">
-					<th>Payment Info</th>
-					<th> </th>
-					<th> </th>
+					<th>Departure Details</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr style="color: #707070;
-							font-weight: normal;
-							background: #F2F2F2;
-							background-color: #f3f3f3;
-							background-image: -moz-linear-gradient(top, #f8f8f8, #ececec);
-							background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f8f8f8), to(#ececec));
-							background-image: -webkit-linear-gradient(top, #f8f8f8, #ececec);
-							background-image: -o-linear-gradient(top, #f8f8f8, #ececec);
-							background-image: linear-gradient(to bottom, #f8f8f8, #ececec);
-							background-repeat: repeat-x;">
-							<td>Date</td>
-							<td>Type</td>
-							<td>Amount</td>
+				<tr>
+					<td style="padding: 8px;
+								line-height: 20px;
+								text-align: left;
+								vertical-align: top;
+								border-top: 1px solid #dddddd;">
+							<span style="font-weight: bold; text-shadow: 2px 1px 1px white; font-size: 14px;">	
+							Product:
+							</span>
+							{{product.name}}		
+					</td>	
 				</tr>
-				{{#each transactions}}
-				<tr>	
+				<tr>
 					<td style="padding: 8px;
 								line-height: 20px;
 								text-align: left;
 								vertical-align: top;
 								border-top: 1px solid #dddddd;">
-							{{format date}}
-						
-					</td>
-					<td style="padding: 8px;
-								line-height: 20px;
-								text-align: left;
-								vertical-align: top;
-								border-top: 1px solid #dddddd;">
-							{{type}}
-						
-					</td>
-					<td style="padding: 8px;
-								line-height: 20px;
-								text-align: left;
-								vertical-align: top;
-								border-top: 1px solid #dddddd;">
-							{{amount}}
-						
-					</td>
+							<span style="font-weight: bold; text-shadow: 2px 1px 1px white; font-size: 14px;">	
+							From:
+							</span>
+							{{trip.from}}
+					</td>	
 				</tr>
-				{{/each}}
+				<tr>
+					<td style="padding: 8px;
+								line-height: 20px;
+								text-align: left;
+								vertical-align: top;
+								border-top: 1px solid #dddddd;">
+						<span style="font-weight: bold; text-shadow: 2px 1px 1px white; font-size: 14px;">	
+							To:
+						</span>
+						{{trip.to}}
+					</td>	
+				</tr>
+				<tr>
+					<td style="padding: 8px;
+								line-height: 20px;
+								text-align: left;
+								vertical-align: top;
+								border-top: 1px solid #dddddd;">
+						<span style="font-weight: bold; text-shadow: 2px 1px 1px white; font-size: 14px;">		
+							Hour of Departure:
+						</span>
+						{{trip.hour}}
+					</td>	
+				</tr>
 			</tbody>
 			</table>
 

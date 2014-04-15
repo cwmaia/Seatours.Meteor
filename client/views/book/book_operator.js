@@ -2,6 +2,7 @@ var SaveVehicle = false;
 var CanSaveTheBook = true;
 var Product = {};
 var VehicleSelected = false;
+var loadBirthDate = true;
 
 var getSelectedAndNextDay = function(){
 	var selectedDay = new Date(localStorage.getItem('date'));
@@ -61,8 +62,6 @@ var updateSVGFill = function(dates, tripId){
 		tripId = Trips.findOne(Session.get('tripId'))._id;
 	}
 
-
-
 	resetSVG();
 	books = [];
 
@@ -84,6 +83,8 @@ var updateSVGFill = function(dates, tripId){
 		}).fetch();
 	}
 
+
+
 	//Update Boat Status SVG
 	for (var i = books.length - 1; i >= 0; i--) {
 		if(books[i].slot){
@@ -95,14 +96,40 @@ var updateSVGFill = function(dates, tripId){
 		}
 	};
 
+	//on Some cases the find do not work on client side and this is sad.
+	//so try to get the books on server side
+	if(books.length == 0){
+		Meteor.call("getBooksToFill", dates, tripId, Session.get("productId"), function(err, result){
+			if(err){
+				console.log(err);
+			}else{
+				fillWithServer(result);
+			}
+		})
+	}
+
+
+	
+
+}
+
+var fillWithServer = function(books){
+	resetSVG();
+	for (var i = books.length - 1; i >= 0; i--) {
+		if(books[i].slot){
+			var slot = books[i].slot.split("-");
+			for (var j = slot.length - 1; j >= 0; j--) {
+				var svgElement = document.getElementById("svg_"+slot[j]);
+				svgElement.setAttribute("fill", "#808080");
+			};
+		}
+	};
 }
 
 var updateDataPieChart = function(){
 	totalSpace = 0;
 	var dates = getSelectedAndNextDay();
 	var trip = Trips.findOne(Session.get('tripId'));
-	var count5m = 0;
-	var count6m = 0;
 
 	updateSVGFill(dates, trip._id);
 	
@@ -113,17 +140,40 @@ var updateDataPieChart = function(){
 		$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
 	}).fetch();
 
-	for (var i = 0; i < books.length; i++) {
-		if(books[i].vehicle.size <= 5){
-			count5m++;
-		}
+	var regularSlots = 0;
+	var extraSlots = 0;
+	var doorSlots = 0;
+	var unallocated = 38;
 
-		if(books[i].vehicle.size > 5 && books[i].vehicle.size <= 6){
-			count6m++;
-		}
+	for (var i = 0; i < books.length; i++) {
+		slotArray = books[i].slot.split("-");
+		for (var j = slotArray.length - 1; j >= 0; j--) {
+			if(slotArray[j].indexOf("X") != -1){
+				extraSlots++;
+				unallocated--;
+			}else if(slotArray[j].indexOf("D") != -1){
+				doorSlots++;
+				unallocated--;
+			}else if(slotArray[j] != ""){
+				regularSlots++;
+				unallocated--;
+			}
+		};
 	};
+
+	$("#regularSlotsAlocated").text(regularSlots*5);
+	$("#doorSlotsAlocated").text(doorSlots*5);
+	$("#spaceAlocatedSlot").text(extraSlots*5);
+
+
+	percentages = {
+		regularSlots : regularSlots,
+		extraSlots : extraSlots,
+		doorSlots : doorSlots,
+		unallocated : unallocated
+	}
 	
-	return;
+	return percentages;
 }
 
 ///////////////////////////////////////////
@@ -169,13 +219,33 @@ Template.productItem.events({
 		var appendTrips = [];
 		var trips = Trips.find({productId: this._id, active : true}).fetch();
 
+		var appendTripsHour = function(trip){
+			date = new Date(localStorage.getItem('date'));
+			currentDate = new Date();
+			hourSplit = trip.hour.split(":");
+			with(date){
+				setHours(hourSplit[0] - 1);
+				setMinutes(hourSplit[1]);
+			}
+
+			if(currentDate.getTime() <= date.getTime()){
+				return true;
+			}
+
+			return false;
+
+		}
+
+
 		for (var i = 0; i < trips.length; i++) {
 			if(trips[i].season == 'noSeason'){
 				if(today >= new Date(trips[i].availableDays.start) && today <= new Date(trips[i].availableDays.end)){
-					appendTrips.push(trips[i]);
+					if(appendTripsHour(trips[i]))
+						appendTrips.push(trips[i]);
 				}
 			}else if(trips[i].season == currentSeason()){
-				appendTrips.push(trips[i]);
+				if(appendTripsHour(trips[i]))
+					appendTrips.push(trips[i]);
 			}
 		};
 
@@ -195,14 +265,36 @@ Template.productItem.events({
 	'focus .trip' : function(event){
 		var today = new Date(localStorage.getItem('date'));
 		var appendTrips = [];
+
+		var appendTripsHour = function(trip){
+			date = new Date(localStorage.getItem('date'));
+			currentDate = new Date();
+			hourSplit = trip.hour.split(":");
+			with(date){
+				setHours(hourSplit[0] - 1);
+				setMinutes(hourSplit[1]);
+			}
+
+
+
+			if(currentDate.getTime() <= date.getTime()){
+				return true;
+			}
+
+			return false;
+
+		}
+
 		var trips = Trips.find({productId: this._id, active : true}).fetch();
 		for (var i = 0; i < trips.length; i++) {
 			if(trips[i].season == 'noSeason'){
 				if(today >= new Date(trips[i].availableDays.start) && today <= new Date(trips[i].availableDays.end)){
-					appendTrips.push(trips[i]);
+					if(appendTripsHour(trips[i]))
+						appendTrips.push(trips[i]);
 				}
 			}else if(trips[i].season == currentSeason()){
-				appendTrips.push(trips[i]);
+				if(appendTripsHour(trips[i]))
+					appendTrips.push(trips[i]);
 			}
 		};
 
@@ -467,6 +559,7 @@ Template.bookDetail.ticketNotPrinted = function(id){
 }
 
 Template.bookDetail.notes = function(bookId){
+	console.log("aqui");
 	return Notes.find({bookId: bookId, type: "Customer Note"});
 }
 
@@ -637,11 +730,29 @@ Template.bookDetail.events({
 			var id = $(this).attr("id");
 			document.getElementById(id).setAttribute("stroke", "#000000");
 		})
+
 		$("#svgBoatDialog").show();
 	},
 
 	'click .close, click .cancel' : function(event){
 		$("#svgBoatDialog").hide();
+	},
+
+	'click .editBookOperator' : function(event){
+
+		var a = event.currentTarget;
+
+		Session.set('isEditing', true);
+		Session.set("firstTime", true);
+		Session.set("firstTimePrice", true);
+		Session.set("bookId", a.rel);
+		book = Books.findOne({_id: a.rel});
+		product = Products.findOne({_id: book.product._id});
+		Session.set("customerId", book.customerId);
+		Session.set("productId", product._id);
+		Session.set("bookingDate", book.dateOfBooking);
+		Session.set('tripId', book.trip._id);
+		Meteor.Router.to('/bookEdit');
 	},
 
 	'click .quickPay' : function(event){
@@ -840,6 +951,10 @@ Template.createBook.productName = function(){
 	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).name : "" ;
 }
 
+Template.createBook.getDisclaimer = function(){
+	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).disclaimer : "" ;
+}
+
 Template.createBook.currentSeason = function(){
 	return currentSeason();
 }
@@ -887,7 +1002,7 @@ Template.generalButtons.rendered = function(){
 }
 
 Template.generalPassagerInfo.previous = function(){
-	if(Session.get('previousCustomer')){
+	if(Session.get('previousCustomer') && !Template.generalPassagerInfo.isEditingCustomer()){
 		return true;
 	}
 	return false;
@@ -997,6 +1112,7 @@ Template.createBook.rendered = function(){
 		event.preventDefault();
 	});
 	if(Session.get('isEditing')){
+
 		var customer = Customers.findOne({_id: Session.get("customerId")});
 		var book = Books.findOne(Session.get("bookId"));
     	$('#customerId').val(customer._id);
@@ -1016,6 +1132,9 @@ Template.createBook.rendered = function(){
     	$('#state').val(customer.state);
     	$('#postcode').val(customer.postcode);
     	$('#country').val(customer.country);
+    	$('#vehicle').val(book.vehicle.vehicleName);
+    	$('#vehiclePlate').val(book.vehicle.vehiclePlate);
+    	$('#slotNumber').val(book.slot);
 
     	$('#dayOfBookingEdit').datepicker({
 			changeMonth : true,
@@ -1047,6 +1166,18 @@ Template.createBook.rendered = function(){
 Template.createBook.events({
 	'click #boatStatus' : function(){
 		$("#statusDialog").show();
+	},
+
+	'click .stopAtFlatey' : function(event){
+		var icon = event.target;
+		if(icon.className == "icon-check"){
+			icon.className = "icon-check-empty";
+			$("#stopAtFlateyInput").val(false);
+		}else{
+			icon.className = "icon-check";
+			$("#stopAtFlateyInput").val(true);
+		}
+		
 	},
 
 	'click rect' : function(event){
@@ -1082,8 +1213,18 @@ Template.createBook.events({
 	},
 
 	"click .enabledDoor" : function(){
-		$("rect[fill = '#87b87f']").show();
-		$("text:contains('D')").show();
+
+
+		if($("#showDoorButton").text() == "Show Door"){
+			$("rect[fill = '#87b87f']").show();
+			$("text:contains('D')").show();
+			$("#showDoorButton").text("Hide Door");
+		}else{
+			$("rect[fill = '#87b87f']").hide();
+			$("text:contains('D')").hide();
+			$("#showDoorButton").text("Show Door");
+		}
+		
 	},
 
 	'click #selectManualy' : function(){
@@ -1210,7 +1351,7 @@ Template.generalButtons.events({
 
 	'click .addBook' : function(event){
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
-			throwError('Please Inform the size of vehicle');
+			bootbox.alert('Please Inform the size of vehicle');
 		}else if(!CanSaveTheBook){
 			bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
@@ -1218,7 +1359,11 @@ Template.generalButtons.events({
 		}else if(getFirstSlotAvailable() == 0){
 			bootbox.alert("Sorry we have no more space available on the boat for your car, please select another day");
 		}else if(checkForAdults()){
-			bootbox.alert("A least one Adult is needed to create a booking!");		
+			bootbox.alert("A least one Adult is needed to create a booking!");
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehiclePlate").val() == ""){
+			bootbox.alert("Please inform the vehicle plate.");
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehicle").val() == ""){	
+			bootbox.alert("Please inform the vehicle name");		
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1269,7 +1414,12 @@ Template.generalButtons.events({
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
-			throwError("Please Inform the Slots");	
+			throwError("Please Inform the Slots");
+		}else if($("#categories").val() != "" && $("#size").val() != ""){
+			if($("#vehiclePlate").val() == "")
+				bootbox.alert("Please inform the vehicle plate.");
+			if($("#vehicle").val() == "")	
+				bootbox.alert("Please inform the vehicle name");	
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1303,6 +1453,10 @@ Template.generalButtons.events({
 			throwError("Please Inform the Slots");
 		}else if(checkForAdults()){
 			bootbox.alert("A least one Adult is needed to create a booking!");	
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehiclePlate").val() == ""){
+			bootbox.alert("Please inform the vehicle plate.");
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehicle").val() == ""){	
+			bootbox.alert("Please inform the vehicle name");	
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1350,17 +1504,6 @@ Template.generalPassagerInfo.events({
 		    	$('#postcode').val(currentCustomer.postcode);
 		    	$('#country').val(currentCustomer.country);
 		    	$('#groupId').val(currentCustomer.groupId);	
-		    	//Vehicle
-		    	$('#vehicle').val(currentCustomer.lastUsedCar.vehicleName);
-		    	$('#categories').val(currentCustomer.lastUsedCar.categoryId);
-		    	$('#totalVehicle').val(currentCustomer.lastUsedCar.totalCost);
-		    	$('#vehiclePlate').val(currentCustomer.lastUsedCar.vehiclePlate);
-		    	$("#categories option").filter(function(){
-					return $(this).text() == currentCustomer.lastUsedCar.category;
-				}).attr('selected', true);
-				Session.set('categoryId', currentCustomer.lastUsedCar.categoryId);
-				Session.set('currentSizeCar', currentCustomer.lastUsedCar.size);
-				changeSizes();
 				Session.set('SaveCustomer', false);
 	   		}else{
 	   			$('#fullName').val('');
@@ -1602,10 +1745,13 @@ Template.generalPassagerInfo.rendered = function() {
 	});
 	$('#socialSecurityNumber').mask('999999-9999');
 	loadTypeAheadPostCodes(true);
+
 	$("#birthDayPick").birthdaypicker({
 		"dateFormat" : "bigEndian"
 	});
+	
 }
+	
 
 Template.categoryVehicleBook.helpers({
 	categories : function(){
@@ -1980,6 +2126,8 @@ var createBook = function(){
 			
 			prices.push(operatorPrice);
 	}
+
+	
 	
 	book.prices = prices;
 	book.paid = false;
@@ -2041,7 +2189,18 @@ var createBook = function(){
 				CartItems.remove({_id: book._id});
 				
 			}else{
-				CartItems.insert(book);
+				temporaryID = CartItems.insert(book);
+				//if stop on flatey 
+				if($("#stopAtFlateyInput").val()){
+					var note = {
+							created : new Date(),
+							type : 'Customer Note',
+							note : "This customer will make a stop at Flatey",
+							bookId : temporaryID
+						}
+						Notes.insert(note);
+				}
+
 			}
 		}
 			
@@ -2062,27 +2221,27 @@ var formatData = function(percentages){
 	    pieChart  : [
 	      {
 	        color       : 'red',
-	        description : '5 meters cars',
+	        description : 'Regular Slots',
 	        title       : 'Small Cars (5m)',
-	        value       : parseFloat(12 / 100)
+	        value       : parseFloat(percentages.regularSlots / 38)
 	      },
 	      {
 	        color       : 'blue',
-	        description : '6 meters cars',
+	        description : 'Door Slots',
 	        title       : 'trains',
-	        value       : parseFloat(12 / 100)
+	        value       : parseFloat(percentages.doorSlots / 38)
 	      },
 	      {
 	        color       : 'green',
-	        description : 'Extra Slots Cars',
+	        description : 'Extra Slots',
 	        title       : 'trains',
-	        value       : parseFloat(12 / 100)
+	        value       : parseFloat(percentages.extraSlots / 38)
 	      },
 	      {
 	        color       : 'gray',
 	        description : 'Unallocated Space',
 	        title       : 'trains',
-	        value       : parseFloat(12 / 100)
+	        value       : parseFloat(percentages.unallocated / 38)
 	      }
 	    ]
   	};

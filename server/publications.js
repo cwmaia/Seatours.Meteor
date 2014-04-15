@@ -87,7 +87,7 @@ Meteor.publish('books', function() {
       return Books.find();
     }
   }else{
-    return Books.find({}, {fields: {refNumber : 1, dateOfBooking: 1, 'trip._id': 1, 'trip.from': 1, 'trip.hour': 1, 'bookStatus' : 1, 'vehicle.totalCost' : 1, 'vehicle.category' : 1, 'slot' : 1, 'product._id' : 1, 'product.name':1, orderId : 1, totalISK:1,'vehicle.size' : 1, prices : 1}});
+    return Books.find({}, {fields: {paid : 1 ,refNumber : 1, dateOfBooking: 1, 'trip._id': 1, 'trip.from': 1, 'trip.hour': 1, 'bookStatus' : 1, 'vehicle.totalCost' : 1, 'vehicle.category' : 1, 'slot' : 1, 'product._id' : 1, 'product.name':1, orderId : 1, totalISK:1,'vehicle.size' : 1, prices : 1}});
   }
 });
 
@@ -307,6 +307,25 @@ Meteor.methods({
     return books;
   },
 
+  getBooksToFill : function(dates, tripId, productId){
+    books = Books.find({
+      dateOfBooking   : {$gte: dates.selectedDay, $lt: dates.nextDay},
+      'product._id'   : productId,
+      'trip._id'  : tripId,
+      $or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
+    }).fetch();
+
+    return books;
+  },
+
+  getOnlineDiscount : function(){
+    return Settings.findOne("onlineDiscount").onlineDiscount;
+  },
+
+  setOnlineDiscount : function(value){
+    Settings.update("onlineDiscount", {$set : {onlineDiscount : value}});
+  },
+
 
   saveFile: function(blob, name, path, encoding) {
     var fs = Npm.require('fs'), encoding ='binary';
@@ -338,7 +357,12 @@ Meteor.methods({
       }
       book.refNumber = refNumber;
     }
-    return Books.insert(book);
+    bookId = Books.insert(book);
+    note = Notes.findOne({bookId: bookId});
+    if(note)
+      Notes.update(note._id, {$set : {bookId: bookId}});
+
+    return bookId;
   },
 
   insertOnCBasket : function(book){

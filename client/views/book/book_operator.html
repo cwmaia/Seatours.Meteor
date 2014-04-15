@@ -1,7 +1,7 @@
 <template name="bookOperator">
 	<div class="page-header">
 		<h1>
-			Bookings
+			Create Booking
 			<label>Current season: <span id='currentSeason'></span></label>
 		</h1>
 	</div><!-- /.page-header -->
@@ -101,26 +101,26 @@
 							<tr>
 								<td>#Adult</td>
 								<td><span id='numberOfAdults'></span></td>
-								<td class='noStatus'>Cars up to 5m</td>
-								<td class='noStatus'>{{qtdCarsUpTo5}}</td>
+								<td class='noStatus'>Meters Alocated on Regular Slots: </td>
+								<td class='noStatus'><span id='regularSlotsAlocated'></span>m</td></td>
 							</tr>
 							<tr>
 								<td>#Child</td>
 								<td><span id='numberOfChildrens'></span></td>
-								<td class='noStatus'>Cars up to 6m</td>
-								<td class='noStatus'>{{qtdCarsUpTo6}}</td>
+								<td class='noStatus'>Meters alocated on Door Slots: </td>
+								<td class='noStatus'><span id='doorSlotsAlocated'></span>m</td></td>
 							</tr>
 							<tr>
 								<td>#Infant</td>
 								<td><span id='numberOfInfants'></span></td>
-								<td class='noStatus'>Meters alocated on extra Slot 1</td>
-								<td class='noStatus'><span id='spaceAlocatedSlot1'></span>m</td>
+								<td class='noStatus'>Meters alocated on Extras Slot: </td>
+								<td class='noStatus'><span id='spaceAlocatedSlot'></span>m</td>
 							</tr>	
 							<tr>
 								<td>#Senior</td>
 								<td><span id='numberOfSeniors'></span></td>
-								<td class='noStatus'>Meters alocated on extra Slot 2</td>
-								<td class='noStatus'><span id='spaceAlocatedSlot2'></span>m</td>
+								<td class='noStatus'></td>
+								<td class='noStatus'></td>
 							</tr>	
 							<tr>
 								<td>#School Discount</td>
@@ -233,8 +233,10 @@
 									</a>
 									
 								{{else}}
-									<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
+									<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money"></i></a>
+
 								{{/if}}
+								<a class="btn btn-mini btn-info editBookOperator" rel="{{_id}}" title="Edit Book"><i class="icon-edit"></i></a>
 							{{/if}}
 
 						</td>
@@ -259,8 +261,17 @@
 			<label>Current Season: {{currentSeason}}</label>
 		</h1>
 	</div><!-- /.page-header -->
+	
+	{{#if getDisclaimer}}
+	<div class='line'>
+    	<div class="alert alert-warning">
 
-	<div class="line-2">
+       		{{getDisclaimer}}
+	    </div>
+	</div>
+	{{/if}}
+
+	<div class="line-3">
 		<div>
 			<label class="required">Destination: </label>
 			<select id="destination">
@@ -273,6 +284,16 @@
 				{{/each}}
 			</select>
 		</div>
+
+		{{#if getDisclaimer}}
+		<div>
+	    	<div>
+				<span style="font-size: 16px;">Stop at Flatey:<span>
+				<a class="stopAtFlatey"><i class='icon-check-empty'></i></a>
+				<input type='hidden' id="stopAtFlateyInput">
+			</div>
+		</div>
+		{{/if}}
 
 		<div>
 			{{#if isEditing}}
@@ -343,7 +364,7 @@
     	{{#if dateSelected}}
 		<div>
 			<label>Slot:</label>
-			<input type="text" class='size1-2' name="vehiclePlate" id="slotNumber" readonly>
+			<input type="text" class='size1-2' id="slotNumber" readonly>
 			<a id="selectManualy">Select Manualy</a>
 		</div>
 		{{/if}}	
