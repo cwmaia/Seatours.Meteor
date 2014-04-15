@@ -559,6 +559,7 @@ Template.bookDetail.ticketNotPrinted = function(id){
 }
 
 Template.bookDetail.notes = function(bookId){
+	console.log("aqui");
 	return Notes.find({bookId: bookId, type: "Customer Note"});
 }
 
@@ -950,6 +951,10 @@ Template.createBook.productName = function(){
 	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).name : "" ;
 }
 
+Template.createBook.getDisclaimer = function(){
+	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).disclaimer : "" ;
+}
+
 Template.createBook.currentSeason = function(){
 	return currentSeason();
 }
@@ -1161,6 +1166,18 @@ Template.createBook.rendered = function(){
 Template.createBook.events({
 	'click #boatStatus' : function(){
 		$("#statusDialog").show();
+	},
+
+	'click .stopAtFlatey' : function(event){
+		var icon = event.target;
+		if(icon.className == "icon-check"){
+			icon.className = "icon-check-empty";
+			$("#stopAtFlateyInput").val(false);
+		}else{
+			icon.className = "icon-check";
+			$("#stopAtFlateyInput").val(true);
+		}
+		
 	},
 
 	'click rect' : function(event){
@@ -2109,6 +2126,8 @@ var createBook = function(){
 			
 			prices.push(operatorPrice);
 	}
+
+	
 	
 	book.prices = prices;
 	book.paid = false;
@@ -2170,7 +2189,18 @@ var createBook = function(){
 				CartItems.remove({_id: book._id});
 				
 			}else{
-				CartItems.insert(book);
+				temporaryID = CartItems.insert(book);
+				//if stop on flatey 
+				if($("#stopAtFlateyInput").val()){
+					var note = {
+							created : new Date(),
+							type : 'Customer Note',
+							note : "This customer will make a stop at Flatey",
+							bookId : temporaryID
+						}
+						Notes.insert(note);
+				}
+
 			}
 		}
 			

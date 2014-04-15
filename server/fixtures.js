@@ -132,31 +132,41 @@ if(Products.find().count() == 0){
 		"boatId" : '1',
 		'availableFor' : customersId,
 		'imageName' : "Baldur Ferry.jpg",
-		'featured' : true
+		'featured' : true,
+		'disclaimer' : "Ferry Baldur daily crosses Breiðafjörður Bay. PLEASE NOTE – if your are travelling with a car and stopping in Flatey Island you need to book “Stykkisholmur-Brjanslækur” (or reverse), and mark in the checkbox that you will be stopping in Flatey." 
 	});
 
 	Trips.insert({
 		"from" 	: "Stykkishólmur",
-		"to"	: "",
+		"to"	: "Brjanslækur",
+		"hour"  : "15:00",
+		'season' : "winter",
+		'active' : true,
+		'productId' : result
+	}),
+
+	Trips.insert({
+		"from" 	: "Brjanslækur",
+		"to"	: "Stykkisholmur",
+		"hour"  : "18:00",
+		'season' : "winter",
+		'active' : true,
+		'productId' : result
+	}),
+
+	Trips.insert({
+		"from" 	: "Stykkisholmur",
+		"to"	: "Brjanslækur",
 		"hour"  : "09:00",
-		'season' : "winter",
+		'season' : "summer",
 		'active' : true,
-		'productId' : result
+		'productId' : result		
 	}),
 
 	Trips.insert({
-		"from" 	: "Stykkishólmur",
-		"to"	: "",
-		"hour"  : "15:45",
-		'season' : "winter",
-		'active' : true,
-		'productId' : result
-	}),
-
-	Trips.insert({
-		"from" 	: "Flatey",
-		"to"	: "Brjánslækur",
-		"hour"  : "10:30",
+		"from" 	: "Stykkisholmur",
+		"to"	: "Flatey",
+		"hour"  : "09:00",
 		'season' : "summer",
 		'active' : true,
 		'productId' : result		
@@ -164,16 +174,16 @@ if(Products.find().count() == 0){
 
 	Trips.insert({
 		"from" 	: "Flatey",
-		"to"	: "Brjánslækur",
-		"hour"  : "17:15",
+		"to"	: "Brjanslækur",
+		"hour"  : "10:35",
 		'season' : "summer",
 		'active' : true,
 		'productId' : result		
 	}),
 
 	Trips.insert({
-		"from" 	: "Brjánslækur",
-		"to"	: "",
+		"from" 	: "Brjanslækur",
+		"to"	: "Flatey",
 		"hour"  : "12:15",
 		'season' : "summer",
 		'active' : true,
@@ -181,8 +191,71 @@ if(Products.find().count() == 0){
 	}),
 
 	Trips.insert({
-		"from" 	: "Brjánslækur",
-		"to"	: "",
+		"from" 	: "Brjanslækur",
+		"to"	: "Stykkisholmur",
+		"hour"  : "12:15",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	}),
+
+	Trips.insert({
+		"from" 	: "Flatey",
+		"to"	: "Stykkisholmur",
+		"hour"  : "13:15",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	}),
+
+	Prices.insert({
+		"price" 	: "Adult",
+		"unit"	: 4080,
+		'active' : true,
+		'season' : 'summer',
+		'productId' : result,
+		'availableForGuest' : true
+	}),
+
+	Trips.insert({
+		"from" 	: "Stykkisholmur",
+		"to"	: "Brjanslækur",
+		"hour"  : "15:45",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	}),
+
+	Trips.insert({
+		"from" 	: "Stykkisholmur",
+		"to"	: "Flatey",
+		"hour"  : "15:45",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	}),
+
+	Trips.insert({
+		"from" 	: "Flatey",
+		"to"	: "Brjanslækur",
+		"hour"  : "17:15",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	}),
+
+	Trips.insert({
+		"from" 	: "Brjanslækur",
+		"to"	: "Flatey",
+		"hour"  : "19:00",
+		'season' : "summer",
+		'active' : true,
+		'productId' : result		
+	}),
+
+	Trips.insert({
+		"from" 	: "Brjanslækur",
+		"to"	: "Stykkisholmur",
 		"hour"  : "19:00",
 		'season' : "summer",
 		'active' : true,
@@ -191,16 +264,7 @@ if(Products.find().count() == 0){
 
 	Trips.insert({
 		"from" 	: "Flatey",
-		"to"	: "Stykkishólmur",
-		"hour"  : "13:15",
-		'season' : "summer",
-		'active' : true,
-		'productId' : result		
-	}),
-
-	Trips.insert({
-		"from" 	: "Flatey",
-		"to"	: "Stykkishólmur",
+		"to"	: "Stykkisholmur",
 		"hour"  : "20:00",
 		'season' : "summer",
 		'active' : true,
@@ -607,10 +671,10 @@ if(Customers.find().count() == 0){
 
 if(Meteor.users.find().count() == 0){
 	Accounts.createUser({
-	  'username'  : 'gudrun',
-	  'email'     : 'jarbas.byakuya@gmail.com',
-	  'profile'	  : {'groupID' : admId, 'name' : 'Gudrun'},
-	  'password'  : '1234' //encrypted automatically 
+	  'username'  : 'skrifstofa',
+	  'email'     : 'admin@seatours.com',
+	  'profile'	  : {'groupID' : admId, 'name' : 'Skrifstofa'},
+	  'password'  : '9876' //encrypted automatically 
 	});
 }
 
@@ -1605,9 +1669,9 @@ if(PostCodes.find().count() == 0){
 	//////////////////////////////////////////////////
 	// Settings
 
-	Settings.insert({'summerStartDate' : '01/06',
+	Settings.insert({'summerStartDate' : '06/06',
 					 '_id' : 'summer'});
-	Settings.insert({'winterStartDate' : '01/09',
+	Settings.insert({'winterStartDate' : '25/08',
 					 '_id' : 'winter'});
 	Settings.insert({'onlineDiscount' : 10,
 					 '_id' : 'onlineDiscount'});

@@ -261,8 +261,17 @@
 			<label>Current Season: {{currentSeason}}</label>
 		</h1>
 	</div><!-- /.page-header -->
+	
+	{{#if getDisclaimer}}
+	<div class='line'>
+    	<div class="alert alert-warning">
 
-	<div class="line-2">
+       		{{getDisclaimer}}
+	    </div>
+	</div>
+	{{/if}}
+
+	<div class="line-3">
 		<div>
 			<label class="required">Destination: </label>
 			<select id="destination">
@@ -275,6 +284,16 @@
 				{{/each}}
 			</select>
 		</div>
+
+		{{#if getDisclaimer}}
+		<div>
+	    	<div>
+				<span style="font-size: 16px;">Stop at Flatey:<span>
+				<a class="stopAtFlatey"><i class='icon-check-empty'></i></a>
+				<input type='hidden' id="stopAtFlateyInput">
+			</div>
+		</div>
+		{{/if}}
 
 		<div>
 			{{#if isEditing}}

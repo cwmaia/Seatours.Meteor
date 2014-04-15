@@ -357,7 +357,12 @@ Meteor.methods({
       }
       book.refNumber = refNumber;
     }
-    return Books.insert(book);
+    bookId = Books.insert(book);
+    note = Notes.findOne({bookId: bookId});
+    if(note)
+      Notes.update(note._id, {$set : {bookId: bookId}});
+
+    return bookId;
   },
 
   insertOnCBasket : function(book){
