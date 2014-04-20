@@ -465,7 +465,7 @@ Template.bookOperator.events({
 
         var blocking = BlockingDates.findOne({'type' : 'blockDate' ,'blockedDay': '0'+(new Date(localStorage.getItem('date'))).toLocaleDateString() ,'tripId' : select.val()});
         if(blocking){
-				throwError("Trips not available for this route. Please Select Another Day");
+				bootbox.alert("Trips not available for this route on this day. Please Select Another Day");
 				return;
 	    }
 
@@ -473,7 +473,7 @@ Template.bookOperator.events({
 	    if(bwday){
 	    	var blockWeekDayTable = bwday.availableWeekDays.split(",");
 		    if (blockWeekDayTable[new Date(localStorage.getItem('date')).getDay()] == "false"){
-		    	throwError("Trips not available for this route. Please Select Another Day");
+		    	bootbox.alert("Trips not available for this route on this day. Please Select Another Day");
 				return;
 		    }
 		}
@@ -488,7 +488,7 @@ Template.bookOperator.events({
 		var pAvailability = BlockingDates.findOne({'type' : 'passagersAvailability', 'tripId' : select.val()});
 		if(pAvailability){
 			if(persons = pAvailability.passagersAvailability){
-			throwError("Trips no longer available for this route. Please Select Another Day");
+			bootbox.alert("Trips no longer available for this route we're already full. Please Select Another Day");
 			return;
 			}
 		}
