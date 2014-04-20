@@ -23,7 +23,6 @@ Template.editTrip.boatFind = function(id){
 
 Template.editTrip.available = function(weekDay){
 	if(localStorage.getItem("weekDays")){
-		console.log("aqui");
 		if(localStorage.getItem("weekDays").split(',')[weekDay] == "true")
 			return true;
 		else
@@ -221,18 +220,20 @@ Template.editTrip.events({
 		}
 	},
 	'click .weekDayAvailability' : function(event){
+		var link = event.target;
 		var weekDay = event.currentTarget.rel;
 		var arrayTeste = localStorage.getItem("weekDays").split(",");
 
 		if(localStorage.getItem("weekDays").split(",")[weekDay] == "true"){
 			arrayTeste[weekDay] = "false";
+			link.className = "icon-check-empty";
 		}else{
 			arrayTeste[weekDay] = "true";
+			link.className = "icon-check";
 		}
 
-		
 		localStorage.setItem("weekDays", arrayTeste);
-		Template.editTrip.available(weekDay);
+
 	},
 
 	'submit #tripForm' : function(event) {
