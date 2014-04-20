@@ -24,7 +24,6 @@ Template.listvouchers.events({
 })
 
 var initSendMails = function(flag){
-	console.log(flag);
 	if(flag){
 		Meteor.call("getAllBooksByOrder", Session.get("orderId"), function(err, result){
 			if(err){
@@ -37,7 +36,7 @@ var initSendMails = function(flag){
 	}
 }
 
-Template.listvouchers.rendered = function(){
+Template.listvouchers.created = function(){
 	initSendMails(send);
 	send = false;
 	

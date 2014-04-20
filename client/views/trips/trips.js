@@ -22,8 +22,12 @@ Template.editTrip.boatFind = function(id){
 }
 
 Template.editTrip.available = function(weekDay){
-	if(localStorage.getItem("weekDays").split(',')[weekDay] == "true"){
-		return true;
+	if(localStorage.getItem("weekDays")){
+		console.log("aqui");
+		if(localStorage.getItem("weekDays").split(',')[weekDay] == "true")
+			return true;
+		else
+			return false;	
 	}else{
 		return false;
 	}

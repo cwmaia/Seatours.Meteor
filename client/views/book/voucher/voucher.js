@@ -43,30 +43,6 @@ Template.voucher.customer = function(){
 	
 }
 
-var showAlertDiv = function(){
-  if(Books.findOne({_id : Session.get('bookId')})){
-    bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
-    book = Books.findOne({_id : Session.get('bookId')});
-  }else{
-    book = Session.get("book");
-    bookTransactions = Transactions.find({bookId : book._id}).fetch();
-  }
-  var totalISK = book.totalISK;
-  for (var i = bookTransactions.length - 1; i >= 0; i--) {
-    if(bookTransactions[i].type == 'Refund'){
-      totalISK = totalISK + bookTransactions[i].amount;
-    }else{
-      totalISK = totalISK - bookTransactions[i].amount;
-    }
-  };
-
-  if(totalISK > 0 && !book.paid == true){
-    return true;
-  }else{
-    return false;
-  }
-}
-
 Template.voucher.calcTotal = function(totalISK){
   if(Books.findOne({_id : Session.get('bookId')})){
     bookTransactions = Transactions.find({bookId : Session.get('bookId')}).fetch();
@@ -85,6 +61,25 @@ Template.voucher.calcTotal = function(totalISK){
 
   return totalISK;
 
+}
+
+Template.voucher.paidFullDiv = function(){
+  var book = Session.get("book");
+  if(book.paid){
+    return "";
+  }
+  var html = "";
+  html += "<div id='alertNotPaid' class='alert alert-danger' style='font-size: 13px;";
+  html += "margin-bottom: 20px;";
+  html += "text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);";
+  html += "background-color: #fcf8e3;";
+  html += "border: 1px solid #fbeed5;";
+  html += "margin-left: 2%;";
+  html += "margin-right: 2%;";
+  html += "text-align: center;'>"
+  html += "<b style='color: #FF2400;'>This voucher has not yet been paid full, please complete the payment at our office.</b>";
+  html += "</div>";
+  return html;  
 }
 
 
@@ -138,9 +133,6 @@ Template.voucher.qrCode = function(){
 Template.voucher.rendered = function(){
   $(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
   $(".formattedAsMoney").maskMoney('mask');
-  if(!showAlertDiv()){
-    $('#alertNotPaid').hide();
-  }
 }
 
 Template.voucher.helpers({

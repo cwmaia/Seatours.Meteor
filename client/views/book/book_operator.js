@@ -471,8 +471,8 @@ Template.bookOperator.events({
 
 	    var bwday = BlockingDates.findOne({'type' : 'blockWeekDay', 'tripId' : select.val()});
 	    if(bwday){
-	    	var blockWeekDayTable = bwday.availableWeekDays;
-		    if (!blockWeekDayTable[new Date(localStorage.getItem('date')).getDay()]){
+	    	var blockWeekDayTable = bwday.availableWeekDays.split(",");
+		    if (blockWeekDayTable[new Date(localStorage.getItem('date')).getDay()] == "false"){
 		    	throwError("Trips not available for this route. Please Select Another Day");
 				return;
 		    }
