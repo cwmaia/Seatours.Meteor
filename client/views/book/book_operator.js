@@ -1746,9 +1746,18 @@ Template.generalPassagerInfo.rendered = function() {
 	$('#socialSecurityNumber').mask('999999-9999');
 	loadTypeAheadPostCodes(true);
 
-	$("#birthDayPick").birthdaypicker({
-		"dateFormat" : "bigEndian"
-	});
+	if(isCustomer()){
+		$("#birthDayPick").birthdaypicker({
+			"dateFormat" : "bigEndian",
+			"required" : true
+		});
+	}else{
+		$("#birthDayPick").birthdaypicker({
+			"dateFormat" : "bigEndian",
+			"required" : false
+		});
+	}
+	
 	
 }
 	

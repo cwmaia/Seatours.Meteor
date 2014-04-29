@@ -56,8 +56,13 @@
 				</div>
 		        
 		        <div>
-		            <label class="{{#if isCustomer}} required{{/if}}">Email: </label>
-		            <input type="email" id="email" name="email" placeholder="Email" {{#if isCustomer}} required{{/if}}>
+		        	{{#if isCustomer}}
+		            	<label class="control-label required">Email: </label>
+		            	<input type="email" id="email" name="email" placeholder="Email" required>
+		            {{else}}
+		            	<label class="control-label">Email: </label>
+		            	<input type="email" id="email" name="email" placeholder="Email">
+	            	{{/if}}
 		        </div>
 	            
 	            <div class="input-append">

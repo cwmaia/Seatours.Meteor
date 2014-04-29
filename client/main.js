@@ -39,10 +39,6 @@ Template.redirect.rendered = function(){
 		errorClass: 'help-inline error',
 		focusInvalid: true,
 		rules: {
-			email: {
-				required: true,
-				email:true
-			},
 			password: {
 				required: true
 			},

@@ -35,18 +35,31 @@
       "fieldId"       : "birthdate",
       "hiddenDate"    : true,
       "onChange"      : null,
-      "tabindex"      : null
+      "tabindex"      : null,
+      "required"      : false
     };
 
     return this.each(function() {
 
       if (options) { $.extend(settings, options); }
 
-      // Create the html picker skeleton
+      console.log(options);
+
+      if(options.required){
+        // Create the html picker skeleton
+        var $fieldset = $("<fieldset class='birthday-picker'></fieldset>"),
+            $year = $("<select required id='birthYearSelect' class='birth-year' name='birth[year]'></select>"),
+            $month = $("<select required id='birthMonthSelect' class='birth-month' name='birth[month]'></select>"),
+            $day = $("<select required id='birthDaySelect' class='birth-day' name='birth[day]'></select>");
+        }else{
+          // Create the html picker skeleton
       var $fieldset = $("<fieldset class='birthday-picker'></fieldset>"),
-          $year = $("<select required id='birthYearSelect' class='birth-year' name='birth[year]'></select>"),
-          $month = $("<select required id='birthMonthSelect' class='birth-month' name='birth[month]'></select>"),
-          $day = $("<select required id='birthDaySelect' class='birth-day' name='birth[day]'></select>");
+          $year = $("<select id='birthYearSelect' class='birth-year' name='birth[year]'></select>"),
+          $month = $("<select id='birthMonthSelect' class='birth-month' name='birth[month]'></select>"),
+          $day = $("<select id='birthDaySelect' class='birth-day' name='birth[day]'></select>");
+        }
+
+      
 
       if (settings["legend"]) { $("<legend>" + settings["legend"] + "</legend>").appendTo($fieldset); }
 
