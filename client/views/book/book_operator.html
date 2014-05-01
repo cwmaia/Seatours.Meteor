@@ -263,12 +263,14 @@
 	</div><!-- /.page-header -->
 	
 	{{#if getDisclaimer}}
-	<div class='line'>
-    	<div class="alert alert-warning">
-
-       		{{getDisclaimer}}
-	    </div>
-	</div>
+		{{#if isCustomer}}
+		{{else}}
+			<div class='line'>
+		    	<div class="alert alert-warning">
+		       			{{getDisclaimer}}
+			    </div>
+			</div>
+		{{/if}}
 	{{/if}}
 
 	<div class="line-3">
@@ -286,13 +288,16 @@
 		</div>
 
 		{{#if getDisclaimer}}
-		<div>
-	    	<div>
-				<span style="font-size: 16px;">Stop at Flatey:<span>
-				<a class="stopAtFlatey"><i class='icon-check-empty'></i></a>
-				<input type='hidden' id="stopAtFlateyInput">
+		{{#if isCustomer}}
+		{{else}}
+			<div>
+		    	<div>
+					<span style="font-size: 16px;">Stop at Flatey:<span>
+					<a class="stopAtFlatey"><i class='icon-check-empty'></i></a>
+					<input type='hidden' id="stopAtFlateyInput">
+				</div>
 			</div>
-		</div>
+			{{/if}}
 		{{/if}}
 
 		<div>
@@ -315,10 +320,10 @@
 			Senior : 67 years and older<br>
 		{{#if isSummer}}
 			Child : 0 to 15 years old <br>
-			Infant : 16 to 20 years old <br>
+			Youth : 16 to 20 years old <br>
 		{{else}}
 			Child : 0 to 11 years old <br>
-			Infant : 12 to 15 years old <br>
+			Youth : 12 to 15 years old <br>
 		{{/if}}
 
 	<div class="line">

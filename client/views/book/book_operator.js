@@ -1562,6 +1562,17 @@ Template.generalPassagerInfo.events({
 	    	$('#postcode').val(currentCustomer.postcode);
 	    	$('#country').val(currentCustomer.country);	
 	    	$('#groupId').val(currentCustomer.groupId);	
+
+	    	var pVehicle = Session.get("previousVehicle");
+
+	    	$("#vehicle").val(pVehicle.vehicleName);
+			$("#categories").val(pVehicle.category);
+			$("#vehiclecolor").val(pVehicle.vehicleColor);
+			Session.set("categoryId", pVehicle.categoryId);
+			$("#size").val(pVehicle.size);
+			$("#totalVehicle").val(pVehicle.totalCost);
+			$('#vehiclePlate').val(pVehicle.vehiclePlate);
+
 		}else{
 			$("#previousData").val('false');
 			$('#fullName').val('');
@@ -1582,6 +1593,15 @@ Template.generalPassagerInfo.events({
 	    	$('#postcode').val('');
 	    	$('#country').val('');
 	    	$('#groupId').val('');	
+
+	    	$("#vehicle").val();
+			$("#categories").val();
+			$("#vehiclecolor").val();
+			Session.set("categoryId", null);
+			$("#size").val();
+			$("#totalVehicle").val();
+			$('#vehiclePlate').val();
+
 		}
 	},
 
@@ -1973,6 +1993,7 @@ var createBook = function(){
 	var	vehicle = {
 		"vehicleName" : $("#vehicle").val(),
 		"category" : $("#categories").val(),
+		"vehicleColor" : $("#vehiclecolor").val(),
 		"categoryId" : Session.get("categoryId"),
 		"size" : $("#size").val(),
 		"totalCost" : $("#totalVehicle").val().replace(".",""),
@@ -1998,8 +2019,10 @@ var createBook = function(){
 		"lastUsedCar" : vehicle,
 		"groupId" : group._id
 	}
+
 	if(isOperator()){
 		Session.set("previousCustomer", customer);
+		Session.set("previousVehicle", vehicle);
 	}
 
 	var date = new Date();
