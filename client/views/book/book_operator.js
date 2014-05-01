@@ -265,59 +265,7 @@ Template.productItem.events({
 		}else{
 			$('#button_'+this._id).removeAttr("disabled");
 		}
-	},
-	'focus .trip' : function(event){
-		var today = new Date(localStorage.getItem('date'));
-		var appendTrips = [];
-
-		var appendTripsHour = function(trip){
-			date = new Date(localStorage.getItem('date'));
-			currentDate = new Date();
-			hourSplit = trip.hour.split(":");
-			with(date){
-				setHours(hourSplit[0] - 1);
-				setMinutes(hourSplit[1]);
-			}
-
-
-
-			if(currentDate.getTime() <= date.getTime()){
-				return true;
-			}
-
-			return false;
-
-		}
-
-		var trips = Trips.find({productId: this._id, active : true}).fetch();
-		for (var i = 0; i < trips.length; i++) {
-			if(trips[i].season == 'noSeason'){
-				if(today >= new Date(trips[i].availableDays.start) && today <= new Date(trips[i].availableDays.end)){
-					if(appendTripsHour(trips[i]))
-						appendTrips.push(trips[i]);
-				}
-			}else if(trips[i].season == currentSeason()){
-				if(appendTripsHour(trips[i]))
-					appendTrips.push(trips[i]);
-			}
-		};
-
-		//Remove all previous options
-		$('#trip_'+this._id).find('option').remove();
-
-		for (var i = appendTrips.length - 1; i >= 0; i--) {
-			//Append new options
-			$('#trip_'+this._id).append("<option value="+appendTrips[i]._id+" data-from="+appendTrips[i].from+">"+appendTrips[i].from +" - "+appendTrips[i].to + " - " +appendTrips[i].hour+"</option>");
-		};
-
-		if(appendTrips.length == 0){
-			$('#trip_'+this._id).append("<option disabled>No trips available for this day</option>");
-			$('#button_'+this._id).attr("disabled", "disabled");
-		}else{
-			$('#button_'+this._id).removeAttr("disabled");
-		}
 	}
-
 })
 
 Template.bookOperator.helpers({
@@ -929,7 +877,7 @@ Template.bookDetail.helpers({
 		if(selectedDate < date)
 			isValidDate = false;
 
-		return (totalPersons < boatCapacity) && isValidDate;
+		return isValidDate || !isCustomer();
 	},
 
 	bookingsCreated : function(){
