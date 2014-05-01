@@ -644,7 +644,7 @@ Template.generalPassagerInfo.groupCustomer = function(id){
 }
 
 Template.generalPassagerInfo.isEditingCustomer = function(){
-	return Session.get('customerId') && !isCustomer() && !Session.get("bookId");
+	return Session.get('editingCustomer');
 }
 Template.generalPassagerInfo.isCustomer = function(){
 	return isCustomer();

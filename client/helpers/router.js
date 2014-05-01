@@ -136,7 +136,7 @@ Meteor.Router.filters({
 				}
 			};
 
-			alert('You do not have the required permissions to access this page, please contact your administrator.');
+			bootbox.alert('You do not have the required permissions to access this page, please contact your administrator.');
 			return;
 		}
 
@@ -144,12 +144,25 @@ Meteor.Router.filters({
 		return;
 
 
+	},
+
+	'edtingCustomer' : function(page){
+		if(page == "customersAndExternals"){
+			Session.set("editingCustomer", true);
+			return page;
+		}else{
+			Session.set("editingCustomer", false);
+			return page;
+		}
 	}
 })
+
 
 
 
 Meteor.Router.filter('clearErrors');
 Meteor.Router.filter('checkAuth');
 Meteor.Router.filter('checkPermision');
+Meteor.Router.filter('edtingCustomer');
+
 
