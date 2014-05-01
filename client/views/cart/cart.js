@@ -125,7 +125,10 @@ Template.cart.events({
 			var createdBooks = [];
 			for (var i = 0; i < books.length; i++) {
 				var customer = Customers.findOne({_id : books[i].customerId});
-				sendMail(books[i],books[i]._id, customer);
+				
+				if(customer.email)
+					sendMail(books[i],books[i]._id, customer);
+				
 				CartItems.remove({_id : books[i]._id});
 
 				refNumber = new Date().getTime().toString().substr(5);

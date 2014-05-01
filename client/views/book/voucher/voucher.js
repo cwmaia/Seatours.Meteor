@@ -64,7 +64,6 @@ Template.voucher.calcTotal = function(totalISK){
 }
 
 Template.voucher.paidFullDiv = function(){
-  var book = Session.get("book");
   if(book.paid){
     return "";
   }

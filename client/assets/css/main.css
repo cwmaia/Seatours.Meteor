@@ -1,7 +1,6 @@
 body,
 h1, h2, h3, h4, h5, h6{
 	margin: 0;
-	font-family: 'Cabin', Arial, tahoma, sans-serif !important;
 }
 a {
 	cursor: pointer;
@@ -35,7 +34,6 @@ form{
 }
 
 label{
-	font-family: arial, helvetica, sans-serif;
 	text-transform: capitalize;
 }
 
@@ -370,18 +368,18 @@ select{
 	Voucher
 */
 
-#voucher{
+.voucher{
 	margin-top: 2%;
 }
 
-#voucher h3{
+.voucher h3{
 	margin-bottom: 1%;
 	font-style: italic;
 	font-weight: lighter;
 	text-shadow: 2px 1px 1px white;
 }
 
-#voucher p{
+.voucher p{
 	font-size: 130%;
 	font-weight: lighter;
 	color: #555;

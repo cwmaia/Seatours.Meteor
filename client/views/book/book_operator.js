@@ -232,6 +232,9 @@ Template.productItem.events({
 				return true;
 			}
 
+			if(!isCustomer())
+				return true;
+
 			return false;
 
 		}
@@ -248,6 +251,7 @@ Template.productItem.events({
 					appendTrips.push(trips[i]);
 			}
 		};
+
 
 		//Remove all previous options
 		$('#trip_'+this._id).find('option').remove();
