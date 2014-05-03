@@ -293,6 +293,11 @@ Template.overview.lineColor = function(paid, bookStatus, ticketPrinted){
 }
 
 Template.overview.rendered = function(){
+	$(".datatable").dataTable({
+		"iDisplayLength": 25,
+		"bServerSide": false,
+   		"bDestroy": true
+	});
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
 	$(".formattedAsMoney").maskMoney('mask');
 	$(".datePickerWYear").datepicker({
@@ -347,8 +352,15 @@ Template.overview.events({
 
 		'click .printTicket' : function(event){
 			event.preventDefault();
-			var currentBooking = Books.findOne({'_id' : event.currentTarget.rel});
-			Books.update(currentBooking._id, {$set : {'ticketPrinted' : true}});	
+			var id = event.currentTarget.rel;
+			var book = Books.findOne({'_id' : id});
+			if(book.ticketPrinted){
+				Books.update(id, {$set : {ticketPrinted : false}});
+				throwInfo('Canceled Ticket Printed!');
+			}else{
+				Books.update(id, {$set : {ticketPrinted : true}});
+				throwInfo('Ticket Printed!');
+			}	
 		},
 
 		'click .changeStatusBooking' : function(event) {

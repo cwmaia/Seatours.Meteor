@@ -490,7 +490,9 @@ function setCalendarCapacity (calendar) {
 //Template Book Detail
 Template.bookDetail.rendered = function() {
 	var oTable = $('#passengers').dataTable({
-		"iDisplayLength": 50
+		"iDisplayLength": 50,
+		"bServerSide": false,
+   		"bDestroy": true
 	});
 	oTable.fnSort( [ [1,'asc'], [7,'asc'], [8,'asc'] ] );
 	$('#boatSlots').dataTable();
@@ -511,7 +513,6 @@ Template.bookDetail.ticketNotPrinted = function(id){
 }
 
 Template.bookDetail.notes = function(bookId){
-	console.log("aqui");
 	return Notes.find({bookId: bookId, type: "Customer Note"});
 }
 
@@ -738,8 +739,15 @@ Template.bookDetail.events({
 
 	'click .printTicket' : function(event){
 		event.preventDefault();
-		var currentBooking = Books.findOne({'_id' : event.currentTarget.rel});
-		Books.update(currentBooking._id, {$set : {'ticketPrinted' : true}});	
+		var id = event.currentTarget.rel;
+		var book = Books.findOne({'_id' : id});
+		if(book.ticketPrinted){
+			Books.update(id, {$set : {ticketPrinted : false}});
+			throwInfo('Canceled Ticket Printed!');
+		}else{
+			Books.update(id, {$set : {ticketPrinted : true}});
+			throwInfo('Ticket Printed!');
+		}	
 	},
 
 	'click .changeStatusBooking' : function(event) {
