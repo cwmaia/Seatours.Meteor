@@ -8,7 +8,7 @@ Template.overview.date = function(){
 }
 
 Template.overview.trips = function(productId){
-	return Trips.find({productId : productId, season : currentSeason()});
+	return Trips.find({productId : productId, season : currentSeason()}, { sort : {hour : 1}});
 }
 
 Template.overview.isFirst = function(productId){
