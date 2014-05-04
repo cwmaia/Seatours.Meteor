@@ -67,6 +67,106 @@ Template.overview.totalMetersCars = function(productId, tripId){
 	return total;
 }
 
+Template.overview.totalLorries = function(productId, tripId){
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId
+	}).fetch();
+
+	total = 0;
+
+	for (var i = 0; i < books.length; i++) {
+		if(books[i].vehicle && books[i].vehicle.category == 'Lorry'){
+			total++;
+		}
+	};
+
+	return total;
+}
+
+Template.overview.totalNormalCars = function(productId, tripId){
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId
+	}).fetch();
+
+	total = 0;
+
+	for (var i = 0; i < books.length; i++) {
+		if(books[i].vehicle && books[i].vehicle.category == 'Normal Car'){
+			total++;
+		}
+	};
+
+	return total;
+}
+
+Template.overview.totalJeeps = function(productId, tripId){
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId
+	}).fetch();
+
+	total = 0;
+
+	for (var i = 0; i < books.length; i++) {
+		if(books[i].vehicle && books[i].vehicle.category == 'Jeep'){
+			total++;
+		}
+	};
+
+	return total;
+}
+
+Template.overview.totalSmallCars = function(productId, tripId){
+	var date = new Date(localStorage.getItem('date')),
+	currentDate = new Date(localStorage.getItem('date'));
+
+	with(date){
+		setDate(getDate() + 1);
+	}
+
+	books = Books.find({
+		dateOfBooking 	: {$gte: currentDate, $lt: date},
+		'product._id' 	: productId,
+		'trip._id' 	: tripId
+	}).fetch();
+
+	total = 0;
+
+	for (var i = 0; i < books.length; i++) {
+		if(books[i].vehicle && books[i].vehicle.category == 'Small Car'){
+			total++;
+		}
+	};
+
+	return total;
+}
+
 Template.overview.totalPersons = function(productId, tripId){
 	var date = new Date(localStorage.getItem('date')),
 	currentDate = new Date(localStorage.getItem('date'));
