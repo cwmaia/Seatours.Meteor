@@ -2018,13 +2018,17 @@ var createBook = function(){
 		if (vehicle.size > 5 ){
 			book.pendingApproval = true;
 		}else{
-			book.slot = getFirstSlotAvailable();
+			if(vehicle)
+				book.slot = getFirstSlotAvailable();
 		}
 		if(Session.get('SaveCustomer')){
-			findCustomer = Customers.findOne({socialSecurityNumber : $('#socialSecurityNumber').val()});
+			var findCustomer;
+			if($('#socialSecurityNumber').val())
+				findCustomer = Customers.findOne({socialSecurityNumber : $('#socialSecurityNumber').val()});
 			if(findCustomer){
 				book.customerId = findCustomer._id;
 			}else{
+				customer.online = true;
 				var resultId = Customers.insert(customer);
 				book.customerId = resultId;
 			}
@@ -2046,6 +2050,7 @@ var createBook = function(){
 			book.cartId = name;
 		}
 	}else{
+		customer.online = false;
 		if(getCartIdOperator()){
 			book.cartId = getCartIdOperator();
 		}else{

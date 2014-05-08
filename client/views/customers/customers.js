@@ -2,7 +2,7 @@ Template.customersAndExternals.customer = function(){
 	customersReturn = [];
 	groups = Groups.find({type : 'external'}).fetch();
 	for (var i = 0; i < groups.length; i++) {
-		customers = Customers.find({groupId : groups[i]._id}).fetch();
+		customers = Customers.find({groupId : groups[i]._id, online: false}).fetch();
 
 		if(customers){
 			for (var j = 0; j < customers.length; j++) {
