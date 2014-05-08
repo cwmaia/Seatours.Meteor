@@ -5,14 +5,13 @@ Template.paymentStep.cbasketBooks = function(){
 }
 
 Template.paymentStep.totalCustomer = function(){
-	/*var carts = Books.find({orderId : Session.get('orderId')}).fetch();
+	var carts = Books.find({orderId : Session.get('orderId')}).fetch();
 	var total = 0;
 	for (var i = 0; i < carts.length; i++) {
 		total += parseInt(carts[i].totalISK);
-	};*/
-	total = 100;
-	count = Books.find({orderId : Session.get('orderId')}).count();
-	return total * count;
+	};
+
+	return total;
 }
 
 Template.paymentStep.basket = function(){
