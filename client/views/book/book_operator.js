@@ -2018,7 +2018,7 @@ var createBook = function(){
 		if (vehicle.size > 5 ){
 			book.pendingApproval = true;
 		}else{
-			if(vehicle)
+			if(vehicle.size && vehicle.category && vehicle.plate)
 				book.slot = getFirstSlotAvailable();
 		}
 		if(Session.get('SaveCustomer')){
