@@ -45,7 +45,7 @@ Meteor.setInterval(function(){removeOldBookings()}, 230000)
 
 Meteor.Router.add("/ReturnPageError", "POST", function(){
   console.log(this.request.body);
-  return "<script>window.location='http://booking.seatours.is/errorBorgun</script>";
+  return "<script>window.location='http://booking.seatours.is</script>";
 })
 
 

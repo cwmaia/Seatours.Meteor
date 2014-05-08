@@ -25,9 +25,8 @@ Template.paymentStep.basket = function(){
 		}
 		html += '<input type="hidden" name="itemdescription_'+[i]+'" value="Seatours Ticket: '+books[i].product.name + ' - From '+ books[i].trip.from + ' '+ tripTo +' '+books[i].trip.hour+'" /><br>'; 
 		html += '<input type="hidden" name="itemcount_'+[i]+'" value="1" /><br>'; 
-		html += '<input type="hidden" class="amountBorgun" name="itemunitamount_'+[i]+'" value="'+100+'" /><br>'; 
-		html += '<input type="hidden" class="amountBorgun" name="itemamount_'+[i]+'" value="'+100+'" /><br>';
-		total = parseInt(total + 100);
+		html += '<input type="hidden" class="amountBorgun" name="itemunitamount_'+[i]+'" value="'+books[i].totalISK+'" /><br>'; 
+		html += '<input type="hidden" class="amountBorgun" name="itemamount_'+[i]+'" value="'+books[i].totalISK+'" /><br>';
 	};
 	
 	return html;
