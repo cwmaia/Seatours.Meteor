@@ -24,7 +24,7 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
   
   //talvez escrever todo o html... eh... talve. tem que ver se funciona....
 
-  return "<script>window.location='http://localhost:3000/listvouchers/"+orderId+"'</script>";
+  return "<script>window.location='http://booking.seatours.is/listvouchers/"+orderId+"'</script>";
 
 })
 
@@ -44,7 +44,8 @@ var removeOldBookings = function(){
 Meteor.setInterval(function(){removeOldBookings()}, 230000)
 
 Meteor.Router.add("/ReturnPageError", "POST", function(){
-  return "<script>window.location='http://localhost:3000/errorBorgun</script>";
+  console.log(this.request.body);
+  return "<script>window.location='http://booking.seatours.is/errorBorgun</script>";
 })
 
 
