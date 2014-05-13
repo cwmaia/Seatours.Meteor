@@ -2009,7 +2009,9 @@ var createBook = function(){
 	}
 	book.vehicle = vehicle;
 	book.confirm = false;
-	
+	if(isOperator()){
+		book.operatorInitials = $("#initials").val();
+	}
 
 	if(isCustomer()){
 		
