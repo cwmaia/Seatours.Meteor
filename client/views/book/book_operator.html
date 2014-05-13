@@ -60,8 +60,8 @@
 		<div class='noStatus'>
 			<form>
 				<legend>Boat Status<span>&nbsp;&nbsp;</span><i class='icon-anchor'/></legend>
-				<div id="pieChart">
-		        <svg id="pieChartSVG">
+				<div id="pieChart" style="height:200px;">
+		        <svg id="pieChartSVG" height="200px">
 		          <defs>
 		            <filter id='pieChartInsetShadow'>
 		              <feOffset dx='0' dy='0'/>
@@ -178,6 +178,7 @@
 						<th class="sorting_disabled">Vehicle</th>
 						<th class="sorting_disabled">Vehicle Plate</th>
 						<th class="sorting_disabled">Vehicle Category</th>
+						<th class="sorting_disabled">Size</th>
 						<th class="sorting_disabled">Telephone</th>
 						<th class="sorting_disabled">Total Passagers</th>
 						<th class="sorting_disabled">Payment Status</th>
@@ -199,7 +200,8 @@
 						</td>
 						<td>{{vehicle.vehicleName}}</td>
 						<td>{{vehicle.vehiclePlate}}</td>
-						<td>{{#if vehicle.size}}{{vehicle.category}} - {{vehicle.size}}m{{/if}}</td>
+						<td>{{#if vehicle.size}}{{vehicle.category}}{{/if}}</td>
+						<td>{{#if vehicle.size}}{{vehicle.size}}m{{/if}}</td>
 						<td>{{telephone customerId}}</td>
 						<td>{{totalPassagers _id}}</td>
 						<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
@@ -287,28 +289,35 @@
 			</select>
 		</div>
 
+		<div>
 		{{#if getDisclaimer}}
 		{{#if isCustomer}}
 		{{else}}
 			<div>
-		    	<div>
-					<span style="font-size: 16px;">Stop at Flatey:<span>
-					<a class="stopAtFlatey"><i class='icon-check-empty'></i></a>
-					<input type='hidden' id="stopAtFlateyInput">
-				</div>
+					<label class="required">Stop at Flatey:</label>
+
+					<input id="stopAtFlateyInput" type="checkbox" class="stopAtFlatey ace ace-switch ace-switch-6">
+	    			<span class='lbl'></span>
+	    			<input id="stopAtFlatey" type="hidden" value="false">
 			</div>
 			{{/if}}
 		{{/if}}
-
+		</div>
 		<div>
-			{{#if isEditing}}
+			{{#if isCustomer}}
+			{{else}}
+				<div ><label class="required">Initials: </label> <input type='text' id="initials" name="initials" style="width:35px;"></div>
+			{{/if}}
+		</div>
+		
+	</div>
+	<div class="line-3">
+		{{#if isEditing}}
 		    	<div>
 					<label class="required">Edit Date: </label>
 					<input type='text' id="dayOfBookingEdit" name="dayBlocked" class="size1-2">
 				</div>
-		    {{/if}}
-		</div>
-		
+		{{/if}}
 	</div>
 
 	<div class="line-3">

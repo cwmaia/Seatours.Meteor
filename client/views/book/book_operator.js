@@ -1128,13 +1128,11 @@ Template.createBook.events({
 		$("#statusDialog").show();
 	},
 
-	'click .stopAtFlatey' : function(event){
-		var icon = event.target;
-		if(icon.className == "icon-check"){
-			icon.className = "icon-check-empty";
+	'change #stopAtFlateyInput' : function(event){
+		event.preventDefault();
+		if($("#stopAtFlatey").val() == 'false'){
 			$("#stopAtFlateyInput").val(false);
 		}else{
-			icon.className = "icon-check";
 			$("#stopAtFlateyInput").val(true);
 		}
 		
@@ -2188,7 +2186,7 @@ var createBook = function(){
 			}else{
 				temporaryID = CartItems.insert(book);
 				//if stop on flatey 
-				if($("#stopAtFlateyInput").val()){
+				if($("#stopAtFlatey").val()){
 					var note = {
 							created : new Date(),
 							type : 'Customer Note',
