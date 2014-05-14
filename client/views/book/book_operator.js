@@ -1228,27 +1228,31 @@ Template.createBook.events({
 	},
 
 	'click .searchApisIs' : function(){
-		plate = $("#vehiclePlate").val();
-		$.blockUI({message : 'Looking for car... Please Wait'});
-		$.ajax({
-		  'url': 'http://apis.is/car',
-		  'type': 'GET',
-		  'dataType': 'json',
-		  'data': {'number': plate},
-		  'success': function(response) {
-		  	if(response.results[0]){
-		  		$("#vehicle").val("");
-			  	$("#vehiclecolor").val("");
-			  	$("#vehicle").val(response.results[0].type + " " + response.results[0].subType);
-				$("#vehiclecolor").val(response.results[0].color);
-				throwSuccess('Vehicle found!');
-		  	}else{
-		  		throwError('Vehicle not found, please provide a valid vehicle plate');
-		  	}
-			}
-		}).done(function(){
-			$.unblockUI();
-		});
+		if($("#vehiclePlate").val() != "" && $("#vehiclePlate").val().replace(/ /g,"") != "" ){
+			plate = $("#vehiclePlate").val();
+			$.blockUI({message : 'Looking for car... Please Wait'});
+			$.ajax({
+			  'url': 'http://apis.is/car',
+			  'type': 'GET',
+			  'dataType': 'json',
+			  'data': {'number': plate},
+			  'success': function(response) {
+			  	if(response.results[0]){
+			  		$("#vehicle").val("");
+				  	$("#vehiclecolor").val("");
+				  	$("#vehicle").val(response.results[0].type + " " + response.results[0].subType);
+					$("#vehiclecolor").val(response.results[0].color);
+					throwSuccess('Vehicle found!');
+			  	}else{
+			  		throwError('Vehicle not found, please provide a valid vehicle plate');
+			  	}
+				}
+			}).done(function(){
+				$.unblockUI();
+			});
+		}else{
+			throwError('Please provide a valid vehicle plate');
+		}
 	}
 })
 
