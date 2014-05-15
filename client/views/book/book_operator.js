@@ -2013,13 +2013,12 @@ var createBook = function(){
 	}
 	book.vehicle = vehicle;
 	book.confirm = false;
-<<<<<<< HEAD
 
-=======
+
 	if(isOperator()){
 		book.operatorInitials = $("#initials").val();
 	}
->>>>>>> 1caa46c91dafdac0afa6748ab0b5d7d897ba5864
+
 
 	if(isCustomer()){
 
