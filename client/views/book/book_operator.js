@@ -1128,13 +1128,11 @@ Template.createBook.events({
 		$("#statusDialog").show();
 	},
 
-	'click .stopAtFlatey' : function(event){
-		var icon = event.target;
-		if(icon.className == "icon-check"){
-			icon.className = "icon-check-empty";
+	'change #stopAtFlateyInput' : function(event){
+		event.preventDefault();
+		if($("#stopAtFlatey").val() == 'false'){
 			$("#stopAtFlateyInput").val(false);
 		}else{
-			icon.className = "icon-check";
 			$("#stopAtFlateyInput").val(true);
 		}
 
@@ -1230,27 +1228,31 @@ Template.createBook.events({
 	},
 
 	'click .searchApisIs' : function(){
-		plate = $("#vehiclePlate").val();
-		$.blockUI({message : 'Looking for car... Please Wait'});
-		$.ajax({
-		  'url': 'http://apis.is/car',
-		  'type': 'GET',
-		  'dataType': 'json',
-		  'data': {'number': plate},
-		  'success': function(response) {
-		  	if(response.results[0]){
-		  		$("#vehicle").val("");
-			  	$("#vehiclecolor").val("");
-			  	$("#vehicle").val(response.results[0].type + " " + response.results[0].subType);
-				$("#vehiclecolor").val(response.results[0].color);
-				throwSuccess('Vehicle found!');
-		  	}else{
-		  		throwError('Vehicle not found, please provide a valid vehicle plate');
-		  	}
-			}
-		}).done(function(){
-			$.unblockUI();
-		});
+		if($("#vehiclePlate").val() != "" && $("#vehiclePlate").val().replace(/ /g,"") != "" ){
+			plate = $("#vehiclePlate").val();
+			$.blockUI({message : 'Looking for car... Please Wait'});
+			$.ajax({
+			  'url': 'http://apis.is/car',
+			  'type': 'GET',
+			  'dataType': 'json',
+			  'data': {'number': plate},
+			  'success': function(response) {
+			  	if(response.results[0]){
+			  		$("#vehicle").val("");
+				  	$("#vehiclecolor").val("");
+				  	$("#vehicle").val(response.results[0].type + " " + response.results[0].subType);
+					$("#vehiclecolor").val(response.results[0].color);
+					throwSuccess('Vehicle found!');
+			  	}else{
+			  		throwError('Vehicle not found, please provide a valid vehicle plate');
+			  	}
+				}
+			}).done(function(){
+				$.unblockUI();
+			});
+		}else{
+			throwError('Please provide a valid vehicle plate');
+		}
 	}
 })
 
@@ -2011,7 +2013,13 @@ var createBook = function(){
 	}
 	book.vehicle = vehicle;
 	book.confirm = false;
+<<<<<<< HEAD
 
+=======
+	if(isOperator()){
+		book.operatorInitials = $("#initials").val();
+	}
+>>>>>>> 1caa46c91dafdac0afa6748ab0b5d7d897ba5864
 
 	if(isCustomer()){
 
@@ -2186,9 +2194,8 @@ var createBook = function(){
 				CartItems.remove({_id: book._id});
 
 			}else{
-				temporaryID = CartItems.insert(book);
-				//if stop on flatey
-				if($("#stopAtFlateyInput").val()){
+				temporaryID = CartItems.insert(book);ß
+				if($("#stopAtFlatey").val()){
 					var note = {
 							created : new Date(),
 							type : 'Customer Note',

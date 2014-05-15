@@ -919,12 +919,8 @@ blockquote.pull-right {
   left: 5px;
   z-index: 14;
 }
-#sidebar > #nav-search.menu-min #nav-search #nav-search-input {
-  width: 0 !important;
-  max-width: 0 !important;
-  opacity: 0 !important;
-  filter: alpha(opacity=0) !important;
-}
+
+
 #sidebar > #nav-search.menu-min #nav-search #nav-search-input:hover,
 #sidebar > #nav-search.menu-min #nav-search #nav-search-input:focus,
 #sidebar > #nav-search.menu-min #nav-search #nav-search-input:active {

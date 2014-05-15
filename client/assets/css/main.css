@@ -633,7 +633,7 @@ select{
 	button,
 	#sidebar,
 	#btn-scroll-up{
-		display: none !important;
+		
 	}
 
 	#main-content{
