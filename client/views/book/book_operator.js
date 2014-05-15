@@ -9,7 +9,7 @@ var getSelectedAndNextDay = function(){
 	var nextDay = new Date(localStorage.getItem('date'));
 
 	with(nextDay){
-		setDate(getDate() +1);	
+		setDate(getDate() +1);
 	}
 
 	var dates = {
@@ -22,8 +22,8 @@ var getSelectedAndNextDay = function(){
 
 
 var getFirstSlotAvailable = function(){
-	
-	var slot = 0;
+
+	var slot = "";
 	$("rect").filter(function(){
 		var a = document.getElementById($(this).attr('id'));
 		//get only white slots
@@ -109,7 +109,7 @@ var updateSVGFill = function(dates, tripId){
 	}
 
 
-	
+
 
 }
 
@@ -132,7 +132,7 @@ var updateDataPieChart = function(){
 	var trip = Trips.findOne(Session.get('tripId'));
 
 	updateSVGFill(dates, trip._id);
-	
+
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
@@ -172,7 +172,7 @@ var updateDataPieChart = function(){
 		doorSlots : doorSlots,
 		unallocated : unallocated
 	}
-	
+
 	return percentages;
 }
 
@@ -190,7 +190,7 @@ Template.productItem.featured = function(id){
 }
 
 
-Template.productItem.rendered = function(){	
+Template.productItem.rendered = function(){
 	var nowTemp = new Date();
 	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
 
@@ -289,7 +289,7 @@ Template.bookOperator.helpers({
 						showProducts.push(products[i]);
 					}
 				};
-	
+
 				return showProducts;
 			}
 		}else{
@@ -327,7 +327,7 @@ Template.bookOperator.helpers({
 						showProducts.push(products[i]);
 					}
 				};
-	
+
 				return showProducts;
 			}
 		}else{
@@ -429,14 +429,14 @@ Template.bookOperator.events({
 				return;
 		    }
 		}
-	   	
+
 		var persons = 0;
 		book = Books.find({'trip._id' : select.val()}).fetch();
 		for (var j = 0; j < book.length; j++){
 			for (var i = 0; i < book[j].prices.length; i++) {
 				if(book[j].prices[i].price != "Operator Fee")
 					persons = parseInt(persons + parseInt(book[j].prices[i].persons));
-		}};   
+		}};
 		var pAvailability = BlockingDates.findOne({'type' : 'passagersAvailability', 'tripId' : select.val()});
 		if(pAvailability){
 			if(persons = pAvailability.passagersAvailability){
@@ -449,14 +449,14 @@ Template.bookOperator.events({
 			Session.set('tripId',select.val());
 			if(!isCustomer()){
 				Meteor.Router.to("/bookOperator/" + $(event.currentTarget).parents('li')[0].id);
-			}				
+			}
 			else{
 				Session.set('productId', productId);
 				Session.set('dateSelected', true);
 				Session.set('SaveCustomer', true);
 				formBook();
 			}
-				
+
 		}else{
             showPopover(select, 'Choose the trip');
         }
@@ -537,7 +537,7 @@ Template.bookDetail.totalPassagers = function(id){
 Template.bookDetail.totalPersons = function(){
 	var dates = getSelectedAndNextDay();
 	var trip = Trips.findOne(Session.get('tripId'));
-	
+
 	var persons = 0;
 
 	books = Books.find({
@@ -655,19 +655,19 @@ var formBook = function(){
 	Session.set("categoryId", null);
 
 	var bookingsCreated = Books.find({
-		dateOfBooking: new Date(localStorage.getItem('date')), 
-		'product._id': Session.get('productId'), 
+		dateOfBooking: new Date(localStorage.getItem('date')),
+		'product._id': Session.get('productId'),
 		$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
 	});
 
 	if(bookingsCreated.length >= MaxCapacity){
-		throwError('Maximum capacity of passengers reached!');	
+		throwError('Maximum capacity of passengers reached!');
 	}
 	else if(!isCustomer()){
 		Session.set('SaveCustomer', true);
 		Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');
 	}
-		
+
 }
 
 //Global Vars
@@ -747,7 +747,7 @@ Template.bookDetail.events({
 		}else{
 			Books.update(id, {$set : {ticketPrinted : true}});
 			throwInfo('Ticket Printed!');
-		}	
+		}
 	},
 
 	'click .changeStatusBooking' : function(event) {
@@ -761,7 +761,7 @@ Template.bookDetail.events({
 			var dateOfBookingFixed = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), book.dateOfBooking.getDate(),0,0,0);
 			var aDayPreviousBookingDate = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), (book.dateOfBooking.getDate() -1), 0,0,0);
 			var totalISK = Books.findOne({"_id" : id}).totalISK;
-			
+
 			var valueFees;
 			if(dateTodayFixed >= aDayPreviousBookingDate){
 				valueFees = -3000;
@@ -787,7 +787,7 @@ Template.bookDetail.events({
 				totalTransactions = parseInt(totalTransactions) + parseInt(thisBookingTransactions[i].amount);
 			};
 			Books.update(id, {$set : {bookStatus: 'Canceled'}});
-			
+
 			var transactionRefund = {
 					'bookId' : id,
 					'date' : dateToday,
@@ -816,7 +816,7 @@ Template.bookDetail.events({
 		}
 	},
 
-	
+
 	'click .invoicesSent' :function(event) {
 		event.preventDefault();
 		var id = event.currentTarget.rel;
@@ -874,7 +874,7 @@ Template.bookDetail.helpers({
 		var isValidDate = true,
 		selectedDate = new Date(localStorage.getItem('date'));
 		date = new Date();
-		
+
 		with(date){
 			setHours(0);
 			setMinutes(0);
@@ -929,7 +929,7 @@ Template.createBook.booked = function(from,to){
 			return true;
 		}else{
 			return false;
-		};	
+		};
 	}return false;
 }
 
@@ -1044,7 +1044,7 @@ Template.createBook.helpers({
 			trip = Trips.findOne({_id : Session.get('tripId')});
 			if(trip.availableDays)
 				return Prices.find({productId : Session.get("productId"), active : true, season: 'both'})
-			else	
+			else
 				return Prices.find({productId : Session.get("productId"), active : true, season: currentSeason()})
 		}else{
 			throwError('Something Bad Happened, Try Again');
@@ -1064,7 +1064,7 @@ Template.createBook.rendered = function(){
 		$("#divMessageCreateBook").show();
 	}
 
-	updateSVGFill(getSelectedAndNextDay(), Session.get("tripId"));	
+	updateSVGFill(getSelectedAndNextDay(), Session.get("tripId"));
 	$("#statusDialog").hide();
 	$("#svgBoatDialogCreate").hide();
 
@@ -1120,7 +1120,7 @@ Template.createBook.rendered = function(){
 		Session.set("haveStatus", false);
 		$(".noStatus").hide();
 	}
-		
+
 }
 
 Template.createBook.events({
@@ -1137,7 +1137,7 @@ Template.createBook.events({
 			icon.className = "icon-check";
 			$("#stopAtFlateyInput").val(true);
 		}
-		
+
 	},
 
 	'click rect' : function(event){
@@ -1169,7 +1169,7 @@ Template.createBook.events({
 			$("#slotNumber").val(text);
 			svgElement.setAttribute("stroke","#000000");
 		}
-		
+
 	},
 
 	"click .enabledDoor" : function(){
@@ -1184,7 +1184,7 @@ Template.createBook.events({
 			$("text:contains('D')").hide();
 			$("#showDoorButton").text("Show Door");
 		}
-		
+
 	},
 
 	'click #selectManualy' : function(){
@@ -1201,7 +1201,7 @@ Template.createBook.events({
 			localStorage.setItem("date", date);
 			updateSVGFill();
 		}
-		
+
 
 		if(currentSeason() == "winter" && !book){
 			$("#showDoorButton").attr("disabled", false);
@@ -1220,7 +1220,7 @@ Template.createBook.events({
 				svgElement.setAttribute("stroke","#00d2ff");
 			};
 		}
-		
+
 		$("#svgBoatDialogCreate").show();
 	},
 
@@ -1263,7 +1263,7 @@ Template.productPrices.events({
 		$('#'+this._id).val(totalParcial);
 		$('#'+this._id+this.unit).val(this.price+"|"+this.unit+"|"+totalPrice+"|"+totalParcial);
 
-		var total = 0; 
+		var total = 0;
 		$('.unitPrice').filter(function(){
 			var split = $(this).val().split("|");
 			if(split[2]){
@@ -1288,14 +1288,14 @@ var checkForAdults = function(){
 			"persons" : split[2],
 			"sum" : split[3]
 			}
-			
+
 			prices.push(price);
 		}
 	});
 
 	if(prices.length == 0){
 		return true;
-	} 
+	}
 
 	for (var i = prices.length - 1; i >= 0; i--) {
 		if(prices[i].price == "Adult" && prices[i].persons == 0){
@@ -1307,7 +1307,7 @@ var checkForAdults = function(){
 }
 
 Template.generalButtons.events({
-	//Events for identify 
+	//Events for identify
 
 	'click .addBook' : function(event){
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
@@ -1322,8 +1322,8 @@ Template.generalButtons.events({
 			bootbox.alert("A least one Adult is needed to create a booking!");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehiclePlate").val() == ""){
 			bootbox.alert("Please inform the vehicle plate.");
-		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehicle").val() == ""){	
-			bootbox.alert("Please inform the vehicle name");		
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehicle").val() == ""){
+			bootbox.alert("Please inform the vehicle name");
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1357,7 +1357,7 @@ Template.generalButtons.events({
 				cleanExternView();
 				$("#loginArea").hide();
 				Template.externView.rendered();
-				
+
 			}else{
 				$('#pasagerInfo').submit(function(event){
 					event.preventDefault();
@@ -1378,8 +1378,8 @@ Template.generalButtons.events({
 		}else if($("#categories").val() != "" && $("#size").val() != ""){
 			if($("#vehiclePlate").val() == "")
 				bootbox.alert("Please inform the vehicle plate.");
-			if($("#vehicle").val() == "")	
-				bootbox.alert("Please inform the vehicle name");	
+			if($("#vehicle").val() == "")
+				bootbox.alert("Please inform the vehicle name");
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1389,7 +1389,7 @@ Template.generalButtons.events({
 				//LUCAS AQUI VC DEVE MOSTRAR UM ALERT BOX COM UM IF
 				//INFORMANDO SOBRE A MULTA (SE HOUVER MULTA)
 				//SE ELE ACEITAR VC PASSA PARA OS METODOS ABAIXO E CRIA A MULTA
-				//QUE NEM VC FEZ NO CANCELAR 
+				//QUE NEM VC FEZ NO CANCELAR
 				//SE NOPS VC N FAZ NADA
 				//
 				createBook();
@@ -1412,11 +1412,11 @@ Template.generalButtons.events({
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
 		}else if(checkForAdults()){
-			bootbox.alert("A least one Adult is needed to create a booking!");	
+			bootbox.alert("A least one Adult is needed to create a booking!");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehiclePlate").val() == ""){
 			bootbox.alert("Please inform the vehicle plate.");
-		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehicle").val() == ""){	
-			bootbox.alert("Please inform the vehicle name");	
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehicle").val() == ""){
+			bootbox.alert("Please inform the vehicle name");
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1463,7 +1463,7 @@ Template.generalPassagerInfo.events({
 		    	$('#state').val(currentCustomer.state);
 		    	$('#postcode').val(currentCustomer.postcode);
 		    	$('#country').val(currentCustomer.country);
-		    	$('#groupId').val(currentCustomer.groupId);	
+		    	$('#groupId').val(currentCustomer.groupId);
 				Session.set('SaveCustomer', false);
 	   		}else{
 	   			$('#fullName').val('');
@@ -1489,11 +1489,11 @@ Template.generalPassagerInfo.events({
 		    	$('#totalVehicle').val('');
 		    	$('#vehiclePlate').val('');
 		    	$('#groupId').val('');
-		    	calcTotal();	
+		    	calcTotal();
 		    	Session.set('SaveCustomer', true);
 	   		}
    		}
-   		
+
 	},
 
 	'change #previousCustomerData' : function(event){
@@ -1505,7 +1505,7 @@ Template.generalPassagerInfo.events({
 			$('#customerId').val(pCustomerData.customerId);
 			var currentCustomer = pCustomerData;
 			$('#title').val(currentCustomer.title)
-			//SplitBirthDate 
+			//SplitBirthDate
 			splitBirth = currentCustomer.birthDate.split("-");
 			$('#birthDaySelect').val(Number(splitBirth[2]));
 			$('#birthMonthSelect').val(Number(splitBirth[1]));
@@ -1520,8 +1520,8 @@ Template.generalPassagerInfo.events({
 	    	$('#city').val(currentCustomer.city);
 	    	$('#state').val(currentCustomer.state);
 	    	$('#postcode').val(currentCustomer.postcode);
-	    	$('#country').val(currentCustomer.country);	
-	    	$('#groupId').val(currentCustomer.groupId);	
+	    	$('#country').val(currentCustomer.country);
+	    	$('#groupId').val(currentCustomer.groupId);
 
 	    	var pVehicle = Session.get("previousVehicle");
 
@@ -1552,7 +1552,7 @@ Template.generalPassagerInfo.events({
 	    	$('#state').val('');
 	    	$('#postcode').val('');
 	    	$('#country').val('');
-	    	$('#groupId').val('');	
+	    	$('#groupId').val('');
 
 	    	$("#vehicle").val();
 			$("#categories").val();
@@ -1573,7 +1573,7 @@ Template.generalPassagerInfo.events({
 			$('#customerId').val(Meteor.user().profile.customerId);
 			var currentCustomer = Customers.findOne({'_id' : Meteor.user().profile.customerId});
 			$('#title').val(currentCustomer.title)
-			//SplitBirthDate 
+			//SplitBirthDate
 			splitBirth = currentCustomer.birthDate.split("-");
 			$('#birthDaySelect').val(Number(splitBirth[2]));
 			$('#birthMonthSelect').val(Number(splitBirth[1]));
@@ -1588,8 +1588,8 @@ Template.generalPassagerInfo.events({
 	    	$('#city').val(currentCustomer.city);
 	    	$('#state').val(currentCustomer.state);
 	    	$('#postcode').val(currentCustomer.postcode);
-	    	$('#country').val(currentCustomer.country);	
-	    	$('#groupId').val(currentCustomer.groupId);	
+	    	$('#country').val(currentCustomer.country);
+	    	$('#groupId').val(currentCustomer.groupId);
 		}else{
 			$("#usingData").val('false');
 			$('#fullName').val('');
@@ -1609,12 +1609,12 @@ Template.generalPassagerInfo.events({
 	    	$('#state').val('');
 	    	$('#postcode').val('');
 	    	$('#country').val('');
-	    	$('#groupId').val('');	
+	    	$('#groupId').val('');
 		}
 	},
 
 	'click .createUser' : function(event){
-		
+
 		var form = document.getElementById('pasagerInfo');
 
 		if($('#firstPasswordToEnter').val() != $("#confirmPassword").val()){
@@ -1657,9 +1657,9 @@ Template.generalPassagerInfo.events({
 						Meteor.loginWithPassword(user.username, user.password, function(err){
 						        if (err){
 						        	if(err.reason == 'Incorrect password')
-						        		throwError("Incorrect Password!") 
+						        		throwError("Incorrect Password!")
 						        	else
-						        		throwError("User not Found!") 
+						        		throwError("User not Found!")
 						        	SpinnerStop();
 						        }else{
 						        	throwSuccess("Successfuly registered!");
@@ -1668,7 +1668,7 @@ Template.generalPassagerInfo.events({
 									Template.externView.rendered();
 						        }
 							});
-						
+
 					}
 				})
 			}else{
@@ -1676,7 +1676,7 @@ Template.generalPassagerInfo.events({
 					event.preventDefault();
 				});
 			}
-		}		
+		}
 	},
 
 	'change #country' : function(event){
@@ -1690,7 +1690,7 @@ Template.generalPassagerInfo.events({
 		}
 	}
 
-	
+
 
 
 })
@@ -1711,7 +1711,7 @@ Template.generalPassagerInfo.helpers({
 ///////////////////////////////////////////
 //Template Booking Vehicles
 
-Template.bookingVehicles.helpers({ 
+Template.bookingVehicles.helpers({
 	"vehicles" : function(){
 		return Vehicles.find();
 	}
@@ -1737,10 +1737,10 @@ Template.generalPassagerInfo.rendered = function() {
 			"required" : false
 		});
 	}
-	
-	
+
+
 }
-	
+
 
 Template.categoryVehicleBook.helpers({
 	categories : function(){
@@ -1779,7 +1779,7 @@ Template.categoryVehicleBook.rendered = function(){
 
 Template.categoryVehicleBook.isBaseSize = function(number) {
 	category =  Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}) : null;
-	if(number == category.baseSize){	
+	if(number == category.baseSize){
 		return true;
 	}else{
 		return false;
@@ -1821,7 +1821,7 @@ function disableActionsButtonsCreateBook(carSize){
 		$("#divAlertSize").css("display", "none");
 		$("#inquiryButton").css("display", "none");
 	}
-}	
+}
 
 Template.categoryVehicleBook.events({
 	'change #categories' : function(event){
@@ -1850,14 +1850,14 @@ Template.categoryVehicleBook.events({
 			$("#totalVehicle").val(0);
 			Session.set('categoryId', null);
 		}
-		
+
 		calcTotal();
 		changeSizes();
 		Session.set("firstTime", false);
 	},
 
 	'change #size' : function(event){
-		
+
 		var value = event.target.selectedOptions[0].value;
 		Session.set('currentSizeCar', value);
 		calcVehiclePrice(value);
@@ -1912,7 +1912,7 @@ calcTotal = function(){
 		if($('.calcTotal')[i].children[0].value != "")
 			total += parseInt(($('.calcTotal')[i].children[0].value).replace(".",""));
 	};
-	
+
 	$('#totalISK').val(total);
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
   	$(".formattedAsMoney").maskMoney('mask');
@@ -1946,7 +1946,7 @@ loadTypeAheadPostCodes = function(flag){
 	}else{
 		$('#postcode').typeahead('destroy');
 	}
-	
+
 }
 
 var createBook = function(){
@@ -2011,10 +2011,10 @@ var createBook = function(){
 	}
 	book.vehicle = vehicle;
 	book.confirm = false;
-	
+
 
 	if(isCustomer()){
-		
+
 		if (vehicle.size > 5 ){
 			book.pendingApproval = true;
 		}else{
@@ -2035,7 +2035,7 @@ var createBook = function(){
 		}else{
 			book.customerId = $("#customerId").val();
 		}
-		
+
 
 		var discount = Settings.findOne({_id: 'onlineDiscount'}).onlineDiscount;
 		book.totalISK = parseInt((book.totalISK - ((book.totalISK * discount) / 100 )).toFixed());
@@ -2090,12 +2090,12 @@ var createBook = function(){
 		}
 	}
 
-	
+
 
 	if(SaveVehicle){
 		Vehicles.insert(vehicle);
 	}
-	
+
 
 	var prices = [];
 
@@ -2108,7 +2108,7 @@ var createBook = function(){
 			"persons" : split[2],
 			"sum" : split[3]
 			}
-			
+
 			prices.push(price);
 		}
 	});
@@ -2120,12 +2120,12 @@ var createBook = function(){
 			"persons" : "1",
 			"sum" : Settings.findOne({_id: 'operatorFee'}).operatorFee
 			}
-			
+
 			prices.push(operatorPrice);
 	}
 
-	
-	
+
+
 	book.prices = prices;
 	book.paid = false;
 	if (Session.get("isEditing")) {
@@ -2184,10 +2184,10 @@ var createBook = function(){
 				book.orderId = refNumber;
 				Meteor.call('insertBook', book);
 				CartItems.remove({_id: book._id});
-				
+
 			}else{
 				temporaryID = CartItems.insert(book);
-				//if stop on flatey 
+				//if stop on flatey
 				if($("#stopAtFlateyInput").val()){
 					var note = {
 							created : new Date(),
@@ -2200,8 +2200,8 @@ var createBook = function(){
 
 			}
 		}
-			
-	};	
+
+	};
 }
 
 getCartId = function(){
@@ -2246,9 +2246,9 @@ var formatData = function(percentages){
   return data;
 }
 
-    
 
-  
+
+
   var DURATION = 1500;
   var DELAY    = 500;
 
@@ -2272,7 +2272,7 @@ function drawPieChart( elementId, data ) {
                   'transform',
                   'translate(' + width / 2 + ',' + height / 2 + ')'
                 );
-    
+
     var detailedInfo = svg.append( 'g' )
                           .attr( 'class', 'pieChart--detailedInformation' );
 
@@ -2283,7 +2283,7 @@ function drawPieChart( elementId, data ) {
     var arc = d3.svg.arc()
                     .outerRadius( radius - 20)
                     .innerRadius( 0 );
-    
+
     var pieChartPieces = pie.datum( data )
                             .selectAll( 'path' )
                             .data( pieData )
@@ -2295,28 +2295,28 @@ function drawPieChart( elementId, data ) {
                             .attr( 'filter', 'url(#pieChartInsetShadow)' )
                             .attr( 'd', arc )
                             .each( function() {
-                              this._current = { startAngle: 0, endAngle: 0 }; 
+                              this._current = { startAngle: 0, endAngle: 0 };
                             } )
                             .transition()
                             .duration( DURATION )
                             .attrTween( 'd', function( d ) {
                               var interpolate = d3.interpolate( this._current, d );
                               this._current = interpolate( 0 );
-                    
+
                               return function( t ) {
                                 return arc( interpolate( t ) );
                               };
                             } )
                             .each( 'end', function handleAnimationEnd( d ) {
-                              drawDetailedInformation( d.data, this, count++); 
+                              drawDetailedInformation( d.data, this, count++);
                             } );
 
-    drawChartCenter(); 
-    
+    drawChartCenter();
+
     function drawChartCenter() {
       var centerContainer = pie.append( 'g' )
                                 .attr( 'class', 'pieChart--center' );
-      
+
       centerContainer.append( 'circle' )
                       .attr( 'class', 'pieChart--center--outerCircle' )
                       .attr( 'r', 0 )
@@ -2325,7 +2325,7 @@ function drawPieChart( elementId, data ) {
                       .duration( DURATION )
                       .delay( DELAY )
                       .attr( 'r', radius - 50 );
-      
+
       centerContainer.append( 'circle' )
                       .attr( 'id', 'pieChart-clippy' )
                       .attr( 'class', 'pieChart--center--innerCircle' )
@@ -2336,7 +2336,7 @@ function drawPieChart( elementId, data ) {
                       .attr( 'r', radius - 55 )
                       .attr( 'fill', '#fff' );
     }
-    
+
     function drawDetailedInformation ( data, element, count) {
       var bBox      = element.getBBox(),
           infoWidth = width * 0.3,
@@ -2364,7 +2364,7 @@ function drawPieChart( elementId, data ) {
          }
 
 
-       
+
     	infoContainer = detailedInfo.append( 'g' )
             .attr( 'width', infoWidth )
             .attr(
@@ -2373,9 +2373,9 @@ function drawPieChart( elementId, data ) {
             );
         anchor   = 'start';
         position = 'left';
-        
-    	
-    
+
+
+
 
       infoContainer.data( [ data.value * 100 ] )
                     .append( 'text' )
@@ -2396,7 +2396,7 @@ function drawPieChart( elementId, data ) {
                         this.textContent = i( t ) + ' %';
                       };
                     } );
-      
+
       infoContainer.append( 'line' )
                     .attr( 'class', 'pieChart--detail--divider' )
                     .attr( 'x1', 0 )
@@ -2406,10 +2406,10 @@ function drawPieChart( elementId, data ) {
                     .transition()
                     .duration( DURATION )
                     .attr( 'x2', infoWidth );
-      
-      infoContainer.data( [ data.description ] ) 
+
+      infoContainer.data( [ data.description ] )
                     .append( 'foreignObject' )
-                    .attr( 'width', infoWidth ) 
+                    .attr( 'width', infoWidth )
                     .attr( 'height', 100 )
                     .append( 'xhtml:body' )
                     .attr(
@@ -2418,7 +2418,7 @@ function drawPieChart( elementId, data ) {
                     )
                     .html('<div class="line"><div style="width:10px;height:10px;border:1px solid #000; background-color: '+color+'"></div>'+data.description+'</div>');
 
-		          
+
     }
   }
 
@@ -2449,7 +2449,7 @@ checkMaxCapacity = function(total, productId, tripId){
 
 
 	var persons = 0;
-	
+
 	books = Books.find({
 		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
 		'product._id' 	: Session.get('productId'),
@@ -2477,6 +2477,6 @@ checkMaxCapacity = function(total, productId, tripId){
 
 	if(reRender){
 		Template.createBook.rendered();
-	}	
-	
+	}
+
 }
