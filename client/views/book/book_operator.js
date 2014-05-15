@@ -1310,7 +1310,6 @@ var checkForAdults = function(){
 
 Template.generalButtons.events({
 	//Events for identify
-
 	'click .addBook' : function(event){
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			bootbox.alert('Please Inform the size of vehicle');
@@ -1326,6 +1325,8 @@ Template.generalButtons.events({
 			bootbox.alert("Please inform the vehicle plate.");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehicle").val() == ""){
 			bootbox.alert("Please inform the vehicle name");
+		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
+			bootbox.alert("This car is already booked to this trip");
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1349,6 +1350,8 @@ Template.generalButtons.events({
 	'click .confirmInquiry' : function(event){
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			throwError('Please Inform the size of vehicle');
+		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
+				bootbox.alert("This car is already booked to this trip");
 		}else if(!CanSaveTheBook){
 			throwError("Sorry but the vehicle informed can't go on the boat");
 		}else{
@@ -1377,6 +1380,8 @@ Template.generalButtons.events({
 			throwError("Please Inform the Slots");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
+		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
+				bootbox.alert("This car is already booked to this trip");
 		}else if($("#categories").val() != "" && $("#size").val() != ""){
 			if($("#vehiclePlate").val() == "")
 				bootbox.alert("Please inform the vehicle plate.");
@@ -1419,6 +1424,8 @@ Template.generalButtons.events({
 			bootbox.alert("Please inform the vehicle plate.");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehicle").val() == ""){
 			bootbox.alert("Please inform the vehicle name");
+		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
+				bootbox.alert("This car is already booked to this trip");
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -2485,4 +2492,21 @@ checkMaxCapacity = function(total, productId, tripId){
 		Template.createBook.rendered();
 	}
 
+}
+
+function checkSameCarOnBoat(vehicleId){
+	var dates = getSelectedAndNextDay();
+
+	book = Books.findOne({
+		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' 	: Session.get('productId'),
+		'trip._id' 	: Session.get("tripId"),
+		'vehicle.vehiclePlate' : vehicleId
+	});
+
+	if(book){
+		return true;
+	}else{
+		return false;
+	}
 }
