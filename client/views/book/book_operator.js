@@ -15,10 +15,10 @@ var getSelectedAndNextDay = function(){
 	var dates = {
 		selectedDay : selectedDay,
 		nextDay : nextDay
-	}
+	};
 
 	return dates;
-}
+};
 
 
 var getFirstSlotAvailable = function(){
@@ -31,11 +31,11 @@ var getFirstSlotAvailable = function(){
 			slot = a.id.split("_")[1];
 			return;
 		}
-	})
+	});
 
 	return slot;
 
-}
+};
 
 var resetSVG = function(){
 	$("rect").filter(function(){
@@ -51,14 +51,14 @@ var resetSVG = function(){
 			$(this).attr("fill", "#ffffff");
 		}
 	});
-}
+};
 
 var updateSVGFill = function(dates, tripId){
-	if(dates == null){
+	if(dates === null){
 		dates = getSelectedAndNextDay();
 	}
 
-	if(tripId == null){
+	if(tripId === null){
 		tripId = Trips.findOne(Session.get('tripId'))._id;
 	}
 
@@ -67,17 +67,17 @@ var updateSVGFill = function(dates, tripId){
 
 	if(!Session.get("isEditing")){
 		books = Books.find({
-			dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
-			'product._id' 	: Session.get('productId'),
-			'trip._id' 	: tripId,
+			dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
+			'product._id' : Session.get('productId'),
+			'trip._id' : tripId,
 			$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
 		}).fetch();
 	}else{
 		tripId = $("#destination").val();
 		books = Books.find({
-			dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
-			'product._id' 	: Session.get('productId'),
-			'trip._id' 	: tripId,
+			dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
+			'product._id' : Session.get('productId'),
+			'trip._id' : tripId,
 			$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ],
 			_id: {$not : Session.get("bookId") }
 		}).fetch();
@@ -92,26 +92,22 @@ var updateSVGFill = function(dates, tripId){
 			for (var j = slot.length - 1; j >= 0; j--) {
 				var svgElement = document.getElementById("svg_"+slot[j]);
 				svgElement.setAttribute("fill", "#808080");
-			};
+			}
 		}
-	};
+	}
 
 	//on Some cases the find do not work on client side and this is sad.
 	//so try to get the books on server side
-	if(books.length == 0){
+	if(books.length === 0){
 		Meteor.call("getBooksToFill", dates, tripId, Session.get("productId"), function(err, result){
 			if(err){
 				console.log(err);
 			}else{
 				fillWithServer(result);
 			}
-		})
+		});
 	}
-
-
-
-
-}
+};
 
 var fillWithServer = function(books){
 	resetSVG();
@@ -121,10 +117,10 @@ var fillWithServer = function(books){
 			for (var j = slot.length - 1; j >= 0; j--) {
 				var svgElement = document.getElementById("svg_"+slot[j]);
 				svgElement.setAttribute("fill", "#808080");
-			};
+			}
 		}
-	};
-}
+	}
+};
 
 var updateDataPieChart = function(){
 	totalSpace = 0;
@@ -134,16 +130,16 @@ var updateDataPieChart = function(){
 	updateSVGFill(dates, trip._id);
 
 	books = Books.find({
-		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
-		'product._id' 	: Session.get('productId'),
-		'trip._id' 	: trip._id,
+		dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' : Session.get('productId'),
+		'trip._id' : trip._id,
 		$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
 	}).fetch();
 
 	var regularSlots = 0;
 	var extraSlots = 0;
 	var doorSlots = 0;
-	var unallocated = 38;
+	var unallocated = 43;
 
 	for (var i = 0; i < books.length; i++) {
 		slotArray = books[i].slot.split("-");
@@ -154,12 +150,12 @@ var updateDataPieChart = function(){
 			}else if(slotArray[j].indexOf("D") != -1){
 				doorSlots++;
 				unallocated--;
-			}else if(slotArray[j] != ""){
+			}else if(slotArray[j] !== ""){
 				regularSlots++;
 				unallocated--;
 			}
-		};
-	};
+		}
+	}
 
 	$("#regularSlotsAlocated").text(regularSlots*5);
 	$("#doorSlotsAlocated").text(doorSlots*5);
@@ -171,10 +167,10 @@ var updateDataPieChart = function(){
 		extraSlots : extraSlots,
 		doorSlots : doorSlots,
 		unallocated : unallocated
-	}
+	};
 
 	return percentages;
-}
+};
 
 ///////////////////////////////////////////
 //Template Book Operator
@@ -187,7 +183,7 @@ Template.bookOperator.rendered = function() {
 
 Template.productItem.featured = function(id){
 	return Products.findOne({'_id' : id}).featured;
-}
+};
 
 
 Template.productItem.rendered = function(){
@@ -237,8 +233,7 @@ Template.productItem.events({
 
 			return false;
 
-		}
-
+		};
 
 		for (var i = 0; i < trips.length; i++) {
 			if(trips[i].season == 'noSeason'){
@@ -250,23 +245,23 @@ Template.productItem.events({
 				if(appendTripsHour(trips[i]))
 					appendTrips.push(trips[i]);
 			}
-		};
+		}
 
 
 		//Remove all previous options
 		$('#trip_'+this._id).find('option').remove();
-		for (var i = appendTrips.length - 1; i >= 0; i--) {
+		for (i = appendTrips.length - 1; i >= 0; i--) {
 			//Append new options
 			$('#trip_'+this._id).append("<option value="+appendTrips[i]._id+" data-from="+appendTrips[i].from+">"+appendTrips[i].from +" - "+appendTrips[i].to + " - " +appendTrips[i].hour+"</option>");
-		};
-		if(appendTrips.length == 0){
+		}
+		if(appendTrips.length === 0){
 			$('#trip_'+this._id).append("<option disabled>No trips available for this day</option>");
 			$('#button_'+this._id).attr("disabled", "disabled");
 		}else{
 			$('#button_'+this._id).removeAttr("disabled");
 		}
 	}
-})
+});
 
 Template.bookOperator.helpers({
 	'featProduct' : function(){
@@ -274,7 +269,7 @@ Template.bookOperator.helpers({
 		if(Meteor.user()){
 			group = Groups.findOne({_id: Meteor.user().profile.groupID});
 			if(group){
-				if(group.type = 'internal'){
+				if(group.type == 'internal'){
 					return Products.find({active : true, featured : true});
 				}
 			}else{
@@ -288,7 +283,7 @@ Template.bookOperator.helpers({
 						if(products[i].availableFor == getGroupId(Meteor.user().profile.customerId))
 						showProducts.push(products[i]);
 					}
-				};
+				}
 
 				return showProducts;
 			}
@@ -301,7 +296,7 @@ Template.bookOperator.helpers({
 					if(group && group.name == 'Customers'){
 						showProducts.push(products[i]);
 					}
-			};
+			}
 
 			return showProducts;
 		}
@@ -312,7 +307,7 @@ Template.bookOperator.helpers({
 		if(Meteor.user()){
 			group = Groups.findOne({_id: Meteor.user().profile.groupID});
 			if(group){
-				if(group.type = 'internal'){
+				if(group.type == 'internal'){
 					return Products.find({active : true, featured : false});
 				}
 			}else{
@@ -326,7 +321,7 @@ Template.bookOperator.helpers({
 						if(products[i].availableFor == getGroupId(Meteor.user().profile.customerId))
 						showProducts.push(products[i]);
 					}
-				};
+				}
 
 				return showProducts;
 			}
@@ -339,12 +334,12 @@ Template.bookOperator.helpers({
 					if(group && group.name == 'Customers'){
 						showProducts.push(products[i]);
 					}
-			};
+			}
 
 			return showProducts;
 		}
 	}
-})
+});
 
 currentSeason = function(){
 	var today = localStorage.getItem('date') ? new Date(localStorage.getItem('date')) : new Date();
@@ -382,7 +377,7 @@ currentSeason = function(){
 			return "winter";
 		}
 	}
-}
+};
 
 getGroupId = function(customerId){
 	customer = Customers.findOne({_id : customerId});
@@ -395,40 +390,40 @@ getGroupId = function(customerId){
 	}else{
 		return 0;
 	}
-}
+};
 
 Template.bookOperator.bookingDate = function(){
 	var date = (localStorage.getItem('date') ? new Date(localStorage.getItem('date')) : new Date()).toLocaleDateString();
 	return date;
-}
+};
 
 Template.bookOperator.currentSeason = function(){
 	return currentSeason();
-}
+};
 
 
 Template.bookOperator.events({
 	'change .trip': function(event) {
-		setCalendarCapacity($(event.currentTarget).closest('li').find('.calendar'))
+		setCalendarCapacity($(event.currentTarget).closest('li').find('.calendar'));
 	},
 	'click .proceed': function(event){
 		var productId = $(event.currentTarget).parents('li')[0].id,
         select = $('#trip_' + productId);
 
-        var blocking = BlockingDates.findOne({'type' : 'blockDate' ,'blockedDay': '0'+(new Date(localStorage.getItem('date'))).toLocaleDateString() ,'tripId' : select.val()});
-        if(blocking){
-				bootbox.alert("Trips not available for this route on this day. Please Select Another Day");
-				return;
-	    }
+  var blocking = BlockingDates.findOne({'type' : 'blockDate' ,'blockedDay': '0'+(new Date(localStorage.getItem('date'))).toLocaleDateString() ,'tripId' : select.val()});
+	if(blocking){
+		bootbox.alert("Trips not available for this route on this day. Please Select Another Day");
+		return;
+	}
 
-	    var bwday = BlockingDates.findOne({'type' : 'blockWeekDay', 'tripId' : select.val()});
-	    if(bwday){
-	    	var blockWeekDayTable = bwday.availableWeekDays.split(",");
-		    if (blockWeekDayTable[new Date(localStorage.getItem('date')).getDay()] == "false"){
-		    	bootbox.alert("Trips not available for this route on this day. Please Select Another Day");
-				return;
-		    }
+  var bwday = BlockingDates.findOne({'type' : 'blockWeekDay', 'tripId' : select.val()});
+  if(bwday){
+	var blockWeekDayTable = bwday.availableWeekDays.split(",");
+		if (blockWeekDayTable[new Date(localStorage.getItem('date')).getDay()] == "false"){
+			bootbox.alert("Trips not available for this route on this day. Please Select Another Day");
+		return;
 		}
+	}
 
 		var persons = 0;
 		book = Books.find({'trip._id' : select.val()}).fetch();
@@ -436,16 +431,16 @@ Template.bookOperator.events({
 			for (var i = 0; i < book[j].prices.length; i++) {
 				if(book[j].prices[i].price != "Operator Fee")
 					persons = parseInt(persons + parseInt(book[j].prices[i].persons));
-		}};
+		}}
 		var pAvailability = BlockingDates.findOne({'type' : 'passagersAvailability', 'tripId' : select.val()});
 		if(pAvailability){
-			if(persons = pAvailability.passagersAvailability){
+			if(persons == pAvailability.passagersAvailability){
 			bootbox.alert("Trips no longer available for this route we're already full. Please Select Another Day");
 			return;
 			}
 		}
 
-        if(select[0].checkValidity()){
+    if(select[0].checkValidity()){
 			Session.set('tripId',select.val());
 			if(!isCustomer()){
 				Meteor.Router.to("/bookOperator/" + $(event.currentTarget).parents('li')[0].id);
@@ -456,11 +451,10 @@ Template.bookOperator.events({
 				Session.set('SaveCustomer', true);
 				formBook();
 			}
-
 		}else{
-            showPopover(select, 'Choose the trip');
-        }
+      showPopover(select, 'Choose the trip');
     }
+  }
 });
 
 function setCalendarCapacity (calendar) {
@@ -482,7 +476,7 @@ function setCalendarCapacity (calendar) {
 		bookings = Books.find({dateOfBooking: {$gte: new Date(date.getFullYear(), date.getMonth(), j), $lt:date}, 'product._id': product._id, 'trip.from': from});
 
 		if(bookings.count() >= maxCapacity)
-			$(calendar).find('tbody a:eq(' + (j - 1) + ')').addClass('isFull')
+			$(calendar).find('tbody a:eq(' + (j - 1) + ')').addClass('isFull');
 	}
 }
 
@@ -492,7 +486,7 @@ Template.bookDetail.rendered = function() {
 	var oTable = $('#passengers').dataTable({
 		"iDisplayLength": 50,
 		"bServerSide": false,
-   		"bDestroy": true
+		"bDestroy": true
 	});
 	oTable.fnSort( [ [1,'asc'], [7,'asc'], [8,'asc'] ] );
 	$('#boatSlots').dataTable();
@@ -506,23 +500,23 @@ Template.bookDetail.rendered = function() {
 	}
 	$("#svgBoatDialog").hide();
 	returnPersons();
-}
+};
 
 Template.bookDetail.ticketNotPrinted = function(id){
 	return !Books.findOne({_id : id}).ticketPrinted;
-}
+};
 
 Template.bookDetail.notes = function(bookId){
 	return Notes.find({bookId: bookId, type: "Customer Note"});
-}
+};
 
 Template.bookDetail.fullname = function(id){
 	return Customers.findOne({_id: id}).fullName;
-}
+};
 
 Template.bookDetail.telephone = function(id){
 	return Customers.findOne({_id: id}).telephone;
-}
+};
 
 Template.bookDetail.totalPassagers = function(id){
 	var persons = 0;
@@ -530,9 +524,9 @@ Template.bookDetail.totalPassagers = function(id){
 	for (var i = 0; i < book.prices.length; i++) {
 		if(book.prices[i].price != "Operator Fee")
 			persons = parseInt(persons + parseInt(book.prices[i].persons));
-	};
+	}
 	return persons;
-}
+};
 
 Template.bookDetail.totalPersons = function(){
 	var dates = getSelectedAndNextDay();
@@ -541,9 +535,9 @@ Template.bookDetail.totalPersons = function(){
 	var persons = 0;
 
 	books = Books.find({
-		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
-		'product._id' 	: Session.get('productId'),
-		'trip._id' 	: trip._id,
+		dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' : Session.get('productId'),
+		'trip._id' : trip._id,
 		$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
 	}).fetch();
 
@@ -551,37 +545,37 @@ Template.bookDetail.totalPersons = function(){
 		for (var j = 0; j < books[i].prices.length; j++) {
 			if(books[i].prices[j].price != "Operator Fee")
 				persons = parseInt(persons + parseInt(books[i].prices[j].persons));
-		};
-	};
+		}
+	}
 
 	return persons;
-}
+};
 
 Template.createBook.dateSelected = function(){
 	return !Session.get('dateSelected');
-}
+};
 
 Template.createBook.isSummer = function(){
 	if(currentSeason() == "summer"){
 		return true;
 	}
 	return false;
-}
+};
 
 Template.createBook.isWinter = function(){
 	if(currentSeason() == "winter"){
 		return true;
 	}
 	return false;
-}
+};
 
 Template.generalPassagerInfo.dateSelected = function(){
 	return !Session.get('dateSelected') && !Session.get('creatingUser') && !Session.get("finishBooking");
-}
+};
 
 Template.generalPassagerInfo.groups = function(){
 	return Groups.find({type : "external"});
-}
+};
 
 Template.generalPassagerInfo.groupCustomer = function(id){
 	customer = Customers.findOne({_id : Session.get("customerId")});
@@ -590,14 +584,15 @@ Template.generalPassagerInfo.groupCustomer = function(id){
 	}else{
 		return false;
 	}
-}
+};
 
 Template.generalPassagerInfo.isEditingCustomer = function(){
 	return Session.get('editingCustomer');
-}
+};
+
 Template.generalPassagerInfo.isCustomer = function(){
 	return isCustomer();
-}
+};
 
 var returnPersons = function(){
 	var dates = getSelectedAndNextDay();
@@ -611,9 +606,9 @@ var returnPersons = function(){
 	var guidesAndDrivers = 0;
 
 	books = Books.find({
-		dateOfBooking 	: {$gte: dates.selectedDay, $lt: dates.nextDay},
-		'product._id' 	: Session.get('productId'),
-		'trip._id' 	: trip._id,
+		dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' : Session.get('productId'),
+		'trip._id' : trip._id,
 		$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
 	}).fetch();
 
@@ -637,8 +632,8 @@ var returnPersons = function(){
 			if(books[i].prices[j].price == 'Guides and Drivers'){
 				guidesAndDrivers = parseInt(guidesAndDrivers + parseInt(books[i].prices[j].persons));
 			}
-		};
-	};
+		}
+	}
 
 	$('#numberOfAdults').text(adults);
 	$('#numberOfChildrens').text(childrens);
@@ -647,7 +642,7 @@ var returnPersons = function(){
 	$('#numberOfSchoolDiscount').text(schoolDiscount);
 	$('#numberOfGuideAndDrivers').text(guidesAndDrivers);
 
-}
+};
 
 var formBook = function(){
 	Session.set("isEditing", false);
@@ -668,7 +663,7 @@ var formBook = function(){
 		Meteor.Router.to("/bookOperator/" + Session.get('productId') + '/new');
 	}
 
-}
+};
 
 //Global Vars
 var MaxCapacity = 0;
@@ -682,7 +677,7 @@ Template.bookDetail.events({
 		$("rect").filter(function(){
 			var id = $(this).attr("id");
 			document.getElementById(id).setAttribute("stroke", "#000000");
-		})
+		});
 
 		$("#svgBoatDialog").show();
 	},
@@ -723,7 +718,7 @@ Template.bookDetail.events({
 					'detail' : "Quick Paid",
 					'vendor' : vendor,
 					'type' : 'Office Cash'
-				}
+				};
 			Transactions.insert(transaction);
 			Books.update(currentBooking._id, {$set : {'paid' : true}});
 			var note = {
@@ -731,7 +726,7 @@ Template.bookDetail.events({
 					type : 'Quick Pay Note',
 					note : vendor + " marked the booking ID#"+ currentBooking.refNumber + " as paid",
 					bookId : Session.get('currentBooking')
-			}
+			};
 
 			Notes.insert(note);
 		}
@@ -777,7 +772,7 @@ Template.bookDetail.events({
 					'detail' : "Cancelation Fee",
 					'vendor' : vendor,
 					'type' : 'CancelationFine'
-			}
+			};
 			Transactions.insert(transaction);
 
 
@@ -785,7 +780,7 @@ Template.bookDetail.events({
 			var totalTransactions = 0;
 			for (var i = thisBookingTransactions.length - 1; i >= 0; i--) {
 				totalTransactions = parseInt(totalTransactions) + parseInt(thisBookingTransactions[i].amount);
-			};
+			}
 			Books.update(id, {$set : {bookStatus: 'Canceled'}});
 
 			var transactionRefund = {
@@ -796,7 +791,7 @@ Template.bookDetail.events({
 					'detail' : "Refund provinent from a Cancelation",
 					'vendor' : vendor,
 					'type' : 'Refund'
-			}
+			};
 			Transactions.insert(transactionRefund);
 
 			throwInfo("Cancelation completed! Customer need to be refunded in "+totalTransactions+"ISK. *Cancelation fee already included");
@@ -860,9 +855,9 @@ Template.bookDetail.helpers({
 		}
 
 		return Books.find({
-			dateOfBooking 	: {$gte: currentDate, $lt: date},
-			'product._id' 	: Session.get('productId'),
-			'trip._id' 	: trip._id
+			dateOfBooking : {$gte: currentDate, $lt: date},
+			'product._id' : Session.get('productId'),
+			'trip._id' : trip._id
 		});
 	},
 
@@ -909,19 +904,19 @@ Template.bookDetail.helpers({
 //Template Create Book
 Template.createBook.productName = function(){
 	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).name : "" ;
-}
+};
 
 Template.createBook.getDisclaimer = function(){
 	return Session.get("productId") ? Products.findOne({_id: Session.get("productId")}).disclaimer : "" ;
-}
+};
 
 Template.createBook.currentSeason = function(){
 	return currentSeason();
-}
+};
 
 Template.createBook.dateOfBooking = function(){
 	return new Date(localStorage.getItem('date')).toUTCString().slice(5,17);
-}
+};
 
 Template.createBook.booked = function(from,to){
 	if(Session.get('isEditing')){
@@ -929,45 +924,43 @@ Template.createBook.booked = function(from,to){
 			return true;
 		}else{
 			return false;
-		};
+		}
 	}return false;
-}
+};
 
 Template.generalButtons.isEditing = function(){
 	return Session.get('isEditing');
-}
+};
 
 Template.createBook.isEditing = function(){
 	return Session.get('isEditing');
-}
+};
 
 Template.generalPassagerInfo.isCreatingExternalUser = function(){
 	return Session.get('creatingUser') || Session.get('finishBooking');
-}
+};
 
 Template.generalPassagerInfo.isCreateUserPage = function(){
 	return Session.get('creatingUser');
-}
+};
 
 Template.generalButtons.isInquiry = function(){
 	return $('#size').val() > 5;
-}
+};
 
 Template.generalButtons.rendered = function(){
 	$("#bookButton").css("display", "block");
 	$("#proceedButton").css("display", "block");
 	$("#divAlertSize").css("display", "none");
 	$("#inquiryButton").css("display", "none");
-	//return true;
-}
+};
 
 Template.generalPassagerInfo.previous = function(){
 	if(Session.get('previousCustomer') && !Template.generalPassagerInfo.isEditingCustomer()){
 		return true;
 	}
 	return false;
-
-}
+};
 
 
 Template.productPrices.priced = function(price){
@@ -976,14 +969,14 @@ Template.productPrices.priced = function(price){
 	}else{
 		return 0;
 	}
-}
+};
 
 Template.productPrices.checkForAvailability = function(id){
 	if(isCustomer() && !Prices.findOne({'_id' : id}).availableForGuest){
 		return false;
 	}
 	return true;
-}
+};
 
 Template.productPrices.minValue = function(price){
 	if(price.toUpperCase() == 'ADULT'){
@@ -991,11 +984,11 @@ Template.productPrices.minValue = function(price){
 	}else{
 		return 0;
 	}
-}
+};
 
 Template.productPrices.firstTime = function(){
 	return Session.get('firstTimePrice') ? true : false;
-}
+};
 
 Template.productPrices.firstTimePricing = function(price, unit){
 	if(Session.get('isEditing')){
@@ -1005,29 +998,29 @@ Template.productPrices.firstTimePricing = function(price, unit){
 	}else{
 		return 0;
 	}
-}
+};
 
 var _priced = function(price){
 	for (var i = book.prices.length - 1; i >= 0; i--) {
 		if(price == book.prices[i].price){
 			return book.prices[i].persons;
-		};
-	};
+		}
+	}
 	return 0;
-}
+};
 
 Template.categoryVehicleBook.sizes = function() {
 	return Session.get('categoryId') ? VehiclesCategory.findOne({_id: Session.get('categoryId')}).size : [];
-}
+};
 
 Template.categoryVehicleBook.firstTime = function(){
 	return Session.get('firstTime') ? true : false;
-}
+};
 
 Template.createBook.trips = function(){
 	if(Session.get('isEditing')){
 		if(Session.get("productId")){
-			return Trips.find({productId : Session.get("productId"), active : true})
+			return Trips.find({productId : Session.get("productId"), active : true});
 		}else{
 			throwError('Something Bad Happened, Try Again');
 			return [];
@@ -1035,7 +1028,7 @@ Template.createBook.trips = function(){
 	}else{
 		return Trips.find({_id : Session.get("tripId")});
 	}
-}
+};
 
 
 Template.createBook.helpers({
@@ -1043,9 +1036,9 @@ Template.createBook.helpers({
 		if(Session.get("productId")){
 			trip = Trips.findOne({_id : Session.get('tripId')});
 			if(trip.availableDays)
-				return Prices.find({productId : Session.get("productId"), active : true, season: 'both'})
+				return Prices.find({productId : Session.get("productId"), active : true, season: 'both'});
 			else
-				return Prices.find({productId : Session.get("productId"), active : true, season: currentSeason()})
+				return Prices.find({productId : Session.get("productId"), active : true, season: currentSeason()});
 		}else{
 			throwError('Something Bad Happened, Try Again');
 			return [];
@@ -1418,8 +1411,8 @@ Template.generalButtons.events({
 			throwError("The Vehicle informed can't go on the boat");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
-		}else if(checkForAdults()){
-			bootbox.alert("A least one Adult is needed to create a booking!");
+		}else if($("#categories").val() == "" && $("#size").val() == null && $("#vehiclePlate").val() == ""){
+			bootbox.alert("A least one vehicle is needed to create a booking!");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehiclePlate").val() == ""){
 			bootbox.alert("Please inform the vehicle plate.");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#vehicle").val() == ""){
@@ -1427,25 +1420,24 @@ Template.generalButtons.events({
 		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
 				bootbox.alert("This car is already booked to this trip");
 		}else{
-			var form = document.getElementById('pasagerInfo');
-			if(form.checkValidity()){
-				createBook();
-				throwSuccess("Book added on Cart");
-				if(isCustomer()){
-					cleanExternView();
-					Session.set('cbasket', true);
-					$("#loginArea").hide();
-					Template.externView.rendered();
+				var form = document.getElementById('pasagerInfo');
+				if(form.checkValidity()){
+					if(checkForAdults()){
+						bootbox.confirm("Are you sure? there is no adults on this booking", function(confirm){
+							console.log(confirm);
+							if(confirm)
+								proccedToBooking();
+						})
+					}else{
+						proccedToBooking()
+					}
 				}else{
-					Meteor.Router.to('/cart');
+					$('#pasagerInfo').submit(function(event){
+						event.preventDefault();
+					});
 				}
-			}else{
-				$('#pasagerInfo').submit(function(event){
-					event.preventDefault();
-				});
 			}
 		}
-	}
 })
 
 Template.generalPassagerInfo.events({
@@ -2233,34 +2225,31 @@ var formatData = function(percentages){
 	        color       : 'red',
 	        description : 'Regular Slots',
 	        title       : 'Small Cars (5m)',
-	        value       : parseFloat(percentages.regularSlots / 38)
+	        value       : parseFloat(percentages.regularSlots / 43)
 	      },
 	      {
 	        color       : 'blue',
 	        description : 'Door Slots',
 	        title       : 'trains',
-	        value       : parseFloat(percentages.doorSlots / 38)
+	        value       : parseFloat(percentages.doorSlots / 43)
 	      },
 	      {
 	        color       : 'green',
 	        description : 'Extra Slots',
 	        title       : 'trains',
-	        value       : parseFloat(percentages.extraSlots / 38)
+	        value       : parseFloat(percentages.extraSlots / 43)
 	      },
 	      {
 	        color       : 'gray',
 	        description : 'Unallocated Space',
 	        title       : 'trains',
-	        value       : parseFloat(percentages.unallocated / 38)
+	        value       : parseFloat(percentages.unallocated / 43)
 	      }
 	    ]
   	};
 
   return data;
 }
-
-
-
 
   var DURATION = 1500;
   var DELAY    = 500;
@@ -2274,55 +2263,55 @@ function drawPieChart( elementId, data ) {
     var y2 = 0;
     var containerEl = document.getElementById( elementId ),
         width       = containerEl.clientWidth,
-        height      = width * 0.4,
+        height      = width * 0.5,
         radius      = Math.min( width, height ) / 2,
         container   = d3.select( containerEl ),
         svg         = container.select( 'svg' )
                               .attr( 'width', width )
                               .attr( 'height', height );
     var pie = svg.append( 'g' )
-                .attr(
-                  'transform',
-                  'translate(' + width / 2 + ',' + height / 2 + ')'
-                );
+        .attr(
+          'transform',
+          'translate(' + width / 1.5 + ',' + height / 2.3 + ')'
+        );
 
     var detailedInfo = svg.append( 'g' )
-                          .attr( 'class', 'pieChart--detailedInformation' );
+      .attr( 'class', 'pieChart--detailedInformation' );
 
     var twoPi   = 2 * Math.PI;
     var pieData = d3.layout.pie()
-                    .value( function( d ) { return d.value; } );
+      .value( function( d ) { return d.value; } );
 
     var arc = d3.svg.arc()
-                    .outerRadius( radius - 20)
-                    .innerRadius( 0 );
+      .outerRadius( radius - 20)
+      .innerRadius( 0 );
 
     var pieChartPieces = pie.datum( data )
-                            .selectAll( 'path' )
-                            .data( pieData )
-                            .enter()
-                            .append( 'path' )
-                            .attr( 'class', function( d ) {
-                              return 'pieChart__' + d.data.color;
-                            } )
-                            .attr( 'filter', 'url(#pieChartInsetShadow)' )
-                            .attr( 'd', arc )
-                            .each( function() {
-                              this._current = { startAngle: 0, endAngle: 0 };
-                            } )
-                            .transition()
-                            .duration( DURATION )
-                            .attrTween( 'd', function( d ) {
-                              var interpolate = d3.interpolate( this._current, d );
-                              this._current = interpolate( 0 );
+      .selectAll( 'path' )
+      .data( pieData )
+      .enter()
+      .append( 'path' )
+      .attr( 'class', function( d ) {
+        return 'pieChart__' + d.data.color;
+      } )
+      .attr( 'filter', 'url(#pieChartInsetShadow)' )
+      .attr( 'd', arc )
+      .each( function() {
+        this._current = { startAngle: 0, endAngle: 0 };
+      } )
+      .transition()
+      .duration( DURATION )
+      .attrTween( 'd', function( d ) {
+        var interpolate = d3.interpolate( this._current, d );
+        this._current = interpolate( 0 );
 
-                              return function( t ) {
-                                return arc( interpolate( t ) );
-                              };
-                            } )
-                            .each( 'end', function handleAnimationEnd( d ) {
-                              drawDetailedInformation( d.data, this, count++);
-                            } );
+        return function( t ) {
+          return arc( interpolate( t ) );
+        };
+      } )
+      .each( 'end', function handleAnimationEnd( d ) {
+        drawDetailedInformation( d.data, this, count++);
+      } );
 
     drawChartCenter();
 
@@ -2331,23 +2320,23 @@ function drawPieChart( elementId, data ) {
                                 .attr( 'class', 'pieChart--center' );
 
       centerContainer.append( 'circle' )
-                      .attr( 'class', 'pieChart--center--outerCircle' )
-                      .attr( 'r', 0 )
-                      .attr( 'filter', 'url(#pieChartDropShadow)' )
-                      .transition()
-                      .duration( DURATION )
-                      .delay( DELAY )
-                      .attr( 'r', radius - 50 );
+        .attr( 'class', 'pieChart--center--outerCircle' )
+        .attr( 'r', 0 )
+        .attr( 'filter', 'url(#pieChartDropShadow)' )
+        .transition()
+        .duration( DURATION )
+        .delay( DELAY )
+        .attr( 'r', radius - 50 );
 
       centerContainer.append( 'circle' )
-                      .attr( 'id', 'pieChart-clippy' )
-                      .attr( 'class', 'pieChart--center--innerCircle' )
-                      .attr( 'r', 0 )
-                      .transition()
-                      .delay( DELAY )
-                      .duration( DURATION )
-                      .attr( 'r', radius - 55 )
-                      .attr( 'fill', '#fff' );
+        .attr( 'id', 'pieChart-clippy' )
+        .attr( 'class', 'pieChart--center--innerCircle' )
+        .attr( 'r', 0 )
+        .transition()
+        .delay( DELAY )
+        .duration( DURATION )
+        .attr( 'r', radius - 55 )
+        .attr( 'fill', '#fff' );
     }
 
     function drawDetailedInformation ( data, element, count) {
@@ -2406,7 +2395,10 @@ function drawPieChart( elementId, data ) {
                       );
 
                       return function( t ) {
-                        this.textContent = i( t ) + ' %';
+												if(data.description != "Unallocated Space")
+                        	this.textContent = i( t ) + ' % - '+calculateCars(i(t)) +" Cars";
+												else
+													this.textContent = i( t ) + ' % ';
                       };
                     } );
 
@@ -2492,6 +2484,27 @@ checkMaxCapacity = function(total, productId, tripId){
 		Template.createBook.rendered();
 	}
 
+}
+
+function proccedToBooking(){
+	createBook();
+	throwSuccess("Book added on Cart");
+	if(isCustomer()){
+		cleanExternView();
+		Session.set('cbasket', true);
+		$("#loginArea").hide();
+		Template.externView.rendered();
+	}else{
+		Meteor.Router.to('/cart');
+	}
+}
+
+function calculateCars(percentagem){
+	if(percentagem === 0){
+		return 0;
+	}
+
+	return parseInt((percentagem * 43 / 100).toFixed());
 }
 
 function checkSameCarOnBoat(vehicleId){
