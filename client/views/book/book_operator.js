@@ -66,14 +66,22 @@ var updateSVGFill = function(dates, tripId){
 	books = [];
 
 	if(!Session.get("isEditing")){
+		console.log("aqui");
+		console.log(tripId);
+		console.log(dates);
 		books = Books.find({
 			dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
 			'product._id' : Session.get('productId'),
 			'trip._id' : tripId,
 			$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
 		}).fetch();
+		console.log(books);
 	}else{
 		tripId = $("#destination").val();
+
+		if(Session.get("changeSlots"))
+			tripId = Session.get("tripId");
+
 		books = Books.find({
 			dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
 			'product._id' : Session.get('productId'),
@@ -81,6 +89,7 @@ var updateSVGFill = function(dates, tripId){
 			$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ],
 			_id: {$not : Session.get("bookId") }
 		}).fetch();
+		console.log(books);
 	}
 
 
@@ -678,21 +687,25 @@ Template.bookDetail.events({
 			var id = $(this).attr("id");
 			document.getElementById(id).setAttribute("stroke", "#000000");
 		});
-
+		updateSVGFill();
 		$("#svgBoatDialog").show();
 	},
 
 	'click .editSlot' : function(event){
-		$("rect").filter(function(){
-			var id = $(this).attr("id");
-			document.getElementById(id).setAttribute("stroke", "#000000");
-		});
+		event.preventDefault();
+		Session.set("changeSlots", true);
+		Session.set("isEditing", true);
+		Session.set("bookId", this._id);
+		updateSVGFill();
 		$("#svgBoatDialogChange").show();
 	},
 
 	'click .close, click .cancel' : function(event){
 		$("#svgBoatDialog").hide();
 		$("#svgBoatDialogChange").hide();
+		Session.set("isEditing", null);
+		Session.set("bookId", null);
+		Session.set("changeSlots", null);
 	},
 
 	'click .editBookOperator' : function(event){
