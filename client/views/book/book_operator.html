@@ -146,41 +146,21 @@
 		  <div class="modal" style="left: 45%; width: 760px">
 		    <div class="modal-header">
 		      <button type="button" class="cancel close">&times;</button>
-		      <h3>Current Boat Status</h3>
+		      <h3 id='headerDialog'>Current Boat Status</h3>
 		    </div>
 
 		    <div class="modal-body">
 		    	<div>
 					{{>baldurSVG}}
+					<input type='hidden' id='slotsToUpdate'>
 				</div>
 		    </div>
 
-		    <div class="modal-footer">
-		    	<a href="#" class="btn cancel">Close</a>
+		    <div class="modal-footer svgDialog">
+		    	<a href="#" class="btn cancel" style="float: left">Close</a>
 		    </div>
 		  </div>
   	</div>
-	<div>
-
-	<div id="svgBoatDialogChange" hidden>
-			<div class="mask"> </div>
-			<div class="modal" style="left: 45%; width: 760px">
-				<div class="modal-header">
-					<button type="button" class="cancel close">&times;</button>
-					<h3>Change Slot</h3>
-				</div>
-
-				<div class="modal-body">
-					<div>
-					{{>baldurSVG}}
-				</div>
-				</div>
-
-				<div class="modal-footer">
-					<a href="#" class="btn cancel">Close</a>
-				</div>
-			</div>
-		</div>
 	<div>
 
 		<div class="divTable">

@@ -54,28 +54,24 @@ var resetSVG = function(){
 };
 
 var updateSVGFill = function(dates, tripId){
-	if(dates === null){
+	if(dates == null){
 		dates = getSelectedAndNextDay();
 	}
 
-	if(tripId === null){
+	if(tripId == null){
 		tripId = Trips.findOne(Session.get('tripId'))._id;
 	}
 
 	resetSVG();
 	books = [];
 
-	if(!Session.get("isEditing")){
-		console.log("aqui");
-		console.log(tripId);
-		console.log(dates);
+	if(!Session.get("isEditing") && !Session.get("changeSlots")){
 		books = Books.find({
 			dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
 			'product._id' : Session.get('productId'),
 			'trip._id' : tripId,
 			$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
 		}).fetch();
-		console.log(books);
 	}else{
 		tripId = $("#destination").val();
 
@@ -89,7 +85,6 @@ var updateSVGFill = function(dates, tripId){
 			$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ],
 			_id: {$not : Session.get("bookId") }
 		}).fetch();
-		console.log(books);
 	}
 
 
@@ -105,9 +100,20 @@ var updateSVGFill = function(dates, tripId){
 		}
 	}
 
+	if(Session.get("bookId")){
+		//Update Boat Status SVG - Change Slots
+		var book = Books.findOne(Session.get("bookId"));
+
+		var slotEdit = book.slot.split("-");
+		for(i = 0; i < slotEdit.length; i++){
+			var svgElementEdit = document.getElementById("svg_"+slotEdit[i]);
+			svgElementEdit.setAttribute("fill", "#c7c7c7");
+		}
+	}
+
 	//on Some cases the find do not work on client side and this is sad.
 	//so try to get the books on server side
-	if(books.length === 0){
+	if(books.length == 0){
 		Meteor.call("getBooksToFill", dates, tripId, Session.get("productId"), function(err, result){
 			if(err){
 				console.log(err);
@@ -159,7 +165,7 @@ var updateDataPieChart = function(){
 			}else if(slotArray[j].indexOf("D") != -1){
 				doorSlots++;
 				unallocated--;
-			}else if(slotArray[j] !== ""){
+			}else if(slotArray[j] != ""){
 				regularSlots++;
 				unallocated--;
 			}
@@ -169,6 +175,9 @@ var updateDataPieChart = function(){
 	$("#regularSlotsAlocated").text(regularSlots*5);
 	$("#doorSlotsAlocated").text(doorSlots*5);
 	$("#spaceAlocatedSlot").text(extraSlots*5);
+	Session.set("regularCars", regularSlots);
+	Session.set("doorCars", doorSlots);
+	Session.set("extraCars", extraSlots);
 
 
 	percentages = {
@@ -263,7 +272,7 @@ Template.productItem.events({
 			//Append new options
 			$('#trip_'+this._id).append("<option value="+appendTrips[i]._id+" data-from="+appendTrips[i].from+">"+appendTrips[i].from +" - "+appendTrips[i].to + " - " +appendTrips[i].hour+"</option>");
 		}
-		if(appendTrips.length === 0){
+		if(appendTrips.length == 0){
 			$('#trip_'+this._id).append("<option disabled>No trips available for this day</option>");
 			$('#button_'+this._id).attr("disabled", "disabled");
 		}else{
@@ -693,19 +702,75 @@ Template.bookDetail.events({
 
 	'click .editSlot' : function(event){
 		event.preventDefault();
+		$("rect").filter(function(){
+			var id = $(this).attr("id");
+			document.getElementById(id).setAttribute("stroke", "#000000");
+		});
+
+		var a = event.currentTarget;
+		$("#slotsToUpdate").val("");
 		Session.set("changeSlots", true);
-		Session.set("isEditing", true);
-		Session.set("bookId", this._id);
+		Session.set("bookId", a.rel);
 		updateSVGFill();
-		$("#svgBoatDialogChange").show();
+		$("#headerDialog").text("Change Slots");
+		$(".svgDialog").append('<a href="#" class="btn btn-success confirmChangeSlot" style="float: right">Change Slots</a>');
+		$("#svgBoatDialog").show();
 	},
 
 	'click .close, click .cancel' : function(event){
+		$("#headerDialog").text("Current Boat Status");
 		$("#svgBoatDialog").hide();
-		$("#svgBoatDialogChange").hide();
-		Session.set("isEditing", null);
 		Session.set("bookId", null);
 		Session.set("changeSlots", null);
+		$('.confirmChangeSlot').remove();
+		$("#slotsToUpdate").val("");
+	},
+
+	'click .confirmChangeSlot' : function(event){
+		$("#headerDialog").text("Current Boat Status");
+		Books.update(Session.get("bookId"), {$set : {slot : $("#slotsToUpdate").val()}});
+		throwSuccess("Slots Changed!");
+		$("#svgBoatDialog").hide();
+		Session.set("bookId", null);
+		Session.set("changeSlots", null);
+		$('.confirmChangeSlot').remove();
+		$("#slotsToUpdate").val("");
+	},
+
+	'click rect' : function(event){
+		event.preventDefault();
+
+		if(Session.get("changeSlots")){
+			var id = event.target.id;
+			svgElement = document.getElementById(id);
+			var stroke = svgElement.getAttribute("stroke");
+			var fill = svgElement.getAttribute("fill");
+			var text;
+			if(stroke == "#000000" && fill != "#808080"){
+				text = $("#slotsToUpdate").val();
+				if(text == ""){
+					text+=id.split("_")[1];
+				}else{
+					text+="-"+id.split("_")[1];
+				}
+				$("#slotsToUpdate").val(text);
+				svgElement.setAttribute("stroke","#00d2ff");
+			}else{
+				text = "";
+				var textSplit = $("#slotsToUpdate").val().split("-");
+				for (var i = 0; i < textSplit.length; i++) {
+					if(textSplit[i] != id.split("_")[1]){
+						if(text == ""){
+							text += textSplit[i];
+						}else{
+							text += "-"+textSplit[i];
+						}
+					}
+				}
+				$("#slotsToUpdate").val(text);
+				svgElement.setAttribute("stroke","#000000");
+			}
+		}
 	},
 
 	'click .editBookOperator' : function(event){
@@ -1159,7 +1224,7 @@ Template.createBook.events({
 		var text;
 		if(stroke == "#000000" && fill != "#808080"){
 			text = $("#slotNumber").val();
-			if(text === ""){
+			if(text == ""){
 				text+=id.split("_")[1];
 			}else{
 				text+="-"+id.split("_")[1];
@@ -1171,7 +1236,7 @@ Template.createBook.events({
 			var textSplit = $("#slotNumber").val().split("-");
 			for (var i = 0; i < textSplit.length; i++) {
 				if(textSplit[i] != id.split("_")[1]){
-					if(text === ""){
+					if(text == ""){
 						text += textSplit[i];
 					}else{
 						text += "-"+textSplit[i];
@@ -1226,7 +1291,7 @@ Template.createBook.events({
 		}
 
 		var textSplit = $("#slotNumber").val().split("-");
-		if($("#slotNumber").val() !== ""){
+		if($("#slotNumber").val() != ""){
 			for (var i = textSplit.length - 1; i >= 0; i--) {
 				svgElement = document.getElementById("svg_"+textSplit[i]);
 				svgElement.setAttribute("stroke","#00d2ff");
@@ -1242,7 +1307,7 @@ Template.createBook.events({
 	},
 
 	'click .searchApisIs' : function(){
-		if($("#vehiclePlate").val() !== "" && $("#vehiclePlate").val().replace(/ /g,"") !== "" ){
+		if($("#vehiclePlate").val() != "" && $("#vehiclePlate").val().replace(/ /g,"") != "" ){
 			plate = $("#vehiclePlate").val();
 			$.blockUI({message : 'Looking for car... Please Wait'});
 			$.ajax({
@@ -1309,12 +1374,12 @@ var checkForAdults = function(){
 		}
 	});
 
-	if(prices.length === 0){
+	if(prices.length == 0){
 		return true;
 	}
 
 	for (var i = prices.length - 1; i >= 0; i--) {
-		if(prices[i].price == "Adult" && prices[i].persons === 0){
+		if(prices[i].price == "Adult" && prices[i].persons == 0){
 			return true;
 		}
 	}
@@ -1325,31 +1390,31 @@ var checkForAdults = function(){
 Template.generalButtons.events({
 	//Events for identify
 	'click .addBook' : function(event){
-		if($("#categories").val() !== "" && $("#size").val() === "" && !$('#size').is(':disabled')){
+		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			bootbox.alert('Please Inform the size of vehicle');
 		}else if(!CanSaveTheBook){
 			bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
-		}else if($("#categories").val() !== "" && $("#size").val() !== "" && $("#slotNumber").val() === ""){
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
-		}else if(checkForAdults()){
-			bootbox.alert("A least one Adult is needed to create a booking!");
-		}else if($("#categories").val() !== "" && $("#size").val() !== null && $("#vehiclePlate").val() === ""){
+		}else if($("#categories").val() == "" && $("#size").val() == null && $("#vehiclePlate").val() == ""){
+			bootbox.alert("A least one vehicle is needed to create a booking!");
+		}else if($("#categories").val() != "" && $("#size").val() != null && $("#vehiclePlate").val() == ""){
 			bootbox.alert("Please inform the vehicle plate.");
-		}else if($("#categories").val() !== "" && $("#size").val() !== null && $("#vehicle").val() === ""){
+		}else if($("#categories").val() != "" && $("#size").val() != null && $("#vehicle").val() == ""){
 			bootbox.alert("Please inform the vehicle name");
 		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
 			bootbox.alert("This car is already booked to this trip");
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
-				createBook();
-				throwSuccess("Book added on Cart");
-				if(isCustomer()){
-					cleanExternView();
-					$("#loginArea").hide();
-					Template.externView.rendered();
+				if(checkForAdults()){
+					bootbox.confirm("Are you sure? There is no adults on this booking", function(confirm){
+						console.log(confirm);
+						if(confirm)
+							proccedToBooking("/bookOperator");
+					});
 				}else{
-					Meteor.Router.to('/bookOperator');
+					proccedToBooking("/bookOperator");
 				}
 			}else{
 				$('#pasagerInfo').submit(function(event){
@@ -1360,7 +1425,7 @@ Template.generalButtons.events({
 	},
 
 	'click .confirmInquiry' : function(event){
-		if($("#categories").val() !== "" && $("#size").val() === "" && !$('#size').is(':disabled')){
+		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			throwError('Please Inform the size of vehicle');
 		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
 				bootbox.alert("This car is already booked to this trip");
@@ -1384,20 +1449,20 @@ Template.generalButtons.events({
 	},
 
 	'click .saveEdit' : function(event){
-		if($("#categories").val() !== "" && $("#size").val() === "" && !$('#size').is(':disabled')){
+		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			throwError('Please Inform the size of vehicle');
 		}else if(!CanSaveTheBook){
 			throwError("The Vehicle informed can't go on the boat");
-		}else if($("#categories").val() !== "" && $("#size").val() !== null && $("#slotNumber").val() === ""){
+		}else if($("#categories").val() != "" && $("#size").val() != null && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
-		}else if($("#categories").val() !== "" && $("#size").val() !== null && $("#slotNumber").val() === ""){
+		}else if($("#categories").val() != "" && $("#size").val() != null && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
 		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
 				bootbox.alert("This car is already booked to this trip");
-		}else if($("#categories").val() !== "" && $("#size").val() !== ""){
-			if($("#vehiclePlate").val() === "")
+		}else if($("#categories").val() != "" && $("#size").val() != ""){
+			if($("#vehiclePlate").val() == "")
 				bootbox.alert("Please inform the vehicle plate.");
-			if($("#vehicle").val() === "")
+			if($("#vehicle").val() == "")
 				bootbox.alert("Please inform the vehicle name");
 		}else{
 			var form = document.getElementById('pasagerInfo');
@@ -1421,17 +1486,17 @@ Template.generalButtons.events({
 	},
 
 	'click .procedToCart' : function(event){
-		if($("#categories").val() !== "" && $("#size").val() === "" && !$('#size').is(':disabled')){
+		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			throwError('Please Inform the size of vehicle');
 		}else if(!CanSaveTheBook){
 			throwError("The Vehicle informed can't go on the boat");
-		}else if($("#categories").val() !== "" && $("#size").val() !== null && $("#slotNumber").val() === ""){
+		}else if($("#categories").val() != "" && $("#size").val() != null && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
-		}else if($("#categories").val() === "" && $("#size").val() === null && $("#vehiclePlate").val() === ""){
+		}else if($("#categories").val() == "" && $("#size").val() == null && $("#vehiclePlate").val() == ""){
 			bootbox.alert("A least one vehicle is needed to create a booking!");
-		}else if($("#categories").val() !== "" && $("#size").val() !== null && $("#vehiclePlate").val() === ""){
+		}else if($("#categories").val() != "" && $("#size").val() != null && $("#vehiclePlate").val() == ""){
 			bootbox.alert("Please inform the vehicle plate.");
-		}else if($("#categories").val() !== "" && $("#size").val() !== null && $("#vehicle").val() === ""){
+		}else if($("#categories").val() != "" && $("#size").val() != null && $("#vehicle").val() == ""){
 			bootbox.alert("Please inform the vehicle name");
 		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
 				bootbox.alert("This car is already booked to this trip");
@@ -1439,13 +1504,13 @@ Template.generalButtons.events({
 				var form = document.getElementById('pasagerInfo');
 				if(form.checkValidity()){
 					if(checkForAdults()){
-						bootbox.confirm("Are you sure? there is no adults on this booking", function(confirm){
+						bootbox.confirm("Are you sure? There is no adults on this booking", function(confirm){
 							console.log(confirm);
 							if(confirm)
-								proccedToBooking();
+								proccedToBooking('/cart');
 						});
 					}else{
-						proccedToBooking();
+						proccedToBooking('/cart');
 					}
 				}else{
 					$('#pasagerInfo').submit(function(event){
@@ -1848,7 +1913,7 @@ Template.categoryVehicleBook.events({
 					$("#slotNumber").val("");
 				}
 			}else{
-				if(getFirstSlotAvailable() === ""){
+				if(getFirstSlotAvailable() == ""){
 					CanSaveTheBook = false;
 				}
 			}
@@ -1877,7 +1942,7 @@ Template.categoryVehicleBook.events({
 				$("#slotNumber").val("");
 			}
 		}else{
-			if(getFirstSlotAvailable() === ""){
+			if(getFirstSlotAvailable() == ""){
 				CanSaveTheBook = false;
 			}
 		}
@@ -1916,7 +1981,7 @@ calcTotal = function(){
 	var total = 0;
 
 	for (var i = $('.calcTotal').length - 1; i >= 0; i--) {
-		if($('.calcTotal')[i].children[0].value !== "")
+		if($('.calcTotal')[i].children[0].value != "")
 			total += parseInt(($('.calcTotal')[i].children[0].value).replace(".",""));
 	}
 
@@ -2357,7 +2422,7 @@ function drawPieChart( elementId, data ) {
           var color = "";
          y = parseInt(count * 50 + 15);
 
-				if(count === 0){
+				if(count == 0){
 					color = '#d15b47';
 				}
 
@@ -2391,7 +2456,7 @@ function drawPieChart( elementId, data ) {
                     .append( 'text' )
                     .text ( '0 %' )
                     .attr( 'class', 'pieChart--detail--percentage' )
-                    .attr( 'x', ( position === 'left' ? 0 : infoWidth ) )
+                    .attr( 'x', ( position == 'left' ? 0 : infoWidth ) )
                     .attr( 'y', 0 )
                     .attr( 'text-anchor', anchor )
                     .transition()
@@ -2404,7 +2469,7 @@ function drawPieChart( elementId, data ) {
 
                       return function( t ) {
 												if(data.description != "Unallocated Space")
-													this.textContent = i( t ) + ' % - '+calculateCars(i(t)) +" Cars";
+													this.textContent = i( t ) + ' % - '+calculateCars(data.description)+" Cars";
 												else
 													this.textContent = i( t ) + ' % ';
                       };
@@ -2444,14 +2509,14 @@ function drawPieChartBoatSlots() {
 checkMaxCapacity = function(total, productId, tripId){
 	var product;
 	var reRender = true;
-	if(productId === null){
+	if(productId == null){
 		product = Products.findOne(Session.get('productId'));
 	}else{
 		product = Products.findOne(productId);
 		reRender = false;
 	}
 
-	if(tripId === null){
+	if(tripId == null){
 		tripId = Session.get('tripId');
 		reRender = false;
 	}
@@ -2494,7 +2559,7 @@ checkMaxCapacity = function(total, productId, tripId){
 
 };
 
-function proccedToBooking(){
+function proccedToBooking(route){
 	createBook();
 	throwSuccess("Book added on Cart");
 	if(isCustomer()){
@@ -2503,16 +2568,21 @@ function proccedToBooking(){
 		$("#loginArea").hide();
 		Template.externView.rendered();
 	}else{
-		Meteor.Router.to('/cart');
+		Meteor.Router.to(route);
 	}
 }
 
-function calculateCars(percentagem){
-	if(percentagem === 0){
-		return 0;
+function calculateCars(description){
+	var type = description.split(" ")[0];
+
+	if(type == 'Regular'){
+		return Session.get("regularCars");
+	}else if(type == 'Extra'){
+		return Session.get("extraCars");
+	}else{
+		return Session.get("doorCars");
 	}
 
-	return parseInt((percentagem * 43 / 100).toFixed());
 }
 
 function checkSameCarOnBoat(vehicleId){
