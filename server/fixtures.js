@@ -133,7 +133,7 @@ if(Products.find().count() == 0){
 		'availableFor' : customersId,
 		'imageName' : "Baldur Ferry.jpg",
 		'featured' : true,
-		'disclaimer' : "Ferry Baldur daily crosses Breiðafjörður Bay. PLEASE NOTE – if your are travelling with a car and stopping in Flatey Island you need to book “Stykkisholmur-Brjanslækur” (or reverse), and mark in the checkbox that you will be stopping in Flatey." 
+		'disclaimer' : "Ferry Baldur daily crosses Breiðafjörður Bay. PLEASE NOTE – if your are travelling with a car and stopping in Flatey Island you need to book “Stykkisholmur-Brjanslækur” (or reverse), and mark in the checkbox that you will be stopping in Flatey."
 	});
 
 	var tripID1 = Trips.insert({
@@ -174,7 +174,7 @@ if(Products.find().count() == 0){
 		"hour"  : "09:00",
 		'season' : "summer",
 		'active' : true,
-		'productId' : result		
+		'productId' : result
 	});
 
 	BlockingDates.insert({
@@ -190,7 +190,7 @@ if(Products.find().count() == 0){
 		"hour"  : "09:00",
 		'season' : "summer",
 		'active' : true,
-		'productId' : result		
+		'productId' : result
 	});
 
 	BlockingDates.insert({
@@ -206,7 +206,7 @@ if(Products.find().count() == 0){
 		"hour"  : "10:35",
 		'season' : "summer",
 		'active' : true,
-		'productId' : result		
+		'productId' : result
 	});
 
 	BlockingDates.insert({
@@ -223,7 +223,7 @@ if(Products.find().count() == 0){
 		"hour"  : "12:15",
 		'season' : "summer",
 		'active' : true,
-		'productId' : result		
+		'productId' : result
 	});
 
 	BlockingDates.insert({
@@ -239,7 +239,7 @@ if(Products.find().count() == 0){
 		"hour"  : "12:15",
 		'season' : "summer",
 		'active' : true,
-		'productId' : result		
+		'productId' : result
 	});
 	BlockingDates.insert({
 					'tripId' : tripID6,
@@ -254,7 +254,7 @@ if(Products.find().count() == 0){
 		"hour"  : "13:15",
 		'season' : "summer",
 		'active' : true,
-		'productId' : result		
+		'productId' : result
 	});
 
 	BlockingDates.insert({
@@ -279,7 +279,7 @@ if(Products.find().count() == 0){
 		"hour"  : "15:45",
 		'season' : "summer",
 		'active' : true,
-		'productId' : result		
+		'productId' : result
 	});
 
 		BlockingDates.insert({
@@ -295,7 +295,7 @@ if(Products.find().count() == 0){
 		"hour"  : "15:45",
 		'season' : "summer",
 		'active' : true,
-		'productId' : result		
+		'productId' : result
 	});
 
 	BlockingDates.insert({
@@ -311,7 +311,7 @@ if(Products.find().count() == 0){
 		"hour"  : "17:15",
 		'season' : "summer",
 		'active' : true,
-		'productId' : result		
+		'productId' : result
 	});
 
 	BlockingDates.insert({
@@ -327,7 +327,7 @@ if(Products.find().count() == 0){
 		"hour"  : "19:00",
 		'season' : "summer",
 		'active' : true,
-		'productId' : result		
+		'productId' : result
 	});
 
 	BlockingDates.insert({
@@ -343,7 +343,7 @@ if(Products.find().count() == 0){
 		"hour"  : "19:00",
 		'season' : "summer",
 		'active' : true,
-		'productId' : result		
+		'productId' : result
 	});
 
 	BlockingDates.insert({
@@ -359,7 +359,7 @@ if(Products.find().count() == 0){
 		"hour"  : "20:00",
 		'season' : "summer",
 		'active' : true,
-		'productId' : result		
+		'productId' : result
 	});
 
 	BlockingDates.insert({
@@ -561,7 +561,7 @@ if(Products.find().count() == 0){
 	})
 
 	result = Products.insert({
-		"name" 			: "Viking Sushi Short",	
+		"name" 			: "Viking Sushi Short",
 		"active" 	: true,
 		"boatId" : '1',
 		'availableFor' : customersId,
@@ -656,8 +656,8 @@ if(Products.find().count() == 0){
 		'availableForGuest' : false
 	})
 
-	
-		
+
+
 }
 
 if(VehiclesCategory.find().count() == 0){
@@ -669,7 +669,7 @@ if(VehiclesCategory.find().count() == 0){
 		'onReduce'  : false,
 		'step'      : 1625
 	});
-	
+
 	VehiclesCategory.insert({
 		"category" 	: "Normal car with cart",
 		"size"		: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
@@ -783,7 +783,7 @@ customerID = "";
 customerID2 = "";
 
 if(Customers.find().count() == 0){
-	
+
 }
 
 
@@ -792,8 +792,13 @@ if(Meteor.users.find().count() == 0){
 	  'username'  : 'skrifstofa',
 	  'email'     : 'admin@seatours.com',
 	  'profile'	  : {'groupID' : admId, 'name' : 'Skrifstofa'},
-	  'password'  : '9876' //encrypted automatically 
+	  'password'  : '9876' //encrypted automatically
 	});
+
+  Initials.insert({
+    initial : "SP",
+    fullName : 'Siggeir Petursson'
+  })
 }
 
 
@@ -914,7 +919,7 @@ if(Vehicles.find().count() == 0){
 				}
 			}
 
-			//If car has between 5 and 6 meters, try alocated him on 6 		
+			//If car has between 5 and 6 meters, try alocated him on 6
 			if(vehicle.size > 5 && vehicle.size <= 6){
 				countVehicle6m = Books.find({
 					dateOfBooking 	: {$gte: thisDay, $lt: nextDay},
@@ -932,7 +937,7 @@ if(Vehicles.find().count() == 0){
 			//If car can't alocated on normal slots
 			//try alocate it on extra slots
 			if(!vehicle.extraSlot){
-				//Return false if has no space for the vehicle, 
+				//Return false if has no space for the vehicle,
 				//EXTRASLOT1 if alocated on slot 1
 				//EXTRASLOT2 if alocated on slot 2
 				//var alocated = alocateCarExtraSlots(thisDay, nextDay, products[randomProductIndex], trip, vehicle.size);
@@ -940,9 +945,9 @@ if(Vehicles.find().count() == 0){
 					//vehicle.extraSlot = alocated;
 				//}
 			}
-			
+
 			//If vehicle can't alocated even on extra slots
-			//the vehicle can't enter on boat 
+			//the vehicle can't enter on boat
 			//and the booking is not created
 			if(!vehicle.extraSlot){
 				saveBook = false;
@@ -972,7 +977,7 @@ if(Vehicles.find().count() == 0){
 				}
 
 			sum += prices[randomForPrices].unit * randomForPrices;
-			pricesRandom.push(price);	
+			pricesRandom.push(price);
 		};
 
 		book.prices = pricesRandom;*/
@@ -980,7 +985,7 @@ if(Vehicles.find().count() == 0){
 
 		book.paid = true;
 		book.bookStatus = 'Created';
-		
+
 		if(saveBook){
 			var transaction = {};
 			if(book._id){
@@ -1005,7 +1010,7 @@ if(Vehicles.find().count() == 0){
 				'vendor' : 'Gudrun'
 				}
 			}
-			
+
 
 			if(zeroOrOne)
 				transaction.type = 'Card';
@@ -1014,9 +1019,9 @@ if(Vehicles.find().count() == 0){
 
 			Transactions.insert(transaction);
 		}
-		
 
-	};			
+
+	};
 }*/
 
 if(PostCodes.find().count() == 0){
@@ -1024,383 +1029,383 @@ if(PostCodes.find().count() == 0){
 	//1xx Reykjavík North, Reykjavík South, Southwest & South
 
 	PostCodes.insert({
-		'postcode' : 101, 
+		'postcode' : 101,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 102, 
+		'postcode' : 102,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 103, 
+		'postcode' : 103,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 104, 
+		'postcode' : 104,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 105, 
+		'postcode' : 105,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 107, 
+		'postcode' : 107,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 108, 
+		'postcode' : 108,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 109, 
+		'postcode' : 109,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 110, 
+		'postcode' : 110,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 111, 
+		'postcode' : 111,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 112, 
+		'postcode' : 112,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 113, 
+		'postcode' : 113,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 116, 
+		'postcode' : 116,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 121, 
+		'postcode' : 121,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 123, 
+		'postcode' : 123,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 124, 
+		'postcode' : 124,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 125, 
+		'postcode' : 125,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 127, 
+		'postcode' : 127,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 128, 
+		'postcode' : 128,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 129, 
+		'postcode' : 129,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 130, 
+		'postcode' : 130,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 132, 
+		'postcode' : 132,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 150, 
+		'postcode' : 150,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 155, 
+		'postcode' : 155,
 		'city'     : 'Reykjavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 170, 
+		'postcode' : 170,
 		'city'     : 'Seltjarnarnes'
 	})
 
 	PostCodes.insert({
-		'postcode' : 172, 
+		'postcode' : 172,
 		'city'     : 'Seltjarnarnes'
 	})
 
 	PostCodes.insert({
-		'postcode' : 190, 
+		'postcode' : 190,
 		'city'     : 'Vogar'
 	})
 
 	//2xx Southwest & South
 
 	PostCodes.insert({
-		'postcode' : 200, 
+		'postcode' : 200,
 		'city'     : 'Kópavogur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 201, 
+		'postcode' : 201,
 		'city'     : 'Kópavogur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 202, 
+		'postcode' : 202,
 		'city'     : 'Kópavogur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 210, 
+		'postcode' : 210,
 		'city'     : 'Kópavogur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 212, 
+		'postcode' : 212,
 		'city'     : 'Garðabær'
 	})
 
 	PostCodes.insert({
-		'postcode' : 220, 
+		'postcode' : 220,
 		'city'     : 'Hafnarfjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 221, 
+		'postcode' : 221,
 		'city'     : 'Hafnarfjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 222, 
+		'postcode' : 222,
 		'city'     : 'Hafnarfjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 225, 
+		'postcode' : 225,
 		'city'     : 'Garðabær'
 	})
 
 	PostCodes.insert({
-		'postcode' : 230, 
+		'postcode' : 230,
 		'city'     : 'Reykjanesbær'
 	})
 
 	PostCodes.insert({
-		'postcode' : 232, 
+		'postcode' : 232,
 		'city'     : 'Reykjanesbær'
 	})
 
 	PostCodes.insert({
-		'postcode' : 233, 
+		'postcode' : 233,
 		'city'     : 'Reykjanesbær'
 	})
 
 	PostCodes.insert({
-		'postcode' : 235, 
+		'postcode' : 235,
 		'city'     : 'Reykjanesbær'
 	})
 
 	PostCodes.insert({
-		'postcode' : 240, 
+		'postcode' : 240,
 		'city'     : 'Grindavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 245, 
+		'postcode' : 245,
 		'city'     : 'Sandgerði'
 	})
 
 	PostCodes.insert({
-		'postcode' : 250, 
+		'postcode' : 250,
 		'city'     : 'Garður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 260, 
+		'postcode' : 260,
 		'city'     : 'Reykjanesbær'
 	})
 
 	PostCodes.insert({
-		'postcode' : 270, 
+		'postcode' : 270,
 		'city'     : 'Mosfellsbær'
 	})
 
 	PostCodes.insert({
-		'postcode' : 271, 
+		'postcode' : 271,
 		'city'     : 'Mosfellsbær'
 	})
 
 	PostCodes.insert({
-		'postcode' : 276, 
+		'postcode' : 276,
 		'city'     : 'Mosfellsbær'
 	})
 
 	//3xx Northwest & South
 
 	PostCodes.insert({
-		'postcode' : 300, 
+		'postcode' : 300,
 		'city'     : 'Akranes'
 	})
 
 	PostCodes.insert({
-		'postcode' : 301, 
+		'postcode' : 301,
 		'city'     : 'Akranes'
 	})
 
 	PostCodes.insert({
-		'postcode' : 302, 
+		'postcode' : 302,
 		'city'     : 'Akranes'
 	})
 
 	PostCodes.insert({
-		'postcode' : 310, 
+		'postcode' : 310,
 		'city'     : 'Borgarnes'
 	})
 
 	PostCodes.insert({
-		'postcode' : 311, 
+		'postcode' : 311,
 		'city'     : 'Borgarnes'
 	})
 
 	PostCodes.insert({
-		'postcode' : 320, 
+		'postcode' : 320,
 		'city'     : 'Reykholt'
 	})
 
 	PostCodes.insert({
-		'postcode' : 340, 
+		'postcode' : 340,
 		'city'     : 'Stykkishólmur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 345, 
+		'postcode' : 345,
 		'city'     : 'Flatey'
 	})
 
 	PostCodes.insert({
-		'postcode' : 350, 
+		'postcode' : 350,
 		'city'     : 'Grundarfjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 355, 
+		'postcode' : 355,
 		'city'     : 'Ólafsvík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 356, 
+		'postcode' : 356,
 		'city'     : 'Snæfellsbær'
 	})
 
 	PostCodes.insert({
-		'postcode' : 360, 
+		'postcode' : 360,
 		'city'     : 'Hellissandur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 370, 
+		'postcode' : 370,
 		'city'     : 'Búðardalur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 371, 
+		'postcode' : 371,
 		'city'     : 'Búðardalur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 380, 
+		'postcode' : 380,
 		'city'     : 'Reykhólahreppur'
 	})
 
 	//4xx: Northwest
 
 	PostCodes.insert({
-		'postcode' : 400, 
+		'postcode' : 400,
 		'city'     : 'Ísafjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 401, 
+		'postcode' : 401,
 		'city'     : 'Ísafjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 410, 
+		'postcode' : 410,
 		'city'     : 'Hnífsdalur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 415, 
+		'postcode' : 415,
 		'city'     : 'Bolungarvík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 420, 
+		'postcode' : 420,
 		'city'     : 'Súðavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 425, 
+		'postcode' : 425,
 		'city'     : 'Flateyri'
 	})
 
 	PostCodes.insert({
-		'postcode' : 430, 
+		'postcode' : 430,
 		'city'     : 'Suðureyri'
 	})
 
 	PostCodes.insert({
-		'postcode' : 450, 
+		'postcode' : 450,
 		'city'     : 'Patreksfjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 451, 
+		'postcode' : 451,
 		'city'     : 'Patreksfjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 460, 
+		'postcode' : 460,
 		'city'     : 'Tálknafjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 465, 
+		'postcode' : 465,
 		'city'     : 'Bíldudalur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 470, 
+		'postcode' : 470,
 		'city'     : 'Þingeyri'
 	})
 
 	PostCodes.insert({
-		'postcode' : 471, 
+		'postcode' : 471,
 		'city'     : 'Þingeyri'
 	})
 
@@ -1408,379 +1413,379 @@ if(PostCodes.find().count() == 0){
 
 
 	PostCodes.insert({
-		'postcode' : 500, 
+		'postcode' : 500,
 		'city'     : 'Staður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 510, 
+		'postcode' : 510,
 		'city'     : 'Hólmavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 512, 
+		'postcode' : 512,
 		'city'     : 'Hólmavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 520, 
+		'postcode' : 520,
 		'city'     : 'Drangsnes'
 	})
 
 	PostCodes.insert({
-		'postcode' : 524, 
+		'postcode' : 524,
 		'city'     : 'Árneshreppur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 530, 
+		'postcode' : 530,
 		'city'     : 'Hvammstangi'
 	})
 
 	PostCodes.insert({
-		'postcode' : 531, 
+		'postcode' : 531,
 		'city'     : 'Hvammstangi'
 	})
 
 	PostCodes.insert({
-		'postcode' : 540, 
+		'postcode' : 540,
 		'city'     : 'Blönduós'
 	})
 
 	PostCodes.insert({
-		'postcode' : 541, 
+		'postcode' : 541,
 		'city'     : 'Blönduós'
 	})
 
 	PostCodes.insert({
-		'postcode' : 545, 
+		'postcode' : 545,
 		'city'     : 'Skagaströnd'
 	})
 
 	PostCodes.insert({
-		'postcode' : 550, 
+		'postcode' : 550,
 		'city'     : 'Sauðárkrókur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 551, 
+		'postcode' : 551,
 		'city'     : 'Sauðárkrókur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 560, 
+		'postcode' : 560,
 		'city'     : 'Varmahlíð'
 	})
 
 
 	PostCodes.insert({
-		'postcode' : 565, 
+		'postcode' : 565,
 		'city'     : 'Hofsós'
 	})
 
 	PostCodes.insert({
-		'postcode' : 566, 
+		'postcode' : 566,
 		'city'     : 'Hofsós'
 	})
 
 	PostCodes.insert({
-		'postcode' : 570, 
+		'postcode' : 570,
 		'city'     : 'Fljót'
 	})
 
 	PostCodes.insert({
-		'postcode' : 580, 
+		'postcode' : 580,
 		'city'     : 'Siglufjörður'
 	})
 
 	//6xx: Northeast
 
 	PostCodes.insert({
-		'postcode' : 600, 
+		'postcode' : 600,
 		'city'     : 'Akureyri'
 	})
 
 	PostCodes.insert({
-		'postcode' : 601, 
+		'postcode' : 601,
 		'city'     : 'Akureyri'
 	})
 
 	PostCodes.insert({
-		'postcode' : 602, 
+		'postcode' : 602,
 		'city'     : 'Akureyri'
 	})
 
 	PostCodes.insert({
-		'postcode' : 603, 
+		'postcode' : 603,
 		'city'     : 'Akureyri'
 	})
 
 	PostCodes.insert({
-		'postcode' : 610, 
+		'postcode' : 610,
 		'city'     : 'Grenivík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 611, 
+		'postcode' : 611,
 		'city'     : 'Grímsey'
 	})
 
 	PostCodes.insert({
-		'postcode' : 620, 
+		'postcode' : 620,
 		'city'     : 'Dalvík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 621, 
+		'postcode' : 621,
 		'city'     : 'Dalvík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 625, 
+		'postcode' : 625,
 		'city'     : 'Ólafsfjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 630, 
+		'postcode' : 630,
 		'city'     : 'Hrísey'
 	})
 
 	PostCodes.insert({
-		'postcode' : 640, 
+		'postcode' : 640,
 		'city'     : 'Húsavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 641, 
+		'postcode' : 641,
 		'city'     : 'Húsavík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 645, 
+		'postcode' : 645,
 		'city'     : 'Fosshóll'
 	})
 
 
 	PostCodes.insert({
-		'postcode' : 650, 
+		'postcode' : 650,
 		'city'     : 'Laugar'
 	})
 
 	PostCodes.insert({
-		'postcode' : 660, 
+		'postcode' : 660,
 		'city'     : 'Mývatn'
 	})
 
 	PostCodes.insert({
-		'postcode' : 670, 
+		'postcode' : 670,
 		'city'     : 'Kópasker'
 	})
 
 	PostCodes.insert({
-		'postcode' : 671, 
+		'postcode' : 671,
 		'city'     : 'Kópaskeri'
 	})
 
 	PostCodes.insert({
-		'postcode' : 675, 
+		'postcode' : 675,
 		'city'     : 'Raufarhöfn'
 	})
 
 	PostCodes.insert({
-		'postcode' : 680, 
+		'postcode' : 680,
 		'city'     : 'Þórshöfn'
 	})
 
 	PostCodes.insert({
-		'postcode' : 681, 
+		'postcode' : 681,
 		'city'     : 'Þórshöfn'
 	})
 
 	PostCodes.insert({
-		'postcode' : 685, 
+		'postcode' : 685,
 		'city'     : 'Bakkafjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 690, 
+		'postcode' : 690,
 		'city'     : 'Vopnafjörður'
 	})
 
 	//7xx: Northeast & South
 
 	PostCodes.insert({
-		'postcode' : 700, 
+		'postcode' : 700,
 		'city'     : 'Egilsstaðir'
 	})
 
 	PostCodes.insert({
-		'postcode' : 701, 
+		'postcode' : 701,
 		'city'     : 'Egilsstaðir'
 	})
 
 	PostCodes.insert({
-		'postcode' : 710, 
+		'postcode' : 710,
 		'city'     : 'Seyðisfjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 715, 
+		'postcode' : 715,
 		'city'     : 'Mjóifjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 720, 
+		'postcode' : 720,
 		'city'     : 'Borgarfjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 730, 
+		'postcode' : 730,
 		'city'     : 'Reyðarfjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 735, 
+		'postcode' : 735,
 		'city'     : 'Eskifjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 740, 
+		'postcode' : 740,
 		'city'     : 'Neskaupstaður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 750, 
+		'postcode' : 750,
 		'city'     : 'Fáskrúðsfjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 755, 
+		'postcode' : 755,
 		'city'     : 'Stöðvarfjörður'
 	})
 
 	PostCodes.insert({
-		'postcode' : 760, 
+		'postcode' : 760,
 		'city'     : 'Breiðdalsvík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 765, 
+		'postcode' : 765,
 		'city'     : 'Djúpivogur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 780, 
+		'postcode' : 780,
 		'city'     : 'Höfn'
 	})
 
 
 	PostCodes.insert({
-		'postcode' : 781, 
+		'postcode' : 781,
 		'city'     : 'Höfn'
 	})
 
 	PostCodes.insert({
-		'postcode' : 785, 
+		'postcode' : 785,
 		'city'     : 'Öræfi'
 	})
 
 	//8xx: South
 
 	PostCodes.insert({
-		'postcode' : 800, 
+		'postcode' : 800,
 		'city'     : 'Selfoss'
 	})
 
 	PostCodes.insert({
-		'postcode' : 801, 
+		'postcode' : 801,
 		'city'     : 'Selfoss'
 	})
 
 	PostCodes.insert({
-		'postcode' : 802, 
+		'postcode' : 802,
 		'city'     : 'Selfoss'
 	})
 
 	PostCodes.insert({
-		'postcode' : 810, 
+		'postcode' : 810,
 		'city'     : 'Hveragerði'
 	})
 
 	PostCodes.insert({
-		'postcode' : 815, 
+		'postcode' : 815,
 		'city'     : 'Þorlákshöfn'
 	})
 
 	PostCodes.insert({
-		'postcode' : 816, 
+		'postcode' : 816,
 		'city'     : 'Ölfus'
 	})
 
 	PostCodes.insert({
-		'postcode' : 820, 
+		'postcode' : 820,
 		'city'     : 'Eyrarbakki'
 	})
 
 	PostCodes.insert({
-		'postcode' : 825, 
+		'postcode' : 825,
 		'city'     : 'Stokkseyri'
 	})
 
 	PostCodes.insert({
-		'postcode' : 840, 
+		'postcode' : 840,
 		'city'     : 'Laugarvatn'
 	})
 
 	PostCodes.insert({
-		'postcode' : 845, 
+		'postcode' : 845,
 		'city'     : 'Flúðir'
 	})
 
 	PostCodes.insert({
-		'postcode' : 850, 
+		'postcode' : 850,
 		'city'     : 'Hella'
 	})
 
 	PostCodes.insert({
-		'postcode' : 851, 
+		'postcode' : 851,
 		'city'     : 'Hella'
 	})
 
 	PostCodes.insert({
-		'postcode' : 860, 
+		'postcode' : 860,
 		'city'     : 'Hvolsvöllur'
 	})
 
 
 	PostCodes.insert({
-		'postcode' : 861, 
+		'postcode' : 861,
 		'city'     : 'Hvolsvöllur'
 	})
 
 	PostCodes.insert({
-		'postcode' : 870, 
+		'postcode' : 870,
 		'city'     : 'Vík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 871, 
+		'postcode' : 871,
 		'city'     : 'Vík'
 	})
 
 	PostCodes.insert({
-		'postcode' : 880, 
+		'postcode' : 880,
 		'city'     : 'Kirkjubæjarklaustur'
 	})
 
 	//9xx: South
 
 	PostCodes.insert({
-		'postcode' : 900, 
+		'postcode' : 900,
 		'city'     : 'Vestmannaeyjar'
 	})
 
 	PostCodes.insert({
-		'postcode' : 902, 
+		'postcode' : 902,
 		'city'     : 'Vestmannaeyjar'
 	})
 
@@ -1823,11 +1828,11 @@ var callbackCSV = function(data){
 
 /*
 if(Cars.find().count() == 0){
-		
+
     var fs  = Npm.require("fs");
     var jumpFirstLine = true;
 
-	fs.readFileSync('../../../../../public/cars.csv').toString().split('\n').forEach(function (line) { 
+	fs.readFileSync('../../../../../public/cars.csv').toString().split('\n').forEach(function (line) {
     	car = line.split(',');
     	var Car = {
 				'brandname' : car[1] ? car[1].charAt(0).toUpperCase() + car[1].slice(1) : '',
@@ -1840,14 +1845,12 @@ if(Cars.find().count() == 0){
 				'width' : car[27],
 				'height' : car[28]
 			}
-		if(jumpFirstLine)	
+		if(jumpFirstLine)
 			jumpFirstLine = false;
 		else
-			Cars.insert(Car);	
+			Cars.insert(Car);
 	});
 
 
-		
+
 }*/
-
-

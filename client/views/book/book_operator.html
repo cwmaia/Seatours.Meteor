@@ -310,10 +310,7 @@
 		{{/if}}
 		</div>
 		<div>
-			{{#if isCustomer}}
-			{{else}}
-				<div ><label class="required">Initials: </label> <input type='text' id="initials" name="initials" style="width:35px;"></div>
-			{{/if}}
+
 		</div>
 
 	</div>
@@ -449,13 +446,23 @@
     	</div>
 	</div>
 	<div class='line'>
-	    	<div id='divAlertSize' style="display: none;" class="alert alert-warning">
-	       		<b style="color: #FF2400;">ATTENTION, PLEASE NOTE:</b>
-	       		<span id='messageCreateBook'>Bookings with 6+ meters cars need to be confirmed by the office we will be contacting you soon.</span>
-		    </div>
-		</div>
+    	<div id='divAlertSize' style="display: none;" class="alert alert-warning">
+       		<b style="color: #FF2400;">ATTENTION, PLEASE NOTE:</b>
+       		<span id='messageCreateBook'>Bookings with 6+ meters cars need to be confirmed by the office we will be contacting you soon.</span>
+	    </div>
+	</div>
 
-    {{> generalButtons}}
+	<div class='line-3'>
+		<div>
+			{{#unless isCustomer}}
+				<label class="required">Initials: </label>
+				<input type='text' id="initials" name="initials">
+			{{/unless}}
+		</div>
+	</div>
+
+
+  {{> generalButtons}}
 </template>
 
 <template name="generalButtons">
