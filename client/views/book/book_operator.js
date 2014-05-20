@@ -2159,6 +2159,7 @@ var createBook = function(){
 		}
 	}else{
 		customer.online = false;
+		book.signedby = $("initials").val();
 		if(getCartIdOperator()){
 			book.cartId = getCartIdOperator();
 		}else{
