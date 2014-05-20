@@ -1,0 +1,74 @@
+<template name='initials'>
+  <article>
+  <div class="tabbable">
+    <ul class="nav nav-tabs" id="myTab">
+      <li class="active">
+        <a data-toggle="tab" href="#users">
+        <i class="green icon-user bigger-110"></i>
+          Initials
+        </a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <form id='initialsForm'>
+      <div class='line-2'>
+        <div id="users" class="tab-pane in active">
+          <fieldset id='fieldsetUser'>
+            <legend>Intials Data<span>&nbsp;&nbsp;</span><i class='icon-user'/></legend>
+              <div class='line-2'>
+                <div>
+                  <label>Initials: </label>
+                  <input name='initial' type='text' required id='initials'>
+                </div>
+                <div>
+                <label>Full Name: </label>
+                  <input name='fullName' type='text' required id='fullName'>
+                </div>
+              </div>
+
+              </fieldset>
+
+              <button type='submit 'class='btn btn-success create-account-button' id='addUsers'>
+                <i class="icon-user"></i>
+                Create
+              </button>
+          </fieldset>
+        </form>
+          </div>
+
+          <div>
+            {{> initialsList}}
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+    </article>
+</template>
+
+<template name='initialsList'>
+  <fieldset>
+    <legend>Data<span>&nbsp;&nbsp;</span><i class='icon-group'/></legend>
+    <table class='table table-striped table-bordered table-hover' id='usersTable'>
+      <thead>
+        <tr>
+          <th>Initials</th>
+          <th>Full Name</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each initials}}
+          <tr>
+            <td>{{initial}}</td>
+            <td>{{fullName}}</td>
+            <td><a class='btn btn-mini btn-danger remove'><i class='icon-trash'></i></a></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </fieldset>
+</template>

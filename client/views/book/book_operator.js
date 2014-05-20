@@ -1996,6 +1996,7 @@ calcTotal = function(){
 };
 
 loadTypeAheadPostCodes = function(flag){
+	loadTypeAheadInitials();
 	if(flag){
 		$('#postcode').typeahead('destroy');
 		var postCodes = [],
@@ -2023,6 +2024,33 @@ loadTypeAheadPostCodes = function(flag){
 		$('#postcode').typeahead('destroy');
 	}
 };
+
+loadTypeAheadInitials = function(){
+	$('#initials').typeahead('destroy');
+
+	var initials = [],
+	finalInitials,
+	postTags = Initials.find({}, {fields: {initial: 1, fullName: 1}});
+
+	postTags.forEach(function(tag){
+		var datum = {
+			'value' : tag.initial,
+			'id' : tag._id,
+			'fullName' : tag.fullName
+		};
+		initials.push(datum);
+	});
+
+	finalInitials = _.uniq(initials);
+
+	$('#initials').typeahead({
+		name : 'initials',
+		local : finalInitials
+	}).bind('typeahead:selected', function (obj, datum) {
+		$('#initials').val(datum.fullName);
+	});
+
+}
 
 var createBook = function(){
 	var d, resultid, name;
@@ -2135,6 +2163,7 @@ var createBook = function(){
 		}
 	}else{
 		customer.online = false;
+		book.signedby = $("initials").val();
 		if(getCartIdOperator()){
 			book.cartId = getCartIdOperator();
 		}else{

@@ -19,6 +19,7 @@ Meteor.subscribe('cbasket');
 Meteor.subscribe('blockingDates');
 Meteor.subscribe('orders');
 Meteor.subscribe('boatStatus');
+Meteor.subscribe('initials');
 
 
 Template.redirect.helpers({
@@ -101,7 +102,7 @@ Template.redirect.rendered = function(){
 			agree: "Please read and accept our policy"
 		},
 
-		invalidHandler: function (event, validator) { //display error alert on form submit   
+		invalidHandler: function (event, validator) { //display error alert on form submit
 			$('.alert-error', $('.login-form')).show();
 		},
 
@@ -133,5 +134,5 @@ Template.redirect.rendered = function(){
 
 	$('form').bind('submit', function() {
 		$(this).valid();
-	});	
+	});
 }
