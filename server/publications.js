@@ -210,7 +210,7 @@ var getCustomerId = function(userId){
 
 var saveQRCode = function(blob, name) {
     var fs = Npm.require('fs'), encoding ='binary';
-    var nameAndPath = '../../../../../public/images/qrcodes/' + name + '.gif' ;
+    var nameAndPath = 'http://booking.seatours.is/images/qrcodes/' + name + '.gif' ;
     var base64 = blob;
     fs.writeFile(nameAndPath, base64, 'base64', function(err) {
       if (err) {

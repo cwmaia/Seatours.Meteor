@@ -41,23 +41,43 @@
 </template>
 
 <template name="bookDetail">
-	<div class="page-header">
-		<h1>
-			Details {{product.name}} - {{date}}
+	<div id="pageHeader" class="page-header">
+		<link rel='stylesheet' type='text/css' href='http://localhost:3000/css/printing.css'>
+		<h1 style="padding: 0;
+					margin: 0 8px;
+					font-size: 24px;
+					font-weight: lighter;
+					color: #2679b5;
+					float:left">
+			Details {{product.name}} - {{date}} | 
 		</h1>
+		<h1 style="color: #6fb3e0; font-size: 20px;">
+			{{trip.from}} - {{trip.to}} - {{trip.hour}}
+		</h1>
+		<div style="clear:both;">
+		</div>
 	</div>
+	
 
 	{{#if isBookingNotFull totalPersons boat.maxCapacity}}
 		<h3>
 			<!-- <a href="{{newPath}}" name="newBooking" id="newBooking">New Booking</a> -->
 			<button name="newBooking" id="newBooking" class="btn btn-info">
-				New Booking
+				<i class="icon-pencil"></i> New Booking
+			</button>
+			<button name="printResume" id="printResume" class="btn" onclick="w=window.open();
+				w.document.write($('#pageHeader').html());
+				w.document.write($('#wholeStatus').html());
+				w.document.write($('passengers_length').css('display','none'));
+				w.print();
+				w.close();">
+				<i class="icon-print"></i>Print Resume
 			</button>
 		</h3>
 	{{/if}}
-
+	<div id="wholeStatus">
 	<div class='line-2'>
-		<div class='noStatus'>
+		<div class='noStatus half'>
 			<form>
 				<legend>Boat Status<span>&nbsp;&nbsp;</span><i class='icon-anchor'/></legend>
 				<div id="pieChart" style="height:200px;">
@@ -82,9 +102,10 @@
 		          </defs>
 		        </svg>
 		      </div>
-			</div>
-		</form>
-		<div>
+		
+			</form>
+		</div>
+		<div class="half">
 			<form>
 				<legend>Day Resume<span>&nbsp;&nbsp;</span><i class='icon-table'/></legend>
 				<div>
@@ -139,8 +160,8 @@
 				</div>
 			</form>
 		</div>
+		
 	</div>
-
 	<div id="svgBoatDialog">
   		<div class="mask"> </div>
 		  <div class="modal" style="left: 45%; width: 760px">
@@ -163,7 +184,7 @@
   	</div>
 	<div>
 
-		<div class="divTable">
+		<div id="passagersTable" class="divTable">
 			<div>
 				<h3>Passengers</h3>
 
@@ -256,6 +277,7 @@
 		<div class="divTable">
 
         </div>
+	</div>
 	</div>
 </template>
 

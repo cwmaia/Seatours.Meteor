@@ -536,6 +536,10 @@ Template.bookDetail.telephone = function(id){
 	return Customers.findOne({_id: id}).telephone;
 };
 
+Template.bookDetail.trip = function(){
+	return  Trips.findOne(Session.get('tripId'));
+};
+
 Template.bookDetail.totalPassagers = function(id){
 	var persons = 0;
 	book = Books.findOne({_id : id});
