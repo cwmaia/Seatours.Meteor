@@ -21,4 +21,4 @@ Groups.allow({
 		else
 			return false;
 	}
-})
+});

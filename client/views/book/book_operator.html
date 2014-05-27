@@ -36,32 +36,52 @@
 
 			<div style="clear: both;"></div>
 			<button id="button_{{_id}}" style="float: right;" class="btn btn-info proceed">Proceed</button>
-		</div>	
-	</li>	
+		</div>
+	</li>
 </template>
 
 <template name="bookDetail">
-	<div class="page-header">
-		<h1>
-			Details {{product.name}} - {{date}}
+	<div id="pageHeader" class="page-header">
+		<link rel='stylesheet' type='text/css' href='http://localhost:3000/css/printing.css'>
+		<h1 style="padding: 0;
+					margin: 0 8px;
+					font-size: 24px;
+					font-weight: lighter;
+					color: #2679b5;
+					float:left">
+			Details {{product.name}} - {{date}} | 
 		</h1>
+		<h1 style="color: #6fb3e0; font-size: 20px;">
+			{{trip.from}} - {{trip.to}} - {{trip.hour}}
+		</h1>
+		<div style="clear:both;">
+		</div>
 	</div>
+	
 
 	{{#if isBookingNotFull totalPersons boat.maxCapacity}}
 		<h3>
 			<!-- <a href="{{newPath}}" name="newBooking" id="newBooking">New Booking</a> -->
 			<button name="newBooking" id="newBooking" class="btn btn-info">
-				New Booking
+				<i class="icon-pencil"></i> New Booking
+			</button>
+			<button name="printResume" id="printResume" class="btn" onclick="w=window.open();
+				w.document.write($('#pageHeader').html());
+				w.document.write($('#wholeStatus').html());
+				w.document.write($('passengers_length').css('display','none'));
+				w.print();
+				w.close();">
+				<i class="icon-print"></i>Print Resume
 			</button>
 		</h3>
 	{{/if}}
-
+	<div id="wholeStatus">
 	<div class='line-2'>
-		<div class='noStatus'>
+		<div class='noStatus half'>
 			<form>
 				<legend>Boat Status<span>&nbsp;&nbsp;</span><i class='icon-anchor'/></legend>
 				<div id="pieChart" style="height:200px;">
-		        <svg id="pieChartSVG" height="200px">
+		        <svg id="pieChartSVG">
 		          <defs>
 		            <filter id='pieChartInsetShadow'>
 		              <feOffset dx='0' dy='0'/>
@@ -82,9 +102,10 @@
 		          </defs>
 		        </svg>
 		      </div>
-			</div>
-		</form>
-		<div>
+		
+			</form>
+		</div>
+		<div class="half">
 			<form>
 				<legend>Day Resume<span>&nbsp;&nbsp;</span><i class='icon-table'/></legend>
 				<div>
@@ -115,16 +136,16 @@
 								<td><span id='numberOfInfants'></span></td>
 								<td class='noStatus'>Meters alocated on Extras Slot: </td>
 								<td class='noStatus'><span id='spaceAlocatedSlot'></span>m</td>
-							</tr>	
+							</tr>
 							<tr>
 								<td>#Senior</td>
 								<td><span id='numberOfSeniors'></span></td>
 								<td class='noStatus'></td>
 								<td class='noStatus'></td>
-							</tr>	
+							</tr>
 							<tr>
 								<td>#School Discount</td>
-								<td><span id='numberOfSchoolDiscount'></span></td>	
+								<td><span id='numberOfSchoolDiscount'></span></td>
 								<td class='noStatus'></td>
 								<td class='noStatus'></td>
 							</tr>
@@ -139,35 +160,36 @@
 				</div>
 			</form>
 		</div>
+		
 	</div>
-
 	<div id="svgBoatDialog">
-    		<div class="mask"> </div>
-			  <div class="modal" style="left: 45%; width: 760px">
-			    <div class="modal-header">
-			      <button type="button" class="cancel close">&times;</button>
-			      <h3>Current Boat Status</h3>
-			    </div>
+  		<div class="mask"> </div>
+		  <div class="modal" style="left: 45%; width: 760px">
+		    <div class="modal-header">
+		      <button type="button" class="cancel close">&times;</button>
+		      <h3 id='headerDialog'>Current Boat Status</h3>
+		    </div>
 
-			    <div class="modal-body">
-			    	<div>
-						{{>baldurSVG}}
-					</div>
-			    </div>
+		    <div class="modal-body">
+		    	<div>
+					{{>baldurSVG}}
+					<input type='hidden' id='slotsToUpdate'>
+				</div>
+		    </div>
 
-			    <div class="modal-footer">
-			    	<a href="#" class="btn cancel">Close</a>
-			    </div>
-			  </div>
-    	</div>
-	
+		    <div class="modal-footer svgDialog">
+		    	<a href="#" class="btn cancel" style="float: left">Close</a>
+		    </div>
+		  </div>
+  	</div>
 	<div>
-		<div class="divTable">
+
+		<div id="passagersTable" class="divTable">
 			<div>
 				<h3>Passengers</h3>
 
 				<h4 class="length">Total: {{totalPersons}}/{{boat.maxCapacity}}</h4>
-		
+
 			</div>
 
 			<table class='table table-striped table-bordered table-hover' id="passengers">
@@ -176,11 +198,12 @@
 						<th class="sorting_disabled">ID</th>
 						<th class="sorting_disabled">Customer / Notes</th>
 						<th class="sorting_disabled">Vehicle</th>
-						<th class="sorting_disabled">Vehicle Plate</th>
-						<th class="sorting_disabled">Vehicle Category</th>
+						<th class="sorting_disabled">Plate</th>
+						<th class="sorting_disabled">Category</th>
 						<th class="sorting_disabled">Size</th>
+						<th class="sorting_disabled">Slot</th>
 						<th class="sorting_disabled">Telephone</th>
-						<th class="sorting_disabled">Total Passagers</th>
+						<th class="sorting_disabled">Passagers</th>
 						<th class="sorting_disabled">Payment Status</th>
 						<th class="sorting_disabled">Book Status</th>
 						<th class="sorting_disabled">Confirm</th>
@@ -189,7 +212,7 @@
 						<th class="sorting_disabled" style="min-width: 80px;">Action</th>
 					</tr>
 				</thead>
-				<tbody>	
+				<tbody>
 				{{#each bookings}}
 					<tr id='{{_id}}' class='{{lineColor paid bookStatus ticketPrinted}}'>
 						<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
@@ -202,6 +225,7 @@
 						<td>{{vehicle.vehiclePlate}}</td>
 						<td>{{#if vehicle.size}}{{vehicle.category}}{{/if}}</td>
 						<td>{{#if vehicle.size}}{{vehicle.size}}m{{/if}}</td>
+						<td>{{slot}}</td>
 						<td>{{telephone customerId}}</td>
 						<td>{{totalPassagers _id}}</td>
 						<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
@@ -233,7 +257,7 @@
 									<a href="" class="changeStatusBooking btn btn-mini btn-danger" title='Cancel Booking'>
 										<i class='icon-remove'></i>
 									</a>
-									
+
 								{{else}}
 									<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money"></i></a>
 
@@ -241,6 +265,9 @@
 								<a class="btn btn-mini btn-info editBookOperator" rel="{{_id}}" title="Edit Book"><i class="icon-edit"></i></a>
 							{{/if}}
 
+							{{#if vehicle.vehicleName}}
+								<a class="btn btn-mini btn-warning editSlot" rel="{{_id}}" title="Change Slot"><i class="icon-truck"></i></a>
+							{{/if}}
 						</td>
 					</tr>
 				{{/each}}
@@ -248,8 +275,9 @@
 			</table>
 		</div>
 		<div class="divTable">
-                             
+
         </div>
+	</div>
 	</div>
 </template>
 
@@ -263,7 +291,7 @@
 			<label>Current Season: {{currentSeason}}</label>
 		</h1>
 	</div><!-- /.page-header -->
-	
+
 	{{#if getDisclaimer}}
 		{{#if isCustomer}}
 		{{else}}
@@ -284,7 +312,7 @@
 						<option value='{{_id}}' selected='selected'>{{from}} - {{to}} - {{hour}}</option>
 					{{else}}
 						<option value='{{_id}}'>{{from}} - {{to}} - {{hour}}</option>
-					{{/if}}	
+					{{/if}}
 				{{/each}}
 			</select>
 		</div>
@@ -304,12 +332,9 @@
 		{{/if}}
 		</div>
 		<div>
-			{{#if isCustomer}}
-			{{else}}
-				<div ><label class="required">Initials: </label> <input type='text' id="initials" name="initials" style="width:35px;"></div>
-			{{/if}}
+
 		</div>
-		
+
 	</div>
 	<div class="line-3">
 		{{#if isEditing}}
@@ -363,8 +388,8 @@
 			    </div>
 			  </div>
     	</div>
-		
-	
+
+
 	<div class='line'>
 		<div>
 	    <label>
@@ -381,9 +406,7 @@
 			<input type="text" class='size1-2' id="slotNumber" readonly>
 			<a id="selectManualy">Select Manualy</a>
 		</div>
-		
-
-		{{/if}}	
+		{{/if}}
 
     	<div id="statusDialog">
 		  <div class="mask"> </div>
@@ -417,12 +440,12 @@
 							<tr>
 								<td>Current meters alocated on extra Slot 1</td>
 								<td><span id='spaceAlocatedSlot1'></span>m - <span id='spaceAlocatedSlot3'>m</span></td>
-							</tr>	
+							</tr>
 							<tr>
 								<td>Current meters alocated on extra Slot 2</td>
 								<td><span id='spaceAlocatedSlot2'></span>m - <span id='spaceAlocatedSlot4'>m</span></td>
-							</tr>	
-							<tr>	
+							</tr>
+							<tr>
 								<td>Current meters alocated on Extras Slot</td>
 								<td><span id='spaceAlocated'>m - <span id='spaceAlocatedSlotCart'>m</span></span></td>
 							</tr>
@@ -440,9 +463,9 @@
 		  </div>
 		</div>
 
-		
 
-    	</div>    	
+
+    	</div>
 	</div>
 	<div>
 			<span style="font-size: 16px;">Include Operator Fee:<span>
@@ -452,13 +475,23 @@
 			<input id="includeOperatorFee" type="hidden" value="false">
 		</div>
 	<div class='line'>
-	    	<div id='divAlertSize' style="display: none;" class="alert alert-warning">
-	       		<b style="color: #FF2400;">ATTENTION, PLEASE NOTE:</b>
-	       		<span id='messageCreateBook'>Bookings with 6+ meters cars need to be confirmed by the office we will be contacting you soon.</span>
-		    </div>
+    	<div id='divAlertSize' style="display: none;" class="alert alert-warning">
+       		<b style="color: #FF2400;">ATTENTION, PLEASE NOTE:</b>
+       		<span id='messageCreateBook'>Bookings with 6+ meters cars need to be confirmed by the office we will be contacting you soon.</span>
+	    </div>
+	</div>
+
+	<div class='line-3'>
+		<div>
+			{{#unless isCustomer}}
+				<label class="required">Initials: </label>
+				<input type='text' id="initials" name="initials">
+			{{/unless}}
 		</div>
-	
-    {{> generalButtons}}
+	</div>
+
+
+  {{> generalButtons}}
 </template>
 
 <template name="generalButtons">
@@ -528,13 +561,13 @@
 		    	Search on Vehicle Database
 	    	</label>
 			<a id="searchVehiclesDatabase">Search <i class='icon-search'></i></a>
-			<fieldset>			
+			<fieldset>
 			<div>
 				<div>
 					<label>Brandname - Model</label>
 					<input type="text"  class='size1-1' id="vehicleSearch">
 				</div>
-				
+
 				<div class='line'>
 				</div>
 
@@ -549,7 +582,7 @@
 						<input type="text" class='size1-2' name="vehiclePlate" id="vehicleWeight" readonly>
 					</div>
 				</div>
-				
+
 				<div class='line-2'>
 					<div>
 						<label>Length</label>
@@ -560,7 +593,7 @@
 						<label>Width</label>
 						<input type="text" class='size1-2' name="vehiclePlate" id="vehicleWidth" readonly>
 					</div>
-				</div>	
+				</div>
 
 				<div class='line-2'>
 					<div>
@@ -599,8 +632,8 @@
 						{{#if sized this}}
 							<option value="{{this}}" selected>{{this}}m</option>
 						{{else}}
-							<option value="{{this}}">{{this}}m</option>	
-						{{/if}}	
+							<option value="{{this}}">{{this}}m</option>
+						{{/if}}
 					{{/each}}
 				{{else}}
 					{{#each sizes}}
@@ -611,8 +644,8 @@
 								<option value="{{this}}" selected>{{this}}m</option>
 							{{else}}
 								<option value="{{this}}">{{this}}m</option>
-							{{/if}}	
-						{{/if}}	
+							{{/if}}
+						{{/if}}
 					{{/each}}
 				{{/if}}
 		</select>

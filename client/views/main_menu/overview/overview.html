@@ -1,10 +1,11 @@
-<template name='overview'>	
+<template name='overview'>
 	<div class="page-header">
 		<h1>
 			Overview - <input type='text' id="overviewDay" name="overviewDay" value="{{date}}" class="datePickerWYear" style="font-size: 24px; color: #2679b5; border:0; width: 140px; height: inherit; margin-bottom: 5px; margin-left: -5px;"> <i title="Change Date" class='icon-calendar'></i>
 		</h1>
 	</div><!-- /.page-header -->
 
+	{{#if ready}}
 	<div class="tabbable">
 		<ul class="nav nav-tabs" id="myTab">
 			{{#each products}}
@@ -39,9 +40,10 @@
 										<th class="sorting_disabled">ID</th>
 										<th class="sorting_disabled">Customer / Notes</th>
 										<th class="sorting_disabled">Vehicle</th>
-										<th class="sorting_disabled">Vehicle Plate</th>
-										<th class="sorting_disabled">Vehicle Category</th>
-										<th class="sorting_disabled">Meters</th>
+										<th class="sorting_disabled">Plate</th>
+										<th class="sorting_disabled">Category</th>
+										<th class="sorting_disabled">Size</th>
+										<th class="sorting_disabled">Slot</th>
 										<th class="sorting_disabled">Telephone</th>
 										<th class="sorting_disabled">Total Passagers</th>
 										<th class="sorting_disabled">Payment Status</th>
@@ -52,7 +54,7 @@
 										<th class="sorting_disabled" style="min-width: 60px;">Action</th>
 									</tr>
 								</thead>
-								<tbody>	
+								<tbody>
 								{{#each bookings productId _id}}
 									<tr id='{{_id}}' class='{{lineColor paid bookStatus ticketPrinted}}'>
 										<td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
@@ -66,6 +68,7 @@
 										<td>{{vehicle.vehiclePlate}}</td>
 										<td>{{#if hasVehicle}}{{vehicle.category}}{{/if}}</td>
 										<td>{{#if hasVehicle}}{{vehicle.size}}m{{/if}}</td>
+										<td>{{slot}}</td>
 										<td>{{telephone customerId}}</td>
 										<td>{{totalPassagers _id}}</td>
 										<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
@@ -92,7 +95,7 @@
 											{{/if}}
 										</td>
 										<td>
-										{{#if isBookCreated bookStatus}}	
+										{{#if isBookCreated bookStatus}}
 											{{#if paid}}
 												<a href="" class="changeStatusBooking btn btn-mini btn-danger" rel="{{_id}}" title='Cancel Booking'>
 													<i class='icon-remove'></i>
@@ -126,7 +129,7 @@
 										<th class="sorting_disabled">Office</th>
 									</tr>
 								</thead>
-								<tbody>	
+								<tbody>
 								{{#each trips _id}}
 									<tr>
 										<td>{{from}} - {{to}} - {{hour}}</td>
@@ -145,5 +148,5 @@
 			{{/each}}
 		</div>
 	</div>
+	{{/if}}
 </template>
-

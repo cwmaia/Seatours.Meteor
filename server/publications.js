@@ -20,8 +20,8 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
     Transactions.insert(transaction);
   };
 
- 
-  
+
+
   //talvez escrever todo o html... eh... talve. tem que ver se funciona....
 
   return "<script>window.location='http://booking.seatours.is/listvouchers/"+orderId+"'</script>";
@@ -57,7 +57,7 @@ Meteor.publish("directory", function () {
   if(this.userId)
       return Meteor.users.find({}, {fields: {emails: 1, username: 1, 'profile' : 1}});
   else
-     return null; 
+     return null;
 });
 
 Meteor.publish('cbasket', function(){
@@ -68,18 +68,18 @@ Meteor.publish("inquiries", function () {
   if(this.userId)
       return Inquiries.find();
   else
-     return null; 
+     return null;
 });
 
 Meteor.publish("cartItems", function () {
     return CartItems.find();
 });
 
-Meteor.publish('products', function() { 
+Meteor.publish('products', function() {
 	   return Products.find({}, { sort : {name : 1}});
 });
 
-Meteor.publish('books', function() { 
+Meteor.publish('books', function() {
   if(this.userId){
     user = Meteor.users.findOne({_id : this.userId});
     if(user.profile.groupID){
@@ -88,12 +88,32 @@ Meteor.publish('books', function() {
       return Books.find();
     }
   }else{
-    return Books.find({}, {fields: {paid : 1 ,refNumber : 1, dateOfBooking: 1, 'trip._id': 1, 'trip.to': 1, 'trip.from': 1, 'trip.hour': 1, 'bookStatus' : 1, 'vehicle.totalCost' : 1, 'vehicle.category' : 1, 'slot' : 1, 'product._id' : 1, 'product.name':1, orderId : 1, totalISK:1,'vehicle.size' : 1, prices : 1}});
+    return Books.find({}, {fields: {
+      paid : 1 ,
+      refNumber : 1,
+      dateOfBooking: 1,
+      'trip._id': 1,
+      'trip.to': 1,
+      'trip.from': 1,
+      'trip.hour': 1,
+      'bookStatus' : 1,
+      'vehicle.totalCost' : 1,
+      'vehicle.category' : 1,
+      'slot' : 1,
+      'product._id' : 1,
+      'product.name':1,
+      orderId : 1,
+      totalISK:1,'vehicle.size' : 1,
+      prices : 1}});
   }
 });
 
+Meteor.publish('initials', function(){
+  return Initials.find();
+})
 
-Meteor.publish('orders', function() { 
+
+Meteor.publish('orders', function() {
   if(this.userId){
      user = Meteor.users.findOne({_id : this.userId});
      group = Groups.findOne({name : 'Customers'});
@@ -111,7 +131,7 @@ Meteor.publish('orders', function() {
   }
 });
 
-Meteor.publish('vehicles_category', function() { 
+Meteor.publish('vehicles_category', function() {
 	   return VehiclesCategory.find();
 });
 
@@ -131,7 +151,7 @@ Meteor.publish('loggedUsers', function() {
   if(this.userId)
     return LoggedUsers.find();
   else
-     return null; 
+     return null;
 });
 
 Meteor.publish('customers', function(){
@@ -142,28 +162,28 @@ Meteor.publish('notes', function(){
   if(this.userId)
     return Notes.find();
   else
-    return null; 
+    return null;
 });
 
 Meteor.publish('mails', function(){
   if(this.userId)
     return Mails.find();
   else
-     return null; 
+     return null;
 });
 
 Meteor.publish('countries', function() {
   if(this.userId)
     return Countries.find();
   else
-     return null; 
+     return null;
 });
 
 Meteor.publish('transactions', function() {
   if(this.userId)
     return Transactions.find();
   else
-     return null; 
+     return null;
 });
 
 Meteor.publish('groups', function() {
@@ -210,12 +230,12 @@ var getCustomerId = function(userId){
 
 var saveQRCode = function(blob, name) {
     var fs = Npm.require('fs'), encoding ='binary';
-    var nameAndPath = '../../../../../public/images/qrcodes/' + name + '.gif' ;
+    var nameAndPath = 'http://booking.seatours.is/images/qrcodes/' + name + '.gif' ;
     var base64 = blob;
     fs.writeFile(nameAndPath, base64, 'base64', function(err) {
       if (err) {
-          console.log(err);  
-        } 
+          console.log(err);
+        }
     });
     return false;
 }
@@ -263,7 +283,7 @@ Meteor.methods({
     }else{
       return false;
     }
-   
+
   },
 
   createAccount: function(user){
@@ -278,11 +298,11 @@ Meteor.methods({
     var customerId = 0;
 
     user.profile = {name : userData.fullName};
-    
+
     var userId = Accounts.createUser(user);
-    
+
     customer = Customers.findOne({socialSecurityNumber : userData.socialSecurityNumber});
-    
+
     if(!customer)
       customerId = Customers.insert(userData);
     else
@@ -334,13 +354,13 @@ Meteor.methods({
     var base64 = blob;
     fs.writeFile(nameAndPath, base64, encoding, function(err) {
       if (err) {
-          return err; 
+          return err;
         }else{
           return true;
-        } 
+        }
     });
-    }, 
- 
+    },
+
   getAllBooksByOrder : function(orderId){
     var books = Books.find({orderId : orderId}).fetch();
     return books;
@@ -397,7 +417,7 @@ Meteor.methods({
   getCustomerById: function(customerId){
     return Customers.findOne(customerId);
   },
-  
+
   getAllCars : function(){
     return Cars.find().fetch();
   }

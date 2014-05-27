@@ -43,8 +43,6 @@
 
       if (options) { $.extend(settings, options); }
 
-      console.log(options);
-
       if(options.required){
         // Create the html picker skeleton
         var $fieldset = $("<fieldset class='birthday-picker'></fieldset>"),
@@ -59,7 +57,7 @@
           $day = $("<select id='birthDaySelect' class='birth-day' name='birth[day]'></select>");
         }
 
-      
+
 
       if (settings["legend"]) { $("<legend>" + settings["legend"] + "</legend>").appendTo($fieldset); }
 
