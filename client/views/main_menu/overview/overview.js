@@ -411,7 +411,9 @@ Template.overview.rendered = function(){
 				setSeconds(0);
 			}
 			localStorage.setItem('date', date);
+			console.log(localStorage.getItem('date', date));
 			location.reload();
+			console.log(localStorage.getItem('date', date));
 		});
 
 }
