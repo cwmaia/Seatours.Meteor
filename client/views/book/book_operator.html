@@ -5,6 +5,7 @@
 			<label>Current season: <span id='currentSeason'></span></label>
 		</h1>
 	</div><!-- /.page-header -->
+
 	<ul class="listing featuredList">
 		{{#each featProduct}}
 			{{> productItem}}
@@ -467,13 +468,15 @@
 
     	</div>
 	</div>
-	<div>
-			<span style="font-size: 16px;">Include Operator Fee:<span>
+	<!-- {{#unless isCustomer}}
+	<div class="line">
+		<span style="font-size: 16px;">Include Operator Fee:<span>
 
-			<input id="includeOperatorFeeInput" type="checkbox" class="stopAtFlatey ace ace-switch ace-switch-6">
-			<span class='lbl'></span>
-			<input id="includeOperatorFee" type="hidden" value="false">
-		</div>
+		<input id="includeOperatorFeeInput" type="checkbox" class="stopAtFlatey ace ace-switch ace-switch-6">
+		<span class='lbl'></span>
+		<input id="includeOperatorFee" type="hidden" value="false">
+	</div>
+	{{/unless}} -->
 	<div class='line'>
     	<div id='divAlertSize' style="display: none;" class="alert alert-warning">
        		<b style="color: #FF2400;">ATTENTION, PLEASE NOTE:</b>

@@ -20,7 +20,6 @@ var getSelectedAndNextDay = function(){
 	return dates;
 };
 
-
 var getFirstSlotAvailable = function(){
 
 	var slot = "";
@@ -72,6 +71,13 @@ var updateSVGFill = function(dates, tripId){
 			'trip._id' : tripId,
 			$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
 		}).fetch();
+
+		cartBooks = CartItems.find({
+			dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
+			'product._id' : Session.get('productId'),
+			'trip._id' : tripId,
+			$or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
+		}).fetch();
 	}else{
 		tripId = $("#destination").val();
 
@@ -79,6 +85,7 @@ var updateSVGFill = function(dates, tripId){
 			tripId = Session.get("tripId");
 
 		books = Books.find({
+			cartId : getCartIdOperator(),
 			dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
 			'product._id' : Session.get('productId'),
 			'trip._id' : tripId,
@@ -87,7 +94,9 @@ var updateSVGFill = function(dates, tripId){
 		}).fetch();
 	}
 
-
+	for (var i = cartBooks.length - 1; i >= 0; i--) {
+		books.push(cartBooks[i]);
+	};
 
 	//Update Boat Status SVG
 	for (var i = books.length - 1; i >= 0; i--) {
@@ -203,7 +212,6 @@ Template.productItem.featured = function(id){
 	return Products.findOne({'_id' : id}).featured;
 };
 
-
 Template.productItem.rendered = function(){
 	var nowTemp = new Date();
 	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
@@ -212,13 +220,19 @@ Template.productItem.rendered = function(){
 			format : "dd/mm/yyyy"
 		}).on('changeDate', function(ev){
 			date = new Date(ev.date);
-			with(date){
+
+			var timezone = date.getTimezoneOffset();
+
+			var fixDate = new Date(date.getTime() + timezone * 60000);
+
+			with(fixDate){
 				setDate(getDate());
 				setHours(0);
 				setMinutes(0);
 				setSeconds(0);
 			}
-			localStorage.setItem('date', date);
+
+			localStorage.setItem('date', fixDate);
 			$('#currentSeason').text(currentSeason());
 		});
 	if(isCustomer()){
@@ -1219,6 +1233,15 @@ Template.createBook.events({
 		}
 
 	},
+	'change #includeOperatorFeeInput' : function(event){
+		event.preventDefault();
+		if($("#includeOperatorFee").val() == 'false'){
+			$("#includeOperatorFeeInput").val(false);
+		}else{
+			$("#includeOperatorFeeInput").val(true);
+		}
+
+	},
 
 	'click rect' : function(event){
 		var id = event.target.id;
@@ -2172,10 +2195,6 @@ var createBook = function(){
 			localStorage.setItem('cartIdOperator', name);
 			book.cartId = name;
 		}
-		if (isOperator()) {
-			var operatorFee = Settings.findOne({_id: 'operatorFee'}).operatorFee;
-			book.totalISK = parseInt((book.totalISK + operatorFee).toFixed());
-		}
 		book.slot = $("#slotNumber").val();
 
 		if(Session.get('SaveCustomer')){
@@ -2226,17 +2245,21 @@ var createBook = function(){
 		}
 	});
 
-	if (isOperator()) {
+	//console.log("Include Fee:" + $('#includeOperatorFee').val());
+	//console.log("WTH: " + (((isOperator() && $('#includeOperatorFee').val()) || (! isOperator())) == "true"));
+
+	if (((isOperator() && $('#includeOperatorFee').val()) || (! isOperator())) == "true") {
+		console.log("To aqui só de troll!!!! :D")
+		
 		var operatorPrice = {
-			"price" : "Operator Fee",
+			"price" : "Operation Fee",
 			"perUnit" : Settings.findOne({_id: 'operatorFee'}).operatorFee,
 			"persons" : "1",
 			"sum" : Settings.findOne({_id: 'operatorFee'}).operatorFee
-		};
-
-			prices.push(operatorPrice);
+		};	
+		prices.push(operatorPrice);	
 	}
-
+	
 
 
 	book.prices = prices;
@@ -2618,17 +2641,71 @@ function calculateCars(description){
 
 }
 
-function checkSameCarOnBoat(vehicleId){
-	var dates = getSelectedAndNextDay();
+checkSameCarOnBoat = function(vehicleId, productId, tripId, dates){
+	var datesInternal, productIdInternal, tripIdInternal;
+
+	if(!dates){
+		datesInternal = getSelectedAndNextDay();
+	}else{
+
+		var dateBefore, dateAfter;
+
+		dateBefore = new Date(dates);
+		dateAfter = new Date(dates);
+
+		with(dateBefore){
+			setHours(0);
+			setMinutes(0);
+			setSeconds(0);
+		}
+
+		with(dateAfter){
+			setDate(getDate() + 1);
+			setMinutes(0);
+			setSeconds(0);
+		}
+
+
+
+		datesInternal = {
+			selectedDay : dateBefore,
+			nextDay : dateAfter
+		}
+	}
+
+	if(!productId){
+		productIdInternal = Session.get('productId');
+	}else{
+		productIdInternal = productId;
+	}
+
+	if(!tripId){
+		tripIdInternal = Session.get('tripId');
+	}else{
+		tripIdInternal = tripId;
+	}
+
+	//TODO check books on customer side
 
 	book = Books.findOne({
-		dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
-		'product._id' : Session.get('productId'),
-		'trip._id' : Session.get("tripId"),
+		dateOfBooking : {$gte: datesInternal.selectedDay, $lt: datesInternal.nextDay},
+		'product._id' : productIdInternal,
+		'trip._id' : tripIdInternal,
 		'vehicle.vehiclePlate' : vehicleId
 	});
 
-	if(book){
+	cartBook = CartItems.findOne({
+		cartId : getCartIdOperator(),
+		dateOfBooking : {$gte: datesInternal.selectedDay, $lt: datesInternal.nextDay},
+		'product._id' : productIdInternal,
+		'trip._id' : tripIdInternal,
+		'vehicle.vehiclePlate' : vehicleId
+	});
+
+	console.log(book);
+	console.log(cartBook);
+
+	if(book || cartBook){
 		return true;
 	}else{
 		return false;
