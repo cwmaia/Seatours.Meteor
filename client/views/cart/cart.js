@@ -110,10 +110,17 @@ Template.cart.events({
 		event.preventDefault();
 		if(isCustomerNotLogged()){
 			//Show Login Screen	
-			cleanExternView();
-			Session.set('externalLogin', true);
-			$("#loginArea").hide();
-			Template.externView.rendered();
+			book = checkVehicles();
+			if(book){
+				bootbox.alert("The vehicle "+book.vehicle.vehicleName +" ("+book.vehicle.vehiclePlate+") informed on the book with destination to: "+book.trip.to+" from: "+book.trip.from+" "+book.trip.hour+" was already booked!")
+				return;
+			}else{
+				cleanExternView();
+				Session.set('externalLogin', true);
+				$("#loginArea").hide();
+				Template.externView.rendered();	
+			}
+
 		}else if(isCustomerLogged()){
 			//Show Confirm Purchase
 			cleanExternView();
@@ -152,7 +159,24 @@ Template.cart.events({
 
 		
 	}
-})
+});
+
+var checkVehicles = function(){
+	var books = CartItems.find({cartId : getCartId()}).fetch();
+	var check = false;
+
+	for (var i = 0; i < books.length; i++) {
+		if(books[i].vehicle){
+			check = checkSameCarOnBoat(books[i].vehicle.vehiclePlate, books[i].product._id, books[i].trip._id, books[i].dateOfBooking);
+			if(check){
+				return books[i];
+			}
+		}
+	}
+
+	return check;
+
+}
 
 Template.items.events({
 	'change .number' : function(event){

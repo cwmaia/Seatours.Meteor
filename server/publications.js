@@ -230,7 +230,7 @@ var getCustomerId = function(userId){
 
 var saveQRCode = function(blob, name) {
     var fs = Npm.require('fs'), encoding ='binary';
-    var nameAndPath = '../../../../../public/images/qrcodes/' + name + '.gif' ;
+    var nameAndPath = 'http://booking.seatours.is/images/qrcodes/' + name + '.gif' ;
     var base64 = blob;
     fs.writeFile(nameAndPath, base64, 'base64', function(err) {
       if (err) {
@@ -335,6 +335,21 @@ Meteor.methods({
       'trip._id'  : tripId,
       $or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
     }).fetch();
+
+    cartBooks = CartItems.find({
+      dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
+      'product._id' : productId,
+      'trip._id' : tripId,
+      $or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
+    }).fetch();
+
+    console.log(books);
+
+    for (var i = cartBooks.length - 1; i >= 0; i--) {
+      books.push(cartBooks[i]);
+    }
+
+
 
     return books;
   },

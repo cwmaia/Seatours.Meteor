@@ -421,7 +421,7 @@ Template.overview.rendered = function(){
 			}
 			localStorage.setItem('date', date);
 			Session.set("changeDates", true);
-		});
+	});
 
 };
 
