@@ -2089,11 +2089,6 @@ var createBook = function(){
 	var date = new Date();
 	var selectedDay = new Date(localStorage.getItem('date'));
 
-	with(date){
-		setDate(selectedDay.getDate());
-	}
-
-
 	var trip = Trips.findOne(Session.get('tripId'));
 
 	book = {
@@ -2105,7 +2100,7 @@ var createBook = function(){
 		},
 
 		"totalISK" : parseInt($("#totalISK").val().replace(".","")),
-		'dateOfBooking' : date,
+		'dateOfBooking' : selectedDay,
 		'creationDate': new Date(),
 		'bookStatus' : 'Booked',
 		"ticketPrinted" : false,
