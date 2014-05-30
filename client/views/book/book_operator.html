@@ -43,7 +43,7 @@
 
 <template name="bookDetail">
 	<div id="pageHeader" class="page-header">
-		<link rel='stylesheet' type='text/css' href='http://localhost:3000/css/printing.css'>
+		<link rel='stylesheet' type='text/css' href='http://booking.seatours.is/css/printing.css'>
 		<h1 style="padding: 0;
 					margin: 0 8px;
 					font-size: 24px;
@@ -468,15 +468,15 @@
 
     	</div>
 	</div>
-	<!-- {{#unless isCustomer}}
+	{{#unless isCustomer}}
 	<div class="line">
 		<span style="font-size: 16px;">Include Operator Fee:<span>
 
-		<input id="includeOperatorFeeInput" type="checkbox" class="stopAtFlatey ace ace-switch ace-switch-6">
+		<input id="includeOperatorFeeInput" type="checkbox" class="includeOperatorFee ace ace-switch ace-switch-6">
 		<span class='lbl'></span>
 		<input id="includeOperatorFee" type="hidden" value="false">
 	</div>
-	{{/unless}} -->
+	{{/unless}}
 	<div class='line'>
     	<div id='divAlertSize' style="display: none;" class="alert alert-warning">
        		<b style="color: #FF2400;">ATTENTION, PLEASE NOTE:</b>

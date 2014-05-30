@@ -1227,20 +1227,20 @@ Template.createBook.events({
 	'change #stopAtFlateyInput' : function(event){
 		event.preventDefault();
 		if($("#stopAtFlatey").val() == 'false'){
-			$("#stopAtFlateyInput").val(false);
+			$("#stopAtFlatey").val(true);
 		}else{
-			$("#stopAtFlateyInput").val(true);
+			$("#stopAtFlatey").val(false);
 		}
-
+		console.log();
 	},
 	'change #includeOperatorFeeInput' : function(event){
 		event.preventDefault();
 		if($("#includeOperatorFee").val() == 'false'){
-			$("#includeOperatorFeeInput").val(false);
+			$("#includeOperatorFee").val(true);
 		}else{
-			$("#includeOperatorFeeInput").val(true);
+			$("#includeOperatorFee").val(false);
 		}
-
+		console.log($("#includeOperatorFee").val());
 	},
 
 	'click rect' : function(event){
@@ -2245,12 +2245,7 @@ var createBook = function(){
 		}
 	});
 
-	//console.log("Include Fee:" + $('#includeOperatorFee').val());
-	//console.log("WTH: " + (((isOperator() && $('#includeOperatorFee').val()) || (! isOperator())) == "true"));
-
-	if (((isOperator() && $('#includeOperatorFee').val()) || (! isOperator())) == "true") {
-		console.log("To aqui só de troll!!!! :D")
-		
+	if ((isOperator() && ($('#includeOperatorFee').val() == "true")) || (! isOperator())) {	
 		var operatorPrice = {
 			"price" : "Operation Fee",
 			"perUnit" : Settings.findOne({_id: 'operatorFee'}).operatorFee,
