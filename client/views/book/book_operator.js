@@ -1592,7 +1592,7 @@ Template.generalButtons.events({
 
 Template.generalPassagerInfo.events({
 	'blur #socialSecurityNumber' : function(){
-		if(!isCustomer()){
+		if(!isCustomer() && !Session.get("editingCustomer")){
 			socialNumber = $("#socialSecurityNumber").val();
 			currentCustomer = Customers.findOne({socialSecurityNumber : socialNumber});
 			if(currentCustomer){

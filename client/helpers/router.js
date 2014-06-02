@@ -2,7 +2,7 @@ Meteor.Router.add({
 	'/login'  : function(page) {
 		if(Meteor.user()){
 			Meteor.Router.to("/overview");
-		}	
+		}
 		return page;
 	},
 	'/myBookings/:orderId'   : {
@@ -29,14 +29,14 @@ Meteor.Router.add({
 	'/cancelOrder'   : {
 		to : "redirect",
 		and : function(){
-			bootbox.alert("You canceled the payment, to try again go to <b>My Orders</b> and select your order to pay");		
+			bootbox.alert("You canceled the payment, to try again go to <b>My Orders</b> and select your order to pay");
 		}
 	},
 
 	'/errorBorgun'   : {
 		to : "redirect",
 		and : function(){
-			bootbox.alert("An error occurred with the External Payment System, please try again in a few moments");		
+			bootbox.alert("An error occurred with the External Payment System, please try again in a few moments");
 		}
 	},
 	'/customers'    : 'customersAndExternals',
@@ -140,7 +140,7 @@ Meteor.Router.filters({
 			return;
 		}
 
-		
+
 		return;
 
 
@@ -155,7 +155,7 @@ Meteor.Router.filters({
 			return page;
 		}
 	}
-})
+});
 
 
 
@@ -164,5 +164,3 @@ Meteor.Router.filter('clearErrors');
 Meteor.Router.filter('checkAuth');
 Meteor.Router.filter('checkPermision');
 Meteor.Router.filter('edtingCustomer');
-
-

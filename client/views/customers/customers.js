@@ -9,7 +9,7 @@ Template.customersAndExternals.customer = function(){
 				customersReturn.push(customers[j]);
 			};
 		}
-		
+
 	};
 	return customersReturn;
 }
@@ -36,7 +36,7 @@ Template.customersAndExternals.events({
 
 		Meteor.call("setOnlineDiscount", $("#onlineDiscountValue").val());
 		throwSuccess("Updated Discounts!");
-		
+
 	},
 
 	'click .editCustomer' : function(event){
@@ -59,55 +59,56 @@ Template.customersAndExternals.events({
 			birthDate += "-" + $('#birthMonthSelect').val();
 			birthDate += "-" + $('#birthDaySelect').val();
 
+			var SSN = $('#socialSecurityNumber').val();
+
 			Customers.update($("#customerId").val(), {$set : {
-				socialSecurityNumber :  $('#socialSecurityNumber').val(),
+				socialSecurityNumber : SSN,
 				fullName :  $('#fullName').val(),
 				title : $('#title').val(),
-		  		birthDate : birthDate,
-		    	email : $('#email').val(),
-		    	telephoneCode : $('#telephoneCode').val(),
-		    	telephone : $('#telephone').val(),
-		    	address : $('#adress').val(),
-		    	city : $('#city').val(),
-		    	state : $('#state').val(),
-		    	postcode : $('#postcode').val(),
-		    	country : $('#country').val(),
-		    	groupId : $('#groupCustomer').val()			
-			}})
+				birthDate : birthDate,
+				email : $('#email').val(),
+				telephoneCode : $('#telephoneCode').val(),
+				telephone : $('#telephone').val(),
+				address : $('#adress').val(),
+				city : $('#city').val(),
+				state : $('#state').val(),
+				postcode : $('#postcode').val(),
+				country : $('#country').val(),
+				groupId : $('#groupCustomer').val()
+			}});
 
 			$("#editCustomerModal").hide();
 			throwSuccess("Customer Updated!");
 		}
 	}
-})
+});
 
 var preLoadInfos = function(customerId){
 
 	currentCustomer = Customers.findOne({_id : customerId});
+
 	if(currentCustomer){
 		$("#customerId").val(customerId);
-		$('#socialSecurityNumber').val(currentCustomer.socialSecurityNumber),
-		$('#fullName').val(currentCustomer.fullName),
-		$('#title').val(currentCustomer.title),
+		$('#socialSecurityNumber').val(currentCustomer.socialSecurityNumber);
+		$('#fullName').val(currentCustomer.fullName);
+		$('#title').val(currentCustomer.title);
 		splitBirth = currentCustomer.birthDate.split("-");
-		console.log(splitBirth);
 		$('#birthDaySelect').val(Number(splitBirth[2]));
 		$('#birthMonthSelect').val(Number(splitBirth[1]));
-		$('#birthYearSelect').val(splitBirth[0]);
-		$('#birthDate').val(currentCustomer.birthDate),
-		$('#email').val(currentCustomer.email),
-		$('#telephone').val(currentCustomer.telephone),
-		$('#adress').val(currentCustomer.address),
-		$('#city').val(currentCustomer.city),
-		$('#state').val(currentCustomer.state),
-		$('#postcode').val(currentCustomer.postcode),
-		$('#country').val(currentCustomer.country),
+		$('#birthYearSelect').val(Number(splitBirth[0]));
+		$('#birthDate').val(currentCustomer.birthDate);
+		$('#email').val(currentCustomer.email);
+		$('#telephone').val(currentCustomer.telephone);
+		$('#adress').val(currentCustomer.address);
+		$('#city').val(currentCustomer.city);
+		$('#state').val(currentCustomer.state);
+		$('#postcode').val(currentCustomer.postcode);
+		$('#country').val(currentCustomer.country);
 		$("#groupCustomer option").filter(function(){
 				return $(this).val() == currentCustomer.groupId;
 		}).attr('selected', true);
 	}
-				
-}
+};
 
 var setUp = function(value){
 	var discount = value;
