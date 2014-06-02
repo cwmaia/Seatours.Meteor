@@ -50,7 +50,7 @@
 					font-weight: lighter;
 					color: #2679b5;
 					float:left">
-			Details {{product.name}} - {{date}} | 
+			Details {{product.name}} - {{date}} |
 		</h1>
 		<h1 style="color: #6fb3e0; font-size: 20px;">
 			{{trip.from}} - {{trip.to}} - {{trip.hour}}
@@ -58,7 +58,7 @@
 		<div style="clear:both;">
 		</div>
 	</div>
-	
+
 
 	{{#if isBookingNotFull totalPersons boat.maxCapacity}}
 		<h3>
@@ -103,7 +103,7 @@
 		          </defs>
 		        </svg>
 		      </div>
-		
+
 			</form>
 		</div>
 		<div class="half">
@@ -161,7 +161,7 @@
 				</div>
 			</form>
 		</div>
-		
+
 	</div>
 	<div id="svgBoatDialog">
   		<div class="mask"> </div>
@@ -468,15 +468,7 @@
 
     	</div>
 	</div>
-	{{#unless isCustomer}}
-	<div class="line">
-		<span style="font-size: 16px;">Include Operator Fee:<span>
 
-		<input id="includeOperatorFeeInput" type="checkbox" class="includeOperatorFee ace ace-switch ace-switch-6">
-		<span class='lbl'></span>
-		<input id="includeOperatorFee" type="hidden" value="false">
-	</div>
-	{{/unless}}
 	<div class='line'>
     	<div id='divAlertSize' style="display: none;" class="alert alert-warning">
        		<b style="color: #FF2400;">ATTENTION, PLEASE NOTE:</b>
@@ -485,12 +477,23 @@
 	</div>
 
 	<div class='line-3'>
-		<div>
-			{{#unless isCustomer}}
-				<label class="required">Initials: </label>
-				<input type='text' id="initials" name="initials">
-			{{/unless}}
-		</div>
+		{{#unless isCustomer}}
+			<div>
+					<label class="required">Initials: </label>
+					<input type='text' id="initials" name="initials">
+			</div>
+			<div>
+				<label class="required">Full Name: </label>
+				<input type='text' id="initialsResult" readonly required>
+			</div>
+			<div>
+				<label>Operator Fee: </label>
+				<span style="font-size: 16px;">Include Operator Fee:<span>
+				<input id="includeOperatorFeeInput" type="checkbox" class="includeOperatorFee ace ace-switch ace-switch-6">
+				<span class='lbl'></span>
+				<input id="includeOperatorFee" type="hidden" value="false">
+			</div>
+		{{/unless}}
 	</div>
 
 

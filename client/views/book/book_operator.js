@@ -1224,6 +1224,10 @@ Template.createBook.events({
 		$("#statusDialog").show();
 	},
 
+	'change #initials' : function(){
+		$("#initialsResult").val("");
+	},
+
 	'change #stopAtFlateyInput' : function(event){
 		event.preventDefault();
 		if($("#stopAtFlatey").val() == 'false'){
@@ -1431,6 +1435,8 @@ Template.generalButtons.events({
 			bootbox.alert("Please inform the vehicle name");
 		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
 			bootbox.alert("This car is already booked to this trip");
+		}else if(!isCustomer() && $("#initialsResult").val() == ""){
+			bootbox.alert("Please Inform the Operator Initials");
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1527,6 +1533,8 @@ Template.generalButtons.events({
 			bootbox.alert("Please inform the vehicle name");
 		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
 				bootbox.alert("This car is already booked to this trip");
+		}else if(!isCustomer() && $("#initialsResult").val() == ""){
+			bootbox.alert("Please Inform the Operator Initials");
 		}else{
 				var form = document.getElementById('pasagerInfo');
 				if(form.checkValidity()){
@@ -2021,7 +2029,6 @@ calcTotal = function(){
 loadTypeAheadPostCodes = function(flag){
 	loadTypeAheadInitials();
 	if(flag){
-		$('#postcode').typeahead('destroy');
 		var postCodes = [],
 		finalPostCodes,
 		postTags = PostCodes.find({}, {fields: {postcode: 1, city: 1}});
@@ -2038,7 +2045,6 @@ loadTypeAheadPostCodes = function(flag){
 		finalPostCodes = _.uniq(postCodes);
 
 		$('#postcode').typeahead({
-			name : 'postcode',
 			local : finalPostCodes
 		}).bind('typeahead:selected', function (obj, datum) {
 			$('#city').val(datum.city);
@@ -2049,7 +2055,6 @@ loadTypeAheadPostCodes = function(flag){
 };
 
 loadTypeAheadInitials = function(){
-	$('#initials').typeahead('destroy');
 
 	var initials = [],
 	finalInitials,
@@ -2067,10 +2072,9 @@ loadTypeAheadInitials = function(){
 	finalInitials = _.uniq(initials);
 
 	$('#initials').typeahead({
-		name : 'initials',
 		local : finalInitials
 	}).bind('typeahead:selected', function (obj, datum) {
-		$('#initials').val(datum.fullName);
+		$('#initialsResult').val(datum.fullName);
 	});
 
 }
@@ -2139,7 +2143,8 @@ var createBook = function(){
 
 
 	if(isOperator()){
-		book.operatorInitials = $("#initials").val();
+		book.operatorFullName = $("#initialsResult").val();
+		book.operatorIntials = $("#initials").val();
 	}
 
 
@@ -2240,16 +2245,16 @@ var createBook = function(){
 		}
 	});
 
-	if ((isOperator() && ($('#includeOperatorFee').val() == "true")) || (! isOperator())) {	
+	if ((isOperator() && ($('#includeOperatorFee').val() == "true")) || (! isOperator())) {
 		var operatorPrice = {
 			"price" : "Operation Fee",
 			"perUnit" : Settings.findOne({_id: 'operatorFee'}).operatorFee,
 			"persons" : "1",
 			"sum" : Settings.findOne({_id: 'operatorFee'}).operatorFee
-		};	
-		prices.push(operatorPrice);	
+		};
+		prices.push(operatorPrice);
 	}
-	
+
 
 
 	book.prices = prices;

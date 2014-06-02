@@ -435,6 +435,10 @@ Meteor.methods({
 
   getAllCars : function(){
     return Cars.find().fetch();
+  },
+
+  getInitials : function(){
+    return Initials.find().fetch();
   }
 
 });
