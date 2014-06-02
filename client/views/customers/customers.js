@@ -98,6 +98,7 @@ var preLoadInfos = function(customerId){
 		$('#birthYearSelect').val(Number(splitBirth[0]));
 		$('#birthDate').val(currentCustomer.birthDate);
 		$('#email').val(currentCustomer.email);
+		$('#telephoneCode').val(currentCustomer.telephoneCode);
 		$('#telephone').val(currentCustomer.telephone);
 		$('#adress').val(currentCustomer.address);
 		$('#city').val(currentCustomer.city);

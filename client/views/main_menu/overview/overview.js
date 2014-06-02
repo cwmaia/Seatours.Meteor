@@ -398,7 +398,7 @@ Template.overview.lineColor = function(paid, bookStatus, ticketPrinted){
 
 Template.overview.created = function(){
 	Session.set("changeDates", true);
-}
+};
 
 Template.overview.rendered = function(){
 	var oTable = $(".datatable").dataTable({
