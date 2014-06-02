@@ -161,11 +161,24 @@ var updateDataPieChart = function(){
 	}).fetch();
 
 	var regularSlots = 0;
+	var qtdRegular = 0;
 	var extraSlots = 0;
+	var qtdExtra = 0;
 	var doorSlots = 0;
+	var qtdDoor = 0;
 	var unallocated = 43;
 
 	for (var i = 0; i < books.length; i++) {
+		//count cars
+		if(books[i].slot.indexOf("X") != -1){
+			qtdExtra++;
+		}else if(books[i].slot.indexOf("D") != -1){
+			qtdDoor++;
+		}else if(books[i].slot){
+			qtdRegular++;
+		}
+
+		//count metters
 		slotArray = books[i].slot.split("-");
 		for (var j = slotArray.length - 1; j >= 0; j--) {
 			if(slotArray[j].indexOf("X") != -1){
@@ -184,9 +197,9 @@ var updateDataPieChart = function(){
 	$("#regularSlotsAlocated").text(regularSlots*5);
 	$("#doorSlotsAlocated").text(doorSlots*5);
 	$("#spaceAlocatedSlot").text(extraSlots*5);
-	Session.set("regularCars", regularSlots);
-	Session.set("doorCars", doorSlots);
-	Session.set("extraCars", extraSlots);
+	Session.set("regularCars", qtdRegular);
+	Session.set("doorCars", qtdDoor);
+	Session.set("extraCars", qtdExtra);
 
 
 	percentages = {
@@ -1644,8 +1657,6 @@ Template.generalPassagerInfo.events({
 			//SplitBirthDate
 			splitBirth = currentCustomer.birthDate.split("-");
 
-			console.log(splitBirth);
-
 			$('#birthDaySelect').val(Number(splitBirth[2]));
 			$('#birthMonthSelect').val(Number(splitBirth[1]));
 			$('#birthYearSelect').val(Number(splitBirth[0]));
@@ -2720,9 +2731,6 @@ checkSameCarOnBoat = function(vehicleId, productId, tripId, dates){
 		'trip._id' : tripIdInternal,
 		'vehicle.vehiclePlate' : vehicleId
 	});
-
-	console.log(book);
-	console.log(cartBook);
 
 	if(book || cartBook){
 		return true;
