@@ -283,221 +283,223 @@
 </template>
 
 <template name='createBook'>
-	{{#if showStatusDialog}}
-    	{{> statusDialog}}
-  	{{/if}}
-	<div class="page-header">
-		<h1>
-			Booking - {{productName}} - {{dateOfBooking}}
-			<label>Current Season: {{currentSeason}}</label>
-		</h1>
-	</div><!-- /.page-header -->
+	{{#if tripSelected}}
+		{{#if showStatusDialog}}
+	    	{{> statusDialog}}
+	  	{{/if}}
+		<div class="page-header">
+			<h1>
+				Booking - {{productName}} - {{dateOfBooking}}
+				<label>Current Season: {{currentSeason}}</label>
+			</h1>
+		</div><!-- /.page-header -->
 
-	{{#if getDisclaimer}}
-		{{#if isCustomer}}
-		{{else}}
-			<div class='line'>
-		    	<div class="alert alert-warning">
-		       			{{getDisclaimer}}
-			    </div>
-			</div>
-		{{/if}}
-	{{/if}}
-
-	<div class="line-3">
-		<div>
-			<label class="required">Destination: </label>
-			<select id="destination">
-				{{#each trips}}
-					{{#if booked from to}}
-						<option value='{{_id}}' selected='selected'>{{from}} - {{to}} - {{hour}}</option>
-					{{else}}
-						<option value='{{_id}}'>{{from}} - {{to}} - {{hour}}</option>
-					{{/if}}
-				{{/each}}
-			</select>
-		</div>
-
-		<div>
 		{{#if getDisclaimer}}
-		{{#if isCustomer}}
-		{{else}}
-			<div>
-					<label class="required">Stop at Flatey:</label>
-
-					<input id="stopAtFlateyInput" type="checkbox" class="stopAtFlatey ace ace-switch ace-switch-6">
-	    			<span class='lbl'></span>
-	    			<input id="stopAtFlatey" type="hidden" value="false">
-			</div>
+			{{#if isCustomer}}
+			{{else}}
+				<div class='line'>
+			    	<div class="alert alert-warning">
+			       			{{getDisclaimer}}
+				    </div>
+				</div>
 			{{/if}}
 		{{/if}}
-		</div>
-		<div>
 
-		</div>
+		<div class="line-3">
+			<div>
+				<label class="required">Destination: </label>
+				<select id="destination">
+					{{#each trips}}
+						{{#if booked _id}}
+							<option value='{{_id}}' selected='selected'>{{from}} - {{to}} - {{hour}}</option>
+						{{else}}
+							<option value='{{_id}}'>{{from}} - {{to}} - {{hour}}</option>
+						{{/if}}
+					{{/each}}
+				</select>
+			</div>
 
-	</div>
-	<div class="line-3">
-		{{#if isEditing}}
-		    	<div>
-					<label class="required">Edit Date: </label>
-					<input type='text' id="dayOfBookingEdit" name="dayBlocked" class="size1-2">
+			<div>
+			{{#if getDisclaimer}}
+			{{#if isCustomer}}
+			{{else}}
+				<div>
+						<label class="required">Stop at Flatey:</label>
+
+						<input id="stopAtFlateyInput" type="checkbox" class="stopAtFlatey ace ace-switch ace-switch-6">
+		    			<span class='lbl'></span>
+		    			<input id="stopAtFlatey" type="hidden" value="false">
 				</div>
-		{{/if}}
-	</div>
+				{{/if}}
+			{{/if}}
+			</div>
+			<div>
 
-	<div class="line-3">
-		{{#each prices}}
-			{{> productPrices}}
-		{{/each}}
-	</div>
-	<span><em>Please note:</em> <br>
-			Senior : 67 years and older<br>
-		{{#if isSummer}}
-			Child : 0 to 15 years old <br>
-			Youth : 16 to 20 years old <br>
-		{{else}}
-			Child : 0 to 11 years old <br>
-			Youth : 12 to 15 years old <br>
-		{{/if}}
+			</div>
 
-	<div class="line">
-		{{> generalPassagerInfo}}
-	</div>
+		</div>
+		<div class="line-3">
+			{{#if isEditing}}
+			    	<div>
+						<label class="required">Edit Date: </label>
+						<input type='text' id="dayOfBookingEdit" name="dayBlocked" class="size1-2">
+					</div>
+			{{/if}}
+		</div>
 
-	<div class="line noStatus">
-		{{> bookingVehicles}}
-	</div>
+		<div class="line-3">
+			{{#each prices}}
+				{{> productPrices}}
+			{{/each}}
+		</div>
+		<span><em>Please note:</em> <br>
+				Senior : 67 years and older<br>
+			{{#if isSummer}}
+				Child : 0 to 15 years old <br>
+				Youth : 16 to 20 years old <br>
+			{{else}}
+				Child : 0 to 11 years old <br>
+				Youth : 12 to 15 years old <br>
+			{{/if}}
 
-	<div id="svgBoatDialogCreate">
-    		<div class="mask"> </div>
-			  <div class="modal" style="left: 45%; width: 760px">
+		<div class="line">
+			{{> generalPassagerInfo}}
+		</div>
+
+		<div class="line noStatus">
+			{{> bookingVehicles}}
+		</div>
+
+		<div id="svgBoatDialogCreate">
+	    		<div class="mask"> </div>
+				  <div class="modal" style="left: 45%; width: 760px">
+				    <div class="modal-header">
+				      <button type="button" class="cancel close">&times;</button>
+				      <h3>Current Boat Status</h3>
+				    </div>
+
+				    <div class="modal-body">
+				    	<div>
+							{{>baldurSVG}}
+						</div>
+				    </div>
+
+				    <div class="modal-footer">
+				    	<a id="showDoorButton" class="btn btn-info enabledDoor" {{#if isSummer}} disabled {{/if}} style="float: left">Show Door</a>
+				    	<a class="btn btn-success cancel" style="float: right">Save</a>
+				    </div>
+				  </div>
+	    	</div>
+
+
+		<div class='line'>
+			<div>
+		    <label>
+		    	Total
+		    </label>
+
+		    <em name="totalISK" style="color: #87b87f !important; font-weight: bold; font-size: 140%; " class="price" ><input style="color: #87b87f !important; font-size: 110%; font-style: italic; width:100px;" class="formattedAsMoney" id='totalISK' disabled /> ISK</em>
+			</div>
+			<div class='noStatus'>
+
+	    	{{#if dateSelected}}
+			<div>
+				<label>Slot:</label>
+				<input type="text" class='size1-2' id="slotNumber" readonly>
+				<a id="selectManualy">Select Manualy</a>
+			</div>
+			{{/if}}
+
+	    	<div id="statusDialog">
+			  <div class="mask"> </div>
+			  <div class="modal">
 			    <div class="modal-header">
 			      <button type="button" class="cancel close">&times;</button>
-			      <h3>Current Boat Status</h3>
+			      <h3>Current Status</h3>
 			    </div>
 
 			    <div class="modal-body">
 			    	<div>
-						{{>baldurSVG}}
+				<form>
+					<legend>Day Resume<span>&nbsp;&nbsp;</span><i class='icon-table'/></legend>
+					<div>
+						<table class='table table-striped table-bordered table-hover'>
+							<thead>
+								<tr>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Cars up to 5m</td>
+									<td>{{qtdCarsUpTo5}} - <span id='max5slots'></span></td>
+								</tr>
+								<tr>
+									<td>Cars up to 6m</td>
+									<td>{{qtdCarsUpTo6}}</td>
+								</tr>
+								<tr>
+									<td>Current meters alocated on extra Slot 1</td>
+									<td><span id='spaceAlocatedSlot1'></span>m - <span id='spaceAlocatedSlot3'>m</span></td>
+								</tr>
+								<tr>
+									<td>Current meters alocated on extra Slot 2</td>
+									<td><span id='spaceAlocatedSlot2'></span>m - <span id='spaceAlocatedSlot4'>m</span></td>
+								</tr>
+								<tr>
+									<td>Current meters alocated on Extras Slot</td>
+									<td><span id='spaceAlocated'>m - <span id='spaceAlocatedSlotCart'>m</span></span></td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
+				</form>
+			</div>
+
 			    </div>
 
 			    <div class="modal-footer">
-			    	<a id="showDoorButton" class="btn btn-info enabledDoor" {{#if isSummer}} disabled {{/if}} style="float: left">Show Door</a>
-			    	<a class="btn btn-success cancel" style="float: right">Save</a>
+			    	<a href="#" class="btn cancel">Cancel</a>
 			    </div>
 			  </div>
-    	</div>
+			</div>
 
 
-	<div class='line'>
-		<div>
-	    <label>
-	    	Total
-	    </label>
 
-	    <em name="totalISK" style="color: #87b87f !important; font-weight: bold; font-size: 140%; " class="price" ><input style="color: #87b87f !important; font-size: 110%; font-style: italic; width:100px;" class="formattedAsMoney" id='totalISK' disabled /> ISK</em>
+	    	</div>
 		</div>
-		<div class='noStatus'>
 
-    	{{#if dateSelected}}
-		<div>
-			<label>Slot:</label>
-			<input type="text" class='size1-2' id="slotNumber" readonly>
-			<a id="selectManualy">Select Manualy</a>
-		</div>
-		{{/if}}
-
-    	<div id="statusDialog">
-		  <div class="mask"> </div>
-		  <div class="modal">
-		    <div class="modal-header">
-		      <button type="button" class="cancel close">&times;</button>
-		      <h3>Current Status</h3>
+		<div class='line'>
+	    	<div id='divAlertSize' style="display: none;" class="alert alert-warning">
+	       		<b style="color: #FF2400;">ATTENTION, PLEASE NOTE:</b>
+	       		<span id='messageCreateBook'>Bookings with 6+ meters cars need to be confirmed by the office we will be contacting you soon.</span>
 		    </div>
+		</div>
 
-		    <div class="modal-body">
-		    	<div>
-			<form>
-				<legend>Day Resume<span>&nbsp;&nbsp;</span><i class='icon-table'/></legend>
+		<div class='line-3'>
+			{{#unless isCustomer}}
 				<div>
-					<table class='table table-striped table-bordered table-hover'>
-						<thead>
-							<tr>
-								<th></th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Cars up to 5m</td>
-								<td>{{qtdCarsUpTo5}} - <span id='max5slots'></span></td>
-							</tr>
-							<tr>
-								<td>Cars up to 6m</td>
-								<td>{{qtdCarsUpTo6}}</td>
-							</tr>
-							<tr>
-								<td>Current meters alocated on extra Slot 1</td>
-								<td><span id='spaceAlocatedSlot1'></span>m - <span id='spaceAlocatedSlot3'>m</span></td>
-							</tr>
-							<tr>
-								<td>Current meters alocated on extra Slot 2</td>
-								<td><span id='spaceAlocatedSlot2'></span>m - <span id='spaceAlocatedSlot4'>m</span></td>
-							</tr>
-							<tr>
-								<td>Current meters alocated on Extras Slot</td>
-								<td><span id='spaceAlocated'>m - <span id='spaceAlocatedSlotCart'>m</span></span></td>
-							</tr>
-						</tbody>
-					</table>
+						<label class="required">Initials: </label>
+						<input type='text' id="initials" name="initials">
 				</div>
-			</form>
+				<div>
+					<label class="required">Full Name: </label>
+					<input type='text' id="initialsResult" readonly required>
+				</div>
+				<div>
+					<label>Operator Fee: </label>
+					<span style="font-size: 16px;">Include Operator Fee:<span>
+					<input id="includeOperatorFeeInput" type="checkbox" class="includeOperatorFee ace ace-switch ace-switch-6">
+					<span class='lbl'></span>
+					<input id="includeOperatorFee" type="hidden" value="false">
+				</div>
+			{{/unless}}
 		</div>
 
-		    </div>
 
-		    <div class="modal-footer">
-		    	<a href="#" class="btn cancel">Cancel</a>
-		    </div>
-		  </div>
-		</div>
-
-
-
-    	</div>
-	</div>
-
-	<div class='line'>
-    	<div id='divAlertSize' style="display: none;" class="alert alert-warning">
-       		<b style="color: #FF2400;">ATTENTION, PLEASE NOTE:</b>
-       		<span id='messageCreateBook'>Bookings with 6+ meters cars need to be confirmed by the office we will be contacting you soon.</span>
-	    </div>
-	</div>
-
-	<div class='line-3'>
-		{{#unless isCustomer}}
-			<div>
-					<label class="required">Initials: </label>
-					<input type='text' id="initials" name="initials">
-			</div>
-			<div>
-				<label class="required">Full Name: </label>
-				<input type='text' id="initialsResult" readonly required>
-			</div>
-			<div>
-				<label>Operator Fee: </label>
-				<span style="font-size: 16px;">Include Operator Fee:<span>
-				<input id="includeOperatorFeeInput" type="checkbox" class="includeOperatorFee ace ace-switch ace-switch-6">
-				<span class='lbl'></span>
-				<input id="includeOperatorFee" type="hidden" value="false">
-			</div>
-		{{/unless}}
-	</div>
-
-
-  {{> generalButtons}}
+	  {{> generalButtons}}
+	{{/if}}
 </template>
 
 <template name="generalButtons">

@@ -1023,14 +1023,25 @@ Template.createBook.dateOfBooking = function(){
 	return new Date(localStorage.getItem('date')).toUTCString().slice(5,17);
 };
 
-Template.createBook.booked = function(from,to){
+Template.createBook.booked = function(id){
 	if(Session.get('isEditing')){
-		if (book.trip.from == from && book.trip.to == to) {
+		if (book.trip._id == id) {
 			return true;
 		}else{
 			return false;
 		}
-	}return false;
+	}else{
+		trip = Trips.findOne(Session.get('tripId'));
+		if(trip){
+			if(trip._id == id){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
 };
 
 Template.generalButtons.isEditing = function(){
@@ -1131,7 +1142,7 @@ Template.createBook.trips = function(){
 			return [];
 		}
 	}else{
-		return Trips.find({_id : Session.get("tripId")});
+		return Trips.find({productId : Session.get("productId"), season : currentSeason()});
 	}
 };
 
@@ -1150,6 +1161,10 @@ Template.createBook.helpers({
 		}
 	}
 });
+
+Template.createBook.tripSelected = function(){
+	return Session.get('tripId');
+};
 
 Template.createBook.rendered = function(){
 	if(CanSaveTheBook){
@@ -1224,7 +1239,14 @@ Template.createBook.events({
 		$("#statusDialog").show();
 	},
 
-	'change #initials' : function(){
+	'change #destination' : function(event){
+		event.preventDefault();
+		Session.set("tripId", event.target.value);
+		$("#slotNumber").val("");
+	},
+
+	'change #initials' : function(event){
+		event.preventDefault();
 		$("#initialsResult").val("");
 	},
 
@@ -1235,7 +1257,6 @@ Template.createBook.events({
 		}else{
 			$("#stopAtFlatey").val(false);
 		}
-		console.log();
 	},
 	'change #includeOperatorFeeInput' : function(event){
 		event.preventDefault();
@@ -1622,9 +1643,12 @@ Template.generalPassagerInfo.events({
 			$('#title').val(currentCustomer.title);
 			//SplitBirthDate
 			splitBirth = currentCustomer.birthDate.split("-");
+
+			console.log(splitBirth);
+
 			$('#birthDaySelect').val(Number(splitBirth[2]));
 			$('#birthMonthSelect').val(Number(splitBirth[1]));
-			$('#birthYearSelect').val(splitBirth[0]);
+			$('#birthYearSelect').val(Number(splitBirth[0]));
 			$('#birthdate').val(currentCustomer.birthDate);
 			$('#socialSecurityNumber').val(currentCustomer.socialSecurityNumber);
 			$('#email').val(currentCustomer.email);
