@@ -1671,7 +1671,7 @@ Template.generalPassagerInfo.events({
 			$('#country').val(currentCustomer.country);
 			$('#groupId').val(currentCustomer.groupId);
 
-			var pVehicle = Session.get("previousVehicle");
+			/*var pVehicle = Session.get("previousVehicle");
 
 			$("#vehicle").val(pVehicle.vehicleName);
 			$("#categories").val(pVehicle.category);
@@ -1679,7 +1679,7 @@ Template.generalPassagerInfo.events({
 			Session.set("categoryId", pVehicle.categoryId);
 			$("#size").val(pVehicle.size);
 			$("#totalVehicle").val(pVehicle.totalCost);
-			$('#vehiclePlate').val(pVehicle.vehiclePlate);
+			$('#vehiclePlate').val(pVehicle.vehiclePlate);*/
 
 		}else{
 			$("#previousData").val('false');
