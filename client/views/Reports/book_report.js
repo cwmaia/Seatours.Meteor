@@ -20,7 +20,7 @@ Template.financialReport.helpers({
 	},
 
 	trips : function(){
-		products = Session.get("productsFinancial")
+		products = Session.get("productsFinancial");
 		if(products){
 			var tripsReturn = [];
 			for (var i = 0; i < products.length; i++) {
@@ -28,10 +28,9 @@ Template.financialReport.helpers({
 				if(trips){
 					for (var j = 0; j < trips.length; j++) {
 						tripsReturn.push(trips[j]);
-					};
+					}
 				}
-			};
-			console.log(tripsReturn);
+			}
 			return tripsReturn;
 		}else{
 			return null;
@@ -222,7 +221,7 @@ Template.bookingsReport.adress = function(id){
 Template.bookingsReport.events({
 	'click .filterB' : function(event){
 
-		var product = $('#productB').val(); 
+		var product = $('#productB').val();
 		var from = $('#fromB').val();
 		var to = $('#toB').val();
 		var bookStatus = $('#bookStatus').val();
@@ -245,18 +244,18 @@ Template.bookingsReport.events({
 		}
 
 		var query = {dateOfBooking: {$gte: dateFrom, $lt: dateTo}};
-		
-		if(product) 
+
+		if(product)
        		query['product._id'] = product;
- 
+
      	if(paymentStatus)
        		query['paid'] = (paymentStatus === '0') ? false : true;
- 
+
      	if(bookStatus)
        		query['bookStatus'] = bookStatus;
- 
+
 	    listOfBooks = Books.find(query).fetch();
-	  
+
 	    Session.set('Books', listOfBooks);
 
 	}
@@ -264,7 +263,7 @@ Template.bookingsReport.events({
 
 Template.financialReport.events({
 	'click .filterF' : function(event){
-		var product = $('#productF').val(); 
+		var product = $('#productF').val();
 		var from = $('#fromF').val();
 		var to = $('#toF').val();
 
@@ -285,7 +284,7 @@ Template.financialReport.events({
 		}
 		products = [];
 
-		if(product) 
+		if(product)
        		products = Products.find({_id: product}).fetch();
        	else
        		products = Products.find().fetch();

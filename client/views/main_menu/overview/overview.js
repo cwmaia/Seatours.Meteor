@@ -401,11 +401,14 @@ Template.overview.created = function(){
 }
 
 Template.overview.rendered = function(){
-	$(".datatable").dataTable({
+	var oTable = $(".datatable").dataTable({
 		"iDisplayLength": 25,
 		"bServerSide": false,
     "bDestroy": true
 	});
+
+	oTable.fnSort( [ [1,'asc'], [5,'desc'] ] );
+
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
 	$(".formattedAsMoney").maskMoney('mask');
 	$(".datePickerWYear").datepicker({

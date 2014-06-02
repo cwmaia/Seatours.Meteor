@@ -343,13 +343,9 @@ Meteor.methods({
       $or: [ { bookStatus: "Booked"}, { bookStatus: "Waiting Payment (credit card)" } ]
     }).fetch();
 
-    console.log(books);
-
     for (var i = cartBooks.length - 1; i >= 0; i--) {
       books.push(cartBooks[i]);
     }
-
-
 
     return books;
   },

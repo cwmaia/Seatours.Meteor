@@ -533,7 +533,7 @@ Template.bookDetail.rendered = function() {
 		"bServerSide": false,
 		"bDestroy": true
 	});
-	oTable.fnSort( [ [1,'asc'], [7,'asc'], [8,'asc'] ] );
+	oTable.fnSort( [ [1,'asc'], [5,'desc'] ] );
 	$('#boatSlots').dataTable();
 	product = Products.findOne(Session.get('productId'));
 	if(BoatStatus.findOne({boatId : product.boatId})){
@@ -1180,6 +1180,7 @@ Template.createBook.tripSelected = function(){
 };
 
 Template.createBook.rendered = function(){
+	Session.set("bookId", null);
 	if(CanSaveTheBook){
 		$("#divMessageCreateBook").hide();
 		$(".addBook").removeAttr('disabled');
@@ -1476,7 +1477,6 @@ Template.generalButtons.events({
 			if(form.checkValidity()){
 				if(checkForAdults()){
 					bootbox.confirm("Are you sure? There is no adults on this booking", function(confirm){
-						console.log(confirm);
 						if(confirm)
 							proccedToBooking("/bookOperator");
 					});
@@ -1517,20 +1517,19 @@ Template.generalButtons.events({
 
 	'click .saveEdit' : function(event){
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
-			throwError('Please Inform the size of vehicle');
+			bootbox.alert('Please Inform the size of vehicle');
 		}else if(!CanSaveTheBook){
-			throwError("The Vehicle informed can't go on the boat");
-		}else if($("#categories").val() != "" && $("#size").val() != null && $("#slotNumber").val() == ""){
+			bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
+		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
-		}else if($("#categories").val() != "" && $("#size").val() != null && $("#slotNumber").val() == ""){
-			throwError("Please Inform the Slots");
-		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
-				bootbox.alert("This car is already booked to this trip");
-		}else if($("#categories").val() != "" && $("#size").val() != ""){
-			if($("#vehiclePlate").val() == "")
-				bootbox.alert("Please inform the vehicle plate.");
-			if($("#vehicle").val() == "")
-				bootbox.alert("Please inform the vehicle name");
+		}else if($("#categories").val() == "" && $("#size").val() == null && $("#vehiclePlate").val() == ""){
+			bootbox.alert("A least one vehicle is needed to create a booking!");
+		}else if($("#categories").val() != "" && $("#size").val() != null && $("#vehiclePlate").val() == ""){
+			bootbox.alert("Please inform the vehicle plate.");
+		}else if($("#categories").val() != "" && $("#size").val() != null && $("#vehicle").val() == ""){
+			bootbox.alert("Please inform the vehicle name");
+		}else if(!isCustomer() && $("#initialsResult").val() == ""){
+			bootbox.alert("Please Inform the Operator Initials");
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
@@ -1574,7 +1573,6 @@ Template.generalButtons.events({
 				if(form.checkValidity()){
 					if(checkForAdults()){
 						bootbox.confirm("Are you sure? There is no adults on this booking", function(confirm){
-							console.log(confirm);
 							if(confirm)
 								proccedToBooking('/cart');
 						});
