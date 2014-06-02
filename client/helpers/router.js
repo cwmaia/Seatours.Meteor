@@ -101,7 +101,8 @@ Meteor.Router.add({
 	'/finishBooking'   :'finishBooking',
 	'/externView' : 'externView',
 	'/createExternalUser' : 'createExternalUser',
-	'/myBookings' : 'myBookings'
+	'/myBookings' : 'myBookings',
+	'/generalReport' : "generalReport"
 });
 
 Meteor.Router.filters({

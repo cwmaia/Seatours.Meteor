@@ -488,6 +488,7 @@ Template.bookOperator.events({
     if(select[0].checkValidity()){
 			Session.set('tripId',select.val());
 			if(!isCustomer()){
+				Session.set("isEditing", false);
 				Meteor.Router.to("/bookOperator/" + $(event.currentTarget).parents('li')[0].id);
 			}
 			else{
@@ -556,7 +557,7 @@ Template.bookDetail.notes = function(bookId){
 };
 
 Template.bookDetail.fullname = function(id){
-	return Customers.findOne({_id: id}).fullName;
+	return "( "+Customers.findOne({_id: id}).telephoneCode +" ) "+ Customers.findOne({_id: id}).telephone;
 };
 
 Template.bookDetail.telephone = function(id){
@@ -643,7 +644,7 @@ Template.generalPassagerInfo.isCustomer = function(){
 	return isCustomer();
 };
 
-var returnPersons = function(){
+returnPersons = function(){
 	var dates = getSelectedAndNextDay();
 	var trip = Trips.findOne(Session.get('tripId'));
 
@@ -720,6 +721,11 @@ var MaxCapacity = 0;
 Template.bookDetail.events({
 	'click #newBooking' :function(event) {
 		formBook();
+	},
+
+	'click #printResume' : function(event){
+		event.preventDefault();
+		GeneralReport.init();
 	},
 
 	'click #seeBoatStatusSVG' : function(event){
@@ -972,11 +978,15 @@ Template.bookDetail.helpers({
 			setDate(getDate() + 1);
 		}
 
-		return Books.find({
+		books = Books.find({
 			dateOfBooking : {$gte: currentDate, $lt: date},
 			'product._id' : Session.get('productId'),
 			'trip._id' : trip._id
-		});
+		}).fetch();
+
+		Session.set("books", books);
+
+		return books;
 	},
 
 	isBookCreated : function(status) {
@@ -1180,7 +1190,8 @@ Template.createBook.tripSelected = function(){
 };
 
 Template.createBook.rendered = function(){
-	Session.set("bookId", null);
+	if(!Session.get("isEditing"))
+		Session.set("bookId", null);
 	if(CanSaveTheBook){
 		$("#divMessageCreateBook").hide();
 		$(".addBook").removeAttr('disabled');
@@ -2413,13 +2424,13 @@ var formatData = function(percentages){
 var DURATION = 1500;
 var DELAY    = 500;
 
-function drawPieChart( elementId, data ) {
+var drawPieChart = function( elementId, data ) {
     // TODO code duplication check how you can avoid that
     var count = 0;
     var y = 0;
     var y2 = 0;
     var containerEl = document.getElementById( elementId ),
-        width       = containerEl.clientWidth,
+        width       = 450,
         height      = width * 0.5,
         radius      = Math.min( width, height ) / 2,
         container   = d3.select( containerEl ),
@@ -2586,6 +2597,12 @@ function drawPieChart( elementId, data ) {
 
 function drawPieChartBoatSlots() {
     drawPieChart('pieChart', formatData(updateDataPieChart()).pieChart );
+}
+
+PieChart = {
+	drawPieChartBoatSlots : function(){
+		drawPieChart('pieChart', formatData(updateDataPieChart()).pieChart );
+	}
 }
 
 

@@ -1,0 +1,99 @@
+<template name="generalReport">
+    <div class='row paddedDiv'>
+      <div id='report_boatStatus' class='span12'>
+        <!-- Boat Status -->
+        <h1>Boat Status</h1>
+        <div id='boatDiv'>
+          {{> baldurSVG}}
+        </div>
+      </div>
+    </div>
+
+    <div class='row paddedDiv'>
+      <div id='report_boatSlots' class='span12'>
+        <h1>Boat Slots</h1>
+        <div>
+          <table class='table table-bordered'>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Customer / Notes</th>
+                <th>Vehicle</th>
+                <th>Plate</th>
+                <th>Category</th>
+                <th>Size</th>
+                <th>Slot</th>
+                <th>Telephone</th>
+                <th>Passagers</th>
+                <th>Payment Status</th>
+                <th>Book Status</th>
+                <th>Confirm</th>
+                <th>Invoices Sent</th>
+                <th>Ticket Printed</th>
+              </tr>
+            </thead>
+            <tbody>
+            {{#each books}}
+              <tr id='{{_id}}' class='{{lineColor paid bookStatus ticketPrinted}}'>
+                <td><a href="/bookDetailResume/{{_id}}">{{refNumber}}</a></td>
+                <td>{{fullname customerId}}
+                  {{#each notes _id}}
+                    </br>{{note}}
+                  {{/each}}
+                </td>
+                <td>{{vehicle.vehicleName}}</td>
+                <td>{{vehicle.vehiclePlate}}</td>
+                <td>{{#if vehicle.size}}{{vehicle.category}}{{/if}}</td>
+                <td>{{#if vehicle.size}}{{vehicle.size}}m{{/if}}</td>
+                <td>{{slot}}</td>
+                <td>{{telephone customerId}}</td>
+                <td>{{totalPassagers _id}}</td>
+                <td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
+                <td>{{bookStatus}}</td>
+                <td>
+                  {{#if confirm}}
+                    <a class="confirmBook" rel="{{_id}}"><i class='icon-check'></i></a>
+                  {{else}}
+                    <a class="confirmBook" rel="{{_id}}"><i class='icon-check-empty'></i></a>
+                  {{/if}}
+                </td>
+                <td>
+                  {{#if invoicesSent}}
+                    <a class="invoicesSent" rel="{{_id}}"><i class='icon-check'></i></a>
+                  {{else}}
+                    <a class="invoicesSent" rel="{{_id}}"><i class='icon-check-empty'></i></a>
+                  {{/if}}
+                </td>
+                <td>
+                  {{#if ticketNotPrinted _id}}
+                    <a class="printTicket" rel="{{_id}}"><i class='icon-check-empty'></i></a>
+                  {{else}}
+                    <a class="printTicket" rel="{{_id}}"><i class='icon-check'></i></a>
+                  {{/if}}
+                </td>
+              </tr>
+            {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class='row paddedDiv'>
+
+        <div class='span6'>
+          <div id='report_piechart'>
+            <h1>Piechart</h1>
+            {{> pieChart}}
+          </div>
+        </div>
+
+        <div class='span6'>
+          <div id='report_resume'>
+            <h1>Resume</h1>
+            {{> dayResume}}
+          <div>
+        </div>
+
+    </div>
+</template>

@@ -66,12 +66,7 @@
 			<button name="newBooking" id="newBooking" class="btn btn-info">
 				<i class="icon-pencil"></i> New Booking
 			</button>
-			<button name="printResume" id="printResume" class="btn" onclick="w=window.open();
-				w.document.write($('#pageHeader').html());
-				w.document.write($('#wholeStatus').html());
-				w.document.write($('passengers_length').css('display','none'));
-				w.print();
-				w.close();">
+			<button name="printResume" id="printResume" class="btn">
 				<i class="icon-print"></i>Print Resume
 			</button>
 		</h3>
@@ -81,84 +76,13 @@
 		<div class='noStatus half'>
 			<form>
 				<legend>Boat Status<span>&nbsp;&nbsp;</span><i class='icon-anchor'/></legend>
-				<div id="pieChart" style="height:200px;">
-		        <svg id="pieChartSVG">
-		          <defs>
-		            <filter id='pieChartInsetShadow'>
-		              <feOffset dx='0' dy='0'/>
-		              <feGaussianBlur stdDeviation='3' result='offset-blur' />
-		              <feComposite operator='out' in='SourceGraphic' in='offset-blur' result='inverse' />
-		              <feFlood flood-color='black' flood-opacity='1' result='color' />
-		              <feComposite operator='in' in='color' in2='inverse' result='shadow' />
-		              <feComposite operator='over' in='shadow' in2='SourceGraphic' />
-		            </filter>
-		            <filter id="pieChartDropShadow">
-		              <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
-		              <feOffset in="blur" dx="0" dy="3" result="offsetBlur" />
-		              <feMerge>
-		                <feMergeNode />
-		                <feMergeNode in="SourceGraphic" />
-		              </feMerge>
-		            </filter>
-		          </defs>
-		        </svg>
-		      </div>
-
+				{{> pieChart}}
 			</form>
 		</div>
 		<div class="half">
 			<form>
 				<legend>Day Resume<span>&nbsp;&nbsp;</span><i class='icon-table'/></legend>
-				<div>
-					<table class='table table-bordered table-hover'>
-						<thead>
-							<tr>
-								<th></th>
-								<th></th>
-								<th class='noStatus'></th>
-								<th class='noStatus'></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>#Adult</td>
-								<td><span id='numberOfAdults'></span></td>
-								<td class='noStatus'>Meters Alocated on Regular Slots: </td>
-								<td class='noStatus'><span id='regularSlotsAlocated'></span>m</td></td>
-							</tr>
-							<tr>
-								<td>#Child</td>
-								<td><span id='numberOfChildrens'></span></td>
-								<td class='noStatus'>Meters alocated on Door Slots: </td>
-								<td class='noStatus'><span id='doorSlotsAlocated'></span>m</td></td>
-							</tr>
-							<tr>
-								<td>#Infant</td>
-								<td><span id='numberOfInfants'></span></td>
-								<td class='noStatus'>Meters alocated on Extras Slot: </td>
-								<td class='noStatus'><span id='spaceAlocatedSlot'></span>m</td>
-							</tr>
-							<tr>
-								<td>#Senior</td>
-								<td><span id='numberOfSeniors'></span></td>
-								<td class='noStatus'></td>
-								<td class='noStatus'></td>
-							</tr>
-							<tr>
-								<td>#School Discount</td>
-								<td><span id='numberOfSchoolDiscount'></span></td>
-								<td class='noStatus'></td>
-								<td class='noStatus'></td>
-							</tr>
-							<tr class='noStatus'>
-								<td>#Guides and Drivers</td>
-								<td><span id='numberOfGuideAndDrivers'></span></td>
-								<td><a id="seeBoatStatusSVG">See Status</a></td>
-								<td></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+				{{> dayResume}}
 			</form>
 		</div>
 
@@ -657,5 +581,83 @@
 					{{/each}}
 				{{/if}}
 		</select>
+	</div>
+</template>
+
+<template name='pieChart'>
+	<div id="pieChart" style="height:200px;">
+			<svg id="pieChartSVG">
+				<defs>
+					<filter id='pieChartInsetShadow'>
+						<feOffset dx='0' dy='0'/>
+						<feGaussianBlur stdDeviation='3' result='offset-blur' />
+						<feComposite operator='out' in='SourceGraphic' in='offset-blur' result='inverse' />
+						<feFlood flood-color='black' flood-opacity='1' result='color' />
+						<feComposite operator='in' in='color' in2='inverse' result='shadow' />
+						<feComposite operator='over' in='shadow' in2='SourceGraphic' />
+					</filter>
+					<filter id="pieChartDropShadow">
+						<feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
+						<feOffset in="blur" dx="0" dy="3" result="offsetBlur" />
+						<feMerge>
+							<feMergeNode />
+							<feMergeNode in="SourceGraphic" />
+						</feMerge>
+					</filter>
+				</defs>
+			</svg>
+		</div>
+</template>
+
+<template name='dayResume'>
+	<div>
+		<table class='table table-bordered table-hover'>
+			<thead>
+				<tr>
+					<th></th>
+					<th></th>
+					<th class='noStatus'></th>
+					<th class='noStatus'></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>#Adult</td>
+					<td><span id='numberOfAdults'></span></td>
+					<td class='noStatus'>Meters Alocated on Regular Slots: </td>
+					<td class='noStatus'><span id='regularSlotsAlocated'></span>m</td></td>
+				</tr>
+				<tr>
+					<td>#Child</td>
+					<td><span id='numberOfChildrens'></span></td>
+					<td class='noStatus'>Meters alocated on Door Slots: </td>
+					<td class='noStatus'><span id='doorSlotsAlocated'></span>m</td></td>
+				</tr>
+				<tr>
+					<td>#Infant</td>
+					<td><span id='numberOfInfants'></span></td>
+					<td class='noStatus'>Meters alocated on Extras Slot: </td>
+					<td class='noStatus'><span id='spaceAlocatedSlot'></span>m</td>
+				</tr>
+				<tr>
+					<td>#Senior</td>
+					<td><span id='numberOfSeniors'></span></td>
+					<td class='noStatus'></td>
+					<td class='noStatus'></td>
+				</tr>
+				<tr>
+					<td>#School Discount</td>
+					<td><span id='numberOfSchoolDiscount'></span></td>
+					<td class='noStatus'></td>
+					<td class='noStatus'></td>
+				</tr>
+				<tr class='noStatus'>
+					<td>#Guides and Drivers</td>
+					<td><span id='numberOfGuideAndDrivers'></span></td>
+					<td><a id="seeBoatStatusSVG">See Status</a></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </template>
