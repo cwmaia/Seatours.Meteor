@@ -529,6 +529,7 @@ function setCalendarCapacity (calendar) {
 ///////////////////////////////////////////
 //Template Book Detail
 Template.bookDetail.rendered = function() {
+	Session.set("bookId", null);
 	var oTable = $('#passengers').dataTable({
 		"iDisplayLength": 50,
 		"bServerSide": false,
@@ -2421,8 +2422,8 @@ var formatData = function(percentages){
   return data;
 };
 
-var DURATION = 1500;
-var DELAY    = 500;
+var DURATION = 700;
+var DELAY    = 200;
 
 var drawPieChart = function( elementId, data ) {
     // TODO code duplication check how you can avoid that

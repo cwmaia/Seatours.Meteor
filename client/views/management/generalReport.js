@@ -5,8 +5,33 @@ GeneralReport = {
   }
 };
 
+Template.generalReport.events({
+  'click .print' : function(event){
+    event.preventDefault();
+    $('#printReport').printElement();
+  },
+
+  'click .return': function(event){
+    event.preventDefault();
+    Meteor.Router.to("/bookOperator/" + Session.get("productId"));
+  }
+});
+
+Template.generalReport.date = function() {
+  date = new Date(localStorage.getItem('date'));
+  return date.toUTCString().slice(5,17);
+};
+
 Template.generalReport.books = function(){
   return Session.get("books");
+};
+
+Template.generalReport.product = function(){
+  return Products.findOne(Session.get("productId"));
+};
+
+Template.generalReport.trip = function(){
+  return Trips.findOne(Session.get("tripId"));
 };
 
 Template.generalReport.fullname = function(id){
