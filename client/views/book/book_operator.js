@@ -554,10 +554,12 @@ Template.bookDetail.ticketNotPrinted = function(id){
 };
 
 Template.bookDetail.notes = function(bookId){
-	return Notes.find({
+	var notes =  Notes.find({
 		bookId: bookId,
 		$or: [ { type: "Customer Note"}, { type: "Stop at flatey" } ]
-	});
+	}).fetch();
+
+	return  (notes.length > 0);
 };
 
 Template.bookDetail.fullname = function(id){
@@ -737,6 +739,16 @@ Template.bookDetail.events({
 		rel = event.currentTarget.rel;
 
 		Session.set("goToHistory", true);
+
+		Meteor.Router.to("/bookDetailResume/"+rel);
+	},
+
+	'click .goToNotes' : function(event){
+		event.preventDefault();
+
+		rel = event.currentTarget.rel;
+
+		Session.set("goToNotes", true);
 
 		Meteor.Router.to("/bookDetailResume/"+rel);
 	},

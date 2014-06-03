@@ -18,10 +18,13 @@ Template.bookDetailResume.rendered = function(){
 		$("div").removeClass("active");
 		$("#historyLink").parent().addClass("active");
 		$("#history").addClass("active");
-
-
-
 		Session.set("goToHistory", false);
+	}else if(Session.get("goToNotes")){
+		$("li").removeClass("active");
+		$("div").removeClass("active");
+		$("#bookingNotes").parent().addClass("active");
+		$("#bookingNote").addClass("active");
+		Session.set("goToNotes", false);
 	}
 };
 
