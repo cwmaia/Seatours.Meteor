@@ -540,6 +540,14 @@ Template.bookDetail.rendered = function() {
 		"bDestroy": true
 	});
 	oTable.fnSort( [ [1,'asc'], [5,'desc'] ] );
+
+	var otherTable = $("#waitingListTable").dataTable({
+		"iDisplayLength": 50,
+		"bServerSide": false,
+		"bDestroy": true
+	});
+
+	otherTable.fnSort( [ [1,'asc'], [5,'desc'] ] );
 	$('#boatSlots').dataTable();
 	product = Products.findOne(Session.get('productId'));
 	if(BoatStatus.findOne({boatId : product.boatId})){
@@ -1003,6 +1011,41 @@ Template.bookDetail.helpers({
 		return date.toUTCString().slice(5,17);
 	},
 
+	bookingsWaiting : function(){
+
+		var date = new Date(localStorage.getItem('date')),
+		trip = Trips.findOne(Session.get('tripId')),
+		currentDate = new Date(localStorage.getItem('date'));
+
+		with(date){
+			setDate(getDate() + 1);
+		}
+
+		return Books.find({
+			dateOfBooking : {$gte: currentDate, $lt: date},
+			'product._id' : Session.get('productId'),
+			'trip._id' : trip._id,
+			$or : [{'pendingApproval': true}, {slot : /.*W.*/}]
+		});
+	},
+
+	totalPersonsWaiting : function(){
+		var date = new Date(localStorage.getItem('date')),
+		trip = Trips.findOne(Session.get('tripId')),
+		currentDate = new Date(localStorage.getItem('date'));
+
+		with(date){
+			setDate(getDate() + 1);
+		}
+
+		return Books.find({
+			dateOfBooking : {$gte: currentDate, $lt: date},
+			'product._id' : Session.get('productId'),
+			'trip._id' : trip._id,
+			$or : [{'pendingApproval': true}, {slot : /.*W.*/}]
+		}).count();
+	},
+
 	bookings : function(){
 		var date = new Date(localStorage.getItem('date')),
 		trip = Trips.findOne(Session.get('tripId')),
@@ -1015,7 +1058,8 @@ Template.bookDetail.helpers({
 		books = Books.find({
 			dateOfBooking : {$gte: currentDate, $lt: date},
 			'product._id' : Session.get('productId'),
-			'trip._id' : trip._id
+			'trip._id' : trip._id,
+			slot : {$not : /.*W.*/ }
 		}).fetch();
 
 		Session.set("books", books);
@@ -2020,6 +2064,7 @@ Template.categoryVehicleBook.events({
 		if(category){
 			$("#baseVehicle").val(parseInt(category.basePrice));
 			$("#totalVehicle").val(parseInt(category.basePrice));
+			Session.set('currentSizeCar', category.baseSize);
 			disableActionsButtonsCreateBook(category.baseSize);
 			Session.set('categoryId', id);
 			var loop = Math.ceil(category.baseSize/5);
@@ -2050,7 +2095,7 @@ Template.categoryVehicleBook.events({
 
 		var value = event.target.selectedOptions[0].value;
 		Session.set('currentSizeCar', value);
-		calcVehiclePrice(value);
+		calcVehiclePrice(Session.get('currentSizeCar'));
 		var loop = Math.ceil(value/5);
 		if(!isCustomer()){
 			if(loop == 1){
@@ -2352,8 +2397,6 @@ var createBook = function(){
 
 		var newDate = new Date(arrayOfDate[1].replace('0', '')+"/"+arrayOfDate[0].replace('0', '')+"/"+arrayOfDate[2]);
 
-		console.log(newDate);
-
 		Books.update(Session.get("bookId"), {$set : {
 			"dateOfBooking" : newDate,
 			"prices" : book.prices,
@@ -2391,7 +2434,7 @@ var createBook = function(){
 
 		//Change the edit thing to remove or add
 		//Please add the info on the voucher too
-		if($("#stopAtFlatey").is(":checked")){
+		if($("#stopAtFlatey").val() == 'true'){
 			noteobj = {
 					created : new Date(),
 					type : 'Stop at flatey',
@@ -2427,7 +2470,7 @@ var createBook = function(){
 
 			};
 
-			if($("#stopAtFlatey").is(":checked")){
+			if($("#stopAtFlatey").val() == 'true'){
 				noteobj = {
 						created : new Date(),
 						type : 'Stop at flatey',
@@ -2452,8 +2495,9 @@ var createBook = function(){
 				CartItems.remove({_id: book._id});
 
 			}else{
+
 				temporaryID = CartItems.insert(book);
-				if($("#stopAtFlatey").is(":checked")){
+				if($("#stopAtFlatey").val() == 'true'){
 					noteobj = {
 							created : new Date(),
 							type : 'Stop at flatey',

@@ -147,9 +147,11 @@ Template.cart.events({
 				bookId = Books.insert(books[i]);
 				createdBooks[i] = Books.findOne({_id : bookId});
 				//UpdateNote
-				note = Notes.findOne({bookId: books[i]._id});
-				if(note)
-					Notes.update(note._id, {$set : {bookId: bookId}});
+				notes = Notes.find({bookId: books[i]._id}).fetch();
+				console.log(notes);
+				for(var j = 0; j < notes.length; j++){
+					Notes.update(notes[j]._id, {$set : {bookId: bookId}});
+				}
 
 				historyBook = HistoryBook.findOne({bookId: books[i]._id});
 				if(history)
