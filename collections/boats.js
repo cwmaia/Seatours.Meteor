@@ -21,4 +21,4 @@ Boats.allow({
 		else
 			return false;
 	}
-})
+});

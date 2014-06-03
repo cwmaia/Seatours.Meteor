@@ -18,6 +18,13 @@
 			</li>
 
 			<li>
+				<a id='historyLink' data-toggle="tab" href="#history" sytle="z-index: 0;">
+					<i class="blue icon-book bigger-110"></i>
+					History
+				</a>
+			</li>
+
+			<li>
 				<a data-toggle="tab" href="#bookingNote" sytle="z-index: 0;">
 					<i class="blue icon-file bigger-110"></i>
 					Booking Note
@@ -43,22 +50,26 @@
 			<div id="main" class="tab-pane in active">
 				{{> voucher}}
 				<div style="width: 800px;">
-					
+
 					<button class="btn btn-success print" style="float: right; margin: -4 4 0 0;" onclick="w=window.open();
 					w.document.write($('#wholeVoucher').html());
 					w.print();
 					w.close();">
 						Print
 					</button>
-					<button class="btn btn-small btn-info editBook" type='submit' form='pasagerInfo' style="float: right; margin-right: 10px;padding: 5.5px;" > 
+					<button class="btn btn-small btn-info editBook" type='submit' form='pasagerInfo' style="float: right; margin-right: 10px;padding: 5.5px;" >
 						Edit Booking
 					</button>
-					
+
 				</div>
 			</div>
 
 			<div id="transacions" class="tab-pane in">
 				{{> bookTransactionsResume}}
+			</div>
+
+			<div id="history" class="tab-pane in">
+				{{> bookHistory}}
 			</div>
 
 			<div id="bookingNote" class="tab-pane in">

@@ -1,16 +1,29 @@
 Template.bookCustomerDetailResume.customer = function(){
 	var currentBook = Books.findOne({_id: Session.get('bookId')});
 	return Customers.findOne({_id: currentBook.customerId});
-}
+};
 
 Template.bookCustomerEmailResume.customer = function(){
 	var currentBook = Books.findOne({_id: Session.get('bookId')});
 	return Customers.findOne({_id: currentBook.customerId});
-}
+};
 
 Template.bookTransactionsResume.book = function(){
 	return Books.findOne({_id: Session.get('bookId')});
-}
+};
+
+Template.bookDetailResume.rendered = function(){
+	if(Session.get("goToHistory")){
+		$("li").removeClass("active");
+		$("div").removeClass("active");
+		$("#historyLink").parent().addClass("active");
+		$("#history").addClass("active");
+
+
+
+		Session.set("goToHistory", false);
+	}
+};
 
 
 
@@ -28,6 +41,3 @@ Template.bookDetailResume.events({
 		Meteor.Router.to('/bookEdit');
 	}
 })
-
-
-

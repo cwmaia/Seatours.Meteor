@@ -20,13 +20,13 @@ Meteor.subscribe('blockingDates');
 Meteor.subscribe('orders');
 Meteor.subscribe('boatStatus');
 Meteor.subscribe('initials');
-
+Meteor.subscribe("historyBook");
 
 Template.redirect.helpers({
   userLogged : function(){
-  	return !isCustomer();
+    return !isCustomer();
   }
-})
+});
 
 
 Template.redirect.rendered = function(){

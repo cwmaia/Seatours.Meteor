@@ -19,7 +19,7 @@ Template.items.hasDiscount = function(){
 	if(this.discount)
 		return this.discount > 0;
 	else
-		return false;	
+		return false;
 }
 
 Template.items.hasTo = function(){
@@ -41,7 +41,7 @@ Template.cart.getCBasket = function(){
 
 		return false;
 	}
-	
+
 }
 
 Template.items.hasVehicle = function(){
@@ -75,7 +75,7 @@ Template.cart.total = function(){
 }
 
 
-Template.items.dateNoTimeZone = function(date){ 
+Template.items.dateNoTimeZone = function(date){
 	return date.toUTCString().slice(5,17);;
 }
 
@@ -92,7 +92,7 @@ Template.items.customerName = function(customerId){
 	var customer = Customers.findOne({_id : customerId});
 	if(customer)
 		return customer.title + '. ' + customer.fullName;
-	return "";	 
+	return "";
 }
 
 Template.cart.disableCheckout = function(){
@@ -109,7 +109,7 @@ Template.cart.events({
 	'click .checkout' : function(event){
 		event.preventDefault();
 		if(isCustomerNotLogged()){
-			//Show Login Screen	
+			//Show Login Screen
 			book = checkVehicles();
 			if(book){
 				bootbox.alert("The vehicle "+book.vehicle.vehicleName +" ("+book.vehicle.vehiclePlate+") informed on the book with destination to: "+book.trip.to+" from: "+book.trip.from+" "+book.trip.hour+" was already booked!")
@@ -118,7 +118,7 @@ Template.cart.events({
 				cleanExternView();
 				Session.set('externalLogin', true);
 				$("#loginArea").hide();
-				Template.externView.rendered();	
+				Template.externView.rendered();
 			}
 
 		}else if(isCustomerLogged()){
@@ -132,10 +132,10 @@ Template.cart.events({
 			var createdBooks = [];
 			for (var i = 0; i < books.length; i++) {
 				var customer = Customers.findOne({_id : books[i].customerId});
-				
+
 				if(customer.email)
 					sendMail(books[i],books[i]._id, customer);
-				
+
 				CartItems.remove({_id : books[i]._id});
 
 				refNumber = new Date().getTime().toString().substr(5);
@@ -150,14 +150,18 @@ Template.cart.events({
 				note = Notes.findOne({bookId: books[i]._id});
 				if(note)
 					Notes.update(note._id, {$set : {bookId: bookId}});
-		};
+
+				historyBook = HistoryBook.findOne({bookId: books[i]._id});
+				if(history)
+					HistoryBook.update(historyBook._id, {$set : {bookId: bookId}});
+		}
 
 		throwSuccess(books.length+' Bookings Created!');
 		Session.set("createdBooks", createdBooks);
 		Meteor.Router.to("/finishBooking");
 		}
 
-		
+
 	}
 });
 
@@ -238,9 +242,9 @@ var sendMail = function(book, result, customer){
     Session.set("book", book);
 
     Session.set("mailing", true);
-    
+
     Session.set("customer", customer);
-    
+
 	var html = Template.voucher();
 
 	Meteor.call('sendEmailHTML', customer.email, "noreply@seatours.is", "Your Voucher at Seatours!", html);

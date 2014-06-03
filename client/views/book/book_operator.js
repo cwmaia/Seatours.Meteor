@@ -724,6 +724,16 @@ Template.bookDetail.events({
 		formBook();
 	},
 
+	'click .seeHistory' : function(event){
+		event.preventDefault();
+
+		rel = event.currentTarget.rel;
+
+		Session.set("goToHistory", true);
+
+		Meteor.Router.to("/bookDetailResume/"+rel);
+	},
+
 	'click #printResume' : function(event){
 		event.preventDefault();
 		$('#pageHeader').printElement();
@@ -2232,6 +2242,8 @@ var createBook = function(){
 	}else{
 		customer.online = false;
 		book.signedby = $("initials").val();
+
+
 		if(getCartIdOperator()){
 			book.cartId = getCartIdOperator();
 		}else{
@@ -2330,11 +2342,22 @@ var createBook = function(){
 				created : date,
 				type : 'Customer Note',
 				note : note,
-				bookId : book._id
+				bookId : Session.get("bookId")
 			};
 
 			Notes.insert(noteobj);
 		}
+
+		historyBook = {
+			date : new Date(),
+			action : "Edit Book",
+			operator : $("#initialsResult").val(),
+			bookId : Session.get("bookId")
+
+		};
+
+		HistoryBook.insert(historyBook);
+
 	}else{
 		if(!isCustomer()){
 			temporaryID = CartItems.insert(book);
@@ -2349,6 +2372,16 @@ var createBook = function(){
 
 				Notes.insert(noteobj);
 			}
+
+			historyBook = {
+				date : new Date(),
+				action : "Create Book",
+				operator : $("#initialsResult").val(),
+				bookId : temporaryID
+
+			};
+
+			HistoryBook.insert(historyBook);
 		}else{
 			if(book.pendingApproval){
 				book.bookStatus = "Pending Approval (6+ meters vehicle)";

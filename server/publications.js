@@ -110,7 +110,11 @@ Meteor.publish('books', function() {
 
 Meteor.publish('initials', function(){
   return Initials.find();
-})
+});
+
+Meteor.publish('historyBook', function(){
+  return HistoryBook.find();
+});
 
 
 Meteor.publish('orders', function() {
