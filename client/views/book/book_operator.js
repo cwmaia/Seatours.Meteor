@@ -562,7 +562,11 @@ Template.bookDetail.fullname = function(id){
 };
 
 Template.bookDetail.telephone = function(id){
-	return Customers.findOne({_id: id}).telephone;
+	var customer = Customers.findOne({_id: id});
+	if(customer)
+		return "("+customer.telephoneCode+") "+customer.telephone;
+	else
+			return "";
 };
 
 Template.bookDetail.trip = function(){
@@ -1564,7 +1568,7 @@ Template.generalButtons.events({
 				createBook();
 				throwSuccess("Book updated");
 				Session.set("isEditing", false);
-				Meteor.Router.to('/overview');
+				Meteor.Router.to('/bookDetailResume/'+Session.get("bookId"));
 			}else{
 				$('#pasagerInfo').submit(function(event){
 					event.preventDefault();

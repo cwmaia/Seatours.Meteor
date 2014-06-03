@@ -442,8 +442,11 @@
     	<div class="line">
 		    <button id="bookButton" class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Add to Basket</button>
 		    <button id="proceedButton" class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Proceed to Your Cart</button>
+				{{#unless isCustomer}}
+					<button id="proceedButton" class="btn btn-small btn-primary confirmInquiry" type='submit' form='pasagerInfo'>Place on Waiting list</button>
+				{{/unless}}
 		    <button id='inquiryButton' class="btn btn-small btn-info confirmInquiry" style='display: none;' type='submit' form='pasagerInfo'>Confirm Inquiry</button>
-		</div>
+			</div>
 	    <br/>
 	    <br/>
     {{/if}}

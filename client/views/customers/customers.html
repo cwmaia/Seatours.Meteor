@@ -41,13 +41,13 @@
 							<th>Actions</th>
 						</tr>
 					</thead>
-					
+
 					<tbody>
 						{{#each customer}}
 							<tr>
 								<td>{{socialSecurityNumber}}</td>
 								<td>{{fullName}}</td>
-								<td>{{telephone}}</td>
+								<td>({{telephoneCode}}) {{telephone}}</td>
 								<td>{{address}} {{city}} {{state}} {{country}}</td>
 								<td>{{email}}</td>
 								<td>{{group groupId}}</td>
@@ -55,7 +55,7 @@
 									<a class="btn btn-mini btn-info editCustomer" rel='{{_id}}'><i class='icon-pencil'></i></a>
 								</td>
 							</tr>
-						{{/each}}	
+						{{/each}}
 					</tbody>
 				</table>
 			</fieldset>
@@ -93,7 +93,7 @@
 				{{/each}}
 
 				<button class='btn btn-success' id='saveDiscounts'>Update</button>
-					
+
 				</fieldset>
 			</div>
 		</div>

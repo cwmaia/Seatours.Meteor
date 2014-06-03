@@ -7,12 +7,12 @@ Template.customersAndExternals.customer = function(){
 		if(customers){
 			for (var j = 0; j < customers.length; j++) {
 				customersReturn.push(customers[j]);
-			};
+			}
 		}
 
-	};
+	}
 	return customersReturn;
-}
+};
 
 Template.customersAndExternals.group = function(id){
 	group = Groups.findOne({_id : id});
@@ -20,11 +20,11 @@ Template.customersAndExternals.group = function(id){
 		return group.name;
 	}
 	return "";
-}
+};
 
 Template.customersAndExternals.externalGroup = function(){
 	return Groups.find({type : 'external'});
-}
+};
 
 Template.customersAndExternals.events({
 	'click #saveDiscounts' : function(event){
@@ -32,7 +32,7 @@ Template.customersAndExternals.events({
 		groups = Groups.find({type : 'external'}).fetch();
 		for (var i = 0; i < groups.length; i++) {
 			Groups.update(groups[i]._id, {$set : {discount : $('#onlineDiscountValue'+groups[i]._id).val()}});
-		};
+		}
 
 		Meteor.call("setOnlineDiscount", $("#onlineDiscountValue").val());
 		throwSuccess("Updated Discounts!");
@@ -125,23 +125,23 @@ var setUp = function(value){
     $( "#onlineDiscountValue" ).val( $( "#onlineDiscountSlider" ).slider( "value" ) );
 
     groups = Groups.find({type : 'external'}).fetch();
-    for (var i = 0; i < groups.length; i++) {
-    	var id = groups[i]._id;
-    	var discount = groups[i].discount;
-    	$("#onlineDiscountSlider-"+id).slider({
-	      range: "min",
-	      min: 0,
-	      max: 100,
-	      value: discount,
-	      inputId : id,
-	      slide: function( event, ui ) {
-	      	slideId = this.id.split('-');
-	      	$( "#onlineDiscountValue"+slideId[1] ).val( ui.value );
-	      }
-	    });
-	    $( "#onlineDiscountValue"+id ).val( $( "#onlineDiscountSlider-"+id ).slider( "value" ) );
-    };
-}
+		for (var i = 0; i < groups.length; i++) {
+			var id = groups[i]._id;
+			discount = groups[i].discount;
+			$("#onlineDiscountSlider-"+id).slider({
+				range: "min",
+				min: 0,
+				max: 100,
+				value: discount,
+				inputId : id,
+				slide: function( event, ui ) {
+					slideId = this.id.split('-');
+					$( "#onlineDiscountValue"+slideId[1] ).val( ui.value );
+				}
+			});
+			$( "#onlineDiscountValue"+id ).val( $( "#onlineDiscountSlider-"+id ).slider( "value" ) );
+    }
+};
 
 Template.customersAndExternals.rendered = function(){
 
@@ -150,7 +150,7 @@ Template.customersAndExternals.rendered = function(){
 	$("#customersTable").dataTable({
 		"iDisplayLength": 50,
 		"bServerSide": false,
-   		"bDestroy": true
+		"bDestroy": true
 	});
 
 	Meteor.call("getOnlineDiscount", function(err, result){
@@ -159,5 +159,5 @@ Template.customersAndExternals.rendered = function(){
 		}else{
 			setUp(result);
 		}
-	})
-}
+	});
+};
