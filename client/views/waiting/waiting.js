@@ -1,10 +1,12 @@
 Template.waitingList.bookings = function(){
-	return Books.find({'pendingApproval': true});
-}
+	return Books.find({
+	$or : [{'pendingApproval': true}, {slot : /.*W.*/}]
+	});
+};
 
 Template.overview.hasVehicle = function(){
 	return this.vehicle.category;
-}
+};
 
 Template.waitingList.lineColor = function(paid, bookStatus){
 	if(paid && bookStatus == "Allocated pending confirmation"){
@@ -14,16 +16,15 @@ Template.waitingList.lineColor = function(paid, bookStatus){
 	}else{
 		return "red";
 	}
-	
-}
+};
 
 Template.waitingList.customerName = function(customerId){
 	return Customers.findOne({'_id' : customerId}).fullName;
-}
+};
 
 Template.waitingList.date = function(date){
 	return date.toLocaleDateString("pt-BR");
-}
+};
 
 Template.waitingList.totalPassagers = function(id){
 	var persons = 0;
@@ -64,7 +65,7 @@ Template.waitingList.vendor = function(){
 }
 
 var updateSVGFill = function(bookId){
-	
+
 	book = Books.findOne(bookId);
 
 	dateBase = book.dateOfBooking;
@@ -174,15 +175,15 @@ Template.waitingList.events({
 			Books.update(bookId, {$set : {paid : true}});
 		}
 		Books.update(currentBooking._id, {$set : {'bookStatus' : "Paid but not yet confirmed"}});
-		
+
 		$("#transactionDialog").hide();
-		
+
 	},
 	'click .quickPay' : function(event){
 		event.preventDefault();
 		var a = event.currentTarget;
 		bootbox.confirm('Are you sure? Clicking this will make the Booking Paid', function(confirm){
-			if(confirm){	
+			if(confirm){
 					var bookId = a.rel;
 					var currentBooking = Books.findOne({'_id' : bookId});
 					var vendor = Meteor.user().profile.name;
@@ -208,7 +209,7 @@ Template.waitingList.events({
 					Notes.insert(note);
 				}
 			});
-			
+
 		},
 	'click .confirm' : function(){
 		$("rect").filter(function(){
@@ -231,7 +232,7 @@ Template.waitingList.events({
 		var a = event.currentTarget;
 		var bookId = a.rel;
 		updateSVGFill(bookId);
-		$("#waitingBookId").val(bookId);		
+		$("#waitingBookId").val(bookId);
 		$("#aloccationSlot").show();
 	},
 
@@ -279,7 +280,7 @@ Template.waitingList.events({
 			$("#slotAloccated").val(text);
 			svgElement.setAttribute("stroke","#000000");
 		}
-		
+
 	}
 
 })

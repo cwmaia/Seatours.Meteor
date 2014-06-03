@@ -46,6 +46,10 @@ var resetSVG = function(){
 			$(this).attr("fill", "#6fb3e0");
 		}else if($(this).attr("class") == "greenSlot"){
 			$(this).attr("fill", "#87b87f");
+		}else if($(this).attr("class") == "purpleSlot"){
+			$(this).attr("fill", "#bbaadd");
+		}else if($(this).attr("class") == "yellowSlot"){
+			$(this).attr("fill", "#e6ec8b");
 		}else{
 			$(this).attr("fill", "#ffffff");
 		}

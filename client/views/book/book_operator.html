@@ -98,7 +98,7 @@
 	</div>
 	<div id="svgBoatDialog">
   		<div class="mask"> </div>
-		  <div class="modal" style="left: 45%; width: 760px">
+		  <div class="modal" style="left: 30%; width: 1080px">
 		    <div class="modal-header">
 		      <button type="button" class="cancel close">&times;</button>
 		      <h3 id='headerDialog'>Current Boat Status</h3>
@@ -307,7 +307,7 @@
 
 		<div id="svgBoatDialogCreate">
 	    		<div class="mask"> </div>
-				  <div class="modal" style="left: 45%; width: 760px">
+				  <div class="modal" style="left: 30%; width: 1080px">
 				    <div class="modal-header">
 				      <button type="button" class="cancel close">&times;</button>
 				      <h3>Current Boat Status</h3>
@@ -444,9 +444,6 @@
     	<div class="line">
 		    <button id="bookButton" class="btn btn-small btn-info addBook" type='submit' form='pasagerInfo'>Add to Basket</button>
 		    <button id="proceedButton" class="btn btn-small btn-success procedToCart" type='submit' form='pasagerInfo'>Proceed to Your Cart</button>
-				{{#unless isCustomer}}
-					<button id="proceedButton" class="btn btn-small btn-primary confirmInquiry" type='submit' form='pasagerInfo'>Place on Waiting list</button>
-				{{/unless}}
 		    <button id='inquiryButton' class="btn btn-small btn-info confirmInquiry" style='display: none;' type='submit' form='pasagerInfo'>Confirm Inquiry</button>
 			</div>
 	    <br/>
