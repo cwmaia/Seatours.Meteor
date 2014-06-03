@@ -43,7 +43,16 @@
 
 <template name="bookDetail">
 	<div id="pageHeader" class="page-header">
-		<link rel='stylesheet' type='text/css' href='http://booking.seatours.is/css/printing.css'>
+		<link rel='stylesheet' type='text/css' href='http:///booking.seatours.is/css/printing.css'>
+		<link rel='stylesheet' type='text/css' href='http://booking.seatours.is/css/font.css'>
+		<style>
+			tr.odd{
+				-webkit-print-color-adjust: exact;
+			}
+			.line{
+				-webkit-print-color-adjust: exact;
+			}
+		</style>
 		<h1 style="padding: 0;
 					margin: 0 8px;
 					font-size: 24px;
@@ -57,7 +66,7 @@
 		</h1>
 		<div style="clear:both;">
 		</div>
-	</div>
+
 
 
 	{{#if isBookingNotFull totalPersons boat.maxCapacity}}
@@ -67,7 +76,7 @@
 				<i class="icon-pencil"></i> New Booking
 			</button>
 			<button name="printResume" id="printResume" class="btn">
-				See Resume
+				<i class="icon-print"></i>Print Resume
 			</button>
 		</h3>
 	{{/if}}
@@ -202,6 +211,7 @@
 		<div class="divTable">
 
         </div>
+	</div>
 	</div>
 	</div>
 </template>

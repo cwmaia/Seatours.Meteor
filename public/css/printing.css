@@ -497,11 +497,11 @@ td.td-actions a.td-action {
 
 .chart--headline {
   position: relative;
-  
+
   font-weight: 100;
   font-size: 14px;
 
- 
+
 }
 
 .chart--subHeadline {
@@ -513,7 +513,7 @@ td.td-actions a.td-action {
 .charts--container {
   background-color: #fff;
   width: 100%;
-  
+
 }
 
 .charts--headline {
@@ -534,7 +534,7 @@ td.td-actions a.td-action {
 .lineChart--bubble--label {
   fill: none;
   stroke: #6bb7c7;
-  
+
   font-size: 12.;
   font-style: italic;
   font-weight: 100;
@@ -543,7 +543,7 @@ td.td-actions a.td-action {
 .lineChart--bubble--value {
   fill: #fff;
   stroke: #fff;
-  
+
   font-size: 12.6px;
   font-weight: 100;
 }
@@ -592,7 +592,7 @@ td.td-actions a.td-action {
 .pieChart--detail--percentage {
   font-size: 14px;
   font-weight: 100;
-  
+
   fill: #333;
   stroke-width: 1px;
 }
@@ -601,7 +601,7 @@ td.td-actions a.td-action {
   background-color: transparent;
   padding: 10px 0 0 0;
   margin: 0;
-  
+
   color: #666;
   font-style: italic;
 }
@@ -636,7 +636,7 @@ td.td-actions a.td-action {
 
 /**
  * Helper classes
- */ 
+ */
 
 .hidden {
   display: none;

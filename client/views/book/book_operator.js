@@ -558,7 +558,7 @@ Template.bookDetail.notes = function(bookId){
 };
 
 Template.bookDetail.fullname = function(id){
-	return "( "+Customers.findOne({_id: id}).telephoneCode +" ) "+ Customers.findOne({_id: id}).telephone;
+	return Customers.findOne({_id: id}).fullName;
 };
 
 Template.bookDetail.telephone = function(id){
@@ -726,7 +726,7 @@ Template.bookDetail.events({
 
 	'click #printResume' : function(event){
 		event.preventDefault();
-		GeneralReport.init();
+		$('#pageHeader').printElement();
 	},
 
 	'click #seeBoatStatusSVG' : function(event){
