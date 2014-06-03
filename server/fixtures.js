@@ -369,14 +369,7 @@ if(Products.find().count() == 0){
 					'type' : 'blockWeekDay'
 				});
 
-	Prices.insert({
-		"price" 	: "Adult",
-		"unit"	: 4080,
-		'active' : true,
-		'season' : 'summer',
-		'productId' : result,
-		'availableForGuest' : true
-	})
+
 
 	Prices.insert({
 		"price" 	: "Child",

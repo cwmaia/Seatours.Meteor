@@ -2385,6 +2385,16 @@ var createBook = function(){
 
 			};
 
+			if($("#stopAtFlatey").val()){
+				noteobj = {
+						created : new Date(),
+						type : 'Customer Note',
+						note : "This customer will make a stop at Flatey",
+						bookId : temporaryID
+					};
+					Notes.insert(noteobj);
+			}
+
 			HistoryBook.insert(historyBook);
 		}else{
 			if(book.pendingApproval){
