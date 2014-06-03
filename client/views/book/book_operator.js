@@ -554,7 +554,10 @@ Template.bookDetail.ticketNotPrinted = function(id){
 };
 
 Template.bookDetail.notes = function(bookId){
-	return Notes.find({bookId: bookId, type: "Customer Note"});
+	return Notes.find({
+		bookId: bookId,
+		$or: [ { type: "Customer Note"}, { type: "Stop at flatey" } ]
+	});
 };
 
 Template.bookDetail.fullname = function(id){
@@ -2360,6 +2363,19 @@ var createBook = function(){
 
 		};
 
+		//Change the edit thing to remove or add
+		//Please add the info on the voucher too
+		if($("#stopAtFlatey").is(":checked")){
+			noteobj = {
+					created : new Date(),
+					type : 'Stop at flatey',
+					note : "This customer will make a stop at Flatey",
+					bookId : temporaryID
+				};
+				Notes.insert(noteobj);
+		}
+
+
 		HistoryBook.insert(historyBook);
 
 	}else{
@@ -2385,10 +2401,10 @@ var createBook = function(){
 
 			};
 
-			if($("#stopAtFlatey").val()){
+			if($("#stopAtFlatey").is(":checked")){
 				noteobj = {
 						created : new Date(),
-						type : 'Customer Note',
+						type : 'Stop at flatey',
 						note : "This customer will make a stop at Flatey",
 						bookId : temporaryID
 					};
@@ -2411,16 +2427,15 @@ var createBook = function(){
 
 			}else{
 				temporaryID = CartItems.insert(book);
-				if($("#stopAtFlatey").val()){
+				if($("#stopAtFlatey").is(":checked")){
 					noteobj = {
 							created : new Date(),
-							type : 'Customer Note',
+							type : 'Stop at flatey',
 							note : "This customer will make a stop at Flatey",
 							bookId : temporaryID
 						};
 						Notes.insert(noteobj);
 				}
-
 			}
 		}
 

@@ -7,7 +7,11 @@ Template.voucher.book = function(){
     book = Session.get("book");
   }
   return book;
-}
+};
+
+Template.voucher.formatDate = function(date){
+  return date.toLocaleDateString();
+};
 
 Template.voucher.getRefNumber = function(){
   if(Books.findOne({_id : Session.get('bookId')})){
@@ -16,7 +20,7 @@ Template.voucher.getRefNumber = function(){
     book = Session.get("book");
   }
   return book.refNumber;
-}
+};
 
 Template.voucher.date = function(){
   if(Books.findOne({_id : Session.get('bookId')})){
@@ -25,7 +29,7 @@ Template.voucher.date = function(){
     book = Session.get("book");
   }
   return book.dateOfBooking.toDateString();
-}
+};
 
 Template.voucher.customer = function(){
   if(Session.get('customer')){
@@ -38,9 +42,9 @@ Template.voucher.customer = function(){
       book = Session.get("book");
     }
     customer = Customers.findOne({_id: book.customerId});
-    return customer;  
+    return customer;
   }
-	
+
 }
 
 Template.voucher.calcTotal = function(totalISK){
@@ -75,11 +79,31 @@ Template.voucher.paidFullDiv = function(){
   html += "border: 1px solid #fbeed5;";
   html += "margin-left: 2%;";
   html += "margin-right: 2%;";
-  html += "text-align: center;'>"
+  html += "text-align: center;'>";
   html += "<b style='color: #FF2400;'>This voucher has not yet been paid full, please complete the payment at our office.</b>";
   html += "</div>";
-  return html;  
-}
+  return html;
+};
+
+Template.voucher.stopAtFlatey = function(){
+
+  note = Notes.findOne({bookId : book._id, type: "Stop at flatey"});
+  var html = "";
+  if(note){
+    html += "<div id='alertNotPaid' class='alert alert-warning' style='font-size: 13px;";
+    html += "margin-bottom: 20px;";
+    html += "text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);";
+    html += "background-color: #fcf8e3;";
+    html += "border: 1px solid #fbeed5;";
+    html += "margin-left: 2%;";
+    html += "margin-right: 2%;";
+    html += "text-align: center;'>";
+    html += "<b>This customer will make a stop at Flatey.</b>";
+    html += "</div>";
+  }
+
+  return html;
+};
 
 
 Template.voucher.hasVehicles = function(){
@@ -88,7 +112,7 @@ Template.voucher.hasVehicles = function(){
 	}else{
 		return false;
 	}
-}
+};
 
 Template.voucher.transactions = function(){
   if(Books.findOne({_id : Session.get('bookId')})){
@@ -136,6 +160,6 @@ Template.voucher.rendered = function(){
 
 Template.voucher.helpers({
 	'click .print' : function() {
-		
+
 	}
 })
