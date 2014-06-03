@@ -1273,7 +1273,12 @@ Template.createBook.rendered = function(){
 			format : "dd/mm/yyyy"
 		});
 
-		$('#dayOfBookingEdit').val(book.dateOfBooking.toLocaleDateString("en-GB"));
+		var date = new Date(book.dateOfBooking);
+		var splitDate = date.toISOString().split("-");
+
+		var day = splitDate[2].split("T")[0];
+
+		$('#dayOfBookingEdit').val(day+"/"+splitDate[1]+"/"+splitDate[0]);
 	}
 
 	$('#passengers').dataTable({
@@ -2283,6 +2288,7 @@ var createBook = function(){
 			book.discount = 0;
 		}else{
 			//Discount
+			updateCustomer($("#customerId").val() ,vehicle)
 			group = Groups.findOne({_id : $('#groupId').val()});
 			if(group && group.discount > 0){
 				book.totalISK = parseInt((book.totalISK - ((book.totalISK * group.discount) / 100 )).toFixed());
@@ -2343,7 +2349,11 @@ var createBook = function(){
 	if (Session.get("isEditing")) {
 		var selectedDate = $("#dayOfBookingEdit").val();
 		var arrayOfDate = selectedDate.split("/");
-		var newDate = new Date(arrayOfDate[1]+"-"+arrayOfDate[0]+"-"+arrayOfDate[2]);
+
+		var newDate = new Date(arrayOfDate[1].replace('0', '')+"/"+arrayOfDate[0].replace('0', '')+"/"+arrayOfDate[2]);
+
+		console.log(newDate);
+
 		Books.update(Session.get("bookId"), {$set : {
 			"dateOfBooking" : newDate,
 			"prices" : book.prices,
@@ -2831,4 +2841,23 @@ checkSameCarOnBoat = function(vehicleId, productId, tripId, dates){
 	}else{
 		return false;
 	}
+}
+
+function updateCustomer(customerId, vehicle){
+	Customers.update(customerId, { $set : {
+		"title" : $('#title').val(),
+		"fullName" :  $('#fullName').val(),
+		"birthDate" : $('#birthdate').val(),
+		'email' : $('#email').val(),
+		"telephoneCode" : $('#telephoneCode').val(),
+		"telephone" : $("#telephone").val(),
+		"address" : $("#adress").val(),
+		'addressnumber' : $('#addressnumber').val(),
+		"city" : $("#city").val(),
+		"state" : $('#state').val(),
+		"postcode" : $("#postcode").val(),
+		"country" : $("#country").val(),
+		"lastUsedCar" : vehicle
+		}
+	});
 }

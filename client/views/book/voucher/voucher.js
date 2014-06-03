@@ -10,7 +10,7 @@ Template.voucher.book = function(){
 };
 
 Template.voucher.formatDate = function(date){
-  return date.toLocaleDateString();
+  return date.toLocaleDateString('en-Gb');
 };
 
 Template.voucher.getRefNumber = function(){
