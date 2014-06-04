@@ -264,15 +264,6 @@ if(Products.find().count() == 0){
 					'type' : 'blockWeekDay'
 				});
 
-	Prices.insert({
-		"price" 	: "Adult",
-		"unit"	: 4080,
-		'active' : true,
-		'season' : 'summer',
-		'productId' : result,
-		'availableForGuest' : true
-	});
-
 	var tripID8 = Trips.insert({
 		"from" 	: "Stykkisholmur",
 		"to"	: "Brjanslækur",
@@ -369,108 +360,1177 @@ if(Products.find().count() == 0){
 					'type' : 'blockWeekDay'
 				});
 
+  Prices.insert({
+    "price" 	: "Adult",
+    "unit"	: 5250,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID1,
+    'availableForGuest' : true
+  });
 
+  Prices.insert({
+    "price" 	: "Adult",
+    "unit"	: 5250,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID2,
+    'availableForGuest' : true
+  });
 
-	Prices.insert({
-		"price" 	: "Child",
-		"unit"	: 2040,
-		'active' : true,
-		'season' : 'summer',
-		'productId' : result,
-		'availableForGuest' : true
-	})
+  Prices.insert({
+    "price" 	: "Adult",
+    "unit"	: 5250,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID22,
+    'availableForGuest' : true
+  });
 
-	Prices.insert({
-		"price" 	: "Infant",
-		"unit"	: 0,
-		'active' : true,
-		'season' : 'summer',
-		'productId' : result,
-		'availableForGuest' : true
-	})
+  Prices.insert({
+    "price" 	: "Adult",
+    "unit"	: 5250,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID6,
+    'availableForGuest' : true
+  });
 
-	Prices.insert({
-		"price" 	: "Senior/Disabled",
-		"unit"	: 3264,
-		'active' : true,
-		'season' : 'summer',
-		'productId' : result,
-		'availableForGuest' : true
-	})
+  Prices.insert({
+    "price" 	: "Adult",
+    "unit"	: 5250,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID8,
+    'availableForGuest' : true
+  });
 
-	Prices.insert({
-		"price" 	: "School Discount",
-		"unit"	: 2040,
-		'active' : true,
-		'season' : 'summer',
-		'productId' : result,
-		'availableForGuest' : false
-	})
+  Prices.insert({
+    "price" 	: "Adult",
+    "unit"	: 5250,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID12,
+    'availableForGuest' : true
+  });
 
-	Prices.insert({
-		"price" 	: "Guides and Drivers",
-		"unit"	: 0,
-		'active' : true,
-		'season' : 'summer',
-		'productId' : result,
-		'availableForGuest' : false
-	})
+  //Senior
 
-	//Winter Prices
+  Prices.insert({
+    "price" 	: "Senior",
+    "unit"	: 4200,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID1,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Senior",
+    "unit"	: 4200,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID2,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Senior",
+    "unit"	: 4200,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID22,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Senior",
+    "unit"	: 4200,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID6,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Senior",
+    "unit"	: 4200,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID8,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Senior",
+    "unit"	: 4200,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID12,
+    'availableForGuest' : true
+  });
+
+  //Teenager
+
+  Prices.insert({
+    "price" 	: "Infant",
+    "unit"	: 2625,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID1,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Infant",
+    "unit"	: 2625,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID2,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Infant",
+    "unit"	: 2625,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID22,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Infant",
+    "unit"	: 2625,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID6,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Infant",
+    "unit"	: 2625,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID8,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Infant",
+    "unit"	: 2625,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID12,
+    'availableForGuest' : true
+  });
+
+  //Child
+
+  Prices.insert({
+    "price" 	: "Child",
+    "unit"	: 0,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID1,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Child",
+    "unit"	: 0,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID2,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Child",
+    "unit"	: 0,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID22,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Child",
+    "unit"	: 0,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID6,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Child",
+    "unit"	: 0,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID8,
+    'availableForGuest' : true
+  });
+
+  Prices.insert({
+    "price" 	: "Child",
+    "unit"	: 0,
+    'active' : true,
+    'season' : 'summer',
+    'productId' : result,
+    'tripId' : tripID12,
+    'availableForGuest' : true
+  });
+
+	//Winter Prices - Stykkisholmur-Brjansl
 	////////////////////////////////////////
 	Prices.insert({
-		"price" 	: "Adult",
-		"unit"	: 4080,
-		'active' : true,
-		'season' : 'winter',
-		'productId' : result,
-		'availableForGuest' : true
-	})
+   "price" 	: "Adult",
+   "unit"	: 4080,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID1,
+   'availableForGuest' : true
+ });
 
-	Prices.insert({
-		"price" 	: "Child",
-		"unit"	: 2040,
-		'active' : true,
-		'season' : 'winter',
-		'productId' : result,
-		'availableForGuest' : true
-	})
+ Prices.insert({
+   "price" 	: "Adult",
+   "unit"	: 4080,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID2,
+   'availableForGuest' : true
+ });
 
-	Prices.insert({
-		"price" 	: "Infant",
-		"unit"	: 0,
-		'active' : true,
-		'season' : 'winter',
-		'productId' : result,
-		'availableForGuest' : true
-	})
+ Prices.insert({
+   "price" 	: "Adult",
+   "unit"	: 4080,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID22,
+   'availableForGuest' : true
+ });
 
-	Prices.insert({
-		"price" 	: "Senior/Disabled",
-		"unit"	: 3264,
-		'active' : true,
-		'season' : 'winter',
-		'productId' : result,
-		'availableForGuest' : true
-	})
+ Prices.insert({
+   "price" 	: "Adult",
+   "unit"	: 4080,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID6,
+   'availableForGuest' : true
+ });
 
-	Prices.insert({
-		"price" 	: "School Discount",
-		"unit"	: 2040,
-		'active' : true,
-		'season' : 'winter',
-		'productId' : result,
-		'availableForGuest' : false
-	})
+ Prices.insert({
+   "price" 	: "Adult",
+   "unit"	: 4080,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID8,
+   'availableForGuest' : true
+ });
 
-	Prices.insert({
-		"price" 	: "Guides and Drivers",
-		"unit"	: 0,
-		'active' : true,
-		'season' : 'winter',
-		'productId' : result,
-		'availableForGuest' : false
-	})
+ Prices.insert({
+   "price" 	: "Adult",
+   "unit"	: 4080,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID12,
+   'availableForGuest' : true
+ });
+
+ //Senior
+
+ Prices.insert({
+   "price" 	: "Senior",
+   "unit"	: 3260,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID1,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Senior",
+   "unit"	: 3260,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID2,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Senior",
+   "unit"	: 3260,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID22,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Senior",
+   "unit"	: 3260,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID6,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Senior",
+   "unit"	: 3260,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID8,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Senior",
+   "unit"	: 3260,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID12,
+   'availableForGuest' : true
+ });
+
+ //Teenager
+
+ Prices.insert({
+   "price" 	: "Infant",
+   "unit"	: 2040,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID1,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Infant",
+   "unit"	: 2040,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID2,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Infant",
+   "unit"	: 2040,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID22,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Infant",
+   "unit"	: 2040,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID6,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Infant",
+   "unit"	: 2040,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID8,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Infant",
+   "unit"	: 2040,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID12,
+   'availableForGuest' : true
+ });
+
+ //Child
+
+ Prices.insert({
+   "price" 	: "Child",
+   "unit"	: 0,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID1,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Child",
+   "unit"	: 0,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID2,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Child",
+   "unit"	: 0,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID22,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Child",
+   "unit"	: 0,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID6,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Child",
+   "unit"	: 0,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID8,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Child",
+   "unit"	: 0,
+   'active' : true,
+   'season' : 'winter',
+   'productId' : result,
+   'tripId' : tripID12,
+   'availableForGuest' : true
+ });
+
+ //Stykys to Flatey
+
+ Prices.insert({
+   "price" 	: "Adult",
+   "unit"	: 3580,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID3,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Adult",
+   "unit"	: 3580,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID7,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Adult",
+   "unit"	: 3580,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID9,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Adult",
+   "unit"	: 3580,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID13,
+   'availableForGuest' : true
+ });
+
+ //Senior
+
+ Prices.insert({
+   "price" 	: "Senior",
+   "unit"	: 2865,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID3,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Senior",
+   "unit"	: 2865,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID7,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Senior",
+   "unit"	: 2865,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID9,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Senior",
+   "unit"	: 2865,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID13,
+   'availableForGuest' : true
+ });
+
+ //Teenager
+
+ Prices.insert({
+   "price" 	: "Infant",
+   "unit"	: 1790,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID3,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Infant",
+   "unit"	: 1790,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID7,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Infant",
+   "unit"	: 1790,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID9,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Infant",
+   "unit"	: 1790,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID13,
+   'availableForGuest' : true
+ });
+
+ //Child
+
+ Prices.insert({
+   "price" 	: "Child",
+   "unit"	: 0,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID3,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Child",
+   "unit"	: 0,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID7,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Child",
+   "unit"	: 0,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID9,
+   'availableForGuest' : true
+ });
+
+ Prices.insert({
+   "price" 	: "Child",
+   "unit"	: 0,
+   'active' : true,
+   'season' : 'summer',
+   'productId' : result,
+   'tripId' : tripID13,
+   'availableForGuest' : true
+ });
+
+
+ //Winter Prices - Stykkisholmur-Flatey
+ ////////////////////////////////////////
+ Prices.insert({
+  "price" 	: "Adult",
+  "unit"	: 2810,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID3,
+  'availableForGuest' : true
+});
+
+Prices.insert({
+  "price" 	: "Adult",
+  "unit"	: 2810,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID7,
+  'availableForGuest' : true
+});
+
+Prices.insert({
+  "price" 	: "Adult",
+  "unit"	: 2810,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID9,
+  'availableForGuest' : true
+});
+
+Prices.insert({
+  "price" 	: "Adult",
+  "unit"	: 2810,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID13,
+  'availableForGuest' : true
+});
+
+//Senior
+
+Prices.insert({
+  "price" 	: "Senior",
+  "unit"	: 2245,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID3,
+  'availableForGuest' : true
+});
+
+Prices.insert({
+  "price" 	: "Senior",
+  "unit"	: 2245,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID7,
+  'availableForGuest' : true
+});
+
+Prices.insert({
+  "price" 	: "Senior",
+  "unit"	: 2245,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID9,
+  'availableForGuest' : true
+});
+
+Prices.insert({
+  "price" 	: "Senior",
+  "unit"	: 2245,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID13,
+  'availableForGuest' : true
+});
+
+
+//Teenager
+
+Prices.insert({
+  "price" 	: "Infant",
+  "unit"	: 1405,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID3,
+  'availableForGuest' : true
+});
+
+Prices.insert({
+  "price" 	: "Infant",
+  "unit"	: 1405,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID7,
+  'availableForGuest' : true
+});
+
+Prices.insert({
+  "price" 	: "Infant",
+  "unit"	: 1405,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID9,
+  'availableForGuest' : true
+});
+
+Prices.insert({
+  "price" 	: "Infant",
+  "unit"	: 1405,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID13,
+  'availableForGuest' : true
+});
+
+//Child
+
+Prices.insert({
+  "price" 	: "Child",
+  "unit"	: 0,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID3,
+  'availableForGuest' : true
+});
+
+Prices.insert({
+  "price" 	: "Child",
+  "unit"	: 0,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID7,
+  'availableForGuest' : true
+});
+
+Prices.insert({
+  "price" 	: "Child",
+  "unit"	: 0,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID9,
+  'availableForGuest' : true
+});
+
+Prices.insert({
+  "price" 	: "Child",
+  "unit"	: 0,
+  'active' : true,
+  'season' : 'winter',
+  'productId' : result,
+  'tripId' : tripID13,
+  'availableForGuest' : true
+});
+
+// Flatey to Bjarbs
+
+
+Prices.insert({
+ "price" 	: "Adult",
+ "unit"	: 3580,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID4,
+ 'availableForGuest' : true
+});
+
+Prices.insert({
+ "price" 	: "Adult",
+ "unit"	: 3580,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID5,
+ 'availableForGuest' : true
+});
+
+Prices.insert({
+ "price" 	: "Adult",
+ "unit"	: 3580,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID10,
+ 'availableForGuest' : true
+});
+
+Prices.insert({
+ "price" 	: "Adult",
+ "unit"	: 3580,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID11,
+ 'availableForGuest' : true
+});
+
+//Senior
+
+Prices.insert({
+ "price" 	: "Senior",
+ "unit"	: 2388,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID4,
+ 'availableForGuest' : true
+});
+
+Prices.insert({
+ "price" 	: "Senior",
+ "unit"	: 2388,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID5,
+ 'availableForGuest' : true
+});
+
+Prices.insert({
+ "price" 	: "Senior",
+ "unit"	: 2388,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID10,
+ 'availableForGuest' : true
+});
+
+Prices.insert({
+ "price" 	: "Senior",
+ "unit"	: 2388,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID11,
+ 'availableForGuest' : true
+});
+
+//Teenager
+
+Prices.insert({
+ "price" 	: "Infant",
+ "unit"	: 1493,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID4,
+ 'availableForGuest' : true
+});
+
+Prices.insert({
+ "price" 	: "Infant",
+ "unit"	: 1493,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID5,
+ 'availableForGuest' : true
+});
+
+Prices.insert({
+ "price" 	: "Infant",
+ "unit"	: 1493,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID10,
+ 'availableForGuest' : true
+});
+
+Prices.insert({
+ "price" 	: "Infant",
+ "unit"	: 1493,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID11,
+ 'availableForGuest' : true
+});
+
+//Child
+
+Prices.insert({
+ "price" 	: "Child",
+ "unit"	: 0,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID4,
+ 'availableForGuest' : true
+});
+
+Prices.insert({
+ "price" 	: "Child",
+ "unit"	: 0,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID5,
+ 'availableForGuest' : true
+});
+
+Prices.insert({
+ "price" 	: "Child",
+ "unit"	: 0,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID10,
+ 'availableForGuest' : true
+});
+
+Prices.insert({
+ "price" 	: "Child",
+ "unit"	: 0,
+ 'active' : true,
+ 'season' : 'summer',
+ 'productId' : result,
+ 'tripId' : tripID11,
+ 'availableForGuest' : true
+});
+
+
+//Winter Prices - Bjarns-Flatey
+////////////////////////////////////////
+Prices.insert({
+"price" 	: "Adult",
+"unit"	: 2315,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID4,
+'availableForGuest' : true
+});
+
+Prices.insert({
+"price" 	: "Adult",
+"unit"	: 2315,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID5,
+'availableForGuest' : true
+});
+
+Prices.insert({
+"price" 	: "Adult",
+"unit"	: 2315,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID10,
+'availableForGuest' : true
+});
+
+Prices.insert({
+"price" 	: "Adult",
+"unit"	: 2315,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID11,
+'availableForGuest' : true
+});
+
+//Senior
+
+Prices.insert({
+"price" 	: "Senior",
+"unit"	: 1852,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID4,
+'availableForGuest' : true
+});
+
+Prices.insert({
+"price" 	: "Senior",
+"unit"	: 1852,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID5,
+'availableForGuest' : true
+});
+
+Prices.insert({
+"price" 	: "Senior",
+"unit"	: 1852,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID10,
+'availableForGuest' : true
+});
+
+Prices.insert({
+"price" 	: "Senior",
+"unit"	: 1852,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID11,
+'availableForGuest' : true
+});
+
+
+//Teenager
+
+Prices.insert({
+"price" 	: "Infant",
+"unit"	: 1158,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID4,
+'availableForGuest' : true
+});
+
+Prices.insert({
+"price" 	: "Infant",
+"unit"	: 1158,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID5,
+'availableForGuest' : true
+});
+
+Prices.insert({
+"price" 	: "Infant",
+"unit"	: 1158,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID10,
+'availableForGuest' : true
+});
+
+Prices.insert({
+"price" 	: "Infant",
+"unit"	: 1158,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID11,
+'availableForGuest' : true
+});
+
+//Child
+
+Prices.insert({
+"price" 	: "Child",
+"unit"	: 0,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID4,
+'availableForGuest' : true
+});
+
+Prices.insert({
+"price" 	: "Child",
+"unit"	: 0,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID5,
+'availableForGuest' : true
+});
+
+Prices.insert({
+"price" 	: "Child",
+"unit"	: 0,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID10,
+'availableForGuest' : true
+});
+
+Prices.insert({
+"price" 	: "Child",
+"unit"	: 0,
+'active' : true,
+'season' : 'winter',
+'productId' : result,
+'tripId' : tripID11,
+'availableForGuest' : true
+});
+
 
 	result = Products.insert({
 		"name" 			: "Viking Sushi Adventure",
@@ -657,37 +1717,41 @@ if(VehiclesCategory.find().count() == 0){
 	VehiclesCategory.insert({
 		"category" 	: "Normal Car",
 		"size"		: [5, 6, 7],
-		"basePrice" : 4080,
+		"basePrice" : 5250,
 		'baseSize'  : 5,
 		'onReduce'  : false,
-		'step'      : 1625
+		'step'      : 1790,
+    'season' : "summer"
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Normal car with cart",
 		"size"		: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-		"basePrice" : 7815,
+		"basePrice" : 9960,
 		'baseSize'  : 10,
 		'onReduce'  : false,
-		'step'      : 1625
+		'step'      : 1790,
+    'season' : "summer"
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Small car",
 		"size"		: [4.5],
-		"basePrice" : 4080,
+		"basePrice" : 5250,
 		'baseSize'  : 4.5,
 		'onReduce'  : false,
-		'step'      : 1625
+		'step'      : 1790,
+    'season' : "summer"
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Motorcycle",
 		"size"		: [2.5],
-		"basePrice" : 2442,
+		"basePrice" : 3120,
 		'baseSize'  : 2.5,
 		'onReduce'  : false,
-		'step'      : 1625
+		'step'      : 1790,
+    'season' : "summer"
 	});
 
 	VehiclesCategory.insert({
@@ -696,16 +1760,18 @@ if(VehiclesCategory.find().count() == 0){
 		"basePrice" : 41074,
 		'baseSize'  : 11,
 		'onReduce'  : true,
-		'step'      : 3734
+		'step'      : 3734,
+    'season' : "summer"
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Normal car with trailler/caravan",
 		"size"		: [10, 11, 12, 13, 14, 15],
-		"basePrice" : 100030,
+		"basePrice" : 12860,
 		'baseSize'  : 10,
 		'onReduce'  : false,
-		'step'      : 1625
+		'step'      : 1790,
+    'season' : "summer"
 	});
 
 	VehiclesCategory.insert({
@@ -714,62 +1780,241 @@ if(VehiclesCategory.find().count() == 0){
 		"basePrice" : 17712,
 		'baseSize'  : 8,
 		'onReduce'  : true,
-		'step'      : 2214
+		'step'      : 2214,
+    'season' : "summer"
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Cart (without car)",
 		"size"		: [2, 3, 4, 5, 6, 7 ,8 , 9],
-		"basePrice" : 3735,
+		"basePrice" : 4710,
 		'baseSize'  : 5,
 		'onReduce'  : false,
-		'step'      : 1625
+		'step'      : 1790,
+    'season' : "summer"
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Large Car / Motor-Home",
-		"size"		: [6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15],
-		"basePrice" : 7575,
-		'baseSize'  : 6,
+		"size"		: [5, 6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15],
+		"basePrice" : 7610,
+		'baseSize'  : 5,
 		'onReduce'  : false,
-		'step'      : 1625
+		'step'      : 1790,
+    'season' : "summer"
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Bus",
 		"size"		: [6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-		"basePrice" : 13080,
+		"basePrice" : 16960,
 		'baseSize'  : 8,
 		'onReduce'  : true,
-		'step'      : 1635
-	});
-
-	VehiclesCategory.insert({
-		"category" 	: "Large Car with cart",
-		"size"		: [11, 12, 13, 14, 15, 16],
-		"basePrice" : 11310,
-		'baseSize'  : 11,
-		'onReduce'  : false,
-		'step'      : 1625
+		'step'      : 2120,
+    'season' : "summer"
 	});
 
 	VehiclesCategory.insert({
 		"category" 	: "Jeep",
 		"size"		: [4, 5, 6, 7],
-		"basePrice" : 4080,
+		"basePrice" : 5250,
 		'baseSize'  : 5,
 		'onReduce'  : false,
-		'step'      : 1625
+		'step'      : 1790,
+    'season' : "summer"
 	});
 
 	VehiclesCategory.insert({
-		"category" 	: "Large Car with trailler / caravan",
-		"size"		: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
-		"basePrice" : 13525,
-		'baseSize'  : 11,
+		"category" 	: "Large Car / Tractor",
+		"size"		: [5, 6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15],
+		"basePrice" : 7610,
+		'baseSize'  : 5,
 		'onReduce'  : false,
-		'step'      : 1625
+		'step'      : 1790,
+    'season'      : 'summer',
 	});
+
+  VehiclesCategory.insert({
+    "category" 	: "Car to Flatey",
+    "size"		: [5, 6, 7],
+    "basePrice" : 7610,
+    'baseSize'  : 5,
+    'onReduce'  : false,
+    'step'      : 1790,
+    'season' : "summer"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Cart to Flatey",
+    "size"		: [5, 6, 7],
+    "basePrice" : 5250,
+    'baseSize'  : 5,
+    'onReduce'  : false,
+    'step'      : 1790,
+    'season' : "summer"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Oil Cart",
+    "size"		: [5],
+    "basePrice" : 8212,
+    'baseSize'  : 5,
+    'onReduce'  : false,
+    'step'      : 1790,
+    'season' : "summer"
+  });
+
+  //Winter Prices
+
+  VehiclesCategory.insert({
+    "category" 	: "Normal Car",
+    "size"		: [5, 6, 7],
+    "basePrice" : 4080,
+    'baseSize'  : 5,
+    'onReduce'  : false,
+    'step'      : 1625,
+    'season' : "winter"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Normal car with cart",
+    "size"		: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+    "basePrice" : 7815,
+    'baseSize'  : 10,
+    'onReduce'  : false,
+    'step'      : 1625,
+    'season' : "winter"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Small car",
+    "size"		: [4.5],
+    "basePrice" : 4080,
+    'baseSize'  : 4.5,
+    'onReduce'  : false,
+    'step'      : 1625,
+    'season' : "winter"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Motorcycle",
+    "size"		: [2.5],
+    "basePrice" : 2442,
+    'baseSize'  : 2.5,
+    'onReduce'  : false,
+    'step'      : 1625,
+    'season' : "winter"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Lorry I/VAT",
+    "size"		: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
+    "basePrice" : 41074,
+    'baseSize'  : 11,
+    'onReduce'  : true,
+    'step'      : 3734,
+    'season' : "winter"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Normal car with trailler/caravan",
+    "size"		: [10, 11, 12, 13, 14, 15],
+    "basePrice" : 10030,
+    'baseSize'  : 10,
+    'onReduce'  : false,
+    'step'      : 1625,
+    'season' : "winter"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Van I/VAT",
+    "size"		: [5, 6, 7 ,8 , 9, 10, 11],
+    "basePrice" : 17712,
+    'baseSize'  : 8,
+    'onReduce'  : true,
+    'step'      : 2214,
+    'season' : "winter"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Cart (without car)",
+    "size"		: [2, 3, 4, 5, 6, 7 ,8 , 9],
+    "basePrice" : 3735,
+    'baseSize'  : 5,
+    'onReduce'  : false,
+    'step'      : 1625,
+    'season' : "winter"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Large Car / Motor-Home",
+    "size"		: [5, 6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15],
+    "basePrice" : 5950,
+    'baseSize'  : 5,
+    'onReduce'  : false,
+    'step'      : 1625,
+    'season' : "winter"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Bus",
+    "size"		: [6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    "basePrice" : 13080,
+    'baseSize'  : 8,
+    'onReduce'  : true,
+    'step'      : 1635,
+    'season' : "winter"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Jeep",
+    "size"		: [4, 5, 6, 7],
+    "basePrice" : 4080,
+    'baseSize'  : 5,
+    'onReduce'  : false,
+    'step'      : 1625,
+    'season' : "winter"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Large Car / Tractor",
+    "size"		: [5, 6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15],
+    "basePrice" : 5950,
+    'baseSize'  : 5,
+    'onReduce'  : false,
+    'step'      : 1625,
+    'season'      : 'winter',
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Car to Flatey",
+    "size"		: [5, 6, 7],
+    "basePrice" : 5950,
+    'baseSize'  : 5,
+    'onReduce'  : false,
+    'step'      : 1625,
+    'season' : "winter"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Cart to Flatey",
+    "size"		: [5, 6, 7,8,9,10],
+    "basePrice" : 4080,
+    'baseSize'  : 5,
+    'onReduce'  : false,
+    'step'      : 1545,
+    'season' : "winter"
+  });
+
+  VehiclesCategory.insert({
+    "category" 	: "Oil Cart",
+    "size"		: [5],
+    "basePrice" : 8212,
+    'baseSize'  : 5,
+    'onReduce'  : false,
+    'step'      : 1790,
+    'season' : "winter"
+  });
 }
 
 customerID = "";
@@ -1562,9 +2807,9 @@ if(PostCodes.find().count() == 0){
 	//////////////////////////////////////////////////
 	// Settings
 
-	Settings.insert({'summerStartDate' : '06/06',
+	Settings.insert({'summerStartDate' : '01/06',
 					 '_id' : 'summer'});
-	Settings.insert({'winterStartDate' : '25/08',
+	Settings.insert({'winterStartDate' : '01/09',
 					 '_id' : 'winter'});
 	Settings.insert({'onlineDiscount' : 10,
 					 '_id' : 'onlineDiscount'});

@@ -410,36 +410,17 @@ currentSeason = function(){
 	//Check the closest month
 	var settingsSummerDate = Settings.findOne({_id : "summer"});
 	var settingsWinterDate = Settings.findOne({_id : "winter"});
-	var summerStartMonth = parseInt(settingsSummerDate ? settingsSummerDate.summerStartDate.split("/")[1] : 0)-1;
-	var winterStartMonth = parseInt(settingsWinterDate ? settingsWinterDate.winterStartDate.split("/")[1] : 0)-1;
-	var temp1 = Math.abs(summerStartMonth - today.getMonth());
-	var temp2 = Math.abs(winterStartMonth - today.getMonth());
-	var compareDate;
-	//if its closer to winter then is going to check from the winter date
-	if (temp1 >= temp2){
-		//if month is equals or bigger its in the same year
-		if (today.getMonth() >= winterStartMonth){
-			compareDate = new Date(today.getFullYear(),parseInt(winterStartMonth),parseInt(winterStartMonth+1));
-		}else{
-			compareDate = new Date(today.getFullYear()+1,parseInt(winterStartMonth),parseInt(winterStartMonth+1));
-		}
-		if(today >= compareDate){
-			return "winter";
-		}else{
-			return "summer";
-		}
+
+	splitWinter = settingsWinterDate.winterStartDate.split("/");
+	splitSummer = settingsSummerDate.summerStartDate.split("/");
+
+	winterDate = new Date(splitWinter[1]+"/"+splitWinter[0]+'/'+today.getFullYear());
+	summerDate = new Date(splitSummer[1]+"/"+splitSummer[0]+'/'+today.getFullYear());
+
+	if(today.getTime() >= summerDate.getTime() && today.getTime() < winterDate.getTime()){
+		return 'summer';
 	}else{
-		//same as for winter
-		if (today.getMonth() >= summerStartMonth){
-			compareDate = new Date(today.getFullYear(),parseInt(summerStartMonth),parseInt(summerStartMonth+1));
-		}else{
-			compareDate = new Date(today.getFullYear()+1,parseInt(summerStartMonth),parseInt(summerStartMonth+1));
-		}
-		if(today >= compareDate){
-			return "summer";
-		}else{
-			return "winter";
-		}
+		return 'winter';
 	}
 };
 
@@ -1408,9 +1389,9 @@ Template.createBook.helpers({
 		if(Session.get("productId")){
 			trip = Trips.findOne({_id : Session.get('tripId')});
 			if(trip.availableDays)
-				return Prices.find({productId : Session.get("productId"), active : true, season: 'both'});
+				return Prices.find({productId : Session.get("productId"), tripId: Session.get("tripId"), active : true, season: 'both'});
 			else
-				return Prices.find({productId : Session.get("productId"), active : true, season: currentSeason()});
+				return Prices.find({productId : Session.get("productId"), tripId: Session.get("tripId"), active : true, season: currentSeason()});
 		}else{
 			throwError('Something Bad Happened, Try Again');
 			return [];
@@ -1512,6 +1493,8 @@ Template.createBook.events({
 		event.preventDefault();
 		Session.set("tripId", event.target.value);
 		$("#slotNumber").val("");
+		Session.set("loadTrips", false);
+		Template.createBook.prices();
 	},
 
 	'change #initials' : function(event){
@@ -2134,7 +2117,7 @@ Template.generalPassagerInfo.rendered = function() {
 
 Template.categoryVehicleBook.helpers({
 	categories : function(){
-		return VehiclesCategory.find();
+		return VehiclesCategory.find({season : currentSeason()});
 	}
 });
 

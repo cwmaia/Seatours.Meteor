@@ -1,6 +1,14 @@
-Template.trips.trips = function(){ 
+Template.trips.trips = function(){
 	return Products.find();
-}
+};
+
+Template.price.getTrip = function(tripId){
+		trip = Trips.findOne(tripId);
+		if(trip)
+			return trip.from+" "+trip.to+" "+trip.hour;
+		else
+			return "";
+};
 
 Template.trips.events({
 	'click li' :function(event) {
@@ -26,7 +34,7 @@ Template.editTrip.available = function(weekDay){
 		if(localStorage.getItem("weekDays").split(',')[weekDay] == "true")
 			return true;
 		else
-			return false;	
+			return false;
 	}else{
 		return false;
 	}
@@ -89,7 +97,7 @@ Template.editTrip.datesEnd = function(season){
 
 
 
-/* 
+/*
 	Edit Trip
 */
 
@@ -105,7 +113,7 @@ Template.editTrip.rendered = function() {
 		$("#productTabs").show();
 	}else{
 		$("#productTabs").hide();
-	} 
+	}
 }
 
 Template.editTrip.boats = function() {
@@ -145,7 +153,7 @@ Template.editTrip.events({
 
 		if(form.checkValidity()){
 
-			
+
 			_product = Products.findOne(Session.get('tripId'));
 			if(_product){
 
@@ -159,12 +167,12 @@ Template.editTrip.events({
 					_product.availableFor = $('#groupTrip').val();
 					_product.imageName = file.name;
 
-					
+
 					Products.update(_product._id, {$set : {
-						name : _product.name, 
-						availableFor: $('#groupTrip').val(), 
-						imageName: file.name, 
-						active : $("#activeProduct").is(":checked"), 
+						name : _product.name,
+						availableFor: $('#groupTrip').val(),
+						imageName: file.name,
+						active : $("#activeProduct").is(":checked"),
 						featured : $('#featuredProduct').is(':checked')
 					}});
 
@@ -177,19 +185,19 @@ Template.editTrip.events({
 				}else{
 					_product.name = form.name.value;
 					_product.availableFor = $('#groupTrip').val();
-					
+
 					Products.update(_product._id, {$set : {
-						name : _product.name, 
-						availableFor: $('#groupTrip').val(), 
-						active : $("#activeProduct").is(":checked"), 
+						name : _product.name,
+						availableFor: $('#groupTrip').val(),
+						active : $("#activeProduct").is(":checked"),
 						featured : $('#featuredProduct').is(':checked')
 					}});
 
 					throwSuccess(_product.name + ' edited');
 					Meteor.Router.to('/trips')
 				}
-				
-				
+
+
 			}else{
 				var reader = new FileReader();
 
@@ -202,21 +210,21 @@ Template.editTrip.events({
 						boatId : form.boat.selectedOptions[0].value,
 						availableFor : $('#groupTrip').val(),
 						imageName : file.name,
-						active : $("#activeProduct").is(":checked"), 
+						active : $("#activeProduct").is(":checked"),
 						featured : $('#featuredProduct').is(':checked')
 					}
-					
+
 					Products.insert(product);
 					Meteor.Router.to('/trips')
 					throwSuccess(product.name + ' saved');
 					Meteor.call('saveFile', e.target.result, file.name);
 				}
-				
+
 				reader.readAsBinaryString(file);
 			}
-			
-				
-			
+
+
+
 		}
 	},
 	'click .weekDayAvailability' : function(event){
@@ -263,12 +271,12 @@ Template.editTrip.events({
 
 			if(season == 'noSeason'){
 				trip.availableDays = {
-					start: $("#dateStart").val(), 
+					start: $("#dateStart").val(),
 					end: $("#dateEnd").val()
 				}
 			}
 
-			
+
 			var tripId;
 			if(product){
 				tripId = Trips.insert(trip);
@@ -297,12 +305,12 @@ Template.editTrip.events({
 
 
 
-			
-			
+
+
 		}else{
 			throwInfo('Please Save the Product Before Add Trips!');
 		}
-			
+
 
 		}
 	},
@@ -331,7 +339,7 @@ Template.editTrip.events({
 			}else{
 				throwInfo('Please Save the Product Before Add Trips!');
 
-			}	
+			}
 		}
 	},
 

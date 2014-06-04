@@ -4,20 +4,20 @@
 			Edit Products/Trips & Prices
 		</h1>
 	</div><!-- /.page-header -->
-	
+
 	<ul class="listing" id="tripsSection">
 		<li id="new">
 			<img src="/images/trip.png" class="new imgListsBoatTrip">
 
 			<h3>Add Trip</h3>
 		</li>
-		
+
 		{{#each trips}}
 			<li id="{{_id}}">
 				<img class="imgListsBoatTrip" src="/images/{{imageName}}">
 
 				<h3>{{name}}</h3>
-			</li>	
+			</li>
 		{{/each}}
 	</ul>
 </template>
@@ -118,7 +118,7 @@
 							<label>To:</label>
 							<input type="text" name="to" id="to" placeholder="To">
 						</div>
-						
+
 						<div>
 							<div class="input-append bootstrap-timepicker">
 								<label class="required">Hour:</label>
@@ -128,7 +128,7 @@
 								</span>
 							</div>
 						</div>
-					
+
 					<label>
 						Weekdays Availability:
 						<fieldset>
@@ -148,42 +148,42 @@
 										<a class="weekDayAvailability" rel="0"><i class='icon-check'></i></a>
 									{{else}}
 										<a class="weekDayAvailability" rel="0"><i class='icon-check-empty'></i></a>
-									{{/if}} 
+									{{/if}}
 								</td>
 								<td class="borderedTripWeek">
 									{{#if available 1}}
 										<a class="weekDayAvailability" rel="1"><i class='icon-check'></i></a>
 									{{else}}
 										<a class="weekDayAvailability" rel="1"><i class='icon-check-empty'></i></a>
-									{{/if}} 
+									{{/if}}
 								</td>
 								<td class="borderedTripWeek">
 									{{#if available 2}}
 										<a class="weekDayAvailability" rel="2"><i class='icon-check'></i></a>
 									{{else}}
 										<a class="weekDayAvailability" rel="2"><i class='icon-check-empty'></i></a>
-									{{/if}} 
+									{{/if}}
 								</td>
 								<td class="borderedTripWeek">
 									{{#if available 3}}
 										<a class="weekDayAvailability" rel="3"><i class='icon-check'></i></a>
 									{{else}}
 										<a class="weekDayAvailability" rel="3"><i class='icon-check-empty'></i></a>
-									{{/if}} 
+									{{/if}}
 								</td>
 								<td class="borderedTripWeek">
 									{{#if available 4}}
 										<a class="weekDayAvailability" rel="4"><i class='icon-check'></i></a>
 									{{else}}
 										<a class="weekDayAvailability" rel="4"><i class='icon-check-empty'></i></a>
-									{{/if}} 
+									{{/if}}
 								</td>
 								<td class="borderedTripWeek">
 									{{#if available 5}}
 										<a class="weekDayAvailability" rel="5"><i class='icon-check'></i></a>
 									{{else}}
 										<a class="weekDayAvailability" rel="5"><i class='icon-check-empty'></i></a>
-									{{/if}} 
+									{{/if}}
 								</td>
 								<td class="borderedTripWeek">
 									{{#if available 6}}
@@ -228,7 +228,7 @@
 							<input type='text' class='datepicker' id='dateEnd'>
 						</div>
 					</div>
-				
+
 					<input type="submit" id="addTrip" class='btn btn-info btn-small' value="Add Trip" />
 				</form>
 
@@ -245,7 +245,7 @@
 							<th>Active</th>
 						</tr>
 					</thead>
-					
+
 					<tbody>
 						{{#each trips}}
 							<tr>
@@ -257,25 +257,25 @@
 								<td>{{datesEnd season}}</td>
 								<td>
 									{{#if availableDayTrip 0 _id}}
-									Su 
+									Su
 									{{/if}}
 									{{#if availableDayTrip 1 _id}}
-									Mo 
+									Mo
 									{{/if}}
 									{{#if availableDayTrip 2 _id}}
-									Tu 
+									Tu
 									{{/if}}
 									{{#if availableDayTrip 3 _id}}
-									We 
+									We
 									{{/if}}
 									{{#if availableDayTrip 4 _id}}
-									Th 
+									Th
 									{{/if}}
 									{{#if availableDayTrip 5 _id}}
-									Fr 
+									Fr
 									{{/if}}
 									{{#if availableDayTrip 6 _id}}
-									Sa 
+									Sa
 									{{/if}}
 								</td>
 								<td>
@@ -286,7 +286,7 @@
 									{{/if}}
 								</td>
 							</tr>
-						{{/each}}	
+						{{/each}}
 					</tbody>
 				</table>
 			</fieldset>
@@ -331,17 +331,18 @@
 					<thead>
 						<tr>
 							<th>Price</th>
+							<th>Trip</th>
 							<th>Per Unit (ISK)</th>
 							<th>Season</th>
 							<th>Available for guests</th>
 							<td>Active</td>
 						</tr>
 					</thead>
-					
+
 					<tbody>
 						{{#each prices}}
 							{{> price}}
-						{{/each}}	
+						{{/each}}
 					</tbody>
 				</table>
 			</fieldset>
@@ -354,6 +355,9 @@
 	<tr>
 		<td>
 			{{price}}
+		</td>
+		<td>
+			{{getTrip tripId}}
 		</td>
 		<td>
 			{{unit}}
@@ -376,5 +380,5 @@
 				<a class="removePrice" id="{{_id}}"><i class='icon-check-empty'></i></a>
 			{{/if}}
 		</td>
-	</tr>	
+	</tr>
 </template>
