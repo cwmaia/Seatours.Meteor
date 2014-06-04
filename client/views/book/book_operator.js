@@ -2508,8 +2508,9 @@ var createBook = function(){
 					bookId : Session.get("bookId")
 				};
 				Notes.insert(noteobj);
+		}else{
+			Notes.remove({bookId : Session.get("bookId"), type : "Stop at flatey"});
 		}
-
 
 		HistoryBook.insert(historyBook);
 
