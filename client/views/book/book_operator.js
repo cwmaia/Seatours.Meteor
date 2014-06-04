@@ -534,6 +534,7 @@ function setCalendarCapacity (calendar) {
 //Template Book Detail
 Template.bookDetail.rendered = function() {
 	Session.set("bookId", null);
+	loadTypeAheadInitials();
 	var oTable = $('#passengers').dataTable({
 		"iDisplayLength": 50,
 		"bServerSide": false,
@@ -557,6 +558,7 @@ Template.bookDetail.rendered = function() {
 		Session.set("haveStatus", false);
 		$(".noStatus").hide();
 	}
+	$("#confirmActionModal").hide();
 	$("#svgBoatDialog").hide();
 	returnPersons();
 };
@@ -779,6 +781,18 @@ Template.bookDetail.events({
 		$("#svgBoatDialog").show();
 	},
 
+	'submit #confirmActionForm' : function(event){
+		event.preventDefault();
+		Session.set("operatorName", $("#initialsResultConfirm").val());
+		if(Session.get("callbackAction") == 'confirmBook'){
+			confirmBook($("#initialsResult").val());
+		}else if(Session.get("callbackAction") == 'invoicesSent'){
+			invoicesSent($("#initialsResult").val());
+		}else if(Session.get("callbackAction") == 'printTicket'){
+			ticketsPrinted($("#initialsResult").val());
+		}
+	},
+
 	'click .editSlot' : function(event){
 		event.preventDefault();
 		$("rect").filter(function(){
@@ -797,6 +811,7 @@ Template.bookDetail.events({
 	},
 
 	'click .close, click .cancel' : function(event){
+		$("#confirmActionModal").hide();
 		$("#headerDialog").text("Current Boat Status");
 		$("#svgBoatDialog").hide();
 		Session.set("bookId", null);
@@ -902,13 +917,9 @@ Template.bookDetail.events({
 		event.preventDefault();
 		var id = event.currentTarget.rel;
 		var book = Books.findOne({'_id' : id});
-		if(book.ticketPrinted){
-			Books.update(id, {$set : {ticketPrinted : false}});
-			throwInfo('Canceled Ticket Printed!');
-		}else{
-			Books.update(id, {$set : {ticketPrinted : true}});
-			throwInfo('Ticket Printed!');
-		}
+		Session.set("confirmBook", book);
+		Session.set("callbackAction", "printTicket");
+		$("#confirmActionModal").show();
 	},
 
 	'click .changeStatusBooking' : function(event) {
@@ -968,13 +979,9 @@ Template.bookDetail.events({
 		event.preventDefault();
 		var id = event.currentTarget.rel;
 		book = Books.findOne({_id : id});
-		if(book.confirm){
-			Books.update(id, {$set : {confirm : false}});
-			throwInfo('Confirm Booking Removed!');
-		}else{
-			Books.update(id, {$set : {confirm : true}});
-			throwInfo('Booking Confirmed!');
-		}
+		Session.set("confirmBook", book);
+		Session.set("callbackAction", "confirmBook");
+		$("#confirmActionModal").show();
 	},
 
 
@@ -982,15 +989,59 @@ Template.bookDetail.events({
 		event.preventDefault();
 		var id = event.currentTarget.rel;
 		book = Books.findOne({_id : id});
-		if(book.invoicesSent){
-			Books.update(id, {$set : {invoicesSent : false}});
-			throwInfo('Invoices Sent Removed!');
-		}else{
-			Books.update(id, {$set : {invoicesSent : true}});
-			throwInfo('Invoices Sent');
-		}
+		Session.set("confirmBook", book);
+		Session.set("callbackAction", "invoicesSent");
+		$("#confirmActionModal").show();
 	}
 });
+
+var confirmBook = function(operatorName){
+	book = Session.get('confirmBook');
+	action = "";
+	if(book.confirm){
+		Books.update(book._id, {$set : {confirm : false}});
+		action = 'Confirm Booking Removed';
+		throwInfo('Confirm Booking Removed!');
+	}else{
+		Books.update(book._id, {$set : {confirm : true}});
+		action = 'Booking Confirmed';
+		throwInfo('Booking Confirmed!');
+	}
+
+	saveHistoryAction(book, action, operatorName);
+};
+
+var invoicesSent = function (operatorName){
+	book = Session.get('confirmBook');
+	action = "";
+	if(book.invoicesSent){
+		Books.update(book._id, {$set : {invoicesSent : false}});
+		action = 'Invoices Sent Removed';
+		throwInfo('Invoices Sent Removed!');
+	}else{
+		Books.update(book._id, {$set : {invoicesSent : true}});
+		action = 'Invoices Sent';
+		throwInfo('Invoices Sent');
+	}
+
+	saveHistoryAction(book, action, operatorName);
+};
+
+var ticketsPrinted = function (operatorName){
+	book = Session.get('confirmBook');
+	action = "";
+	if(book.ticketPrinted){
+		Books.update(book._id, {$set : {ticketPrinted : false}});
+		action = 'Canceled Ticket Printed';
+		throwInfo('Canceled Ticket Printed!');
+	}else{
+		Books.update(book._id, {$set : {ticketPrinted : true}});
+		action = 'Ticket Printed';
+		throwInfo('Ticket Printed!');
+	}
+
+	saveHistoryAction(book, action, operatorName);
+};
 
 
 Template.bookDetail.helpers({
@@ -2439,7 +2490,7 @@ var createBook = function(){
 					created : new Date(),
 					type : 'Stop at flatey',
 					note : "This customer will make a stop at Flatey",
-					bookId : temporaryID
+					bookId : Session.get("bookId")
 				};
 				Notes.insert(noteobj);
 		}
@@ -2886,6 +2937,21 @@ checkSameCarOnBoat = function(vehicleId, productId, tripId, dates){
 		return false;
 	}
 }
+
+function saveHistoryAction(book, action, operator){
+
+	historyBook = {
+		date : new Date(),
+		action : action,
+		operator : operator,
+		bookId : book._id
+
+	};
+
+	HistoryBook.insert(historyBook);
+
+	$("#initialsResult").val("");
+};
 
 function updateCustomer(customerId, vehicle){
 	Customers.update(customerId, { $set : {
