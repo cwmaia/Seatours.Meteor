@@ -555,7 +555,7 @@ Template.bookDetail.rendered = function() {
 		"bServerSide": false,
 		"bDestroy": true
 	});
-	oTable.fnSort( [ [1,'asc'], [5,'desc'] ] );
+	oTable.fnSort( [ [1,'asc'], [6,'desc'] ] );
 
 	var otherTable = $("#waitingListTable").dataTable({
 		"iDisplayLength": 50,
@@ -563,7 +563,16 @@ Template.bookDetail.rendered = function() {
 		"bDestroy": true
 	});
 
-	otherTable.fnSort( [ [1,'asc'], [5,'desc'] ] );
+	otherTable.fnSort( [ [1,'asc'], [6,'desc'] ] );
+
+	var anotherTable = $("#canceledListTable").dataTable({
+		"iDisplayLength": 50,
+		"bServerSide": false,
+		"bDestroy": true
+	});
+
+	anotherTable.fnSort( [ [1,'asc'], [6,'desc'] ] );
+
 	$('#boatSlots').dataTable();
 	product = Products.findOne(Session.get('productId'));
 	if(BoatStatus.findOne({boatId : product.boatId})){

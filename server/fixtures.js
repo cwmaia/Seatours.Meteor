@@ -691,7 +691,7 @@ if(VehiclesCategory.find().count() == 0){
 	});
 
 	VehiclesCategory.insert({
-		"category" 	: "Lorry (price incl. VAT)",
+		"category" 	: "Lorry I/VAT",
 		"size"		: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
 		"basePrice" : 41074,
 		'baseSize'  : 11,
@@ -709,7 +709,7 @@ if(VehiclesCategory.find().count() == 0){
 	});
 
 	VehiclesCategory.insert({
-		"category" 	: "Van (price incl. VAT)",
+		"category" 	: "Van I/VAT",
 		"size"		: [5, 6, 7 ,8 , 9, 10, 11],
 		"basePrice" : 17712,
 		'baseSize'  : 8,
