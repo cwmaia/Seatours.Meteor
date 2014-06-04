@@ -1197,7 +1197,7 @@ Prices.insert({
 
 Prices.insert({
  "price" 	: "Adult",
- "unit"	: 3580,
+ "unit"	: 2985,
  'active' : true,
  'season' : 'summer',
  'productId' : result,
@@ -1207,7 +1207,7 @@ Prices.insert({
 
 Prices.insert({
  "price" 	: "Adult",
- "unit"	: 3580,
+ "unit"	: 2985,
  'active' : true,
  'season' : 'summer',
  'productId' : result,
@@ -1217,7 +1217,7 @@ Prices.insert({
 
 Prices.insert({
  "price" 	: "Adult",
- "unit"	: 3580,
+ "unit"	: 2985,
  'active' : true,
  'season' : 'summer',
  'productId' : result,
@@ -1227,7 +1227,7 @@ Prices.insert({
 
 Prices.insert({
  "price" 	: "Adult",
- "unit"	: 3580,
+ "unit"	: 2985,
  'active' : true,
  'season' : 'summer',
  'productId' : result,

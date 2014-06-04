@@ -186,6 +186,9 @@
 				{{#each bookings}}
 					<tr id='{{_id}}' class='{{lineColor paid bookStatus ticketPrinted}}'>
 						<td>
+							{{#if flatey _id}}
+								<a class="btn btn-mini btn-success"><i class="icon-anchor"></i></a>
+							{{/if}}
 							{{#if notes _id}}
 								<a class="btn btn-mini btn-primary goToNotes" rel="{{_id}}" title="Book Notes"><i class="icon-book"></i></a>
 							{{/if}}
@@ -279,6 +282,9 @@
 				{{#each bookingsWaiting}}
 					<tr id='{{_id}}' class='{{lineColor paid bookStatus ticketPrinted}}'>
 						<td>
+							{{#if flatey _id}}
+								<i class="icon-boat"></i>
+							{{/if}}
 							{{#if notes _id}}
 								<a class="btn btn-mini btn-primary goToNotes" rel="{{_id}}" title="Book Notes"><i class="icon-book"></i></a>
 							{{/if}}
@@ -373,6 +379,9 @@
 				{{#each bookingsCanceled}}
 					<tr id='{{_id}}' class='{{lineColor paid bookStatus ticketPrinted}}'>
 						<td>
+							{{#if flatey _id}}
+								<i class="icon-boat"></i>
+							{{/if}}
 							{{#if notes _id}}
 								<a class="btn btn-mini btn-primary goToNotes" rel="{{_id}}" title="Book Notes"><i class="icon-book"></i></a>
 							{{/if}}

@@ -9,7 +9,10 @@ HistoryBook.allow({
   },
 
   update : function(){
-      return false;
+      if(CheckUser())
+        return true;
+      else
+        return false;
   },
 
   remove : function(){

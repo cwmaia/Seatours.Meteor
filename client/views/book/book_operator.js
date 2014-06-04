@@ -1130,6 +1130,15 @@ var ticketsPrinted = function (operatorName){
 	saveHistoryAction(book, action, operatorName);
 };
 
+Template.bookDetail.flatey = function(id){
+	note = Notes.findOne({bookId : id, type : "Stop at flatey"});
+	console.log(note);
+	if(note)
+		return true;
+	else
+		return false;
+};
+
 
 Template.bookDetail.helpers({
 	boat: function() {
