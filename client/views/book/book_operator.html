@@ -222,6 +222,9 @@
 										<i class='icon-remove'></i>
 									</a>
 								{{else}}
+									<a href="#" class="changeStatusBooking btn btn-mini btn-danger" rel="{{_id}}" title='Cancel Booking'>
+										<i class='icon-remove'></i>
+									</a>
 									<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money"></i></a>
 								{{/if}}
 								<a class="btn btn-mini btn-inverse seeHistory" rel="{{_id}}" title="Book History"><i class="icon-book"></i></a>
@@ -308,10 +311,13 @@
 						<td >
 							{{#if isBookCreated bookStatus}}
 								{{#if paid}}
-									<a href="" class="changeStatusBooking btn btn-mini btn-danger" title='Cancel Booking'>
+									<a href="#" class="changeStatusBooking btn btn-mini btn-danger" rel="{{_id}}" title='Cancel Booking'>
 										<i class='icon-remove'></i>
 									</a>
 								{{else}}
+									<a href="#" class="changeStatusBooking btn btn-mini btn-danger" rel="{{_id}}" title='Cancel Booking'>
+										<i class='icon-remove'></i>
+									</a>
 									<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money"></i></a>
 								{{/if}}
 								<a class="btn btn-mini btn-inverse seeHistory" rel="{{_id}}" title="Book History"><i class="icon-book"></i></a>

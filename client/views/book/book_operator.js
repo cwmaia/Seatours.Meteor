@@ -976,7 +976,7 @@ Template.bookDetail.events({
 		var a = event.currentTarget;
 		bootbox.confirm('Are you sure? Clicking this will make the Booking Canceled', function(result){
 			if(result){
-				var book = Books.findOne({'_id' : a.rel});
+				var book = Books.findOne(a.rel);
 				Session.set("confirmBook", book);
 				Session.set("callbackAction", "cancelBook");
 				$("#confirmActionModal").show();
@@ -1015,7 +1015,7 @@ var changeSlot = function(operatorName){
 	$('.confirmChangeSlot').remove();
 	$("#slotsToUpdate").val("");
 
-	saveHistoryAction(book, "Change Slot --- FROM: "+book.slot + " TO: "+newSlots, operatorName);
+	saveHistoryAction(book, "Change Slot: FROM: "+book.slot + "--- TO: "+newSlots, operatorName);
 
 	Session.set("bookId", null);
 	Session.set("changeSlots", null);
@@ -1068,8 +1068,7 @@ var cancelBook = function(operatorName){
 	};
 	Transactions.insert(transactionRefund);
 
-	throwInfo("Cancelation completed! Customer need to be refunded in "+totalTransactions+"ISK. *Cancelation fee already included");
-
+	Books.update(book._id, {$set : {bookStatus: 'Canceled'}});
 	saveHistoryAction(book, "Book Canceled", operatorName);
 };
 
@@ -1087,8 +1086,6 @@ var quickPay = function(operatorName){
 		};
 	Transactions.insert(transaction);
 	Books.update(currentBooking._id, {$set : {'paid' : true}});
-
-	Notes.insert(note);
 
 	saveHistoryAction(currentBooking, "Marked as Paid", operatorName);
 };
