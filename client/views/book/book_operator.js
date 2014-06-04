@@ -108,7 +108,8 @@ var updateSVGFill = function(dates, tripId){
 			var slot = books[i].slot.split("-");
 			for (var j = slot.length - 1; j >= 0; j--) {
 				var svgElement = document.getElementById("svg_"+slot[j]);
-				svgElement.setAttribute("fill", "#808080");
+				if(svgElement)
+					svgElement.setAttribute("fill", "#808080");
 			}
 		}
 	}
@@ -120,7 +121,8 @@ var updateSVGFill = function(dates, tripId){
 		var slotEdit = book.slot.split("-");
 		for(i = 0; i < slotEdit.length; i++){
 			var svgElementEdit = document.getElementById("svg_"+slotEdit[i]);
-			svgElementEdit.setAttribute("fill", "#c7c7c7");
+			if(svgElementEdit)
+				svgElementEdit.setAttribute("fill", "#c7c7c7");
 		}
 	}
 
