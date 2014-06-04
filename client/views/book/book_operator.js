@@ -640,6 +640,54 @@ Template.bookDetail.totalPersons = function(){
 	return persons;
 };
 
+Template.bookDetail.totalPersonsWaiting = function(){
+	var dates = getSelectedAndNextDay();
+	var trip = Trips.findOne(Session.get('tripId'));
+
+	var persons = 0;
+
+	books = Books.find({
+		dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' : Session.get('productId'),
+		'trip._id' : trip._id,
+		'slot' : /.*W.*/
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		for (var j = 0; j < books[i].prices.length; j++) {
+			if(books[i].prices[j].price != "Operator Fee")
+				persons = parseInt(persons + parseInt(books[i].prices[j].persons));
+		}
+	}
+
+	return persons;
+};
+
+
+Template.bookDetail.totalPersonsCanceled = function(){
+	var dates = getSelectedAndNextDay();
+	var trip = Trips.findOne(Session.get('tripId'));
+
+	var persons = 0;
+
+	books = Books.find({
+		dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
+		'product._id' : Session.get('productId'),
+		'trip._id' : trip._id,
+		bookStatus : "Canceled"
+	}).fetch();
+
+	for (var i = 0; i < books.length; i++) {
+		for (var j = 0; j < books[i].prices.length; j++) {
+			if(books[i].prices[j].price != "Operator Fee")
+				persons = parseInt(persons + parseInt(books[i].prices[j].persons));
+		}
+	}
+
+	return persons;
+};
+
+
 Template.createBook.dateSelected = function(){
 	return !Session.get('dateSelected');
 };
@@ -805,6 +853,12 @@ Template.bookDetail.events({
 			invoicesSent($("#initialsResult").val());
 		}else if(Session.get("callbackAction") == 'printTicket'){
 			ticketsPrinted($("#initialsResult").val());
+		}else if(Session.get("callbackAction") == 'quickPay'){
+			quickPay($("#initialsResult").val());
+		}else if(Session.get("callbackAction") == 'cancelBook'){
+			cancelBook($("#initialsResult").val());
+		}else if(Session.get("callbackAction") == 'changeSlot'){
+			changeSlot($("#initialsResult").val());
 		}
 	},
 
@@ -836,14 +890,10 @@ Template.bookDetail.events({
 	},
 
 	'click .confirmChangeSlot' : function(event){
-		$("#headerDialog").text("Current Boat Status");
-		Books.update(Session.get("bookId"), {$set : {slot : $("#slotsToUpdate").val()}});
-		throwSuccess("Slots Changed!");
+		event.preventDefault();
+		Session.set("callbackAction", "changeSlot");
+		$("#confirmActionModal").show();
 		$("#svgBoatDialog").hide();
-		Session.set("bookId", null);
-		Session.set("changeSlots", null);
-		$('.confirmChangeSlot').remove();
-		$("#slotsToUpdate").val("");
 	},
 
 	'click rect' : function(event){
@@ -900,32 +950,16 @@ Template.bookDetail.events({
 	},
 
 	'click .quickPay' : function(event){
-		if(confirm('Are you sure? Clicking this will make the Booking Paid')){
-			event.preventDefault();
-			var a = event.currentTarget;
-			var bookId = a.rel;
-			var currentBooking = Books.findOne({'_id' : bookId});
-			var vendor = Meteor.user().profile.name;
-			var transaction = {
-					'bookId' : currentBooking._id,
-					'date' : new Date(),
-					'status' : 'Given',
-					'amount' : parseInt(currentBooking.totalISK),
-					'detail' : "Quick Paid",
-					'vendor' : vendor,
-					'type' : 'Office Cash'
-				};
-			Transactions.insert(transaction);
-			Books.update(currentBooking._id, {$set : {'paid' : true}});
-			var note = {
-					created : new Date(),
-					type : 'Quick Pay Note',
-					note : vendor + " marked the booking ID#"+ currentBooking.refNumber + " as paid",
-					bookId : Session.get('currentBooking')
-			};
-
-			Notes.insert(note);
-		}
+		event.preventDefault();
+		var a = event.currentTarget;
+		bootbox.confirm("Are you sure? Clicking this will make the Booking Paid", function(result){
+			if(result){
+				var book = Books.findOne({'_id' : a.rel});
+				Session.set("confirmBook", book);
+				Session.set("callbackAction", "quickPay");
+				$("#confirmActionModal").show();
+			}
+		});
 	},
 
 	'click .printTicket' : function(event){
@@ -938,56 +972,16 @@ Template.bookDetail.events({
 	},
 
 	'click .changeStatusBooking' : function(event) {
-		if(confirm('Are you sure? Clicking this will make the Booking Cancelled')){
-		var id = $(event.currentTarget).closest('tr').attr('id'),
-		book = Books.findOne(id);
-		var vendor = Meteor.user().profile.name;
-
-		var dateToday = new Date();
-			var dateTodayFixed = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate(), 0,0,0);
-			var dateOfBookingFixed = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), book.dateOfBooking.getDate(),0,0,0);
-			var aDayPreviousBookingDate = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), (book.dateOfBooking.getDate() -1), 0,0,0);
-			var totalISK = Books.findOne({"_id" : id}).totalISK;
-
-			var valueFees;
-			if(dateTodayFixed >= aDayPreviousBookingDate){
-				valueFees = -3000;
-			}else{
-				valueFees = parseInt(totalISK * 0.05);
-				valueFees = 0-valueFees;
+		event.preventDefault();
+		var a = event.currentTarget;
+		bootbox.confirm('Are you sure? Clicking this will make the Booking Canceled', function(result){
+			if(result){
+				var book = Books.findOne({'_id' : a.rel});
+				Session.set("confirmBook", book);
+				Session.set("callbackAction", "cancelBook");
+				$("#confirmActionModal").show();
 			}
-			var transaction = {
-					'bookId' : id,
-					'date' : dateToday,
-					'status' : 'Given',
-					'amount' : valueFees,
-					'detail' : "Cancelation Fee",
-					'vendor' : vendor,
-					'type' : 'CancelationFine'
-			};
-			Transactions.insert(transaction);
-
-
-			var thisBookingTransactions = Transactions.find({'bookId' : id}).fetch();
-			var totalTransactions = 0;
-			for (var i = thisBookingTransactions.length - 1; i >= 0; i--) {
-				totalTransactions = parseInt(totalTransactions) + parseInt(thisBookingTransactions[i].amount);
-			}
-			Books.update(id, {$set : {bookStatus: 'Canceled'}});
-
-			var transactionRefund = {
-					'bookId' : id,
-					'date' : dateToday,
-					'status' : 'Given',
-					'amount' :  parseInt(book.totalISK) + valueFees,
-					'detail' : "Refund provinent from a Cancelation",
-					'vendor' : vendor,
-					'type' : 'Refund'
-			};
-			Transactions.insert(transactionRefund);
-
-			throwInfo("Cancelation completed! Customer need to be refunded in "+totalTransactions+"ISK. *Cancelation fee already included");
-		}
+		});
 	},
 
 	'click .confirmBook' :function(event) {
@@ -1009,6 +1003,97 @@ Template.bookDetail.events({
 		$("#confirmActionModal").show();
 	}
 });
+
+var changeSlot = function(operatorName){
+	var book = Books.findOne(Session.get("bookId"));
+	var newSlots = $("#slotsToUpdate").val();
+
+	Books.update(Session.get("bookId"), {$set : {slot : $("#slotsToUpdate").val()}});
+	throwSuccess("Slots Changed!");
+	$("#headerDialog").text("Current Boat Status");
+
+	$('.confirmChangeSlot').remove();
+	$("#slotsToUpdate").val("");
+
+	saveHistoryAction(book, "Change Slot --- FROM: "+book.slot + " TO: "+newSlots, operatorName);
+
+	Session.set("bookId", null);
+	Session.set("changeSlots", null);
+};
+
+var cancelBook = function(operatorName){
+	book = Session.get("confirmBook");
+	var vendor = Meteor.user().profile.name;
+
+	var dateToday = new Date();
+	var dateTodayFixed = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate(), 0,0,0);
+	var dateOfBookingFixed = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), book.dateOfBooking.getDate(),0,0,0);
+	var aDayPreviousBookingDate = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), (book.dateOfBooking.getDate() -1), 0,0,0);
+	var totalISK = book.totalISK;
+
+	var valueFees;
+	if(dateTodayFixed >= aDayPreviousBookingDate){
+		valueFees = -3000;
+	}else{
+		valueFees = parseInt(totalISK * 0.05);
+		valueFees = 0-valueFees;
+	}
+	var transaction = {
+			'bookId' : book._id,
+			'date' : dateToday,
+			'status' : 'Given',
+			'amount' : valueFees,
+			'detail' : "Cancelation Fee",
+			'vendor' : vendor,
+			'type' : 'CancelationFine'
+	};
+	Transactions.insert(transaction);
+
+
+	var thisBookingTransactions = Transactions.find({'bookId' : book._id}).fetch();
+	var totalTransactions = 0;
+	for (var i = thisBookingTransactions.length - 1; i >= 0; i--) {
+		totalTransactions = parseInt(totalTransactions) + parseInt(thisBookingTransactions[i].amount);
+	}
+	Books.update(book._id, {$set : {bookStatus: 'Canceled'}});
+
+	var transactionRefund = {
+			'bookId' : book._id,
+			'date' : dateToday,
+			'status' : 'Given',
+			'amount' :  parseInt(book.totalISK) + valueFees,
+			'detail' : "Refund provinent from a Cancelation",
+			'vendor' : vendor,
+			'type' : 'Refund'
+	};
+	Transactions.insert(transactionRefund);
+
+	throwInfo("Cancelation completed! Customer need to be refunded in "+totalTransactions+"ISK. *Cancelation fee already included");
+
+	saveHistoryAction(book, "Book Canceled", operatorName);
+};
+
+var quickPay = function(operatorName){
+	var currentBooking = Session.get("confirmBook");
+	var vendor = Meteor.user().profile.name;
+	var transaction = {
+			'bookId' : currentBooking._id,
+			'date' : new Date(),
+			'status' : 'Given',
+			'amount' : parseInt(currentBooking.totalISK),
+			'detail' : "Quick Paid",
+			'vendor' : vendor,
+			'type' : 'Office Cash'
+		};
+	Transactions.insert(transaction);
+	Books.update(currentBooking._id, {$set : {'paid' : true}});
+
+	Notes.insert(note);
+
+	saveHistoryAction(currentBooking, "Marked as Paid", operatorName);
+};
+
+
 
 var confirmBook = function(operatorName){
 	book = Session.get('confirmBook');
@@ -1095,7 +1180,8 @@ Template.bookDetail.helpers({
 		});
 	},
 
-	totalPersonsWaiting : function(){
+	bookingsCanceled : function(){
+
 		var date = new Date(localStorage.getItem('date')),
 		trip = Trips.findOne(Session.get('tripId')),
 		currentDate = new Date(localStorage.getItem('date'));
@@ -1108,8 +1194,8 @@ Template.bookDetail.helpers({
 			dateOfBooking : {$gte: currentDate, $lt: date},
 			'product._id' : Session.get('productId'),
 			'trip._id' : trip._id,
-			$or : [{'pendingApproval': true}, {slot : /.*W.*/}]
-		}).count();
+			'bookStatus': 'Canceled'
+		});
 	},
 
 	bookings : function(){
@@ -1121,16 +1207,13 @@ Template.bookDetail.helpers({
 			setDate(getDate() + 1);
 		}
 
-		books = Books.find({
+		return Books.find({
 			dateOfBooking : {$gte: currentDate, $lt: date},
 			'product._id' : Session.get('productId'),
 			'trip._id' : trip._id,
-			slot : {$not : /.*W.*/ }
-		}).fetch();
-
-		Session.set("books", books);
-
-		return books;
+			slot : {$not : /.*W.*/ },
+			bookStatus : {$not : "Canceled"}
+		});
 	},
 
 	isBookCreated : function(status) {
@@ -1356,6 +1439,12 @@ Template.createBook.rendered = function(){
 	if(Session.get('isEditing')){
 		var customer = Customers.findOne({_id: Session.get("customerId")});
 		var book = Books.findOne(Session.get("bookId"));
+
+		note = Notes.findOne({bookId : Session.get("bookId"), type : "Stop at flatey"});
+
+		if(note)
+			$("#stopAtFlateyInput").attr("checked", true);
+
 		$('#customerId').val(customer._id);
 		$('#title').val(customer.title);
 		$('#socialSecurityNumber').val(customer.socialSecurityNumber);
@@ -1693,12 +1782,6 @@ Template.generalButtons.events({
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
-				//LUCAS AQUI VC DEVE MOSTRAR UM ALERT BOX COM UM IF
-				//INFORMANDO SOBRE A MULTA (SE HOUVER MULTA)
-				//SE ELE ACEITAR VC PASSA PARA OS METODOS ABAIXO E CRIA A MULTA
-				//QUE NEM VC FEZ NO CANCELAR
-				//SE NOPS VC N FAZ NADA
-				//
 				createBook();
 				throwSuccess("Book updated");
 				Session.set("isEditing", false);
@@ -2463,20 +2546,40 @@ var createBook = function(){
 
 		var newDate = new Date(arrayOfDate[1].replace('0', '')+"/"+arrayOfDate[0].replace('0', '')+"/"+arrayOfDate[2]);
 
-		Books.update(Session.get("bookId"), {$set : {
-			"dateOfBooking" : newDate,
-			"prices" : book.prices,
-			"totalISK": book.totalISK,
-			"trip.from" : book.trip.from,
-			"trip.to" : book.trip.to,
-			"trip.hour" : book.trip.hour,
-			"slot" : $("#slotNumber").val(),
-			"vehicle.category" : book.vehicle.category,
-			"vehicle.size" : book.vehicle.size,
-			"vehicle.totalCost" : book.vehicle.totalCost,
-			"vehicle.vehicleName" : book.vehicle.vehicleName,
-			"vehicle.vehiclePlate" : book.vehicle.vehiclePlate
-		}});
+		bookEdited = Books.find(Session.get("bookId"));
+
+		if(bookEdited.bookStatus == "Canceled"){
+			Books.update(Session.get("bookId"), {$set : {
+				"dateOfBooking" : newDate,
+				"prices" : book.prices,
+				"totalISK": book.totalISK,
+				"trip.from" : book.trip.from,
+				"trip.to" : book.trip.to,
+				"trip.hour" : book.trip.hour,
+				"slot" : $("#slotNumber").val(),
+				"vehicle.category" : book.vehicle.category,
+				"vehicle.size" : book.vehicle.size,
+				"vehicle.totalCost" : book.vehicle.totalCost,
+				"vehicle.vehicleName" : book.vehicle.vehicleName,
+				"vehicle.vehiclePlate" : book.vehicle.vehiclePlate
+			}});
+		}else{
+			Books.update(Session.get("bookId"), {$set : {
+				"dateOfBooking" : newDate,
+				"prices" : book.prices,
+				"totalISK": book.totalISK,
+				"trip.from" : book.trip.from,
+				"trip.to" : book.trip.to,
+				"trip.hour" : book.trip.hour,
+				"bookStatus" : 'Booked',
+				"slot" : $("#slotNumber").val(),
+				"vehicle.category" : book.vehicle.category,
+				"vehicle.size" : book.vehicle.size,
+				"vehicle.totalCost" : book.vehicle.totalCost,
+				"vehicle.vehicleName" : book.vehicle.vehicleName,
+				"vehicle.vehiclePlate" : book.vehicle.vehiclePlate
+			}});
+		}
 
 		note = $('#notes').val();
 		if(note){
@@ -2509,7 +2612,10 @@ var createBook = function(){
 				};
 				Notes.insert(noteobj);
 		}else{
-			Notes.remove({bookId : Session.get("bookId"), type : "Stop at flatey"});
+			notes = Notes.find({bookId : Session.get("bookId"), type : "Stop at flatey"}).fetch();
+			for(var i = 0; i < notes.length; i++){
+				Notes.remove(notes[i]._id);
+			}
 		}
 
 		HistoryBook.insert(historyBook);
@@ -2967,6 +3073,8 @@ function saveHistoryAction(book, action, operator){
 	HistoryBook.insert(historyBook);
 
 	$("#initialsResult").val("");
+	Session.set("confirmBook", null);
+	Session.set("callbackAction", null);
 };
 
 function updateCustomer(customerId, vehicle){
