@@ -2518,12 +2518,9 @@ var createBook = function(){
 		}
 	}
 
-
-
 	if(SaveVehicle){
 		Vehicles.insert(vehicle);
 	}
-
 
 	var prices = [];
 
@@ -2541,17 +2538,15 @@ var createBook = function(){
 		}
 	});
 
-	if ((isOperator() && ($('#includeOperatorFee').val() == "true")) || (! isOperator())) {
+	if ((isOperator() && ($('#includeOperatorFee').val() == "true") && vehicle) || (! isOperator())) {
 		var operatorPrice = {
-			"price" : "Operation Fee",
-			"perUnit" : Settings.findOne({_id: 'operatorFee'}).operatorFee,
+			"price" : "Confirmation Fee",
+			"perUnit" : calcConfirmationFee(vehicle.category),
 			"persons" : "1",
-			"sum" : Settings.findOne({_id: 'operatorFee'}).operatorFee
+			"sum" : calcConfirmationFee(vehicle.category)
 		};
 		prices.push(operatorPrice);
 	}
-
-
 
 	book.prices = prices;
 	book.paid = false;
@@ -3110,4 +3105,20 @@ function updateCustomer(customerId, vehicle){
 		"lastUsedCar" : vehicle
 		}
 	});
+}
+
+function calcConfirmationFee(category){
+	var fee = 5000;
+
+	if(category.toLowerCase() == 'normal car' ||
+		category.toLowerCase() == 'small car' ||
+		category.toLowerCase() == 'cart (without car)' ||
+		category.toLowerCase() == 'jeep' ||
+		category.toLowerCase() == 'car to flatey' ||
+		category.toLowerCase() == 'cart to flatey' ||
+		category.toLowerCase() == 'motorcycle'){
+			fee = 3000;
+		}
+
+	return fee;
 }

@@ -10,6 +10,15 @@ Template.cart.hasItems = function(){
 	}
 }
 
+Template.items.flatey = function(id){
+	note = Notes.findOne({bookId : id, type : "Stop at flatey"});
+	console.log(note);
+	if(note)
+		return true;
+	else
+		return false;
+};
+
 Template.cart.rendered = function(){
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
   	$(".formattedAsMoney").maskMoney('mask');

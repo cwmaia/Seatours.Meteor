@@ -25,7 +25,7 @@
 						{{>items}}
 					{{/each}}
 				{{/if}}
-			{{/if}}	
+			{{/if}}
 		</tbody>
 		<tfoot>
 			<td>Total</td>
@@ -51,26 +51,31 @@
 		<input type='hidden' id='{{totalISK}}' class='unitPrice'>
 		<td style='width: 70%'>
 			{{product.name}} - {{dateNoTimeZone dateOfBooking}}
-			</br> 
-			<b>From</b> 
+			</br>
+			<b>From</b>
 			{{trip.from}} {{#if hasTo}}<b>To</b> {{trip.to}}{{/if}} <br/><b>Hour</b> {{trip.hour}}
 			</br>
 			</br>
 			{{customerName customerId}}
 			</br>
 			</br>
+			{{#if flatey _id}}
+				<b>This customer will make a stop at Flatey</b>
+				</br>
+				</br>
+			{{/if}}
 			{{#each prices}}{{price}} ( <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{perUnit}}"> ISK) X {{persons}} =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{sum}}"> ISK</br>{{/each}}</br>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{vehicle.totalCost}}"> {{/if}}
 		</td>
 		{{#if notFinish}}
 			<td style='width: 5%; text-align: center'><a class='remove btn btn-mini btn-danger' rel='{{_id}}'><i class='icon-remove'></i></a>
 			{{#if customer}}
-			{{else}}	
+			{{else}}
 			<a class='editBook btn btn-mini btn-info' rel='{{_id}}'><i class='icon-edit'></i></a></td>
 			{{/if}}
 		{{/if}}
-		<td style='width: 10%; text-align: center'> 
+		<td style='width: 10%; text-align: center'>
 			<span id='{{_id}}' class='calcTotal'>
-				<input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{totalISK}}" /> 
+				<input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{totalISK}}" />
 			</span>
 			<br/>
 			{{#if hasDiscount}}
