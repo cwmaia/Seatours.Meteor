@@ -1825,7 +1825,7 @@ if(VehiclesCategory.find().count() == 0){
 	});
 
 	VehiclesCategory.insert({
-		"category" 	: "Extra Long Car / Tractor",
+		"category" 	: "Extra Large Car / Tractor",
 		"size"		: [5, 6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15],
 		"basePrice" : 7610,
 		'baseSize'  : 5,
@@ -1977,7 +1977,7 @@ if(VehiclesCategory.find().count() == 0){
   });
 
   VehiclesCategory.insert({
-    "category" 	: "Extra Long Car / Tractor",
+    "category" 	: "Extra Large Car / Tractor",
     "size"		: [5, 6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15],
     "basePrice" : 5950,
     'baseSize'  : 5,

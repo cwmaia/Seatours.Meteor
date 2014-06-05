@@ -2233,7 +2233,7 @@ Template.categoryVehicleBook.events({
 			Session.set('categoryId', id);
 			var loop = Math.ceil(category.baseSize/5);
 			if(!isCustomer()){
-				if(loop == 1){
+				if(loop == 1 && !checkPutManually(category.category)){
 					$("#slotNumber").val("");
 					$("#slotNumber").val(getFirstSlotAvailable());
 					Session.set("previousSlots", $("#slotNumber").val());
@@ -3121,4 +3121,20 @@ function calcConfirmationFee(category){
 		}
 
 	return fee;
+}
+
+function checkPutManually(category){
+	var putManually = false;
+
+	console.log(category);
+
+	if(category.toLowerCase() == 'large car / motor-home' ||
+		category.toLowerCase() == 'motorcycle' ||
+		category.toLowerCase() == 'extra large car / tractor'){
+			putManually = true;
+		}
+
+	console.log(putManually);
+
+	return putManually;
 }
