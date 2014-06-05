@@ -48,10 +48,6 @@
 										<th>Total Passagers</th>
 										<th>Payment Status</th>
 										<th>Status</th>
-										<th>Confirmed / No Show</th>
-										<th>Invoices Sent</th>
-										<th>Ticket Printed</th>
-										<th style="min-width: 60px;">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -73,38 +69,6 @@
 										<td>{{totalPassagers _id}}</td>
 										<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
 										<td>{{bookStatus}}</td>
-										<td>
-											{{#if confirm}}
-												<a class="confirmBook" rel="{{_id}}"><i class='icon-check'></i></a>
-											{{else}}
-												<a class="confirmBook" rel="{{_id}}"><i class='icon-check-empty'></i></a>
-											{{/if}}
-										</td>
-										<td>
-											{{#if invoicesSent}}
-												<a class="invoicesSent" rel="{{_id}}"><i class='icon-check'></i></a>
-											{{else}}
-												<a class="invoicesSent" rel="{{_id}}"><i class='icon-check-empty'></i></a>
-											{{/if}}
-										</td>
-										<td>
-											{{#if ticketNotPrinted _id}}
-													<a class="printTicket" rel="{{_id}}"><i class='icon-check-empty'></i></a>
-											{{else}}
-												<a class="printTicket" rel="{{_id}}"><i class='icon-check'></i></a>
-											{{/if}}
-										</td>
-										<td>
-										{{#if isBookCreated bookStatus}}
-											{{#if paid}}
-												<a href="" class="changeStatusBooking btn btn-mini btn-danger" rel="{{_id}}" title='Cancel Booking'>
-													<i class='icon-remove'></i>
-												</a>
-											{{else}}
-												<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money bigger-120"></i></a>
-											{{/if}}
-										{{/if}}
-										</td>
 									</tr>
 								{{/each}}
 								</tbody>

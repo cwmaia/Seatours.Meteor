@@ -160,7 +160,7 @@ Template.cart.events({
 
 		throwSuccess(books.length+' Bookings Created!');
 		Session.set("createdBooks", createdBooks);
-		Meteor.Router.to("/finishBooking");
+		Meteor.Router.to("/bookOperator");
 		}
 
 
