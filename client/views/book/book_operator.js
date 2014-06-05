@@ -407,12 +407,12 @@ Template.bookOperator.helpers({
 
 currentSeason = function(){
 	var today = localStorage.getItem('date') ? new Date(localStorage.getItem('date')) : new Date();
-	//Check the closest month
-	var settingsSummerDate = Settings.findOne({_id : "summer"});
-	var settingsWinterDate = Settings.findOne({_id : "winter"});
 
-	splitWinter = settingsWinterDate.winterStartDate.split("/");
-	splitSummer = settingsSummerDate.summerStartDate.split("/");
+	settingsWinterDate = Settings.findOne("winter").winterStartDate;
+	settingsSummerDate = Settings.findOne("summer").summerStartDate;
+
+	splitWinter = settingsWinterDate.split("/");
+	splitSummer = settingsSummerDate.split("/");
 
 	winterDate = new Date(splitWinter[1]+"/"+splitWinter[0]+'/'+today.getFullYear());
 	summerDate = new Date(splitSummer[1]+"/"+splitSummer[0]+'/'+today.getFullYear());
@@ -1172,7 +1172,8 @@ Template.bookDetail.helpers({
 			dateOfBooking : {$gte: currentDate, $lt: date},
 			'product._id' : Session.get('productId'),
 			'trip._id' : trip._id,
-			$or : [{'pendingApproval': true}, {slot : /.*W.*/}]
+			$or : [{'pendingApproval': true}, {slot : /.*W.*/}],
+			bookStatus : {$not : "Canceled"}
 		});
 	},
 
@@ -1530,6 +1531,9 @@ Template.createBook.events({
 	},
 
 	'click rect' : function(event){
+		if(Session.get("previousSlots"))
+			removePrevious(Session.get("previousSlots"));
+
 		var id = event.target.id;
 		svgElement = document.getElementById(id);
 		var stroke = svgElement.getAttribute("stroke");
@@ -1617,6 +1621,7 @@ Template.createBook.events({
 	'click .cancel, click .close' : function(){
 		$("#statusDialog").hide();
 		$("#svgBoatDialogCreate").hide();
+		Session.set("previousSlots", $("#slotNumber").val());
 	},
 
 	'click .searchApisIs' : function(){
@@ -1647,6 +1652,18 @@ Template.createBook.events({
 		}
 	}
 });
+
+function removePrevious(slots){
+	var textSplit = slots.split("-");
+
+	for (var i = textSplit.length - 1; i >= 0; i--) {
+		svgElement = document.getElementById("svg_"+textSplit[i]);
+		svgElement.setAttribute("stroke","#000000");
+	}
+
+	$("#slotNumber").val("");
+	Session.set("previousSlots", null);
+}
 
 Template.productPrices.events({
 	"change input" : function(event){
@@ -1806,7 +1823,7 @@ Template.generalButtons.events({
 		}else if($("#categories").val() != "" && $("#size").val() != null && $("#vehicle").val() == ""){
 			bootbox.alert("Please inform the vehicle name");
 		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
-				bootbox.alert("This car is already booked to this trip");
+			bootbox.alert("This car is already booked to this trip");
 		}else if(!isCustomer() && $("#initialsResult").val() == ""){
 			bootbox.alert("Please Inform the Operator Initials");
 		}else{
@@ -2219,6 +2236,7 @@ Template.categoryVehicleBook.events({
 				if(loop == 1){
 					$("#slotNumber").val("");
 					$("#slotNumber").val(getFirstSlotAvailable());
+					Session.set("previousSlots", $("#slotNumber").val());
 				}else{
 					$("#slotNumber").val("");
 				}

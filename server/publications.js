@@ -439,6 +439,13 @@ Meteor.methods({
 
   getInitials : function(){
     return Initials.find().fetch();
-  }
+  },
 
+  getSeasonDates : function(){
+    var winterDate = Settings.findOne({_id : "winter"}).winterStartDate;
+    var summerDate = Settings.findOne({_id : "summer"}).summerStartDate;
+
+    return {winterDate : winterDate, summerDate : summerDate};
+
+  }
 });

@@ -485,7 +485,7 @@ if(Products.find().count() == 0){
   //Teenager
 
   Prices.insert({
-    "price" 	: "Infant",
+    "price" 	: "Teenager",
     "unit"	: 2625,
     'active' : true,
     'season' : 'summer',
@@ -495,7 +495,7 @@ if(Products.find().count() == 0){
   });
 
   Prices.insert({
-    "price" 	: "Infant",
+    "price" 	: "Teenager",
     "unit"	: 2625,
     'active' : true,
     'season' : 'summer',
@@ -505,7 +505,7 @@ if(Products.find().count() == 0){
   });
 
   Prices.insert({
-    "price" 	: "Infant",
+    "price" 	: "Teenager",
     "unit"	: 2625,
     'active' : true,
     'season' : 'summer',
@@ -515,7 +515,7 @@ if(Products.find().count() == 0){
   });
 
   Prices.insert({
-    "price" 	: "Infant",
+    "price" 	: "Teenager",
     "unit"	: 2625,
     'active' : true,
     'season' : 'summer',
@@ -525,7 +525,7 @@ if(Products.find().count() == 0){
   });
 
   Prices.insert({
-    "price" 	: "Infant",
+    "price" 	: "Teenager",
     "unit"	: 2625,
     'active' : true,
     'season' : 'summer',
@@ -535,7 +535,7 @@ if(Products.find().count() == 0){
   });
 
   Prices.insert({
-    "price" 	: "Infant",
+    "price" 	: "Teenager",
     "unit"	: 2625,
     'active' : true,
     'season' : 'summer',
@@ -733,7 +733,7 @@ if(Products.find().count() == 0){
  //Teenager
 
  Prices.insert({
-   "price" 	: "Infant",
+   "price" 	: "Teenager",
    "unit"	: 2040,
    'active' : true,
    'season' : 'winter',
@@ -743,7 +743,7 @@ if(Products.find().count() == 0){
  });
 
  Prices.insert({
-   "price" 	: "Infant",
+   "price" 	: "Teenager",
    "unit"	: 2040,
    'active' : true,
    'season' : 'winter',
@@ -753,7 +753,7 @@ if(Products.find().count() == 0){
  });
 
  Prices.insert({
-   "price" 	: "Infant",
+   "price" 	: "Teenager",
    "unit"	: 2040,
    'active' : true,
    'season' : 'winter',
@@ -763,7 +763,7 @@ if(Products.find().count() == 0){
  });
 
  Prices.insert({
-   "price" 	: "Infant",
+   "price" 	: "Teenager",
    "unit"	: 2040,
    'active' : true,
    'season' : 'winter',
@@ -773,7 +773,7 @@ if(Products.find().count() == 0){
  });
 
  Prices.insert({
-   "price" 	: "Infant",
+   "price" 	: "Teenager",
    "unit"	: 2040,
    'active' : true,
    'season' : 'winter',
@@ -783,7 +783,7 @@ if(Products.find().count() == 0){
  });
 
  Prices.insert({
-   "price" 	: "Infant",
+   "price" 	: "Teenager",
    "unit"	: 2040,
    'active' : true,
    'season' : 'winter',
@@ -941,7 +941,7 @@ if(Products.find().count() == 0){
  //Teenager
 
  Prices.insert({
-   "price" 	: "Infant",
+   "price" 	: "Teenager",
    "unit"	: 1790,
    'active' : true,
    'season' : 'summer',
@@ -951,7 +951,7 @@ if(Products.find().count() == 0){
  });
 
  Prices.insert({
-   "price" 	: "Infant",
+   "price" 	: "Teenager",
    "unit"	: 1790,
    'active' : true,
    'season' : 'summer',
@@ -961,7 +961,7 @@ if(Products.find().count() == 0){
  });
 
  Prices.insert({
-   "price" 	: "Infant",
+   "price" 	: "Teenager",
    "unit"	: 1790,
    'active' : true,
    'season' : 'summer',
@@ -971,7 +971,7 @@ if(Products.find().count() == 0){
  });
 
  Prices.insert({
-   "price" 	: "Infant",
+   "price" 	: "Teenager",
    "unit"	: 1790,
    'active' : true,
    'season' : 'summer',
@@ -1111,7 +1111,7 @@ Prices.insert({
 //Teenager
 
 Prices.insert({
-  "price" 	: "Infant",
+  "price" 	: "Teenager",
   "unit"	: 1405,
   'active' : true,
   'season' : 'winter',
@@ -1121,7 +1121,7 @@ Prices.insert({
 });
 
 Prices.insert({
-  "price" 	: "Infant",
+  "price" 	: "Teenager",
   "unit"	: 1405,
   'active' : true,
   'season' : 'winter',
@@ -1131,7 +1131,7 @@ Prices.insert({
 });
 
 Prices.insert({
-  "price" 	: "Infant",
+  "price" 	: "Teenager",
   "unit"	: 1405,
   'active' : true,
   'season' : 'winter',
@@ -1141,7 +1141,7 @@ Prices.insert({
 });
 
 Prices.insert({
-  "price" 	: "Infant",
+  "price" 	: "Teenager",
   "unit"	: 1405,
   'active' : true,
   'season' : 'winter',
@@ -1280,7 +1280,7 @@ Prices.insert({
 //Teenager
 
 Prices.insert({
- "price" 	: "Infant",
+ "price" 	: "Teenager",
  "unit"	: 1493,
  'active' : true,
  'season' : 'summer',
@@ -1290,7 +1290,7 @@ Prices.insert({
 });
 
 Prices.insert({
- "price" 	: "Infant",
+ "price" 	: "Teenager",
  "unit"	: 1493,
  'active' : true,
  'season' : 'summer',
@@ -1300,7 +1300,7 @@ Prices.insert({
 });
 
 Prices.insert({
- "price" 	: "Infant",
+ "price" 	: "Teenager",
  "unit"	: 1493,
  'active' : true,
  'season' : 'summer',
@@ -1310,7 +1310,7 @@ Prices.insert({
 });
 
 Prices.insert({
- "price" 	: "Infant",
+ "price" 	: "Teenager",
  "unit"	: 1493,
  'active' : true,
  'season' : 'summer',
@@ -1450,7 +1450,7 @@ Prices.insert({
 //Teenager
 
 Prices.insert({
-"price" 	: "Infant",
+"price" 	: "Teenager",
 "unit"	: 1158,
 'active' : true,
 'season' : 'winter',
@@ -1460,7 +1460,7 @@ Prices.insert({
 });
 
 Prices.insert({
-"price" 	: "Infant",
+"price" 	: "Teenager",
 "unit"	: 1158,
 'active' : true,
 'season' : 'winter',
@@ -1470,7 +1470,7 @@ Prices.insert({
 });
 
 Prices.insert({
-"price" 	: "Infant",
+"price" 	: "Teenager",
 "unit"	: 1158,
 'active' : true,
 'season' : 'winter',
@@ -1480,7 +1480,7 @@ Prices.insert({
 });
 
 Prices.insert({
-"price" 	: "Infant",
+"price" 	: "Teenager",
 "unit"	: 1158,
 'active' : true,
 'season' : 'winter',
@@ -1578,7 +1578,7 @@ Prices.insert({
 	})
 
 	Prices.insert({
-		"price" 	: "Infant",
+		"price" 	: "Teenager",
 		"unit"	: 0,
 		'active' : true,
 		'season' : 'both',
@@ -1674,7 +1674,7 @@ Prices.insert({
 	})
 
 	Prices.insert({
-		"price" 	: "Infant",
+		"price" 	: "Teenager",
 		"unit"	: 0,
 		'active' : true,
 		'season' : 'both',
@@ -1825,7 +1825,7 @@ if(VehiclesCategory.find().count() == 0){
 	});
 
 	VehiclesCategory.insert({
-		"category" 	: "Large Car / Tractor",
+		"category" 	: "Extra Long Car / Tractor",
 		"size"		: [5, 6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15],
 		"basePrice" : 7610,
 		'baseSize'  : 5,
@@ -1998,7 +1998,7 @@ if(VehiclesCategory.find().count() == 0){
 
   VehiclesCategory.insert({
     "category" 	: "Cart to Flatey",
-    "size"		: [5, 6, 7,8,9,10],
+    "size"		: [2, 3, 4, 5, 6, 7 ,8 , 9],
     "basePrice" : 4080,
     'baseSize'  : 5,
     'onReduce'  : false,

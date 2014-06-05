@@ -21,7 +21,7 @@ Template.overview.isFirst = function(productId){
 
 Template.overview.ready = function(){
 	return Session.get("changeDates");
-}
+};
 
 Template.overview.isBookCreated = function(status) {
 	return status == 'Booked';
@@ -407,8 +407,6 @@ Template.overview.rendered = function(){
     "bDestroy": true
 	});
 
-	oTable.fnSort( [ [1,'asc'], [5,'desc'] ] );
-
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
 	$(".formattedAsMoney").maskMoney('mask');
 	$(".datePickerWYear").datepicker({
@@ -417,7 +415,7 @@ Template.overview.rendered = function(){
 			Session.set("changeDates", false);
 			date = new Date(ev.date);
 			with(date){
-				setDate(getDate());
+				setDate(getDate() + 1);
 				setHours(0);
 				setMinutes(0);
 				setSeconds(0);
