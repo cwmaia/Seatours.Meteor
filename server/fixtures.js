@@ -2036,7 +2036,7 @@ if(Customers.find().count() == 0){
 
 if(Meteor.users.find().count() == 0){
 	Accounts.createUser({
-	  'username'  : 'skrifstofa',
+	  'username'  : 'skrifstofa5211',
 	  'email'     : 'admin@seatours.com',
 	  'profile'	  : {'groupID' : admId, 'name' : 'Skrifstofa'},
 	  'password'  : '9876' //encrypted automatically

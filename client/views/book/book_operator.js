@@ -22,7 +22,21 @@ var getSelectedAndNextDay = function(){
 
 var getFirstSlotAvailable = function(){
 
+	var prefSlots = [1,2,3,4,5,19,20,15];
+	var prefElements = [];
 	var slot = "";
+
+	for(var i = 0; i < prefSlots.length; i++){
+		prefElements.push(document.getElementById("svg_"+prefSlots[i]));
+	}
+
+	for(var j = 0; j < prefElements.length; j++){
+		if(prefElements[j].getAttribute("fill") == "#ffffff"){
+			slot = prefElements[j].id.split("_")[1];
+			return slot;
+		}
+	}
+
 	$("rect").filter(function(){
 		var a = document.getElementById($(this).attr('id'));
 		//get only white slots
