@@ -73,7 +73,7 @@
 					<input type="hidden" name="currency" value="ISK" /><br>
 					<input type="hidden" name="language" value="EN" /><br>
 					<input type="hidden" name="buyername" value="{{customerName customerId}}" /><br>
-					<input type="hidden" name="buyeremail" value="{{customerEmail customerEmail}}" /><br>
+					<input type="hidden" name="buyeremail" value="{{customerEmail customerId}}" /><br>
 					<input type="hidden" size=100 name="returnurlsuccess"
 					value="http://{{baseURL}}/ReturnPageSuccessOperator" /><br>
 					<input type="hidden" size=100 name="returnurlcancel"
@@ -100,7 +100,7 @@
 		{{/if}}
 		<td style='width: 10%; text-align: center'>
 			<span id='{{_id}}' class='calcTotal'>
-				<input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{totalISK}}" />
+				<input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{calcTotalISK _id}}" />
 			</span>
 			<br/>
 			{{#if hasDiscount}}

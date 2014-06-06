@@ -1570,72 +1570,58 @@ Prices.insert({
 
 	Prices.insert({
 		"price" 	: "Adult",
-		"unit"	: 4080,
+		"unit"	: 7090,
 		'active' : true,
 		'season' : 'both',
 		'productId' : result,
+    'tripId' : tripID14,
 		'availableForGuest' : true
 	})
 
 	Prices.insert({
 		"price" 	: "Child",
-		"unit"	: 2040,
+		"unit"	: 0,
 		'active' : true,
 		'season' : 'both',
 		'productId' : result,
+    'tripId' : tripID14,
 		'availableForGuest' : true
 	})
 
 	Prices.insert({
 		"price" 	: "Teenager",
-		"unit"	: 0,
+		"unit"	: 3545,
 		'active' : true,
 		'season' : 'both',
 		'productId' : result,
+    'tripId' : tripID14,
 		'availableForGuest' : true
 	})
 
 	Prices.insert({
-		"price" 	: "Senior/Disabled",
-		"unit"	: 3264,
+		"price" 	: "Senior",
+		"unit"	: 5672,
 		'active' : true,
 		'season' : 'both',
 		'productId' : result,
+    'tripId' : tripID14,
 		'availableForGuest' : true
-	})
-
-	Prices.insert({
-		"price" 	: "School Discount",
-		"unit"	: 2040,
-		'active' : true,
-		'season' : 'both',
-		'productId' : result,
-		'availableForGuest' : false
-	})
-
-	Prices.insert({
-		"price" 	: "Guides & Drivers",
-		"unit"	: 0,
-		'active' : true,
-		'season' : 'both',
-		'productId' : result,
-		'availableForGuest' : false
 	})
 
 	result = Products.insert({
-		"name" 			: "Viking Sushi Short",
+		"name" 			: "Family Trip",
 		"active" 	: true,
 		"boatId" : '2',
 		'availableFor' : customersId,
-		'imageName' : "Viking Sushi Short.jpg",
+		'imageName' : "family.jpeg",
 		'featured' : false
 	});
 
 	var tripID15 = Trips.insert({
-		"from" 	: "Viking Sushi Short",
+		"from" 	: "Family Trip",
 		"to"	: "",
-		"hour"  : "13:40",
-		'season' : "noSeason",
+		"hour"  : "13:20",
+		'season' : "summer",
 		'active' : true,
 		'productId' : result,
 		'availableDays' : {start: '06/15/2014', end: '08/20/2014'}
@@ -1647,76 +1633,247 @@ Prices.insert({
 					'type' : 'blockWeekDay'
 				});
 
-	var tripID16 = Trips.insert({
-		"from" 	: "Viking Sushi Short",
-		"to"	: "",
-		"hour"  : "15:30",
-		'season' : "noSeason",
-		'active' : true,
-		'productId' : result,
-		'availableDays' : {start: '05/17/2014', end: '08/20/2014'}
-	});
-
-	BlockingDates.insert({
-					'tripId' : tripID16,
-					'availableWeekDays' : "true,true,true,true,true,true,true",
-					'user' : "default",
-					'type' : 'blockWeekDay'
-				});
-
 	Prices.insert({
 		"price" 	: "Adult",
-		"unit"	: 4080,
+		"unit"	: 5250,
 		'active' : true,
 		'season' : 'both',
 		'productId' : result,
+    'tripId' : tripID15,
 		'availableForGuest' : true
 	})
 
 	Prices.insert({
 		"price" 	: "Child",
-		"unit"	: 2040,
+		"unit"	: 0,
 		'active' : true,
 		'season' : 'both',
 		'productId' : result,
+    'tripId' : tripID15,
 		'availableForGuest' : true
 	})
 
 	Prices.insert({
 		"price" 	: "Teenager",
-		"unit"	: 0,
+		"unit"	: 2625,
 		'active' : true,
 		'season' : 'both',
 		'productId' : result,
+    'tripId' : tripID15,
 		'availableForGuest' : true
 	})
 
-	Prices.insert({
-		"price" 	: "Senior/Disabled",
-		"unit"	: 3264,
-		'active' : true,
-		'season' : 'both',
-		'productId' : result,
-		'availableForGuest' : true
-	})
+  Prices.insert({
+    "price" 	: "Senior",
+    "unit"	: 4200,
+    'active' : true,
+    'season' : 'both',
+    'productId' : result,
+    'tripId' : tripID15,
+    'availableForGuest' : true
+  })
 
-	Prices.insert({
-		"price" 	: "School Discount",
-		"unit"	: 2040,
-		'active' : true,
-		'season' : 'both',
-		'productId' : result,
-		'availableForGuest' : false
-	})
+  result = Products.insert({
+    "name" 			: "Taste of Iceland",
+    "active" 	: true,
+    "boatId" : '2',
+    'availableFor' : customersId,
+    'imageName' : "tasteoficeland.jpg",
+    'featured' : false
+  });
 
-	Prices.insert({
-		"price" 	: "Guides & Drivers",
-		"unit"	: 0,
-		'active' : true,
-		'season' : 'both',
-		'productId' : result,
-		'availableForGuest' : false
-	})
+  var tripID16 = Trips.insert({
+    "from" 	: "Taste of Iceland",
+    "to"	: "",
+    "hour"  : "14:30",
+    'season' : "summer",
+    'active' : true,
+    'productId' : result,
+    'availableDays' : {start: '05/17/2014', end: '08/20/2014'}
+  });
+
+  BlockingDates.insert({
+          'tripId' : tripID16,
+          'availableWeekDays' : "true,true,true,true,true,true,true",
+          'user' : "default",
+          'type' : 'blockWeekDay'
+        });
+
+  Prices.insert({
+    "price" 	: "Adult",
+    "unit"	: 9270,
+    'active' : true,
+    'season' : 'both',
+    'productId' : result,
+    'tripId' : tripID16,
+    'availableForGuest' : true
+  })
+
+  Prices.insert({
+    "price" 	: "Child",
+    "unit"	: 1500,
+    'active' : true,
+    'season' : 'both',
+    'productId' : result,
+    'tripId' : tripID16,
+    'availableForGuest' : true
+  })
+
+  Prices.insert({
+    "price" 	: "Teenager",
+    "unit"	: 4635,
+    'active' : true,
+    'season' : 'both',
+    'productId' : result,
+    'tripId' : tripID16,
+    'availableForGuest' : true
+  })
+
+  Prices.insert({
+    "price" 	: "Senior",
+    "unit"	: 7416,
+    'active' : true,
+    'season' : 'both',
+    'productId' : result,
+    'tripId' : tripID16,
+    'availableForGuest' : true
+  })
+
+  result = Products.insert({
+    "name" 			: "Vortilboð",
+    "active" 	: true,
+    "boatId" : '2',
+    'availableFor' : "admin",
+    'imageName' : "vortilboo.jpg",
+    'featured' : false
+  });
+
+  var tripID17 = Trips.insert({
+    "from" 	: "Vortilboð",
+    "to"	: "",
+    "hour"  : "00:00",
+    'season' : "noSeason",
+    'active' : true,
+    'productId' : result,
+    'availableDays' : {start: '15/03/2014', end: '10/06/2014'}
+  });
+
+  BlockingDates.insert({
+          'tripId' : tripID17,
+          'availableWeekDays' : "true,true,true,true,true,true,true",
+          'user' : "default",
+          'type' : 'blockWeekDay'
+        });
+
+  Prices.insert({
+    "price" 	: "Adult",
+    "unit"	: 9275,
+    'active' : true,
+    'season' : 'both',
+    'productId' : result,
+    'tripId' : tripID17,
+    'availableForGuest' : true
+  })
+
+  Prices.insert({
+    "price" 	: "Child",
+    "unit"	: 1500,
+    'active' : true,
+    'season' : 'both',
+    'productId' : result,
+    'tripId' : tripID17,
+    'availableForGuest' : true
+  })
+
+  Prices.insert({
+    "price" 	: "Teenager",
+    "unit"	: 4638,
+    'active' : true,
+    'season' : 'both',
+    'productId' : result,
+    'tripId' : tripID17,
+    'availableForGuest' : true
+  })
+
+  Prices.insert({
+    "price" 	: "Senior",
+    "unit"	: 7420,
+    'active' : true,
+    'season' : 'both',
+    'productId' : result,
+    'tripId' : tripID17,
+    'availableForGuest' : true
+  })
+
+  result = Products.insert({
+    "name" 			: "Veisluferð 3-4",
+    "active" 	: true,
+    "boatId" : '2',
+    'availableFor' : "admin",
+    'imageName' : "veislufero.jpeg",
+    'featured' : false
+  });
+
+  var tripID18 = Trips.insert({
+    "from" 	: "Veisluferð 3-4",
+    "to"	: "",
+    "hour"  : "00:00",
+    'season' : "summer",
+    'active' : true,
+    'productId' : result,
+    'availableDays' : {start: '15/03/2014', end: '10/06/2014'}
+  });
+
+  BlockingDates.insert({
+          'tripId' : tripID18,
+          'availableWeekDays' : "true,true,true,true,true,true,true",
+          'user' : "default",
+          'type' : 'blockWeekDay'
+        });
+
+  Prices.insert({
+    "price" 	: "Adult",
+    "unit"	: 11990,
+    'active' : true,
+    'season' : 'both',
+    'productId' : result,
+    'tripId' : tripID18,
+    'availableForGuest' : true
+  })
+
+  Prices.insert({
+    "price" 	: "Child",
+    "unit"	: 1500,
+    'active' : true,
+    'season' : 'both',
+    'productId' : result,
+    'tripId' : tripID18,
+    'availableForGuest' : true
+  })
+
+  Prices.insert({
+    "price" 	: "Teenager",
+    "unit"	: 5995,
+    'active' : true,
+    'season' : 'both',
+    'productId' : result,
+    'tripId' : tripID18,
+    'availableForGuest' : true
+  })
+
+  Prices.insert({
+    "price" 	: "Senior",
+    "unit"	: 9590,
+    'active' : true,
+    'season' : 'both',
+    'productId' : result,
+    'tripId' : tripID18,
+    'availableForGuest' : true
+  })
+
+
+
+
 
 
 

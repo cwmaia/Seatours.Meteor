@@ -4,7 +4,7 @@
 			Payment
 		</h1>
 	<div>
-		
+
 	<fieldset>
 		<legend>Your Items<span>&nbsp;&nbsp;</span><i class='icon-shopping-cart'/></legend>
 		<table class='table table-striped table-bordered table-hover'>
@@ -27,33 +27,33 @@
 	</fieldset>
 	<form id='sendToBorgun' action="https://securepay.borgun.is/securepay/default.aspx" method="POST" target="_blank">
 		<div class='hidden'>
-			<input type="hidden" name="merchantid" value="9929533" /><br> 
-			<input type="hidden" name="paymentgatewayid" value="3962" /><br> 
+			<input type="hidden" name="merchantid" value="9929533" /><br>
+			<input type="hidden" name="paymentgatewayid" value="3962" /><br>
 			<input type="hidden" size=100 name="checkhash" value="daecc17b2096da585e8a9d22ead38734" /><br> 
-			<input type="hidden" name="orderid" value="{{orderId}}" /><br> 
-			<input type="hidden" name="currency" value="ISK" /><br> 
-			<input type="hidden" name="language" value="EN" /><br> 
+			<input type="hidden" name="orderid" value="{{orderId}}" /><br>
+			<input type="hidden" name="currency" value="ISK" /><br>
+			<input type="hidden" name="language" value="EN" /><br>
 			{{#if customerLogged}}
-			<input type="hidden" name="buyername" value="{{customerName}}" /><br> 
+			<input type="hidden" name="buyername" value="{{customerName}}" /><br>
 			<input type="hidden" name="buyeremail" value="{{customerEmail}}" /><br>
 			{{else}}
-			<input type="hidden" id='fullNameBorgun' name="buyername"/><br> 
+			<input type="hidden" id='fullNameBorgun' name="buyername"/><br>
 			<input type="hidden" id='emailBorgun' name="buyeremail"/><br>
-			{{/if}} 
-			<input type="hidden" size=100 name="returnurlsuccess" 
+			{{/if}}
+			<input type="hidden" size=100 name="returnurlsuccess"
 	 		value="http://{{baseURL}}/ReturnPageSuccess" /><br>
-			<input type="hidden" size=100 name="returnurlcancel" 
-			value="http://{{baseURL}}/cancelOrder" /><br> 
-			<input type="hidden" size=100 name="returnurlerror" 
+			<input type="hidden" size=100 name="returnurlcancel"
+			value="http://{{baseURL}}/cancelOrder" /><br>
+			<input type="hidden" size=100 name="returnurlerror"
 			value="http://{{baseURL}}/ReturnPageError" /><br>
 			{{{basket}}}
-			<input type="hidden" class="amountBorgun" name="amount" value="{{totalCustomer}}" /><br> 
-			<input type="hidden" name=" pagetype " value="0" /><br> 
-			<input type="hidden" name=" skipreceiptpage " value="0" /><br> 
+			<input type="hidden" class="amountBorgun" name="amount" value="{{totalCustomer}}" /><br>
+			<input type="hidden" name=" pagetype " value="0" /><br>
+			<input type="hidden" name=" skipreceiptpage " value="0" /><br>
 			<input type="hidden" name="merchantemail" value="ba@borgun.is" /><br>
 		</div>
 	</form>
 	<div class='form-actions center'>
 		<button class='btn btn-success' id="proccedToPayment">Pay</button>
 	</div>
-</template>	
+</template>

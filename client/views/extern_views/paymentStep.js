@@ -9,6 +9,8 @@ Template.paymentStep.totalCustomer = function(){
 		total += parseInt(carts[i].totalISK);
 	}
 
+	console.log(total);
+
 	return total;
 };
 

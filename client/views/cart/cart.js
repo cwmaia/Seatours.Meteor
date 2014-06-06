@@ -1,6 +1,6 @@
 Template.cart.cartBooks = function(){
 	return CartItems.find({cartId : getCartIdOperator()});
-}
+};
 
 Template.cart.hasItems = function(){
 	if(CartItems.find({cartId : getCartIdOperator()}).count() > 0){
@@ -8,7 +8,23 @@ Template.cart.hasItems = function(){
 	}else{
 		return false;
 	}
-}
+};
+
+Template.items.calcTotalISK = function(bookId){
+	var book = CartItems.findOne(bookId);
+	var totalISK = 0;
+	var confirmationFee = 0;
+	if(book){
+			totalISK = book.totalISK;
+			for(var i = 0; i < book.prices.length; i++){
+				if(book.prices[i].price.toLowerCase() == 'confirmation fee'){
+					confirmationFee = parseInt(book.prices[i].perUnit);
+				}
+			}
+	}
+
+	return totalISK - confirmationFee;
+};
 
 Template.items.flatey = function(id){
 	note = Notes.findOne({bookId : id, type : "Stop at flatey"});
@@ -91,10 +107,19 @@ Template.cart.customer = function(){
 Template.cart.total = function(){
 	var carts = CartItems.find({cartId : getCartIdOperator()}).fetch();
 	var total = 0;
+	var totalConfirmationsFee = 0;
 	for (var i = 0; i < carts.length; i++) {
 		total += parseInt(carts[i].totalISK);
+
+		for(var j = 0; j < carts[i].prices.length; j++){
+			if(carts[i].prices[j].price.toLowerCase() == 'confirmation fee'){
+				totalConfirmationsFee += parseInt(carts[i].prices[j].perUnit);
+			}
+		}
+
 	}
-	return total;
+
+	return total - totalConfirmationsFee;
 
 };
 
