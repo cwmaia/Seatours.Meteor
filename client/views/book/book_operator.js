@@ -1726,8 +1726,6 @@ Template.generalButtons.events({
 			bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
-		}else if($("#categories").val() == "" && $("#size").val() == null && $("#vehiclePlate").val() == ""){
-			bootbox.alert("A least one vehicle is needed to create a booking!");
 		}else if($("#categories").val() != "" && $("#size").val() != null && $("#vehiclePlate").val() == ""){
 			bootbox.alert("Please inform the vehicle plate.");
 		}else if($("#categories").val() != "" && $("#size").val() != null && $("#vehicle").val() == ""){
@@ -1786,8 +1784,6 @@ Template.generalButtons.events({
 			bootbox.alert("This car can't be on the boat, there is no room for it, this booking can't be created!");
 		}else if($("#categories").val() != "" && $("#size").val() != "" && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
-		}else if($("#categories").val() == "" && $("#size").val() == null && $("#vehiclePlate").val() == ""){
-			bootbox.alert("A least one vehicle is needed to create a booking!");
 		}else if($("#categories").val() != "" && $("#size").val() != null && $("#vehiclePlate").val() == ""){
 			bootbox.alert("Please inform the vehicle plate.");
 		}else if($("#categories").val() != "" && $("#size").val() != null && $("#vehicle").val() == ""){
@@ -1816,8 +1812,6 @@ Template.generalButtons.events({
 			throwError("The Vehicle informed can't go on the boat");
 		}else if($("#categories").val() != "" && $("#size").val() != null && $("#slotNumber").val() == ""){
 			throwError("Please Inform the Slots");
-		}else if($("#categories").val() == "" && $("#size").val() == null && $("#vehiclePlate").val() == ""){
-			bootbox.alert("A least one vehicle is needed to create a booking!");
 		}else if($("#categories").val() != "" && $("#size").val() != null && $("#vehiclePlate").val() == ""){
 			bootbox.alert("Please inform the vehicle plate.");
 		}else if($("#categories").val() != "" && $("#size").val() != null && $("#vehicle").val() == ""){
@@ -2633,6 +2627,11 @@ var createBook = function(){
 
 	}else{
 		if(!isCustomer()){
+			refNumber = new Date().getTime().toString().substr(5);
+			while(Books.findOne({refNumber : refNumber})){
+				refNumber = new Date().getTime().toString().substr(5);
+			}
+			book.refNumber = refNumber;
 			temporaryID = CartItems.insert(book);
 			note = $('#notes').val();
 			if(note){
@@ -3064,7 +3063,7 @@ checkSameCarOnBoat = function(vehicleId, productId, tripId, dates){
 		'vehicle.vehiclePlate' : vehicleId
 	});
 
-	if(book || cartBook){
+	if((book || cartBook) && vehicleId){
 		return true;
 	}else{
 		return false;
@@ -3126,15 +3125,11 @@ function calcConfirmationFee(category){
 function checkPutManually(category){
 	var putManually = false;
 
-	console.log(category);
-
 	if(category.toLowerCase() == 'large car / motor-home' ||
 		category.toLowerCase() == 'motorcycle' ||
 		category.toLowerCase() == 'extra large car / tractor'){
 			putManually = true;
 		}
-
-	console.log(putManually);
 
 	return putManually;
 }

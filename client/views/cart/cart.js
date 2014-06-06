@@ -12,12 +12,31 @@ Template.cart.hasItems = function(){
 
 Template.items.flatey = function(id){
 	note = Notes.findOne({bookId : id, type : "Stop at flatey"});
-	console.log(note);
 	if(note)
 		return true;
 	else
 		return false;
 };
+
+Template.items.baseURL = function(){
+	return window.location.host;
+};
+
+Template.items.basket = function(id){
+	var html= '';
+
+	var book = CartItems.findOne(id);
+	if(book){
+		html += '<input type="hidden" name="itemdescription_0" value="Seatours Ticket: '+book.product.name + ' - From '+ book.trip.from + ' '+ book.trip.to +' '+book.trip.hour+'" /><br>';
+		html += '<input type="hidden" name="itemcount_0" value="1" /><br>';
+		html += '<input type="hidden" class="amountBorgun" name="itemunitamount_0" value="'+book.totalISK+'" /><br>';
+		html += '<input type="hidden" class="amountBorgun" name="itemamount_0" value="'+book.totalISK+'" /><br>';
+	}
+	return html;
+};
+
+
+
 
 Template.cart.rendered = function(){
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
@@ -51,58 +70,57 @@ Template.cart.getCBasket = function(){
 		return false;
 	}
 
-}
+};
 
 Template.items.hasVehicle = function(){
 	return this.vehicle.category;
-}
+};
 
 Template.cart.cbasketBooks = function(){
 	return CartItems.find({cartId : getCartId()});
-}
+};
 
 Template.cart.customer = function(){
 	return isCustomer();
-}
-
-Template.cart.totalValue = function(){
-	var sum = 0;
-	var carts = CartItems.find({cartId : getCartId()}).fetch();
-	for (var i = 0; i < carts.length; i++) {
-		carts[i]
-	};
-}
+};
 
 Template.cart.total = function(){
 	var carts = CartItems.find({cartId : getCartIdOperator()}).fetch();
 	var total = 0;
 	for (var i = 0; i < carts.length; i++) {
 		total += parseInt(carts[i].totalISK);
-	};
+	}
 	return total;
 
-}
+};
 
 
 Template.items.dateNoTimeZone = function(date){
-	return date.toUTCString().slice(5,17);;
-}
+	return date.toUTCString().slice(5,17);
+};
 
 Template.cart.totalCustomer = function(){
 	var carts = CartItems.find({cartId : getCartId()}).fetch();
 	var total = 0;
 	for (var i = 0; i < carts.length; i++) {
 		total += parseInt(carts[i].totalISK);
-	};
+	}
 	return total;
-}
+};
 
 Template.items.customerName = function(customerId){
 	var customer = Customers.findOne({_id : customerId});
 	if(customer)
-		return customer.title + '. ' + customer.fullName;
+		return customer.fullName;
 	return "";
-}
+};
+
+Template.items.customerEmail = function(customerId){
+	var customer = Customers.findOne({_id : customerId});
+	if(customer)
+		return customer.email;
+	return "";
+};
 
 Template.cart.disableCheckout = function(){
 	if(!isCustomer() && CartItems.find().count() > 0){
@@ -112,7 +130,9 @@ Template.cart.disableCheckout = function(){
 	}else{
 		return true;
 	}
-}
+};
+
+
 
 Template.cart.events({
 	'click .checkout' : function(event){
@@ -225,24 +245,29 @@ Template.items.events({
 		Session.set("bookingDate", book.dateOfBooking);
 		Session.set('tripId', book.trip._id);
 		Meteor.Router.to('/bookEdit');
+	},
+
+	'click .payAtBorgun' : function(event){
+		event.preventDefault();
+		$("#sendToBorgun").submit();
 	}
-})
+});
 
 var calcTotalItems = function(){
 	var total = 0;
 	$(".calcTotal").filter(function(){
 		total += parseInt($(this).text());
-	})
+	});
 
 	$('#total').text(total);
-}
+};
 
 var sendMail = function(book, result, customer){
 
 	var prices = '';
 	for (var i = 0; i < book.prices.length; i++) {
 		prices += book.prices[i].prices + " - " + book.prices[i].persons + " X " + book.prices[i].perUnit + " = " +  book.prices[i].sum + " ISK <br/>";
-	};
+	}
 
 	var vehicle = '';
 	if(book.vehicle.category != ''){
@@ -260,4 +285,4 @@ var sendMail = function(book, result, customer){
 
 	Meteor.call('sendEmailHTML', customer.email, "noreply@seatours.is", "Your Voucher at Seatours!", html);
 
-}
+};

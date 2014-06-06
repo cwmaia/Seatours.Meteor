@@ -26,7 +26,36 @@ Meteor.Router.add("/ReturnPageSuccess", "POST", function(){
 
   return "<script>window.location='http://booking.seatours.is/listvouchers/"+orderId+"'</script>";
 
-})
+});
+
+Meteor.Router.add("/ReturnPageSuccessOperator", "POST", function(){
+  orderId = this.request.body.orderid;
+
+  book = CartItems.findOne({refNumber : orderId});
+
+  Orders.insert({customerId: book.customerId, paid: true, dateOrder: new Date(), refNumber: orderId});
+
+  book.paid = true;
+  book.bookStatus = "Booked";
+
+  bookId = Books.insert(book);
+
+    var transaction = {
+      'bookId' : bookId,
+      'date' : new Date(),
+      'status' : 'Borgun Completed',
+      'amount' : book.totalISK,
+      'detail' : "Borgun",
+      'vendor' : "Borgun",
+      'type' : 'Credit Card'
+    };
+    Transactions.insert(transaction);
+
+  CartItems.remove(book._id);
+
+  return "<script>window.location='http://booking.seatours.is/'</script>";
+
+});
 
 var removeOldBookings = function(){
   console.log("Checking Old Books...")
