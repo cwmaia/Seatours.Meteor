@@ -78,6 +78,15 @@ if(Boats.find().count() == 0){
 		"boatImage" : "Baldur Ferry.jpg"
 	});
 
+  Boats.insert({
+    "_id" : "2",
+    "name" : "Saerun",
+    "maxCapacity" : 50,
+    "max5mDoor" : 0,
+    "max6mDoor" : 0,
+    "boatImage" : "saerun.jpeg"
+  });
+
 	BoatStatus.insert({
 		'boatId' : "1",
 		"qtdCarsUpTo_5" : 24,
@@ -1535,7 +1544,7 @@ Prices.insert({
 	result = Products.insert({
 		"name" 			: "Viking Sushi Adventure",
 		"active" 	: true,
-		"boatId" : '1',
+		"boatId" : '2',
 		'availableFor' : customersId,
 		'imageName' : "Viking Sushi Adventure.jpg",
 		'featured' : false
@@ -1616,7 +1625,7 @@ Prices.insert({
 	result = Products.insert({
 		"name" 			: "Viking Sushi Short",
 		"active" 	: true,
-		"boatId" : '1',
+		"boatId" : '2',
 		'availableFor' : customersId,
 		'imageName' : "Viking Sushi Short.jpg",
 		'featured' : false
