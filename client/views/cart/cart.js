@@ -18,6 +18,10 @@ Template.items.flatey = function(id){
 		return false;
 };
 
+Template.items.confirmationFeeNotLogin = function(){
+	return isCustomer();
+};
+
 Template.items.baseURL = function(){
 	return window.location.host;
 };

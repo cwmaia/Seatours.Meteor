@@ -1472,7 +1472,11 @@ Template.createBook.rendered = function(){
 		var date = new Date(book.dateOfBooking);
 		var splitDate = date.toISOString().split("-");
 
+		var editDate = new Date(day+"/"+splitDate[1]+"/"+splitDate[0]);
+
 		var day = splitDate[2].split("T")[0];
+
+		localStorage.setItem("date", editDate);
 
 		$('#dayOfBookingEdit').val(day+"/"+splitDate[1]+"/"+splitDate[0]);
 	}
@@ -2548,8 +2552,22 @@ var createBook = function(){
 	if (Session.get("isEditing")) {
 		var selectedDate = $("#dayOfBookingEdit").val();
 		var arrayOfDate = selectedDate.split("/");
+		var month, day;
 
-		var newDate = new Date(arrayOfDate[1].replace('0', '')+"/"+arrayOfDate[0].replace('0', '')+"/"+arrayOfDate[2]);
+		if(arrayOfDate[1].length > 1){
+			month = arrayOfDate[1];
+		}else{
+			month = arrayOfDate[1].replace('0', '');
+		}
+
+		if(arrayOfDate[0].length > 1){
+			day = arrayOfDate[0];
+		}else{
+			day = arrayOfDate[0].replace('0', '');
+		}
+
+
+		var newDate = new Date(month+"/"+day+"/"+arrayOfDate[2]);
 
 		bookEdited = Books.find(Session.get("bookId"));
 

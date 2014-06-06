@@ -87,7 +87,7 @@
 					<input type="hidden" name="merchantemail" value="ba@borgun.is" /><br>
 				</div>
 			</form>
-			{{#each prices}}{{price}} ( <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{perUnit}}"> ISK) X {{persons}} =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{sum}}"> ISK</br>{{/each}}</br>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{vehicle.totalCost}}"> {{/if}}
+			{{#each prices}}{{#unless confirmationFeeNotLogin}}{{price}} ( <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{perUnit}}"> ISK) X {{persons}} =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{sum}}"> ISK</br>{{/unless}}{{/each}}</br>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{vehicle.totalCost}}"> {{/if}}
 		</td>
 
 		{{#if notFinish}}
