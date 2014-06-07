@@ -1807,6 +1807,7 @@ Template.generalButtons.events({
 				createBook();
 				throwSuccess("Inquiry Confirmed");
 				cleanExternView();
+				sendMailInquiryConfirm();
 				$("#loginArea").hide();
 				Template.externView.rendered();
 
@@ -1880,6 +1881,24 @@ Template.generalButtons.events({
 			}
 		}
 });
+
+ function sendMailInquiryConfirm () {
+ 	var html = "<html> <body><div id='wholeVoucher' style='width: 800px; margin: 0 auto; height: 115px; background-color: #005e8b; font-family: 'Open Sans','Helvetica Neue', Helvetica, Arial, sans-serif;'>"
+	html +=		"<div>";
+	html +=			"<img src='http://seatours.is/img/logo-en.png' style='height:110px;margin: 3px;'>";
+	html +=		"</div>";
+	html +=		"<div style=' margin-left: 15px; '>";
+	html +=			"<br />";
+	html +=			"<span>Hello! Your inquiry was completed! An agent from Seatours Office will be in contact soon!</span><br />";
+	html +=			"<br />";
+	html +=			"<span>Cheers!</span><br />";
+	html +=			"<span>Seatours Office</span>";
+	html +=		"</div>";
+	html +=	"</div></body></html>";
+	var email = Session.get('currentCustomerMail');
+ 	Meteor.call('sendEmailHTML', email, "noreply@seatours.is", "Your booking at Seatours!", html);
+	console.log("Email foice!!!");
+}
 
 Template.generalPassagerInfo.events({
 	'blur #socialSecurityNumber' : function(){
@@ -2439,6 +2458,7 @@ var createBook = function(){
 		"lastUsedCar" : vehicle,
 		"groupId" : group._id
 	};
+	Session.set("currentCustomerMail", customer.email);
 
 	if(isOperator()){
 		Session.set("previousCustomer", customer);
