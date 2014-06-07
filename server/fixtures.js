@@ -142,6 +142,7 @@ if(Products.find().count() == 0){
 		'availableFor' : customersId,
 		'imageName' : "Baldur Ferry.jpg",
 		'featured' : true,
+    'order' : 0,
 		'disclaimer' : "Ferry Baldur daily crosses Breiðafjörður Bay. PLEASE NOTE – if your are travelling with a car and stopping in Flatey Island you need to book “Stykkisholmur-Brjanslækur” (or reverse), and mark in the checkbox that you will be stopping in Flatey."
 	});
 
@@ -1546,19 +1547,19 @@ Prices.insert({
 		"active" 	: true,
 		"boatId" : '2',
 		'availableFor' : customersId,
-		'imageName' : "Viking Sushi Adventure.jpg",
-		'featured' : false
+		'imageName' : "sushi.jpg",
+		'featured' : false,
+    'order' : 0
 
 	});
 
 	var tripID14 = Trips.insert({
-		"from" 	: "Vikingsushi adventure",
+		"from" 	: "Viking Sushi Adventure",
 		"to"	: "",
-	 	"hour"  : "11:00",
-		'season' : "noSeason",
+	  "hour"  : "14:15",
+		'season' : "summer",
 		'active' : true,
-		'productId' : result,
-		'availableDays' : {start: '05/13/2014', end: '10/15/2014'}
+		'productId' : result
 	});
 
 	BlockingDates.insert({
@@ -1614,7 +1615,8 @@ Prices.insert({
 		"boatId" : '2',
 		'availableFor' : customersId,
 		'imageName' : "family.jpeg",
-		'featured' : false
+		'featured' : false,
+    'order' : 1
 	});
 
 	var tripID15 = Trips.insert({
@@ -1679,7 +1681,8 @@ Prices.insert({
     "boatId" : '2',
     'availableFor' : customersId,
     'imageName' : "tasteoficeland.jpg",
-    'featured' : false
+    'featured' : false,
+    'order' : 1
   });
 
   var tripID16 = Trips.insert({
@@ -1745,7 +1748,8 @@ Prices.insert({
     "boatId" : '2',
     'availableFor' : "admin",
     'imageName' : "vortilboo.jpg",
-    'featured' : false
+    'featured' : false,
+    'order' : 1
   });
 
   var tripID17 = Trips.insert({
@@ -1811,7 +1815,8 @@ Prices.insert({
     "boatId" : '2',
     'availableFor' : "admin",
     'imageName' : "veislufero.jpeg",
-    'featured' : false
+    'featured' : false,
+    'order' : 1
   });
 
   var tripID18 = Trips.insert({

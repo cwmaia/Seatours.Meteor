@@ -386,11 +386,11 @@ Template.bookOperator.helpers({
 			group = Groups.findOne({_id: Meteor.user().profile.groupID});
 			if(group){
 				if(group.type == 'internal'){
-					return Products.find({active : true, featured : false});
+					return Products.find({active : true, featured : false}, {sort : {order : 1}});
 				}
 			}else{
 				showProducts = [];
-				products =  Products.find({active : true, featured : false}).fetch();
+				products =  Products.find({active : true, featured : false}, {sort : {order : 1}}).fetch();
 				for (i = 0; i < products.length; i++) {
 					group = Groups.findOne({_id : products[i].availableFor});
 					if(group && group.name == 'Customers'){
@@ -406,7 +406,7 @@ Template.bookOperator.helpers({
 		}else{
 			showProducts = [];
 
-			products =  Products.find({active : true, featured : false}).fetch();
+			products =  Products.find({active : true, featured : false}, {sort : {order : 1}}).fetch();
 			for (i = 0; i < products.length; i++) {
 				group = Groups.findOne({_id : products[i].availableFor});
 					if(group && group.name == 'Customers'){
@@ -863,6 +863,8 @@ Template.bookDetail.events({
 			cancelBook($("#initialsResult").val());
 		}else if(Session.get("callbackAction") == 'changeSlot'){
 			changeSlot($("#initialsResult").val());
+		}else if(Session.get("callbackAction") == 'removeBooking'){
+			removeBooking($("#initialsResult").val());
 		}
 	},
 
@@ -898,6 +900,19 @@ Template.bookDetail.events({
 		Session.set("callbackAction", "changeSlot");
 		$("#confirmActionModal").show();
 		$("#svgBoatDialog").hide();
+	},
+
+	'click .removeBook' : function(event){
+			event.preventDefault();
+			var a = event.currentTarget;
+			bootbox.confirm("Are you sure? Clicking this will remove the Booking!!!", function(result){
+				if(result){
+					var book = Books.findOne({'_id' : a.rel});
+					Session.set("confirmBook", book);
+					Session.set("callbackAction", "removeBooking");
+					$("#confirmActionModal").show();
+				}
+			});
 	},
 
 	'click rect' : function(event){
@@ -1007,6 +1022,14 @@ Template.bookDetail.events({
 		$("#confirmActionModal").show();
 	}
 });
+
+var removeBooking = function(operatorName){
+	var book = Session.get("confirmBook");
+
+	Books.update(book._id, {$set : {bookStatus : "REMOVED"}});
+
+	saveHistoryAction(book, "Removed book: "+book.refNumber, operatorName);
+};
 
 var changeSlot = function(operatorName){
 	var book = Books.findOne(Session.get("bookId"));
@@ -1187,7 +1210,7 @@ Template.bookDetail.helpers({
 			'product._id' : Session.get('productId'),
 			'trip._id' : trip._id,
 			$or : [{'pendingApproval': true}, {slot : /.*W.*/}],
-			bookStatus : {$not : "Canceled"}
+			$and : [{bookStatus : {$not : "Canceled"}}, {bookStatus : {$not : "REMOVED"}}]
 		});
 	},
 
@@ -1223,7 +1246,7 @@ Template.bookDetail.helpers({
 			'product._id' : Session.get('productId'),
 			'trip._id' : trip._id,
 			slot : {$not : /.*W.*/ },
-			bookStatus : {$not : "Canceled"}
+			$and : [{bookStatus : {$not : "Canceled"}}, {bookStatus : {$not : "REMOVED"}}]
 		});
 	},
 
