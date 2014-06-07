@@ -279,7 +279,40 @@ Template.items.events({
 	'click .payAtBorgun' : function(event){
 		event.preventDefault();
 		$("#sendToBorgun").submit();
-	}
+	},
+	'click .quickPay' : function(event){
+		event.preventDefault();
+		var a = event.currentTarget;
+		bootbox.confirm('Are you sure? Clicking this will make the Booking Paid', function(confirm){
+			if(confirm){
+					var bookId = a.rel;
+					var currentBooking = Books.findOne({'_id' : bookId});
+					var vendor = Meteor.user().profile.name;
+					var transaction = {
+						'bookId' : currentBooking._id,
+						'date' : new Date(),
+						'status' : 'Given',
+						'amount' : parseInt(currentBooking.totalISK),
+						'detail' : "Quick Paid",
+						'vendor' : vendor,
+						'type' : 'Cash Office'
+					};
+					Transactions.insert(transaction);
+					Books.update(currentBooking._id, {$set : {'paid' : true}});
+					var note = {
+							created : new Date(),
+							type : 'Quick Pay Note',
+							note : vendor + " marked the booking ID#"+ currentBooking.refNumber + " as paid",
+							bookId : Session.get('currentBooking')
+					};
+
+					Notes.insert(note);
+				}
+			});
+
+		},
+
+
 });
 
 var calcTotalItems = function(){
