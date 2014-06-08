@@ -16,9 +16,6 @@ Books.allow({
 	},
 
 	remove : function(){
-		if(CheckUser())
-			return true;
-		else
-			return false;
+		return false;
 	}
-})
+});

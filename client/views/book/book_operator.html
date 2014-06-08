@@ -203,7 +203,7 @@
 						<td>{{telephone customerId}}</td>
 						<td>{{totalPassagers _id}}</td>
 						<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
-						<td>{{bookStatus}}</td>
+						<td class='slot'>{{bookStatus}}</td>
 						<td>
 							{{#if confirm}}
 								<a class="confirmBook" rel="{{_id}}"><i class='icon-check'></i></a>
@@ -270,7 +270,7 @@
 						<th>Plate</th>
 						<th>Category</th>
 						<th title='Size (Meters)'>Size(m)</th>
-						<th class='slot'>Slot</th>
+						<th>Slot</th>
 						<th>Telephone</th>
 						<th title='Passagers'>P</th>
 						<th title='Payment Status'>PS</th>
@@ -298,11 +298,11 @@
 						<td>{{vehicle.vehiclePlate}}</td>
 						<td>{{#if vehicle.size}}{{vehicle.category}}{{/if}}</td>
 						<td>{{#if vehicle.size}}{{vehicle.size}}{{/if}}</td>
-						<td>{{slot}}</td>
+						<td class='slot'>{{slot}}</td>
 						<td>{{telephone customerId}}</td>
 						<td>{{totalPassagers _id}}</td>
 						<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
-						<td>{{bookStatus}}</td>
+						<td class='slot'>{{bookStatus}}</td>
 						<td>
 							{{#if confirm}}
 								<a class="confirmBook" rel="{{_id}}"><i class='icon-check'></i></a>
@@ -400,11 +400,11 @@
 						<td>{{vehicle.vehiclePlate}}</td>
 						<td>{{#if vehicle.size}}{{vehicle.category}}{{/if}}</td>
 						<td>{{#if vehicle.size}}{{vehicle.size}}{{/if}}</td>
-						<td>{{slot}}</td>
+						<td class='slot'>{{slot}}</td>
 						<td>{{telephone customerId}}</td>
 						<td>{{totalPassagers _id}}</td>
 						<td>{{#if paid}} Completed {{else}} Not Paid {{/if}}</td>
-						<td>{{bookStatus}}</td>
+						<td class='slot'>{{bookStatus}}</td>
 						<td>
 							{{#if confirm}}
 								<a class="confirmBook" rel="{{_id}}"><i class='icon-check'></i></a>
@@ -517,10 +517,10 @@
 				Senior : 67 years and older<br>
 			{{#if isSummer}}
 				Child : 0 to 15 years old <br>
-				Youth : 16 to 20 years old <br>
+				Teenager : 16 to 20 years old <br>
 			{{else}}
 				Child : 0 to 11 years old <br>
-				Youth : 12 to 15 years old <br>
+				Teenager : 12 to 15 years old <br>
 			{{/if}}
 
 		<div class="line">

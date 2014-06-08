@@ -81,7 +81,7 @@ if(Boats.find().count() == 0){
   Boats.insert({
     "_id" : "2",
     "name" : "Saerun",
-    "maxCapacity" : 50,
+    "maxCapacity" : 150,
     "max5mDoor" : 0,
     "max6mDoor" : 0,
     "boatImage" : "saerun.jpeg"
@@ -1573,7 +1573,7 @@ Prices.insert({
 		"price" 	: "Adult",
 		"unit"	: 7090,
 		'active' : true,
-		'season' : 'both',
+		'season' : 'summer',
 		'productId' : result,
     'tripId' : tripID14,
 		'availableForGuest' : true
@@ -1583,7 +1583,7 @@ Prices.insert({
 		"price" 	: "Child",
 		"unit"	: 0,
 		'active' : true,
-		'season' : 'both',
+		'season' : 'summer',
 		'productId' : result,
     'tripId' : tripID14,
 		'availableForGuest' : true
@@ -1593,7 +1593,7 @@ Prices.insert({
 		"price" 	: "Teenager",
 		"unit"	: 3545,
 		'active' : true,
-		'season' : 'both',
+		'season' : 'summer',
 		'productId' : result,
     'tripId' : tripID14,
 		'availableForGuest' : true
@@ -1603,7 +1603,7 @@ Prices.insert({
 		"price" 	: "Senior",
 		"unit"	: 5672,
 		'active' : true,
-		'season' : 'both',
+		'season' : 'summer',
 		'productId' : result,
     'tripId' : tripID14,
 		'availableForGuest' : true

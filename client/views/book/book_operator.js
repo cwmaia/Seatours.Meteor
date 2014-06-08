@@ -855,8 +855,10 @@ Template.bookDetail.events({
 
 		book = Books.findOne(rel);
 		if(book){
+			$("#bookIdHidden").val(book._id);
 			$("#creditCardNumberLabel").text(book.ccInfo.number);
 			$("#expirationDateLabel").text(book.ccInfo.expirationDate);
+
 			$("#creditCardShowInfoModal").show();
 		}
 	},
@@ -1062,7 +1064,13 @@ var changeSlot = function(operatorName){
 	var book = Books.findOne(Session.get("bookId"));
 	var newSlots = $("#slotsToUpdate").val();
 
-	Books.update(Session.get("bookId"), {$set : {slot : $("#slotsToUpdate").val()}});
+	if(book.pendingApproval && newSlots.indexOf("W") == -1){
+		Books.update(Session.get("bookId"), {$set : {slot : $("#slotsToUpdate").val(), bookStatus : "Booked"}});
+	}else{
+		Books.update(Session.get("bookId"), {$set : {slot : $("#slotsToUpdate").val()}});
+	}
+
+
 	throwSuccess("Slots Changed!");
 	$("#headerDialog").text("Current Boat Status");
 
@@ -1236,7 +1244,7 @@ Template.bookDetail.helpers({
 			dateOfBooking : {$gte: currentDate, $lt: date},
 			'product._id' : Session.get('productId'),
 			'trip._id' : trip._id,
-			$or : [{'pendingApproval': true}, {slot : /.*W.*/}],
+			slot : /.*W.*/,
 			$and : [{bookStatus : {$not : "Canceled"}}, {bookStatus : {$not : "REMOVED"}}]
 		});
 	},
@@ -2664,6 +2672,7 @@ var createBook = function(values){
 			"sum" : calcConfirmationFee(vehicle.category)
 		};
 		prices.push(operatorPrice);
+		book.confirmationFeePaid = false;
 	}
 
 	book.prices = prices;
@@ -3214,7 +3223,7 @@ checkSameCarOnBoat = function(vehicleId, productId, tripId, dates){
 	}
 }
 
-function saveHistoryAction(book, action, operator){
+saveHistoryAction = function(book, action, operator){
 
 	historyBook = {
 		date : new Date(),

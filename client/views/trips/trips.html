@@ -243,6 +243,7 @@
 							<th>End Date</th>
 							<th>Week days availability</th>
 							<th>Active</th>
+							<th>Delete</th>
 						</tr>
 					</thead>
 
@@ -284,6 +285,9 @@
 									{{else}}
 										<a class="removeTrip" id="{{_id}}"><i class='icon-check-empty'></i></a>
 									{{/if}}
+								</td>
+								<td>
+									<a class="deleteTrip btn btn-danger btn-mini" id="{{_id}}"><i class='icon-remove'></i></a>
 								</td>
 							</tr>
 						{{/each}}

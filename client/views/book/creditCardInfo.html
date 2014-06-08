@@ -11,7 +11,7 @@
         <div>
           <form id='creditCardInfoForm'>
             <label class='required'>Credit Card Number: </label>
-            <input name='number' type='text'/ required>
+            <input name='number' type='text'/ required maxlength='16'>
 
             <label class='required'>Expiration Date: </label>
             <input name='expirationDate' type='text' class='size1-4' id='expirationDate' required/>
@@ -27,6 +27,32 @@
 </template>
 
 <template name='creditCardInfoShow'>
+  <div id="confirmActionModalCC" hidden>
+    <div class="mask"> </div>
+    <div class="modal">
+      <div class="modal-header">
+        <button type="button" class="cancel close">&times;</button>
+        <h3 id='headerDialog'>Please enter with yours initials</h3>
+      </div>
+
+      <div class="modal-body">
+        <form id='confirmActionFormCC'>
+          <div>
+            <label class="required">Initials: </label>
+            <input name='initialsCC' type='text' id="initialsCC" required>
+          </div>
+          <div>
+            <label class="required">Full Name: </label>
+            <input name='initialsResultCC' type='text' id="initialsResultCC" readonly required>
+          </div>
+        <form>
+      </div>
+
+      <div class="modal-footer">
+        <button type='submit' form='confirmActionFormCC' class="btn btn-success" style="float: right">Save</button>
+      </div>
+    </div>
+  </div>
   <div id="creditCardShowInfoModal" hidden>
     <div class="mask"> </div>
     <div class="modal">
@@ -38,17 +64,25 @@
       <div class="modal-body">
         <div>
           <form id='creditCardInfoForm'>
-              <label class='required'>Credit Card Number: </label>
-              <label id='creditCardNumberLabel'></label>
+              <input type='hidden' id='bookIdHidden'>
+              <label>Credit Card Number: </label>
+              <span id='creditCardNumberLabel'></span>
 
               <label>Expiration Date: </label>
-              <label id='expirationDateLabel'></label>
+              <span id='expirationDateLabel'></span>
+
+              <div>
+                  <label class="required">Confirmation Fee Paid:</label>
+                  <input id="confirmationFeePaidInput" checked type="checkbox" class="confirmationFeePaid ace ace-switch ace-switch-6">
+                  <span class='lbl'></span>
+              </div>
           </form>
         </div>
       </div>
 
+
+
       <div class="modal-footer">
-        <button class="btn btn-primary close">Close</button>
       </div>
     </div>
   </div>

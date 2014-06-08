@@ -26,6 +26,35 @@ Template.items.calcTotalISK = function(bookId){
 	return totalISK - confirmationFee;
 };
 
+Template.items.confirmationFee = function(bookId){
+	var book = CartItems.findOne(bookId);
+	var confirmationFee = 0;
+	if(book){
+			for(var i = 0; i < book.prices.length; i++){
+				if(book.prices[i].price.toLowerCase() == 'confirmation fee'){
+					confirmationFee = parseInt(book.prices[i].perUnit);
+				}
+			}
+	}
+
+	return confirmationFee > 0;
+};
+
+Template.items.totalConfirmation = function(bookId){
+	var book = CartItems.findOne(bookId);
+	var confirmationFee = 0;
+	if(book){
+			for(var i = 0; i < book.prices.length; i++){
+				if(book.prices[i].price.toLowerCase() == 'confirmation fee'){
+					confirmationFee = parseInt(book.prices[i].perUnit);
+				}
+			}
+	}
+
+	return confirmationFee;
+};
+
+
 Template.items.flatey = function(id){
 	note = Notes.findOne({bookId : id, type : "Stop at flatey"});
 	if(note)
@@ -60,8 +89,8 @@ Template.items.basket = function(id){
 
 Template.cart.rendered = function(){
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});
-  	$(".formattedAsMoney").maskMoney('mask');
-}
+  $(".formattedAsMoney").maskMoney('mask');
+};
 
 Template.items.hasDiscount = function(){
 	if(this.discount)
@@ -206,7 +235,6 @@ Template.cart.events({
 				createdBooks[i] = Books.findOne({_id : bookId});
 				//UpdateNote
 				notes = Notes.find({bookId: books[i]._id}).fetch();
-				console.log(notes);
 				for(var j = 0; j < notes.length; j++){
 					Notes.update(notes[j]._id, {$set : {bookId: bookId}});
 				}
@@ -222,7 +250,16 @@ Template.cart.events({
 		}
 
 
-	}
+	},
+
+	'click .cancel, click .close' : function(){
+		$("#confirmActionModal").hide();
+	},
+
+	'submit #confirmActionForm' : function(event){
+		event.preventDefault();
+		quickPay($("#initialsResult").val());
+	},
 });
 
 var checkVehicles = function(){
@@ -283,37 +320,18 @@ Template.items.events({
 
 	'click .quickPay' : function(event){
 		event.preventDefault();
+		$("#initialsResult").val("");
+		$("#initials").val("");
 		var a = event.currentTarget;
-		bootbox.confirm('Are you sure? Clicking this will make the Booking Paid', function(confirm){
-			if(confirm){
-					var bookId = a.rel;
-					var currentBooking = CartItems.findOne({'_id' : bookId});
-					var vendor = Meteor.user().profile.name;
-					var transaction = {
-						'bookId' : currentBooking._id,
-						'date' : new Date(),
-						'status' : 'Given',
-						'amount' : parseInt(currentBooking.totalISK),
-						'detail' : "Quick Paid",
-						'vendor' : vendor,
-						'type' : 'Cash Office'
-					};
-					Transactions.insert(transaction);
-					Books.update(currentBooking._id, {$set : {'paid' : true}});
-					var note = {
-							created : new Date(),
-							type : 'Quick Pay Note',
-							note : vendor + " marked the booking ID#"+ currentBooking.refNumber + " as paid",
-							bookId : Session.get('currentBooking')
-					};
-
-					Notes.insert(note);
-				}
-			});
-
-		},
-
-
+		bootbox.confirm("Are you sure? Clicking this will make the Booking Paid", function(result){
+			if(result){
+				var book = CartItems.findOne({'_id' : a.rel});
+				Session.set("confirmBook", book);
+				loadTypeAheadInitials();
+				$("#confirmActionModal").show();
+			}
+		});
+	},
 });
 
 
@@ -326,6 +344,57 @@ var calcTotalItems = function(){
 
 	$('#total').text(total);
 };
+
+var quickPay = function(operatorName){
+	var currentBooking = Session.get("confirmBook");
+
+	delete currentBooking.ccInfo;
+
+
+	refNumber = new Date().getTime().toString().substr(5);
+	while(Books.findOne({refNumber : refNumber})){
+		refNumber = new Date().getTime().toString().substr(5);
+	}
+	currentBooking.refNumber = refNumber;
+	currentBooking.buyerId = currentBooking.customerId;
+	currentBooking.paid = true;
+
+	bookId = Books.insert(currentBooking);
+
+	//UpdateNote
+	notes = Notes.find({bookId: currentBooking._id}).fetch();
+	for(var j = 0; j < notes.length; j++){
+		Notes.update(notes[j]._id, {$set : {bookId: bookId}});
+	}
+
+	historyBook = HistoryBook.findOne({bookId: currentBooking._id});
+	if(history)
+		HistoryBook.update(historyBook._id, {$set : {bookId: bookId}});
+
+	var vendor = Meteor.user().profile.name;
+	var transaction = {
+			'bookId' : currentBooking._id,
+			'date' : new Date(),
+			'status' : 'Given',
+			'amount' : parseInt(currentBooking.totalISK),
+			'detail' : "Quick Paid",
+			'vendor' : vendor,
+			'type' : 'Office Cash'
+		};
+
+	Transactions.insert(transaction);
+	var customer = Customers.findOne({_id : currentBooking.customerId});
+
+	if(customer.email)
+		sendMail(currentBooking,currentBooking._id, customer);
+
+	CartItems.remove({_id : currentBooking._id});
+
+	bookQuickPayed = Books.findOne(bookId);
+
+	saveHistoryAction(bookQuickPayed, "Marked as Paid", operatorName);
+};
+
 
 var sendMail = function(book, result, customer){
 

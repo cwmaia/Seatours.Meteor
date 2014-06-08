@@ -128,7 +128,10 @@ Template.editTrip.helpers({
 	trips : function() {
 		product = Session.get('_product') ? Session.get('_product') : Products.findOne(Session.get('tripId'));
 		if(product)
-			return Trips.find({productId : product._id});
+			return Trips.find({
+				productId : product._id,
+				$or : [{active : true}, {active : false}]
+			});
 		else
 			return [];
 	},
@@ -370,6 +373,19 @@ Template.editTrip.events({
 			Trips.update(id, {$set : {active : true}});
 			throwInfo('Trip Activated');
 		}
+	},
+
+	'click .deleteTrip' :function(event) {
+		event.preventDefault();
+		var id = event.currentTarget.id;
+		bootbox.confirm("You are really sure? This is forever you can't redo this action!", function(confirm){
+			if(confirm){
+				trip = Trips.findOne({_id : id});
+				Trips.update(id, {$set : {active : 'deleted'}});
+				throwInfo('Trip Deleted!');
+			}
+		});
+
 	},
 
 	'click .removePrice' :function(event) {
