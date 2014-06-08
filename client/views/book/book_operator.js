@@ -1966,7 +1966,7 @@ Template.generalButtons.events({
  	html += "<span>The customer "+currentCustomerInfo.fullName +" just createad a new inquiry that needs to be confirmed.</span> <br />"
  	html += "<span><b>The details for this booking are:</b> </span> <br />";
  	html += "<span><b>Trip:</b> "+currentBookingInfo.trip.from + " - "+ currentBookingInfo.trip.to +" - "+ currentBookingInfo.trip.hour +" </span> <br />";
- 	html += "<span><b>Date: </b>"+currentBookingInfo.dateOfBooking+" </span> <br />";
+ 	html += "<span><b>Date: </b>"+currentBookingInfo.dateOfBooking.toLocaleDateString() +" </span> <br />";
  	html += "<span><b>Total Price:</b> "+currentBookingInfo.totalISK+" </span> <br />";
  	html += "<span><b>Vehicle details:</b> "+currentBookingInfo.vehicle.vehicleName +", "+currentBookingInfo.vehicle.category+", "+currentBookingInfo.vehicle.size+"m </span> <br />";
  	//html += "<span><b>Slot: </b>"+currentBookingInfo.slot+" </span> <br /><br /><br /> Seatours Booking <br />";
