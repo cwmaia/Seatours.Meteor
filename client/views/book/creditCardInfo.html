@@ -4,7 +4,7 @@
     <div class="modal">
       <div class="modal-header">
         <button type="button" class="cancel close">&times;</button>
-        <h3>Enter with Credit Card Numbers</h3>
+        <h3>Enter with Credit Card Info</h3>
       </div>
 
       <div class="modal-body">
@@ -32,25 +32,23 @@
     <div class="modal">
       <div class="modal-header">
         <button type="button" class="cancel close">&times;</button>
-        <h3>Enter with Credit Card Numbers</h3>
+        <h3>Credit Card Info</h3>
       </div>
 
       <div class="modal-body">
         <div>
           <form id='creditCardInfoForm'>
-            {{#with CCInfo}}
               <label class='required'>Credit Card Number: </label>
-              <label>{{number}}</label>
+              <label id='creditCardNumberLabel'></label>
 
               <label>Expiration Date: </label>
-              <label>{{expirationDate}}</label>
-            {{/with}}
+              <label id='expirationDateLabel'></label>
           </form>
         </div>
       </div>
 
       <div class="modal-footer">
-        <a class="btn btn close" style="float: right">Close</a>
+        <button class="btn btn-primary close">Close</button>
       </div>
     </div>
   </div>

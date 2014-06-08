@@ -855,7 +855,8 @@ Template.bookDetail.events({
 
 		book = Books.findOne(rel);
 		if(book){
-			Session.set("CCInfo", book.ccInfo);
+			$("#creditCardNumberLabel").text(book.ccInfo.number);
+			$("#expirationDateLabel").text(book.ccInfo.expirationDate);
 			$("#creditCardShowInfoModal").show();
 		}
 	},
@@ -1139,6 +1140,7 @@ var quickPay = function(operatorName){
 		};
 	Transactions.insert(transaction);
 	Books.update(currentBooking._id, {$set : {'paid' : true}});
+	Books.update(currentBooking._id, {$unset : {ccInfo : ""}});
 
 	saveHistoryAction(currentBooking, "Marked as Paid", operatorName);
 };

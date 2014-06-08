@@ -2,10 +2,6 @@ Template.creditCardInfo.rendered = function(){
   $("#expirationDate").mask("99/99");
 };
 
-Template.creditCardInfoShow.CCInfo = function(){
-  return Session.get("CCInfo");
-};
-
 Template.creditCardInfo.events({
   'submit form' : function(event){
     event.preventDefault();
@@ -24,7 +20,6 @@ Template.creditCardInfo.events({
 Template.creditCardInfoShow.events({
   'click .cancel, click .close' : function(event){
     event.preventDefault();
-    Session.set("CCInfo", null);
     $("#creditCardShowInfoModal").hide();
   },
 });
