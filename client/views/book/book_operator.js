@@ -1949,21 +1949,38 @@ Template.generalButtons.events({
 });
 
  function sendMailInquiryConfirm () {
+ 	var currentBookingInfo = Session.get('currentCustomerBookInfo');
+ 	var currentCustomerInfo = Session.get('currentCustomerInfo');
+ 	//Email sent to customer
  	var html = "<html> <body><div id='wholeVoucher' style='width: 800px; margin: 0 auto; height: 115px; background-color: #005e8b; font-family: 'Open Sans','Helvetica Neue', Helvetica, Arial, sans-serif;'>"
 	html +=		"<div>";
 	html +=			"<img src='http://seatours.is/img/logo-en.png' style='height:110px;margin: 3px;'>";
 	html +=		"</div>";
 	html +=		"<div style=' margin-left: 15px; '>";
 	html +=			"<br />";
-	html +=			"<span>Hello! Your inquiry was completed! An agent from Seatours Office will be in contact soon!</span><br />";
+	html +=			"<span>Hello "+currentCustomerInfo.fullName+"! <br /> Your inquiry was completed! An agent from Seatours Office will be in contact soon!</span><br />";
 	html +=			"<br />";
 	html +=			"<span>Cheers!</span><br />";
 	html +=			"<span>Seatours Office</span>";
 	html +=		"</div>";
 	html +=	"</div></body></html>";
-	var email = Session.get('currentCustomerMail');
- 	Meteor.call('sendEmailHTML', email, "noreply@seatours.is", "Your booking at Seatours!", html);
-	console.log("Email foice!!!");
+ 	Meteor.call('sendEmailHTML', currentCustomerInfo.email, "noreply@seatours.is", "Your booking at Seatours!", html);
+ 	//Email sent to Seatours
+ 	var html = "<html> <body> <div>";
+ 	html +=		"<div>";
+	html +=			"<img src='http://seatours.is/img/logo-en.png' style='height:110px;margin: 3px;'>";
+	html +=		"</div>";
+ 	html += "<span>Hello! <br />";
+ 	html += "<span>The customer "+currentCustomerInfo.fullName +" just createad a new inquiry that needs to be confirmed.</span> <br />"
+ 	html += "<span><b>The details for this booking are:</b> </span> <br />";
+ 	html += "<span><b>Trip:</b> "+currentBookingInfo.trip.from + " - "+ currentBookingInfo.trip.to +" - "+ currentBookingInfo.trip.hour +" </span> <br />";
+ 	html += "<span><b>Date: </b>"+currentBookingInfo.dateOfBooking.toLocaleDateString() +" </span> <br />";
+ 	html += "<span><b>Total Price:</b> "+currentBookingInfo.totalISK+" </span> <br />";
+ 	html += "<span><b>Vehicle details:</b> "+currentBookingInfo.vehicle.vehicleName +", "+currentBookingInfo.vehicle.category+", "+currentBookingInfo.vehicle.size+"m </span> <br />";
+ 	//html += "<span><b>Slot: </b>"+currentBookingInfo.slot+" </span> <br /><br /><br /> Seatours Booking <br />";
+ 	html +=	"</div></body></html>";
+ 	Meteor.call('sendEmailHTML', "seatours@seatours.com", "noreply@seatours.is", "New inquiry createad!", html);
+	
 }
 
 Template.generalPassagerInfo.events({
@@ -2524,8 +2541,6 @@ var createBook = function(values){
 		"lastUsedCar" : vehicle,
 		"groupId" : group._id
 	};
-	Session.set("currentCustomerMail", customer.email);
-
 	if(isOperator()){
 		Session.set("previousCustomer", customer);
 		Session.set("previousVehicle", vehicle);
@@ -2823,7 +2838,8 @@ var createBook = function(values){
 				book.orderId = refNumber;
 				Meteor.call('insertBook', book);
 				CartItems.remove({_id: book._id});
-
+				Session.set("currentCustomerInfo", customer);
+				Session.set("currentCustomerBookInfo", book);
 			}else{
 
 				temporaryID = CartItems.insert(book);
