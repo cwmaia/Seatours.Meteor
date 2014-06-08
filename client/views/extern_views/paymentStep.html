@@ -16,7 +16,7 @@
 			</thead>
 			<tbody>
 				{{#each cbasketBooks}}
-					{{>items}}
+					{{>itemsPaymentStep}}
 				{{/each}}
 			</tbody>
 			<tfoot>
@@ -29,7 +29,7 @@
 		<div class='hidden'>
 			<input type="hidden" name="merchantid" value="9929533" /><br>
 			<input type="hidden" name="paymentgatewayid" value="3962" /><br>
-			<input type="hidden" size=100 name="checkhash" value="daecc17b2096da585e8a9d22ead38734" /><br> 
+			<input type="hidden" size=100 name="checkhash" value="daecc17b2096da585e8a9d22ead38734" /><br>
 			<input type="hidden" name="orderid" value="{{orderId}}" /><br>
 			<input type="hidden" name="currency" value="ISK" /><br>
 			<input type="hidden" name="language" value="EN" /><br>
@@ -56,4 +56,33 @@
 	<div class='form-actions center'>
 		<button class='btn btn-success' id="proccedToPayment">Pay</button>
 	</div>
+</template>
+
+<template name="itemsPaymentStep">
+	<tr>
+		<input type='hidden' id='{{totalISK}}' class='unitPrice'>
+		<td style='width: 70%'>
+			{{product.name}} - {{dateNoTimeZone dateOfBooking}}
+			</br>
+			<b>From</b>
+			{{trip.from}} {{#if hasTo}}<b>To</b> {{trip.to}}{{/if}} <br/><b>Hour</b> {{trip.hour}}
+			</br>
+			</br>
+			{{customerName customerId}}
+			</br>
+			</br>
+
+			{{#each prices}}{{#if notConfirmation price}}{{price}} ( <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{perUnit}}"> ISK) X {{persons}} =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{sum}}"> ISK</br>{{/if}}{{/each}}</br>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{vehicle.totalCost}}"> {{/if}}
+		</td>
+
+		<td style='width: 10%; text-align: center'>
+			<span id='{{_id}}' class='calcTotal'>
+					<input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{totalISK}}" />
+			</span>
+			<br/>
+			{{#if hasDiscount}}
+				{{discount}}% Off!
+			{{/if}}
+		</td>
+	</tr>
 </template>

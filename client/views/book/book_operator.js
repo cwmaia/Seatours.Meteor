@@ -364,21 +364,21 @@ Template.bookOperator.helpers({
 			if(group){
 				if(group.type == 'internal'){
 					return Products.find({active : true, featured : true});
-				}
-			}else{
-				showProducts = [];
-				products =  Products.find({active : true, featured : true}).fetch();
-				for (i = 0; i < products.length; i++) {
-					group = Groups.findOne({_id : products[i].availableFor});
-					if(group && group.name == 'Customers'){
-						showProducts.push(products[i]);
-					}else if(Meteor.user()){
-						if(products[i].availableFor == getGroupId(Meteor.user().profile.customerId))
-						showProducts.push(products[i]);
+				}else{
+					showProducts = [];
+					products =  Products.find({active : true, featured : true}).fetch();
+					for (i = 0; i < products.length; i++) {
+						group = Groups.findOne({_id : products[i].availableFor});
+						if(group && group.name == 'Customers'){
+							showProducts.push(products[i]);
+						}else if(Meteor.user()){
+							if(products[i].availableFor == getGroupId(Meteor.user().profile.customerId))
+							showProducts.push(products[i]);
+						}
 					}
-				}
 
-				return showProducts;
+					return showProducts;
+				}
 			}
 		}else{
 			showProducts = [];
@@ -402,22 +402,24 @@ Template.bookOperator.helpers({
 			if(group){
 				if(group.type == 'internal'){
 					return Products.find({active : true, featured : false}, {sort : {order : 1}});
-				}
-			}else{
-				showProducts = [];
-				products =  Products.find({active : true, featured : false}, {sort : {order : 1}}).fetch();
-				for (i = 0; i < products.length; i++) {
-					group = Groups.findOne({_id : products[i].availableFor});
-					if(group && group.name == 'Customers'){
-						showProducts.push(products[i]);
-					}else if(Meteor.user()){
-						if(products[i].availableFor == getGroupId(Meteor.user().profile.customerId))
-						showProducts.push(products[i]);
+				}else{
+					showProducts = [];
+					products =  Products.find({active : true, featured : false}, {sort : {order : 1}}).fetch();
+					console.log(products);
+					for (i = 0; i < products.length; i++) {
+						group = Groups.findOne({_id : products[i].availableFor});
+						if(group && group.name == 'Customers'){
+							showProducts.push(products[i]);
+						}else if(Meteor.user()){
+							if(products[i].availableFor == getGroupId(Meteor.user().profile.customerId))
+							showProducts.push(products[i]);
+						}
 					}
-				}
 
-				return showProducts;
+					console.log(showProducts);
+					return showProducts;
 			}
+		}
 		}else{
 			showProducts = [];
 
@@ -1980,7 +1982,7 @@ Template.generalButtons.events({
  	//html += "<span><b>Slot: </b>"+currentBookingInfo.slot+" </span> <br /><br /><br /> Seatours Booking <br />";
  	html +=	"</div></body></html>";
  	Meteor.call('sendEmailHTML', "seatours@seatours.com", "noreply@seatours.is", "New inquiry createad!", html);
-	
+
 }
 
 Template.generalPassagerInfo.events({

@@ -37,7 +37,7 @@ Template.items.confirmationFee = function(bookId){
 			}
 	}
 
-	return confirmationFee > 0;
+	return (confirmationFee > 0 && !isCustomer());
 };
 
 Template.items.totalConfirmation = function(bookId){
@@ -85,7 +85,12 @@ Template.items.basket = function(id){
 };
 
 
-
+Template.items.notConfirmation = function(price){
+	if(isCustomer)
+		return price.toLowerCase() != 'confirmation fee';
+	else
+		return true;
+};
 
 Template.cart.rendered = function(){
 	$(".formattedAsMoney").maskMoney({thousands:'.', allowNegative:'true', precision:'0'});

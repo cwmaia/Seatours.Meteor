@@ -9,7 +9,37 @@ Template.paymentStep.totalCustomer = function(){
 		total += parseInt(carts[i].totalISK);
 	}
 
-	console.log(total);
+	return total;
+};
+
+Template.itemsPaymentStep.customerName = function(customerId){
+	var customer = Customers.findOne({_id : customerId});
+	if(customer)
+		return customer.fullName;
+	return "";
+};
+
+Template.itemsPaymentStep.hasDiscount = function(){
+	if(this.discount)
+		return this.discount > 0;
+	else
+		return false;
+}
+
+Template.itemsPaymentStep.hasVehicle = function(){
+	return this.vehicle.category;
+};
+
+Template.itemsPaymentStep.notConfirmation = function(price){
+	return price.toLowerCase() != 'confirmation fee';
+};
+
+Template.itemsPaymentStep.totalCustomer = function(){
+	var carts = Books.find({orderId : Session.get('orderId')}).fetch();
+	var total = 0;
+	for (var i = 0; i < carts.length; i++) {
+		total += parseInt(carts[i].totalISK);
+	}
 
 	return total;
 };

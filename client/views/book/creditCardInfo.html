@@ -72,9 +72,15 @@
               <span id='expirationDateLabel'></span>
 
               <div>
-                  <label class="required">Confirmation Fee Paid:</label>
-                  <input id="confirmationFeePaidInput" checked type="checkbox" class="confirmationFeePaid ace ace-switch ace-switch-6">
-                  <span class='lbl'></span>
+                  {{#if isPaid}}
+                    <label class="required">Confirmation Fee Paid:</label>
+                    <input id="confirmationFeePaidInput" checked type="checkbox" class="confirmationFeePaid ace ace-switch ace-switch-6">
+                    <span class='lbl'></span>
+                  {{else}}
+                    <label class="required">Confirmation Fee Paid:</label>
+                    <input id="confirmationFeePaidInput"  type="checkbox" class="confirmationFeePaid ace ace-switch ace-switch-6">
+                    <span class='lbl'></span>
+                  {{/if}}
               </div>
           </form>
         </div>

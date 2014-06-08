@@ -114,7 +114,7 @@
 					<input type="hidden" name="merchantemail" value="ba@borgun.is" /><br>
 				</div>
 			</form>
-			{{#each prices}}{{#unless confirmationFeeNotLogin}}{{price}} ( <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{perUnit}}"> ISK) X {{persons}} =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{sum}}"> ISK</br>{{/unless}}{{/each}}</br>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{vehicle.totalCost}}"> {{/if}}
+			{{#each prices}}{{#if notConfirmation price}}{{price}} ( <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{perUnit}}"> ISK) X {{persons}} =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{sum}}"> ISK</br>{{/if}}{{/each}}</br>{{#if hasVehicle}}{{vehicle.category}} - {{vehicle.size}}m =  <input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{vehicle.totalCost}}"> {{/if}}
 		</td>
 
 		{{#if notFinish}}
@@ -133,7 +133,7 @@
 					<input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="- {{totalConfirmation _id}}" />
 					<input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{calcTotalISK _id}}" />
 				{{else}}
-					<input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{calcTotalISK _id}}" />
+					<input disabled style="width: 50px; background-color: rgba(0,0,0,0) !important;" class="formattedAsMoney" value="{{totalISK}}" />
 				{{/if}}
 			</span>
 			<br/>
