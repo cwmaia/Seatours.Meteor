@@ -280,13 +280,14 @@ Template.items.events({
 		event.preventDefault();
 		$("#sendToBorgun").submit();
 	},
+
 	'click .quickPay' : function(event){
 		event.preventDefault();
 		var a = event.currentTarget;
 		bootbox.confirm('Are you sure? Clicking this will make the Booking Paid', function(confirm){
 			if(confirm){
 					var bookId = a.rel;
-					var currentBooking = Books.findOne({'_id' : bookId});
+					var currentBooking = CartItems.findOne({'_id' : bookId});
 					var vendor = Meteor.user().profile.name;
 					var transaction = {
 						'bookId' : currentBooking._id,
@@ -314,6 +315,8 @@ Template.items.events({
 
 
 });
+
+
 
 var calcTotalItems = function(){
 	var total = 0;

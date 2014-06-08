@@ -237,6 +237,9 @@
 									</a>
 									<a class="btn btn-mini btn-success quickPay" rel="{{_id}}" title="Quick Pay"><i class="icon-money"></i></a>
 								{{/if}}
+								{{#if hasCCInfo}}
+									<a class="btn btn-mini btn-primary showCCInfo" rel="{{_id}}" title="Show Credit Card Info"><i class="icon-eye-open"></i></a>
+								{{/if}}
 								<a class="btn btn-mini btn-inverse seeHistory" rel="{{_id}}" title="Book History"><i class="icon-book"></i></a>
 								<a class="btn btn-mini btn-info editBookOperator" rel="{{_id}}" title="Edit Book"><i class="icon-edit"></i></a>
 								{{#if vehicle.vehicleName}}
@@ -337,6 +340,9 @@
 								<a class="btn btn-mini btn-info editBookOperator" rel="{{_id}}" title="Edit Book"><i class="icon-edit"></i></a>
 							{{/if}}
 
+							{{#if hasCCInfo}}
+								<a class="btn btn-mini btn-primary showCCInfo" title="Show Credit Card Info"><i class="icon-eye-open"></i></a>
+							{{/if}}
 							{{#if vehicle.vehicleName}}
 								<a class="btn btn-mini btn-warning editSlot" rel="{{_id}}" title="Change Slot"><i class="icon-truck"></i></a>
 							{{/if}}
@@ -347,6 +353,7 @@
 			</table>
 		</div>
 
+		{{> creditCardInfoShow}}
 		<div id="passagersTableCanceled" class="divTable">
 			<div>
 				<h3>Canceled List</h3>
@@ -420,6 +427,9 @@
 							{{/if}}
 						</td>
 						<td>
+							{{#if hasCCInfo}}
+								<a class="btn btn-mini btn-primary showCCInfo" title="Show Credit Card Info"><i class="icon-eye-open"></i></a>
+							{{/if}}
 							<a class="btn btn-mini btn-danger removeBook" rel="{{_id}}" title="Remove"><i class="icon-remove"></i></a>
 						</td>
 					</tr>
@@ -433,6 +443,7 @@
 </template>
 
 <template name='createBook'>
+	{{> creditCardInfo}}
 	{{#if tripSelected}}
 		{{#if showStatusDialog}}
 	    	{{> statusDialog}}
@@ -521,25 +532,25 @@
 		</div>
 
 		<div id="svgBoatDialogCreate">
-	    		<div class="mask"> </div>
-				  <div class="modal" style="left: 30%; width: 1080px">
-				    <div class="modal-header">
-				      <button type="button" class="cancel close">&times;</button>
-				      <h3>Current Boat Status</h3>
-				    </div>
+  		<div class="mask"> </div>
+		  <div class="modal" style="left: 30%; width: 1080px">
+		    <div class="modal-header">
+		      <button type="button" class="cancel close">&times;</button>
+		      <h3>Current Boat Status</h3>
+		    </div>
 
-				    <div class="modal-body">
-				    	<div>
-							{{>baldurSVG}}
-						</div>
-				    </div>
+		    <div class="modal-body">
+		    	<div>
+					{{>baldurSVG}}
+				</div>
+		    </div>
 
-				    <div class="modal-footer">
-				    	<a id="showDoorButton" class="btn btn-info enabledDoor" {{#if isSummer}} disabled {{/if}} style="float: left">Show Door</a>
-				    	<a class="btn btn-success cancel" style="float: right">Save</a>
-				    </div>
-				  </div>
-	    	</div>
+		    <div class="modal-footer">
+		    	<a id="showDoorButton" class="btn btn-info enabledDoor" {{#if isSummer}} disabled {{/if}} style="float: left">Show Door</a>
+		    	<a class="btn btn-success cancel" style="float: right">Save</a>
+		    </div>
+		  </div>
+  	</div>
 
 
 		<div class='line'>

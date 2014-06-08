@@ -20,7 +20,22 @@ var getSelectedAndNextDay = function(){
 	return dates;
 };
 
-var getFirstSlotAvailable = function(){
+var waitSlotsAvailable = function(){
+	var slot = "";
+
+	$(".yellowSlot").filter(function(){
+		var a = document.getElementById($(this).attr('id'));
+		//get only yellow slots
+		if(a.getAttribute("fill") == "#e6ec8b"){
+			slot = a.id.split("_")[1];
+			return;
+		}
+	});
+
+	return slot;
+};
+
+getFirstSlotAvailable = function(){
 
 	var prefSlots = [1,2,3,4,5,19,20,15];
 	var prefElements = [];
@@ -834,6 +849,18 @@ Template.bookDetail.events({
 		Meteor.Router.to("/bookDetailResume/"+rel);
 	},
 
+	'click .showCCInfo' : function(event){
+		event.preventDefault();
+		rel = event.currentTarget.rel;
+
+		book = Books.findOne(rel);
+		if(book){
+			$("#creditCardNumberLabel").text(book.ccInfo.number);
+			$("#expirationDateLabel").text(book.ccInfo.expirationDate);
+			$("#creditCardShowInfoModal").show();
+		}
+	},
+
 	'click #printResume' : function(event){
 		event.preventDefault();
 		$('#pageHeader').printElement();
@@ -1113,6 +1140,7 @@ var quickPay = function(operatorName){
 		};
 	Transactions.insert(transaction);
 	Books.update(currentBooking._id, {$set : {'paid' : true}});
+	Books.update(currentBooking._id, {$unset : {ccInfo : ""}});
 
 	saveHistoryAction(currentBooking, "Marked as Paid", operatorName);
 };
@@ -1169,7 +1197,6 @@ var ticketsPrinted = function (operatorName){
 
 Template.bookDetail.flatey = function(id){
 	note = Notes.findOne({bookId : id, type : "Stop at flatey"});
-	console.log(note);
 	if(note)
 		return true;
 	else
@@ -1286,6 +1313,14 @@ Template.bookDetail.helpers({
 		}else{
 			return "red";
 		}
+	},
+
+	hasCCInfo : function(){
+		if(this.ccInfo){
+			return true;
+		}
+
+		return false;
 	}
 });
 
@@ -1568,7 +1603,6 @@ Template.createBook.events({
 		}else{
 			$("#includeOperatorFee").val(false);
 		}
-		console.log($("#includeOperatorFee").val());
 	},
 
 	'click rect' : function(event){
@@ -1775,16 +1809,27 @@ Template.generalButtons.events({
 			bootbox.alert("This car is already booked to this trip");
 		}else if(!isCustomer() && $("#initialsResult").val() == ""){
 			bootbox.alert("Please Inform the Operator Initials");
+		}else if(isCustomer() && !getFirstSlotAvailable()){
+			bootbox.alert("Sorry but we don't have room for the car because this trip is already full booked, please enter in contact with our office to be placed on the waiting list or select other trip");
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
 				if(checkForAdults()){
 					bootbox.confirm("Are you sure? There is no adults on this booking", function(confirm){
-						if(confirm)
-							proccedToBooking("/bookOperator");
+						if(confirm){
+							if($("#includeOperatorFeeInput").is(":checked")){
+								$("#creditCardModal").show();
+							}else{
+								BookOperator.proccedToBooking("/bookOperator");
+							}
+						}
 					});
 				}else{
-					proccedToBooking("/bookOperator");
+					if($("#includeOperatorFeeInput").is(":checked")){
+						$("#creditCardModal").show();
+					}else{
+						BookOperator.proccedToBooking("/bookOperator");
+					}
 				}
 			}else{
 				$('#pasagerInfo').submit(function(event){
@@ -1798,14 +1843,16 @@ Template.generalButtons.events({
 		if($("#categories").val() != "" && $("#size").val() == "" && !$('#size').is(':disabled')){
 			throwError('Please Inform the size of vehicle');
 		}else if(checkSameCarOnBoat($("#vehiclePlate").val())){
-				bootbox.alert("This car is already booked to this trip");
+			bootbox.alert("This car is already booked to this trip");
 		}else if(!CanSaveTheBook){
 			throwError("Sorry but the vehicle informed can't go on the boat");
+		}else if(!waitSlotsAvailable()){
+			bootbox.alert("Sorry but we don't have room for the car because this trip is already full booked, please enter in contact with our office to be placed on the waiting list or select other trip");
 		}else{
 			var form = document.getElementById('pasagerInfo');
 			if(form.checkValidity()){
 				createBook();
-				throwSuccess("Inquiry Confirmed");
+				bootbox.alert("Your inquery was sent to our office. Our team will analyze your request and contact you as soon as possible");
 				cleanExternView();
 				sendMailInquiryConfirm();
 				$("#loginArea").hide();
@@ -1862,16 +1909,27 @@ Template.generalButtons.events({
 			bootbox.alert("This car is already booked to this trip");
 		}else if(!isCustomer() && $("#initialsResult").val() == ""){
 			bootbox.alert("Please Inform the Operator Initials");
+		}else if(isCustomer() && !getFirstSlotAvailable()){
+			bootbox.alert("Sorry but we don't have room for the car because this trip is already full booked, please enter in contact with our office to be placed on the waiting list or select other trip");
 		}else{
 				var form = document.getElementById('pasagerInfo');
 				if(form.checkValidity()){
 					if(checkForAdults()){
 						bootbox.confirm("Are you sure? There is no adults on this booking", function(confirm){
-							if(confirm)
-								proccedToBooking('/cart');
+							if(confirm){
+								if($("#includeOperatorFeeInput").is(":checked")){
+									$("#creditCardModal").show();
+								}else{
+									BookOperator.proccedToBooking('/cart');
+								}
+							}
 						});
 					}else{
-						proccedToBooking('/cart');
+						if($("#includeOperatorFeeInput").is(":checked")){
+							$("#creditCardModal").show();
+						}else{
+							BookOperator.proccedToBooking('/cart');
+						}
 					}
 				}else{
 					$('#pasagerInfo').submit(function(event){
@@ -2443,7 +2501,7 @@ loadTypeAheadInitials = function(){
 
 }
 
-var createBook = function(){
+var createBook = function(values){
 	var d, resultid, name;
 
 	var	vehicle = {
@@ -2515,6 +2573,7 @@ var createBook = function(){
 
 		if (vehicle.size > 5 ){
 			book.pendingApproval = true;
+			book.slot = waitSlotsAvailable();
 		}else{
 			if(vehicle.size && vehicle.category && vehicle.plate)
 				book.slot = getFirstSlotAvailable();
@@ -2550,6 +2609,10 @@ var createBook = function(){
 	}else{
 		customer.online = false;
 		book.signedby = $("initials").val();
+
+		if(values){
+			book.ccInfo = values;
+		}
 
 
 		if(getCartIdOperator()){
@@ -3067,18 +3130,24 @@ checkMaxCapacity = function(total, productId, tripId){
 
 };
 
-function proccedToBooking(route){
-	createBook();
-	throwSuccess("Book added on Cart");
-	if(isCustomer()){
-		cleanExternView();
-		Session.set('cbasket', true);
-		$("#loginArea").hide();
-		Template.externView.rendered();
-	}else{
-		Meteor.Router.to(route);
+BookOperator = {
+	proccedToBooking : function(route, values){
+		if(values)
+			createBook(values);
+		else
+			createBook();
+
+		throwSuccess("Book added on Cart");
+		if(isCustomer()){
+			cleanExternView();
+			Session.set('cbasket', true);
+			$("#loginArea").hide();
+			Template.externView.rendered();
+		}else{
+			Meteor.Router.to(route);
+		}
 	}
-}
+};
 
 function calculateCars(description){
 	var type = description.split(" ")[0];

@@ -1,0 +1,55 @@
+<template name='creditCardInfo'>
+  <div id="creditCardModal" hidden>
+    <div class="mask"> </div>
+    <div class="modal">
+      <div class="modal-header">
+        <button type="button" class="cancel close">&times;</button>
+        <h3>Enter with Credit Card Info</h3>
+      </div>
+
+      <div class="modal-body">
+        <div>
+          <form id='creditCardInfoForm'>
+            <label class='required'>Credit Card Number: </label>
+            <input name='number' type='text'/ required>
+
+            <label class='required'>Expiration Date: </label>
+            <input name='expirationDate' type='text' class='size1-4' id='expirationDate' required/>
+          </form>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type='submit' form='creditCardInfoForm' class="btn btn-success" style="float: right">Save</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name='creditCardInfoShow'>
+  <div id="creditCardShowInfoModal" hidden>
+    <div class="mask"> </div>
+    <div class="modal">
+      <div class="modal-header">
+        <button type="button" class="cancel close">&times;</button>
+        <h3>Credit Card Info</h3>
+      </div>
+
+      <div class="modal-body">
+        <div>
+          <form id='creditCardInfoForm'>
+              <label class='required'>Credit Card Number: </label>
+              <label id='creditCardNumberLabel'></label>
+
+              <label>Expiration Date: </label>
+              <label id='expirationDateLabel'></label>
+          </form>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary close">Close</button>
+      </div>
+    </div>
+  </div>
+</template>
