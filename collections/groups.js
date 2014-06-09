@@ -9,6 +9,7 @@ Groups.allow({
 	},
 
 	update : function(){
+		console.log(this);
 		if(CheckUser())
 			return true;
 		else

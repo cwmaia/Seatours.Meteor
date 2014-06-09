@@ -249,7 +249,6 @@ var updateDataPieChart = function(){
 	Session.set("doorCars", qtdDoor);
 	Session.set("extraCars", qtdExtra);
 
-
 	percentages = {
 		regularSlots : regularSlots,
 		extraSlots : extraSlots,
@@ -274,30 +273,28 @@ Template.productItem.featured = function(id){
 };
 
 Template.productItem.rendered = function(){
-	var nowTemp = new Date();
-	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
 
 	$('.calendar').datepicker({
 			format : "dd/mm/yyyy"
 		}).on('changeDate', function(ev){
 			date = new Date(ev.date);
-
+			
 			var timezone = date.getTimezoneOffset();
 
 			var fixDate = new Date(date.getTime() + timezone * 60000);
 
 			with(fixDate){
-				setDate(getDate());
 				setHours(0);
 				setMinutes(0);
 				setSeconds(0);
 			}
 
+
 			localStorage.setItem('date', fixDate);
 			$('#currentSeason').text(currentSeason());
 		});
 	if(isCustomer()){
-		$('.calendar').datepicker("setStartDate", now);
+		$('.calendar').datepicker("setStartDate", new Date());
 	}
  };
 
@@ -405,7 +402,6 @@ Template.bookOperator.helpers({
 				}else{
 					showProducts = [];
 					products =  Products.find({active : true, featured : false}, {sort : {order : 1}}).fetch();
-					console.log(products);
 					for (i = 0; i < products.length; i++) {
 						group = Groups.findOne({_id : products[i].availableFor});
 						if(group && group.name == 'Customers'){
@@ -416,7 +412,6 @@ Template.bookOperator.helpers({
 						}
 					}
 
-					console.log(showProducts);
 					return showProducts;
 			}
 		}
@@ -2582,9 +2577,9 @@ var createBook = function(values){
 			book.pendingApproval = true;
 			book.slot = waitSlotsAvailable();
 		}else{
-			if(vehicle.size && vehicle.category && vehicle.plate)
-				book.slot = getFirstSlotAvailable();
+			book.slot = getFirstSlotAvailable();
 		}
+
 		if(Session.get('SaveCustomer')){
 			var findCustomer;
 			if($('#socialSecurityNumber').val())
@@ -2620,7 +2615,6 @@ var createBook = function(values){
 		if(values){
 			book.ccInfo = values;
 		}
-
 
 		if(getCartIdOperator()){
 			book.cartId = getCartIdOperator();
@@ -2838,9 +2832,35 @@ var createBook = function(values){
 				Meteor.call('insertBook', book);
 				CartItems.remove({_id: book._id});
 				sendMailInquiryConfirm(book, customer);
+
+				note = $('#notes').val();
+				if(note){
+					noteobj = {
+						created : date,
+						type : 'Customer Note',
+						note : note,
+						bookId : book._id
+					};
+
+					Notes.insert(noteobj);
+				}
+
 			}else{
 
 				temporaryID = CartItems.insert(book);
+
+				note = $('#notes').val();
+				if(note){
+					noteobj = {
+						created : date,
+						type : 'Customer Note',
+						note : note,
+						bookId : temporaryID
+					};
+
+					Notes.insert(noteobj);
+				}
+
 				if($("#stopAtFlatey").val() == 'true'){
 					noteobj = {
 							created : new Date(),

@@ -147,10 +147,10 @@
 	            	</select>
 	            </div>
 	        </div>
-	        {{#if dateSelected}}
+					{{#unless customerCreation}}
 		        <label>Notes:</label>
 		        <textarea id='notes' cols='4' rows='4'/>
-		    {{/if}}
+					{{/unless}}	
     	</fieldset>
     </form>
     {{#if isCreateUserPage}}

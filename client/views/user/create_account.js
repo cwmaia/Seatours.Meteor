@@ -35,8 +35,8 @@ Template.createAccount.events({
 			throwError('Please Inform the Name of User');
 			return;
 		}
-		
-	
+
+
 		Meteor.call('createAccount', user, function(err){
 			if(err){
 				throwError(err.reason);
@@ -44,12 +44,12 @@ Template.createAccount.events({
 				throwSuccess('User Created!');
 			}
 		});
-	
+
 
 		$('#fieldsetGroup input').filter(function(){
 			$(this).val('');
 		})
-		
+
 	},
 
 	'click .forgotPassword' : function(event){
@@ -67,7 +67,7 @@ Template.createAccount.events({
 					throwError(err.reason);
 				}else{
 					throwError('Looks like our server is busy, try again in a few moments');
-				}				
+				}
 				$.unblockUI();
 			}else{
 				$.unblockUI({
@@ -98,28 +98,25 @@ Template.createAccount.events({
 
 Template.usersList.users = function(){
 	return Meteor.users.find({'profile.groupID' : {$exists : true}}).fetch();
-}
+};
 
 Template.usersList.getGroup = function(groupID){
 	return Groups.findOne({_id: groupID}) ? Groups.findOne({_id: groupID}).name : '';
-}
+};
 
 Template.createAccount.groups = function(){
-	return Groups.find({type : 'internal'});
-}
+	return Groups.find({
+		type : 'internal',
+		description : {$not : "Seatours Super Admin Group"}
+		});
+};
 
 Template.usersList.isNotAdmGroup = function(groupID){
 	group = Groups.findOne({_id: groupID});
+
 	if(group){
-		return !(group.name == "Administrators");
+		return !(group.description == "Seatours Super Admin Group");
 	}else{
 		return false;
 	}
-}
-
-Template.usersList.rendered = function(){
-	
-
-		
-}
-
+};

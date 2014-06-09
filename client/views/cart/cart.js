@@ -251,7 +251,8 @@ Template.cart.events({
 
 		throwSuccess(books.length+' Bookings Created!');
 		Session.set("createdBooks", createdBooks);
-		Meteor.Router.to("/bookOperator");
+		localStorage.setItem('date', createdBooks[0].dateOfBooking);
+		Meteor.Router.to("/bookOperator/"+createdBooks[0].product._id);
 		}
 
 

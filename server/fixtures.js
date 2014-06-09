@@ -12,22 +12,30 @@ var specialId = '';
 if(Groups.find().count() == 0){
 	admId = Groups.insert({
 		'name' : 'Administrators',
-		'description' : 'Seatours Admin Group',
+		'description' : 'Seatours Super Admin Group',
 		'type' : 'internal'
 	});
+
+  Groups.insert({
+    'name' : 'Administrators',
+    'description' : 'Seatours Admin',
+    'type' : 'internal'
+  });
 
 	vendorsId = Groups.insert({
 		'name' : 'Vendors',
 		'description' : 'Vendors',
 		'type' : 'internal',
 		'permissions' : [
+      'bookDetailResume',
+      'bookEdit',
 			'bookOperator',
 			'bookDetail',
 			'createBook',
 			'cart',
 			'finishBooking'
 		]
-	})
+	});
 
 	Groups.insert({
 		'name' : 'Agencies',

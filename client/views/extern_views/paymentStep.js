@@ -19,6 +19,14 @@ Template.itemsPaymentStep.customerName = function(customerId){
 	return "";
 };
 
+Template.itemsPaymentStep.hasTo = function(){
+	return this.trip.to;
+};
+
+Template.itemsPaymentStep.dateNoTimeZone = function(date){
+	return date.toUTCString().slice(5,17);
+};
+
 Template.itemsPaymentStep.hasDiscount = function(){
 	if(this.discount)
 		return this.discount > 0;

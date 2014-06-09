@@ -475,6 +475,13 @@ Meteor.methods({
     var summerDate = Settings.findOne({_id : "summer"}).summerStartDate;
 
     return {winterDate : winterDate, summerDate : summerDate};
+  },
 
+  getTimeZone : function(){
+    var date = new Date();
+
+    var timezone = date.getTimezoneOffset();
+    
+    console.log(timezone);
   }
 });
