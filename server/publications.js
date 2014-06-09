@@ -481,7 +481,7 @@ Meteor.methods({
     var date = new Date();
 
     var timezone = date.getTimezoneOffset();
-    
-    console.log(timezone);
+
+    return {date: date, timezone : timezone};
   }
 });

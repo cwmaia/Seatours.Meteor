@@ -429,7 +429,7 @@ var sendMail = function(book, result, customer){
 
 TESTE = {
 	teste : function(){
-		Meteor.call("getTimeZone", function(result){
+		Meteor.call("getTimeZone", function(err, result){
 			console.log(result);
 		});
 	}
