@@ -426,3 +426,11 @@ var sendMail = function(book, result, customer){
 	Meteor.call('sendEmailHTML', customer.email, "noreply@seatours.is", "Your Voucher at Seatours!", html);
 
 };
+
+TESTE = {
+	teste : function(){
+		Meteor.call("getTimeZone", function(result){
+			console.log(result);
+		});
+	}
+};
