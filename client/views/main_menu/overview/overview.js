@@ -33,14 +33,14 @@ Template.overview.notes = function(bookId) {
 
 Template.overview.bookings = function(productId, tripId){
 	var date = new Date(localStorage.getItem('date')),
-	currentDate = new Date(localStorage.getItem('date'));
+	currentDate = new Date(localStorage.getItem('date')).getTime();
 
 	with(date){
 		setDate(getDate() + 1);
 	}
 
 	return Books.find({
-		dateOfBooking : {$gte: currentDate, $lt: date},
+		dateOfBooking : {$gte: currentDate, $lt: date.getTime()},
 		'product._id' : productId,
 		'trip._id' : tripId
 	}, { sort : {paid : -1, bookStatus: 1}});
@@ -48,14 +48,14 @@ Template.overview.bookings = function(productId, tripId){
 
 Template.overview.totalMetersCars = function(productId, tripId){
 	var date = new Date(localStorage.getItem('date')),
-	currentDate = new Date(localStorage.getItem('date'));
+	currentDate = new Date(localStorage.getItem('date')).getTime();
 
 	with(date){
 		setDate(getDate() + 1);
 	}
 
 	books = Books.find({
-		dateOfBooking : {$gte: currentDate, $lt: date},
+		dateOfBooking : {$gte: currentDate, $lt: date.getTime()},
 		'product._id' : productId,
 		'trip._id' : tripId
 	}).fetch();
@@ -73,14 +73,14 @@ Template.overview.totalMetersCars = function(productId, tripId){
 
 Template.overview.totalLorries = function(productId, tripId){
 	var date = new Date(localStorage.getItem('date')),
-	currentDate = new Date(localStorage.getItem('date'));
+	currentDate = new Date(localStorage.getItem('date')).getTime();
 
 	with(date){
 		setDate(getDate() + 1);
 	}
 
 	books = Books.find({
-		dateOfBooking : {$gte: currentDate, $lt: date},
+		dateOfBooking : {$gte: currentDate, $lt: date.getTime()},
 		'product._id' : productId,
 		'trip._id' : tripId
 	}).fetch();
@@ -98,14 +98,14 @@ Template.overview.totalLorries = function(productId, tripId){
 
 Template.overview.totalNormalCars = function(productId, tripId){
 	var date = new Date(localStorage.getItem('date')),
-	currentDate = new Date(localStorage.getItem('date'));
+	currentDate = new Date(localStorage.getItem('date')).getTime();
 
 	with(date){
 		setDate(getDate() + 1);
 	}
 
 	books = Books.find({
-		dateOfBooking : {$gte: currentDate, $lt: date},
+		dateOfBooking : {$gte: currentDate, $lt: date.getTime()},
 		'product._id' : productId,
 		'trip._id' : tripId
 	}).fetch();
@@ -123,14 +123,14 @@ Template.overview.totalNormalCars = function(productId, tripId){
 
 Template.overview.totalJeeps = function(productId, tripId){
 	var date = new Date(localStorage.getItem('date')),
-	currentDate = new Date(localStorage.getItem('date'));
+	currentDate = new Date(localStorage.getItem('date')).getTime();
 
 	with(date){
 		setDate(getDate() + 1);
 	}
 
 	books = Books.find({
-		dateOfBooking : {$gte: currentDate, $lt: date},
+		dateOfBooking : {$gte: currentDate, $lt: date.getTime()},
 		'product._id' : productId,
 		'trip._id' : tripId
 	}).fetch();
@@ -148,14 +148,14 @@ Template.overview.totalJeeps = function(productId, tripId){
 
 Template.overview.totalSmallCars = function(productId, tripId){
 	var date = new Date(localStorage.getItem('date')),
-	currentDate = new Date(localStorage.getItem('date'));
+	currentDate = new Date(localStorage.getItem('date')).getTime();
 
 	with(date){
 		setDate(getDate() + 1);
 	}
 
 	books = Books.find({
-		dateOfBooking : {$gte: currentDate, $lt: date},
+		dateOfBooking : {$gte: currentDate, $lt: date.getTime()},
 		'product._id' : productId,
 		'trip._id' : tripId
 	}).fetch();
@@ -173,14 +173,14 @@ Template.overview.totalSmallCars = function(productId, tripId){
 
 Template.overview.totalPersons = function(productId, tripId){
 	var date = new Date(localStorage.getItem('date')),
-	currentDate = new Date(localStorage.getItem('date'));
+	currentDate = new Date(localStorage.getItem('date')).getTime();
 
 	with(date){
 		setDate(getDate() + 1);
 	}
 
 	books = Books.find({
-		dateOfBooking : {$gte: currentDate, $lt: date},
+		dateOfBooking : {$gte: currentDate, $lt: date.getTime()},
 		'product._id' : productId,
 		'trip._id' : tripId
 	}).fetch();
@@ -212,14 +212,14 @@ Template.overview.hasVehicle = function(){
 Template.overview.total = function(tripId, productId){
 	var total = 0;
 	var date = new Date(localStorage.getItem('date')),
-	currentDate = new Date(localStorage.getItem('date'));
+	currentDate = new Date(localStorage.getItem('date')).getTime();
 
 	with(date){
 		setDate(getDate() + 1);
 	}
 
 	books =  Books.find({
-		dateOfBooking : {$gte: currentDate, $lt: date},
+		dateOfBooking : {$gte: currentDate, $lt: date.getTime()},
 		'product._id' : productId,
 		'trip._id' : tripId
 	}).fetch();
@@ -234,14 +234,14 @@ Template.overview.total = function(tripId, productId){
 Template.overview.totalPaid = function(tripId, productId){
 	var total = 0;
 	var date = new Date(localStorage.getItem('date')),
-	currentDate = new Date(localStorage.getItem('date'));
+	currentDate = new Date(localStorage.getItem('date')).getTime();
 
 	with(date){
 		setDate(getDate() + 1);
 	}
 
 	books =  Books.find({
-		dateOfBooking : {$gte: currentDate, $lt: date},
+		dateOfBooking : {$gte: currentDate, $lt: date.getTime()},
 		'product._id' : productId,
 		'trip._id' : tripId
 	}).fetch();
@@ -261,14 +261,14 @@ Template.overview.totalNotPaid = function(tripId, productId){
 	var total = 0;
 	var totalTransactions = 0;
 	var date = new Date(localStorage.getItem('date')),
-	currentDate = new Date(localStorage.getItem('date'));
+	currentDate = new Date(localStorage.getItem('date')).getTime();
 
 	with(date){
 		setDate(getDate() + 1);
 	}
 
 	books =  Books.find({
-		dateOfBooking : {$gte: currentDate, $lt: date},
+		dateOfBooking : {$gte: currentDate, $lt: date.getTime()},
 		'product._id' : productId,
 		'trip._id' : tripId,
 	}).fetch();
@@ -291,14 +291,14 @@ Template.overview.totalNotPaid = function(tripId, productId){
 Template.overview.creditcard = function(tripId, productId){
 	var total = 0;
 	var date = new Date(localStorage.getItem('date')),
-	currentDate = new Date(localStorage.getItem('date'));
+	currentDate = new Date(localStorage.getItem('date')).getTime();
 
 	with(date){
 		setDate(getDate() + 1);
 	}
 
 	books =  Books.find({
-		dateOfBooking : {$gte: currentDate, $lt: date},
+		dateOfBooking : {$gte: currentDate, $lt: date.getTime()},
 		'product._id' : productId,
 		'trip._id' : tripId,
 	}).fetch();
@@ -318,14 +318,14 @@ Template.overview.creditcard = function(tripId, productId){
 Template.overview.refund = function(tripId, productId){
 	var total = 0;
 	var date = new Date(localStorage.getItem('date')),
-	currentDate = new Date(localStorage.getItem('date'));
+	currentDate = new Date(localStorage.getItem('date')).getTime();
 
 	with(date){
 		setDate(getDate() + 1);
 	}
 
 	books =  Books.find({
-		dateOfBooking : {$gte: currentDate, $lt: date},
+		dateOfBooking : {$gte: currentDate, $lt: date.getTime()},
 		'product._id' : productId,
 		'trip._id' : tripId,
 	}).fetch();
@@ -345,14 +345,14 @@ Template.overview.refund = function(tripId, productId){
 Template.overview.office = function(tripId, productId){
 	var total = 0;
 	var date = new Date(localStorage.getItem('date')),
-	currentDate = new Date(localStorage.getItem('date'));
+	currentDate = new Date(localStorage.getItem('date')).getTime();
 
 	with(date){
 		setDate(getDate() + 1);
 	}
 
 	books =  Books.find({
-		dateOfBooking : {$gte: currentDate, $lt: date},
+		dateOfBooking : {$gte: currentDate, $lt: date.getTime()},
 		'product._id' : productId,
 		'trip._id' : tripId,
 	}).fetch();

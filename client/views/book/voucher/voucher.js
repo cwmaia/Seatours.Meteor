@@ -9,8 +9,8 @@ Template.voucher.book = function(){
   return book;
 };
 
-Template.voucher.formatDate = function(date){
-  return date.toLocaleDateString('en-Gb');
+Template.voucher.formatDate = function(dateTime){
+  return new Date(dateTime).toLocaleDateString('en-Gb');
 };
 
 Template.voucher.getRefNumber = function(){
@@ -28,7 +28,7 @@ Template.voucher.date = function(){
   }else{
     book = Session.get("book");
   }
-  return book.dateOfBooking.toDateString();
+  return new Date(book.dateOfBooking).toDateString();
 };
 
 Template.voucher.customer = function(){

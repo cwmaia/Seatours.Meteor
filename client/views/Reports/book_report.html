@@ -19,7 +19,7 @@
 				</a>
 			</li>
 
-		
+
 		</ul>
 
 		<div class="tab-content">
@@ -100,7 +100,7 @@
 						<tr>
 							<td><a href='/bookDetailResume/{{_id}}'>{{refNumber}}</a></td>
 							<td>{{product.name}}: {{trip.from}} - {{trip.to}}</td>
-							<td>{{dateOfBooking}}</td>
+							<td>{{formated dateOfBooking}}</td>
 							<td><input disabled style="margin-bottom:0px; width: 50px;" class="formattedAsMoney" value="{{totalISK}}"></td>
 							<td>{{fullname customerId}}</td>
 							<td>{{email customerId}}</td>
@@ -111,7 +111,7 @@
 					{{/each}}
 				</tbody>
 		</table>
-	</fieldset>	
+	</fieldset>
 </template>
 
 <template name='financialReport'>
@@ -153,7 +153,7 @@
 					<th class="sorting_disabled">Office</th>
 				</tr>
 			</thead>
-			<tbody>	
+			<tbody>
 			{{#each trips _id}}
 				<tr>
 					<td>{{from}} - {{to}} - {{hour}} {{#if seasons}} ({{season}}) {{/if}}</td>
@@ -167,5 +167,5 @@
 			{{/each}}
 			</tbody>
 		</table>
-	</fieldset>	
+	</fieldset>
 </template>

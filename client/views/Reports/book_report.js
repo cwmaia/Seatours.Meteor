@@ -5,8 +5,12 @@ Template.bookingsReport.helpers({
 
 	products : function(){
 		return Products.find();
+	},
+
+	formated : function(dateTime){
+		return new Date(dateTime).toLocaleDateString();
 	}
-})
+});
 
 Template.financialReport.helpers({
 	products : function(){
@@ -39,7 +43,7 @@ Template.financialReport.helpers({
 
 	total : function(tripId, productId){
 		var total = 0;
-		dates = getFinancialDates();
+		var dates = getFinancialDates();
 
 
 		books =  Books.find({
@@ -57,7 +61,7 @@ Template.financialReport.helpers({
 
 	totalPaid : function(tripId, productId){
 		var total = 0;
-		dates = getFinancialDates();
+		var dates = getFinancialDates();
 
 
 		books =  Books.find({
@@ -80,7 +84,7 @@ Template.financialReport.helpers({
 	totalNotPaid : function(tripId, productId){
 		var total = 0;
 		var totalTransactions = 0;
-		dates = getFinancialDates();
+		var dates = getFinancialDates();
 
 
 		books =  Books.find({
@@ -106,7 +110,7 @@ Template.financialReport.helpers({
 
 	creditcard : function(tripId, productId){
 		var total = 0;
-		dates = getFinancialDates();
+		var dates = getFinancialDates();
 
 
 		books =  Books.find({
@@ -129,7 +133,7 @@ Template.financialReport.helpers({
 
 	refund : function(tripId, productId){
 		var total = 0;
-		dates = getFinancialDates();
+		var dates = getFinancialDates();
 
 
 		books =  Books.find({
@@ -152,8 +156,7 @@ Template.financialReport.helpers({
 
 	office : function(tripId, productId){
 		var total = 0;
-		var from = Session.get('filterFromData');
-		var to = Session.get('filterToData');
+		var dates = getFinancialDates();
 
 
 		books =  Books.find({
@@ -237,13 +240,15 @@ Template.bookingsReport.events({
 			return;
 		}
 
-		var dateFrom = new Date(fromConverted);
+		var dateFrom = new Date(fromConverted).getTime();
 		var dateTo = new Date(toConverted);
 		with(dateTo){
 			setDate(getDate() + 1);
 		}
 
-		var query = {dateOfBooking: {$gte: dateFrom, $lt: dateTo}};
+		var timeTo = dateTo.getTime();
+
+		var query = {dateOfBooking: {$gte: dateFrom, $lt: timeTo}};
 
 		if(product)
        		query['product._id'] = product;
@@ -277,11 +282,15 @@ Template.financialReport.events({
 			return;
 		}
 
-		var dateFrom = new Date(from);
-		var dateTo = new Date(to);
+		var dateFrom = new Date(fromConverted).getTime();
+		var dateTo = new Date(toConverted);
 		with(dateTo){
 			setDate(getDate() + 1);
 		}
+		
+		dateTo = dateTo.getTime();
+
+
 		products = [];
 
 		if(product)
@@ -318,8 +327,8 @@ var getFinancialDates = function(){
 		}
 
 		var dates = {
-			from : from,
-			to : to
+			from : from.getTime(),
+			to : to.getTime()
 		}
 
 		return dates;

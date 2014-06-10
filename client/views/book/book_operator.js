@@ -12,9 +12,6 @@ var getSelectedAndNextDay = function(){
 		setDate(getDate() +1);
 	}
 
-	console.log(selectedDay.getTime());
-	console.log(nextDay.getTime());
-
 	var dates = {
 		selectedDay : selectedDay.getTime(),
 		nextDay : nextDay.getTime()
@@ -550,7 +547,7 @@ function setCalendarCapacity (calendar) {
 
 	for (var j = 1; j <= days; j++) {
 		date.setDate(j + 1);
-		bookings = Books.find({dateOfBooking: {$gte: new Date(date.getFullYear(), date.getMonth(), j), $lt:date}, 'product._id': product._id, 'trip.from': from});
+		bookings = Books.find({dateOfBooking: {$gte: new Date(date.getFullYear(), date.getMonth(), j).getTime(), $lt:date.getTime()}, 'product._id': product._id, 'trip.from': from});
 
 		if(bookings.count() >= maxCapacity)
 			$(calendar).find('tbody a:eq(' + (j - 1) + ')').addClass('isFull');
@@ -994,7 +991,7 @@ Template.bookDetail.events({
 		product = Products.findOne({_id: book.product._id});
 		Session.set("customerId", book.customerId);
 		Session.set("productId", product._id);
-		Session.set("bookingDate", book.dateOfBooking);
+		Session.set("bookingDate", book.dateOfBooking.getTime());
 		Session.set('tripId', book.trip._id);
 		Meteor.Router.to('/bookEdit');
 	},
@@ -1090,9 +1087,9 @@ var cancelBook = function(operatorName){
 	var vendor = Meteor.user().profile.name;
 
 	var dateToday = new Date();
-	var dateTodayFixed = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate(), 0,0,0);
-	var dateOfBookingFixed = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), book.dateOfBooking.getDate(),0,0,0);
-	var aDayPreviousBookingDate = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), (book.dateOfBooking.getDate() -1), 0,0,0);
+	var dateTodayFixed = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate(), 0,0,0).getTime();
+	var dateOfBookingFixed = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), book.dateOfBooking.getDate(),0,0,0).getTime();
+	var aDayPreviousBookingDate = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), (book.dateOfBooking.getDate() -1), 0,0,0).getTime();
 	var totalISK = book.totalISK;
 
 	var valueFees;
@@ -1290,7 +1287,7 @@ Template.bookDetail.helpers({
 	},
 
 	bookingsCreated : function(){
-		return Books.find({dateOfBooking: new Date(localStorage.getItem('date')), 'product._id': Session.get('productId'), bookStatus : "Booked"});
+		return Books.find({dateOfBooking: new Date(localStorage.getItem('date')).getTime(), 'product._id': Session.get('productId'), bookStatus : "Booked"});
 	},
 
 	lineColor : function(paid, bookStatus, ticketPrinted){
@@ -1953,7 +1950,7 @@ Template.generalButtons.events({
  	html += "<span>The customer "+book.fullName +" just createad a new inquiry that needs to be confirmed.</span> <br />"
  	html += "<span><b>The details for this booking are:</b> </span> <br />";
  	html += "<span><b>Trip:</b> "+book.trip.from + " - "+ book.trip.to +" - "+ book.trip.hour +" </span> <br />";
- 	html += "<span><b>Date: </b>"+book.dateOfBooking.toLocaleDateString() +" </span> <br />";
+ 	html += "<span><b>Date: </b>"+new Date(book.dateOfBooking).toLocaleDateString() +" </span> <br />";
  	html += "<span><b>Total Price:</b> "+book.totalISK+" </span> <br />";
  	html += "<span><b>Vehicle details:</b> "+book.vehicle.vehicleName +", "+book.vehicle.category+", "+book.vehicle.size+"m </span> <br />";
  	html += "<span><b>Slot: </b>"+book.slot+" </span> <br /><br /><br /> Seatours Booking <br />";

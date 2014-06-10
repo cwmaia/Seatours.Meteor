@@ -12,8 +12,8 @@ Template.myBookings.name = function(){
 	return Meteor.user().profile.name;
 }
 
-Template.myBookings.date = function(date){
-	return date.toLocaleDateString();
+Template.myBookings.date = function(dateTime){
+	return new Date(dateTime).toLocaleDateString();
 }
 
 Template.myBookings.events({

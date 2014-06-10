@@ -10,8 +10,8 @@ Template.myBookingsDetail.bookings = function(){
 	return Books.find({orderId : Session.get('orderId')});
 }
 
-Template.myBookingsDetail.date = function(date){
-	return date.toLocaleDateString();
+Template.myBookingsDetail.date = function(dateTime){
+	return new Date(dateTime).toLocaleDateString();
 }
 
 Template.myBookingsDetail.events({
