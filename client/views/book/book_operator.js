@@ -13,8 +13,8 @@ var getSelectedAndNextDay = function(){
 	}
 
 	var dates = {
-		selectedDay : selectedDay,
-		nextDay : nextDay
+		selectedDay : selectedDay.getTime(),
+		nextDay : nextDay.getTime()
 	};
 
 	return dates;
@@ -2546,6 +2546,11 @@ var createBook = function(values){
 	var selectedDay = new Date(localStorage.getItem('date'));
 
 	var trip = Trips.findOne(Session.get('tripId'));
+	var splitHours = trip.hour.split(":");
+
+	selectedDay.setHours(splitHours[0]);
+	selectedDay.setMinutes(splitHours[1]);
+
 
 	book = {
 		"trip" : {
@@ -2556,7 +2561,7 @@ var createBook = function(values){
 		},
 
 		"totalISK" : parseInt($("#totalISK").val().replace(".","")),
-		'dateOfBooking' : selectedDay,
+		'dateOfBooking' : selectedDay.getTime(),
 		'creationDate': new Date(),
 		'bookStatus' : 'Booked',
 		"ticketPrinted" : false,

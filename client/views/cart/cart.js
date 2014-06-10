@@ -158,8 +158,8 @@ Template.cart.total = function(){
 };
 
 
-Template.items.dateNoTimeZone = function(date){
-	return date.toUTCString().slice(5,17);
+Template.items.dateNoTimeZone = function(dateTime){
+	return new Date(dateTime).toLocaleDateString();
 };
 
 Template.cart.totalCustomer = function(){
@@ -251,7 +251,7 @@ Template.cart.events({
 
 		throwSuccess(books.length+' Bookings Created!');
 		Session.set("createdBooks", createdBooks);
-		localStorage.setItem('date', createdBooks[0].dateOfBooking);
+		localStorage.setItem('date', new Date(createdBooks[0].dateOfBooking));
 		Meteor.Router.to("/bookOperator/"+createdBooks[0].product._id);
 		}
 
