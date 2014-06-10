@@ -12,7 +12,7 @@ var getSelectedAndNextDay = function(){
 		setDate(getDate() +1);
 	}
 
-	console.log(selectDay.getTime());
+	console.log(selectedDay.getTime());
 	console.log(nextDay.getTime());
 
 	var dates = {
