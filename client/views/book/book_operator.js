@@ -992,7 +992,7 @@ Template.bookDetail.events({
 		product = Products.findOne({_id: book.product._id});
 		Session.set("customerId", book.customerId);
 		Session.set("productId", product._id);
-		Session.set("bookingDate", book.dateOfBooking.getTime());
+		Session.set("bookingDate", new Date(book.dateOfBooking).getTime());
 		Session.set('tripId', book.trip._id);
 		Meteor.Router.to('/bookEdit');
 	},
@@ -1089,8 +1089,8 @@ var cancelBook = function(operatorName){
 
 	var dateToday = new Date();
 	var dateTodayFixed = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate(), 0,0,0).getTime();
-	var dateOfBookingFixed = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), book.dateOfBooking.getDate(),0,0,0).getTime();
-	var aDayPreviousBookingDate = new Date(book.dateOfBooking.getFullYear(), book.dateOfBooking.getMonth(), (book.dateOfBooking.getDate() -1), 0,0,0).getTime();
+	var dateOfBookingFixed = new Date(new Date(book.dateOfBooking).getFullYear(), new Date(book.dateOfBooking).getMonth(), new Date(book.dateOfBooking).getDate(),0,0,0).getTime();
+	var aDayPreviousBookingDate = new Date(new Date(book.dateOfBooking).getFullYear(), new Date(book.dateOfBooking).getMonth(), new Date(book.dateOfBooking).getDate() -1, 0,0,0).getTime();
 	var totalISK = book.totalISK;
 
 	var valueFees;
