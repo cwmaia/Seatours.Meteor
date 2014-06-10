@@ -422,6 +422,7 @@ Meteor.methods({
       }
       book.refNumber = refNumber;
     }
+
     bookId = Books.insert(book);
     note = Notes.findOne({bookId: bookId});
     if(note)
@@ -475,6 +476,19 @@ Meteor.methods({
     var summerDate = Settings.findOne({_id : "summer"}).summerStartDate;
 
     return {winterDate : winterDate, summerDate : summerDate};
+  },
+
+  getServerTime : function(){
+    return new Date();
+  },
+
+  getServerTimeZ : function(){
+    var date = new Date();
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+
+    return date;
   },
 
   getTimeZone : function(){

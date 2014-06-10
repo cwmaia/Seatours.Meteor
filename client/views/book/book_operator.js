@@ -278,7 +278,7 @@ Template.productItem.rendered = function(){
 			format : "dd/mm/yyyy"
 		}).on('changeDate', function(ev){
 			date = new Date(ev.date);
-			
+
 			var timezone = date.getTimezoneOffset();
 
 			var fixDate = new Date(date.getTime() + timezone * 60000);
@@ -289,12 +289,14 @@ Template.productItem.rendered = function(){
 				setSeconds(0);
 			}
 
-
 			localStorage.setItem('date', fixDate);
 			$('#currentSeason').text(currentSeason());
 		});
 	if(isCustomer()){
-		$('.calendar').datepicker("setStartDate", new Date());
+		Meteor.call("getServerTimeZ", function(err, date){
+			date.setDate(date.getDate() -1);
+			$('.calendar').datepicker("setStartDate", date);
+		});
 	}
  };
 
