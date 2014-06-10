@@ -12,6 +12,9 @@ var getSelectedAndNextDay = function(){
 		setDate(getDate() +1);
 	}
 
+	console.log(selectDay.getTime());
+	console.log(nextDay.getTime());
+
 	var dates = {
 		selectedDay : selectedDay.getTime(),
 		nextDay : nextDay.getTime()
@@ -1230,17 +1233,10 @@ Template.bookDetail.helpers({
 	},
 
 	bookingsWaiting : function(){
-
-		var date = new Date(localStorage.getItem('date')),
-		trip = Trips.findOne(Session.get('tripId')),
-		currentDate = new Date(localStorage.getItem('date'));
-
-		with(date){
-			setDate(getDate() + 1);
-		}
+		var dates = getSelectedAndNextDay();
 
 		return Books.find({
-			dateOfBooking : {$gte: currentDate, $lt: date},
+			dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
 			'product._id' : Session.get('productId'),
 			'trip._id' : trip._id,
 			slot : /.*W.*/,
@@ -1249,17 +1245,10 @@ Template.bookDetail.helpers({
 	},
 
 	bookingsCanceled : function(){
-
-		var date = new Date(localStorage.getItem('date')),
-		trip = Trips.findOne(Session.get('tripId')),
-		currentDate = new Date(localStorage.getItem('date'));
-
-		with(date){
-			setDate(getDate() + 1);
-		}
+		var dates = getSelectedAndNextDay();
 
 		return Books.find({
-			dateOfBooking : {$gte: currentDate, $lt: date},
+			dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
 			'product._id' : Session.get('productId'),
 			'trip._id' : trip._id,
 			'bookStatus': 'Canceled'
@@ -1267,16 +1256,10 @@ Template.bookDetail.helpers({
 	},
 
 	bookings : function(){
-		var date = new Date(localStorage.getItem('date')),
-		trip = Trips.findOne(Session.get('tripId')),
-		currentDate = new Date(localStorage.getItem('date'));
-
-		with(date){
-			setDate(getDate() + 1);
-		}
+		var dates = getSelectedAndNextDay();
 
 		return Books.find({
-			dateOfBooking : {$gte: currentDate, $lt: date},
+			dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
 			'product._id' : Session.get('productId'),
 			'trip._id' : trip._id,
 			slot : {$not : /.*W.*/ },
