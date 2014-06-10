@@ -1238,7 +1238,7 @@ Template.bookDetail.helpers({
 		return Books.find({
 			dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
 			'product._id' : Session.get('productId'),
-			'trip._id' : trip._id,
+			'trip._id' : Session.get('tripId'),
 			slot : /.*W.*/,
 			$and : [{bookStatus : {$not : "Canceled"}}, {bookStatus : {$not : "REMOVED"}}]
 		});
@@ -1250,7 +1250,7 @@ Template.bookDetail.helpers({
 		return Books.find({
 			dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
 			'product._id' : Session.get('productId'),
-			'trip._id' : trip._id,
+			'trip._id' : Session.get('tripId'),
 			'bookStatus': 'Canceled'
 		});
 	},
@@ -1261,7 +1261,7 @@ Template.bookDetail.helpers({
 		return Books.find({
 			dateOfBooking : {$gte: dates.selectedDay, $lt: dates.nextDay},
 			'product._id' : Session.get('productId'),
-			'trip._id' : trip._id,
+			'trip._id' : Session.get('tripId'),
 			slot : {$not : /.*W.*/ },
 			$and : [{bookStatus : {$not : "Canceled"}}, {bookStatus : {$not : "REMOVED"}}]
 		});
