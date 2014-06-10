@@ -114,8 +114,10 @@ Template.createAccount.groups = function(){
 Template.usersList.isNotAdmGroup = function(groupID){
 	group = Groups.findOne({_id: groupID});
 
+	admGroup = Groups.findOne({_id: Meteor.user().profile.groupID});
+
 	if(group){
-		return !(group.description == "Seatours Super Admin Group");
+		return !(group.description == "Seatours Super Admin Group") && admGroup.description == "Seatours Super Admin Group";
 	}else{
 		return false;
 	}
