@@ -39,7 +39,7 @@ Template.bookDetailResume.events({
 		product = Products.findOne({_id: book.product._id});
 		Session.set("customerId", book.customerId);
 		Session.set("productId", product._id);
-		Session.set("bookingDate", book.dateOfBooking);
+		Session.set("bookingDate", new Date(book.dateOfBooking));
 		Session.set('tripId', book.trip._id);
 		Meteor.Router.to('/bookEdit');
 	}
