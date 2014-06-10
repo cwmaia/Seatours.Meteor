@@ -683,7 +683,8 @@
 		<input type='hidden' id='{{_id}}{{unit}}' class='unitPrice'>
 		<div>
 			<label>{{price}} (<input disabled style="width: 40px; font-weight: bold;" class='formattedAsMoney' value='{{unit}}'></input> ISK)</label>
-			<input type='number' class="size1-4" min="{{minValue price}}" value='{{priced price}}'>
+			<input type='number' class="size1-4 inputPrices" min="{{minValue price}}" value='{{priced price}}'
+			onChange="calculatePrices('{{_id}}', {{unit}}, '{{price}}', event)">
 			<em class="calcTotal price" data-value="" ><input disabled id="{{_id}}" style="width: 70px;
 	color: #777 !important;
 	font-style: italic;

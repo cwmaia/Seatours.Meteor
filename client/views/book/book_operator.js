@@ -96,6 +96,7 @@ var updateSVGFill = function(dates, tripId){
 
 	resetSVG();
 	books = [];
+	cartBooks = [];
 
 	if(!Session.get("isEditing") && !Session.get("changeSlots")){
 		books = Books.find({
@@ -1409,7 +1410,7 @@ Template.productPrices.minValue = function(price){
 };
 
 Template.productPrices.firstTime = function(){
-	return Session.get('firstTimePrice') ? true : false;
+	return Session.get('firstTimePrice');
 };
 
 Template.productPrices.firstTimePricing = function(price, unit){
@@ -1501,6 +1502,8 @@ Template.createBook.rendered = function(){
 		if(note)
 			$("#stopAtFlateyInput").attr("checked", true);
 
+
+		$(".inputPrices").change();
 		$('#customerId').val(customer._id);
 		$('#title').val(customer.title);
 		$('#socialSecurityNumber').val(customer.socialSecurityNumber);
@@ -1727,14 +1730,14 @@ function removePrevious(slots){
 	Session.set("previousSlots", null);
 }
 
-Template.productPrices.events({
-	"change input" : function(event){
+calculatePrices = function(id, unit, price, event){
+	if(event.target.value != 0){
 		Session.set('firstTimePrice', false);
-		var totalParcial = event.currentTarget.value * this.unit;
-		$('#'+this._id).val(totalParcial);
-		var totalPrice = event.currentTarget.value;
-		$('#'+this._id).val(totalParcial);
-		$('#'+this._id+this.unit).val(this.price+"|"+this.unit+"|"+totalPrice+"|"+totalParcial);
+		var totalParcial = event.target.value * unit;
+		$('#'+id).val(totalParcial);
+		var totalPrice = event.target.value;
+		$('#'+id).val(totalParcial);
+		$('#'+id+unit).val(price+"|"+unit+"|"+totalPrice+"|"+totalParcial+"|"+id);
 
 		var total = 0;
 		$('.unitPrice').filter(function(){
@@ -1747,7 +1750,7 @@ Template.productPrices.events({
 		checkMaxCapacity(total);
 		calcTotal();
 	}
-});
+};
 
 var checkForAdults = function(){
 	var prices = [];
@@ -2646,13 +2649,18 @@ var createBook = function(values){
 	var prices = [];
 
 	$('.unitPrice').filter(function(){
+
 		var split = $(this).val().split("|");
+
+		console.log(split);
+
 		if(split[2]){
 			var price = {
 			"price" : split[0],
 			"perUnit" : split[1],
 			"persons" : split[2],
-			"sum" : split[3]
+			"sum" : split[3],
+			"_id" : split[4]
 		};
 
 			prices.push(price);
@@ -2697,7 +2705,7 @@ var createBook = function(values){
 
 		if(bookEdited.bookStatus == "Canceled"){
 			Books.update(Session.get("bookId"), {$set : {
-				"dateOfBooking" : newDate,
+				"dateOfBooking" : newDate.getTime(),
 				"prices" : book.prices,
 				"totalISK": book.totalISK,
 				"trip.from" : book.trip.from,
@@ -2712,7 +2720,7 @@ var createBook = function(values){
 			}});
 		}else{
 			Books.update(Session.get("bookId"), {$set : {
-				"dateOfBooking" : newDate,
+				"dateOfBooking" : newDate.getTime(),
 				"prices" : book.prices,
 				"totalISK": book.totalISK,
 				"trip.from" : book.trip.from,
