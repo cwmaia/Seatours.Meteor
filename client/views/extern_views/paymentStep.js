@@ -23,8 +23,8 @@ Template.itemsPaymentStep.hasTo = function(){
 	return this.trip.to;
 };
 
-Template.itemsPaymentStep.dateNoTimeZone = function(date){
-	return date.toUTCString().slice(5,17);
+Template.itemsPaymentStep.dateNoTimeZone = function(dateTime){
+	return new Date(dateTime).toUTCString().slice(5,17);
 };
 
 Template.itemsPaymentStep.hasDiscount = function(){
@@ -107,7 +107,7 @@ Template.paymentStep.events({
 		Session.set("checkOrder", true);
 		for (var i = 0; i < bookings.length; i++) {
 
-			var date = bookings[i].dateOfBooking;
+			var date = new Date(bookings[i].dateOfBooking);
 
 			with(date){
 				setHours(0);
